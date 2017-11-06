@@ -20,10 +20,10 @@ public:
 	virtual void parseCSV(const char *xmlName) = 0;
 
 	// Save the DOM as C++ code
-	virtual void saveCPP(const char *fname) = 0;
+	virtual void saveCPP(void) = 0;
 
 	// Save the DOM as a JSON schema
-	virtual void saveJSON(const char *fname) = 0;
+	virtual void saveJSON(void) = 0;
 
 	virtual void release(void) = 0;
 };

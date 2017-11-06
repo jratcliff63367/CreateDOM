@@ -15,11 +15,11 @@ int main(int argc, const char **argv)
 	}
 	else
 	{
-		const char *csv = argv[0];
+		const char *csv = argv[1];
 		CREATE_DOM::CreateDOM *cdom = CREATE_DOM::CreateDOM::create();
 		cdom->parseCSV(csv);
-		cdom->saveCPP("DOM.h");
-		cdom->saveJSON("DOM.json");
+		cdom->saveCPP();
+		cdom->saveJSON();
 		cdom->release();
 	}
 }
