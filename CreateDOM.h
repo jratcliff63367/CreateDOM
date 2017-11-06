@@ -17,10 +17,13 @@ public:
 	static CreateDOM *create(void);
 
 	// Parses this XML and accumulates all of the unique element and attribute names
-	virtual void inspectXml(const char *xmlName) = 0;
+	virtual void parseCSV(const char *xmlName) = 0;
 
-	// Save the DOM as a CSV
-	virtual void saveDOM(const char *fname) = 0;
+	// Save the DOM as C++ code
+	virtual void saveCPP(const char *fname) = 0;
+
+	// Save the DOM as a JSON schema
+	virtual void saveJSON(const char *fname) = 0;
 
 	virtual void release(void) = 0;
 };
