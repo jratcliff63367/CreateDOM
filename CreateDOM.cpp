@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <string>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <unordered_map>
 #include <map>
 #include <vector>
@@ -18,6 +19,73 @@
 
 namespace CREATE_DOM
 {
+
+	class CodePrinter
+	{
+	public:
+		CodePrinter(void)
+		{
+
+		}
+		CodePrinter(FILE *fph)
+		{
+			mFph = fph;
+		}
+
+		void printCode(uint32_t indent, const char *fmt, ...)
+		{
+			va_list         args;
+			char            buffer[4096];
+			va_start(args, fmt);
+			STRING_HELPER::stringFormatV(buffer, sizeof(buffer), fmt, args);
+			va_end(args);
+			if (indent)
+			{
+				size_t currentPos = ftell(mFph) - mLastLineFeed;
+				size_t indentLocation = indent * 4;	// This is the column we want to be on..
+				if (currentPos < indentLocation)
+				{
+					// How many spaces do we need to get to the next tab location
+					uint32_t nextTab = uint32_t(currentPos % 4);
+					for (size_t i = 0; i < nextTab; i++)
+					{
+						fprintf(mFph, " ");
+					}
+					currentPos += nextTab;	// Ok, advance the current positions
+					if (currentPos < indentLocation)
+					{
+						uint32_t indentCount = uint32_t(indentLocation - currentPos);
+						uint32_t tabCount = indentCount / 4;
+						for (size_t i = 0; i < tabCount; i++)
+						{
+							fprintf(mFph, "\t");
+						}
+					}
+				}
+				else
+				{
+					fprintf(mFph, " ");
+				}
+			}
+			fprintf(mFph, "%s", buffer);
+			fflush(mFph);
+			const char *scan = buffer;
+			while (*scan)
+			{
+				if (*scan == 10 || *scan == 10)
+				{
+					mLastLineFeed = ftell(mFph);
+					break;
+				}
+				scan++;
+			}
+
+		}
+
+
+		size_t	mLastLineFeed{ 0 };
+		FILE	*mFph{ nullptr };
+};
 
 typedef std::vector< std::string > StringVector;
 
@@ -126,30 +194,30 @@ public:
 		*this = c;
 	}
 
-	void saveCPP(FILE *fph,StringVector &arrays)
+	void saveCPP(CodePrinter &cp,StringVector &arrays)
 	{
 		if (_stricmp(mType.c_str(), "Enum") == 0)
 		{
 			// it's an enum...
-			fprintf(fph, "\r\n");
+			cp.printCode(0, "\r\n");
 			if (!mShortDescription.empty())
 			{
-				fprintf(fph, "// %s\r\n", mShortDescription.c_str());
+				cp.printCode(0, "// %s\r\n", mShortDescription.c_str());
 			}
 			if (!mLongDescription.empty())
 			{
-				fprintf(fph, "// %s\r\n", mLongDescription.c_str());
+				cp.printCode(0, "// %s\r\n", mLongDescription.c_str());
 			}
-			fprintf(fph, "enum %s\r\n", mName.c_str());
-			fprintf(fph, "{\r\n");
+			cp.printCode(0, "enum %s\r\n", mName.c_str());
+			cp.printCode(0, "{\r\n");
 			for (auto &i : mItems)
 			{
-				fprintf(fph, "\t%s,\t\t // %s\r\n",
-					i.mName.c_str(),
+				cp.printCode(1, "%s,",i.mName.c_str());
+				cp.printCode(10, "// %s\r\n",
 					i.mShortDescription.c_str());
 			}
-			fprintf(fph, "};\r\n");
-			fprintf(fph, "\r\n");
+			cp.printCode(0, "};\r\n");
+			cp.printCode(0, "\r\n");
 			return;
 		}
 
@@ -172,43 +240,41 @@ public:
 				// If this array type not already represented; we need to define it
 				if (!found)
 				{
-					fprintf(fph, "\r\n");
 					const char *type = getTypeString(i.mType.c_str());
 					char temp[512];
 					strncpy(temp, i.mType.c_str(),512);
 					temp[0] = upcase(temp[0]);
 					if (i.mIsPointer)
 					{
-						fprintf(fph, "typedef std::vector< %s *> %sVector; // Forward declare the '%s' vector\r\n", type, temp, temp);
+						cp.printCode(0, "typedef std::vector< %s *> %sVector; // Forward declare the '%s' vector\r\n", type, temp, temp);
 					}
 					else
 					{
-						fprintf(fph, "typedef std::vector< %s > %sVector; // Forward declare the '%s' vector\r\n", type, temp, temp);
+						cp.printCode(0, "typedef std::vector< %s > %sVector; // Forward declare the '%s' vector\r\n", type, temp, temp);
 					}
-					fprintf(fph, "\r\n");
 					arrays.push_back(i.mType);
 				}
 			}
 		}
 
-		fprintf(fph, "\r\n");
+		cp.printCode(0, "\r\n");
 		if (!mShortDescription.empty())
 		{
-			fprintf(fph, "// %s\r\n", mShortDescription.c_str());
+			cp.printCode(0, "// %s\r\n", mShortDescription.c_str());
 		}
 		if (!mLongDescription.empty())
 		{
-			fprintf(fph, "// %s\r\n", mLongDescription.c_str());
+			cp.printCode(0, "// %s\r\n", mLongDescription.c_str());
 		}
-		fprintf(fph, "class %s", mName.c_str());
+		cp.printCode(0, "class %s", mName.c_str());
 		if (!mInheritsFrom.empty())
 		{
-			fprintf(fph, " : public %s", mInheritsFrom.c_str());
+			cp.printCode(0, " : public %s", mInheritsFrom.c_str());
 		}
-		fprintf(fph, "\r\n");
-		fprintf(fph, "{\r\n");
+		cp.printCode(0, "\r\n");
+		cp.printCode(0, "{\r\n");
 
-		fprintf(fph, "public:\r\n");
+		cp.printCode(0, "public:\r\n");
 
 		bool hasInheritedItemsWithDefaultValues = false;
 		for (auto &i : mItems)
@@ -223,46 +289,134 @@ public:
 		}
 		if (hasInheritedItemsWithDefaultValues)
 		{
-			fprintf(fph, "\t%s(void)\r\n", mName.c_str());
-			fprintf(fph, "\t{\r\n");
+			cp.printCode(1, "// Declare the constructor.\r\n");
+			cp.printCode(1, "%s()\r\n", mName.c_str());
+			cp.printCode(1, "{\r\n");
 			for (auto &i : mItems)
 			{
 				// If this is an 'inherited' data item. Don't clear it here
 				// Because it was already handled in the initializer
 				if (!i.mInheritsFrom.empty() && !i.mDefaultValue.empty())
 				{
-					fprintf(fph, "\t\t%s::%s = %s;\r\n",
+					cp.printCode(2, "%s::%s = %s;\r\n",
 						i.mInheritsFrom.c_str(),
 						i.mName.c_str(),
 						getDefaultValueString(i.mDefaultValue.c_str()));
 				}
 			}
-			fprintf(fph, "\t};\r\n");
-			fprintf(fph, "\r\n");
+			cp.printCode(1, "};\r\n");
+			cp.printCode(0, "\r\n");
 		}
 
 		// see if any items are an array of pointers...
 		bool hasArrayOfPointers = false;
+		bool hasPointers = false;
 		for (auto &i : mItems)
 		{
 			if (i.mIsArray && i.mIsPointer )
 			{
 				hasArrayOfPointers = true;
 			}
+			else if (i.mIsPointer)
+			{
+				hasPointers = true;
+			}
 		}
-		if (hasArrayOfPointers)
+		if (hasArrayOfPointers || hasPointers )
 		{
-			fprintf(fph, "\t~%s(void)\r\n", mName.c_str());
-			fprintf(fph, "\t{\r\n");
+			cp.printCode(0, "\r\n");
+			cp.printCode(1, "// Declare the virtual destructor; cleanup any pointers or arrays of pointers\r\n");
+			cp.printCode(1, "virtual ~%s()\r\n", mName.c_str());
+			cp.printCode(1, "{\r\n");
 			for (auto &i : mItems)
 			{
 				if (i.mIsArray && i.mIsPointer)
 				{
-					fprintf(fph, "\t\tfor (auto &i:%s) delete i;\r\n", i.mName.c_str());
+					cp.printCode(2, "for (auto &i:%s) delete i; // Delete all of the object pointers in this array\r\n", i.mName.c_str());
+				}
+				else if (i.mIsPointer)
+				{
+					cp.printCode(2, "delete %s; // Delete this object\r\n", i.mName.c_str());
 				}
 			}
-			fprintf(fph, "\t};\r\n");
-			fprintf(fph, "\r\n");
+			cp.printCode(1, "}\r\n");
+			cp.printCode(0, "\r\n");
+		}
+		else if (!mInheritsFrom.empty())
+		{
+			cp.printCode(0, "\r\n");
+			cp.printCode(1, "// Declare the virtual destructor.\r\n");
+			cp.printCode(1, "virtual ~%s()\r\n", mName.c_str());
+			cp.printCode(1, "{\r\n");
+			cp.printCode(1, "}\r\n");
+			cp.printCode(0, "\r\n");
+		}
+		// create the deep copy constructors and such
+		if ( hasArrayOfPointers || hasPointers )
+		{
+			cp.printCode(0, "\r\n");
+			cp.printCode(1, "// Declare the deep copy constructor; handles copying pointers and pointer arrays\r\n");
+			cp.printCode(1, "%s(const %s &other)\r\n", mName.c_str(), mName.c_str());
+			cp.printCode(1, "{\r\n");
+			cp.printCode(2, "*this = other;\r\n");
+			cp.printCode(1, "}\r\n");
+			cp.printCode(0, "\r\n");
+
+			cp.printCode(0, "\r\n");
+			cp.printCode(1, "// Declare the virtual clone method using a deep copy\r\n");
+			if (mInheritsFrom.empty())
+			{
+				cp.printCode(1, "virtual %s* clone() const\r\n", mName.c_str());
+			}
+			else
+			{
+				cp.printCode(1, "virtual %s* clone() const override\r\n", mInheritsFrom.c_str());
+			}
+			cp.printCode(1, "{\r\n");
+			cp.printCode(2, "return new %s(*this);\r\n", mName.c_str());
+			cp.printCode(1, "}\r\n");
+			cp.printCode(0, "\r\n");
+
+
+			cp.printCode(1, "// Declare and implement the deep copy assignment operator\r\n");
+			cp.printCode(1, "%s& operator=(const %s& other)\r\n", mName.c_str(), mName.c_str());
+			cp.printCode(1, "{\r\n");
+			cp.printCode(2, "if (this != &other )\r\n");
+			cp.printCode(2, "{\r\n");
+			if (!mInheritsFrom.empty())
+			{
+				cp.printCode(3, "%s::operator=(other);\r\n", mInheritsFrom.c_str());
+			}
+
+			for (auto &i : mItems)
+			{
+				if (i.mIsArray && i.mIsPointer)
+				{
+					cp.printCode(3, "%s.clear(); // Clear the current array\r\n", i.mName.c_str());
+					cp.printCode(3, "for (auto &i:other.%s) %s.push_back( static_cast< %s *>(i->clone())); // Deep copy object pointers into the array\r\n", i.mName.c_str(), i.mName.c_str(), i.mType.c_str());
+				}
+				else if (i.mIsPointer)
+				{
+					cp.printCode(3, "delete %s; // delete any previous pointer.\r\n", i.mName.c_str());
+					cp.printCode(3, "%s = static_cast<%s *>(%s->clone()); // perform the deep copy and assignment here\r\n", i.mName.c_str(), i.mType.c_str(), i.mName.c_str());
+				}
+				else if ( i.mInheritsFrom.empty() )
+				{
+					cp.printCode(3, "%s = other.%s;\r\n", i.mName.c_str(), i.mName.c_str());
+				}
+			}
+
+			cp.printCode(2, "}\r\n");
+			cp.printCode(2, "return *this;\r\n");
+			cp.printCode(1, "}\r\n");
+			cp.printCode(0, "\r\n");
+		}
+		
+		if (mClone)
+		{
+			cp.printCode(1, "// Declare the clone method\r\n");
+			cp.printCode(1, "virtual %s *clone() const = 0;\r\n", mName.c_str());
+			cp.printCode(0, "\r\n");
 		}
 
 		for (auto &i : mItems)
@@ -280,47 +434,42 @@ public:
 				temp[0] = upcase(temp[0]);
 				char vectorName[512];
 				STRING_HELPER::stringFormat(vectorName,512, "%sVector", temp);
-				fprintf(fph, "\t%s",
-					vectorName);
+				cp.printCode(1, "%s",vectorName);
 			}
 			else
 			{
-				fprintf(fph, "\t%s",
-					getTypeString(i.mType.c_str()));
+				cp.printCode(1, "%s",getTypeString(i.mType.c_str()));
 			}
 
 			if (i.mIsPointer && !i.mIsArray)
 			{
-				fprintf(fph, "\t\t*%s",
-					i.mName.c_str());
+				cp.printCode(4, "*%s",i.mName.c_str());
 			}
 			else
 			{
-				fprintf(fph, "\t\t%s",
-					i.mName.c_str());
+				cp.printCode(4, "%s",i.mName.c_str());
 			}
 
 			if (i.mDefaultValue.empty())
 			{
 				if (i.mIsPointer && !i.mIsArray )
 				{
-					fprintf(fph, "{ nullptr }");
+					cp.printCode(0, "{ nullptr }");
 				}
 			}
 			else
 			{
-				fprintf(fph, "{ %s }", getDefaultValueString(i.mDefaultValue.c_str()));
+				cp.printCode(0, "{ %s }", getDefaultValueString(i.mDefaultValue.c_str()));
 			}
 
-			fprintf(fph, ";");
+			cp.printCode(0, ";");
 
-			fprintf(fph, "\t// %s\r\n",
-				i.mShortDescription.c_str());
+			cp.printCode(16, "// %s\r\n",i.mShortDescription.c_str());
 		}
 
-		fprintf(fph, "};\r\n");
+		cp.printCode(0, "};\r\n");
 
-		fprintf(fph, "\r\n");
+		cp.printCode(0, "\r\n");
 	}
 
 	std::string		mName;
@@ -329,6 +478,7 @@ public:
 	std::string		mEngineSpecific;
 	std::string		mShortDescription;
 	std::string		mLongDescription;
+	bool			mClone{ false }; // if true, we need to declare the clone virtual method
 	DataItemVector	mItems;
 };
 
@@ -338,7 +488,7 @@ class DOM
 {
 public:
 
-	void saveCPP(FILE *fph)
+	void saveCPP(CodePrinter &cp)
 	{
 
 		StringVector arrays;
@@ -346,29 +496,29 @@ public:
 		char temp[512];
 		STRING_HELPER::stringFormat(temp, 512, "%s_H", mFilename);
 		_strupr(temp);
-		fprintf(fph, "#ifndef %s\r\n", temp);
-		fprintf(fph, "#define %s\r\n", temp);
-		fprintf(fph, "\r\n");
-		fprintf(fph, "// Warning : This source file was auto-generated by the CreateDOM tool. Do not try to edit this source file manually!\r\n");
-		fprintf(fph, "\r\n");
-		fprintf(fph, "#include <stdint.h>\r\n");
-		fprintf(fph, "#include <vector>\r\n");
-		fprintf(fph, "\r\n");
-		fprintf(fph, "\r\n");
-		fprintf(fph, "namespace %s\r\n", mNamespace.c_str());
-		fprintf(fph, "{\r\n");
-		fprintf(fph, "\r\n");
+		cp.printCode(0, "#ifndef %s\r\n", temp);
+		cp.printCode(0, "#define %s\r\n", temp);
+		cp.printCode(0, "\r\n");
+		cp.printCode(0, "// Warning : This source file was auto-generated by the CreateDOM tool. Do not try to edit this source file manually!\r\n");
+		cp.printCode(0, "\r\n");
+		cp.printCode(0, "#include <stdint.h>\r\n");
+		cp.printCode(0, "#include <vector>\r\n");
+		cp.printCode(0, "\r\n");
+		cp.printCode(0, "\r\n");
+		cp.printCode(0, "namespace %s\r\n", mNamespace.c_str());
+		cp.printCode(0, "{\r\n");
+		cp.printCode(0, "\r\n");
 
 		for (auto &i : mObjects)
 		{
-			i.saveCPP(fph,arrays);
+			i.saveCPP(cp,arrays);
 		}
 
-		fprintf(fph, "\r\n");
-		fprintf(fph, "\r\n");
-		fprintf(fph, "} // End of %s namespace\r\n", mNamespace.c_str());
-		fprintf(fph, "\r\n");
-		fprintf(fph, "#endif // End of %s\r\n", temp);
+		cp.printCode(0, "\r\n");
+		cp.printCode(0, "\r\n");
+		cp.printCode(0, "} // End of %s namespace\r\n", mNamespace.c_str());
+		cp.printCode(0, "\r\n");
+		cp.printCode(0, "#endif // End of %s\r\n", temp);
 
 	}
 
@@ -471,6 +621,12 @@ public:
 			free(data);
 		}
 		fclose(fph);
+		if (mHaveObject)
+		{
+			mDOM.mObjects.push_back(mCurrentObject);
+			mCurrentObject.clear();
+			mHaveObject = false;
+		}
 	}
 
 	// Save the DOM as C++ code
@@ -495,7 +651,10 @@ public:
 			return;
 		}
 		printf("Saving C++ DOM to: %s\r\n", scratch);
-		mDOM.saveCPP(fph);
+
+		CodePrinter cp(fph);
+
+		mDOM.saveCPP(cp);
 
 
 		fclose(fph);
@@ -553,12 +712,19 @@ public:
 						if (argc >= 5)
 						{
 							mCurrentObject.mEngineSpecific = std::string(argv[4]);
-							if (argc >= 9)
+							if (argc >= 6)
 							{
-								mCurrentObject.mShortDescription = std::string(argv[8]);
-								if (argc >= 10)
+								if ( _stricmp(argv[5],"CLONE") == 0 )
 								{
-									mCurrentObject.mLongDescription = std::string(argv[9]);
+									mCurrentObject.mClone = true;
+								}
+								if (argc >= 9)
+								{
+									mCurrentObject.mShortDescription = std::string(argv[8]);
+									if (argc >= 10)
+									{
+										mCurrentObject.mLongDescription = std::string(argv[9]);
+									}
 								}
 							}
 						}
