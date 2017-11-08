@@ -537,6 +537,35 @@ public:
 		return *this;
 	}
 
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	GeometryInstance(GeometryInstance &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	GeometryInstance& operator=(GeometryInstance&& other)
+	{
+		if (this != &other )
+		{
+			geometry = other.geometry;
+			other.geometry = nullptr; // Set 'other' pointer to null since we have moved it
+			materials = other.materials;
+			localPose = other.localPose;
+			simulationFilterData = other.simulationFilterData;
+			physx_queryFilterData = other.physx_queryFilterData;
+			physx_contactOffset = other.physx_contactOffset;
+			physx_restOffset = other.physx_restOffset;
+			physx_simulationShape = other.physx_simulationShape;
+			physx_sceneQueryShape = other.physx_sceneQueryShape;
+			physx_triggerShape = other.physx_triggerShape;
+			physx_visualization = other.physx_visualization;
+			physx_particleDrain = other.physx_particleDrain;
+		}
+		return *this;
+	}
+
 	Geometry 	*geometry{ nullptr };								// The geometry associated with this instance
 	StringVector materials;										// Array of material id associated with this geometry instance
 	Pose 		localPose;  											// The local pose for this geometry instance
@@ -593,6 +622,31 @@ public:
 			for (auto &i:geometryInstances) delete i; // Delete all of the object pointers in this array
 			geometryInstances.clear(); // Clear the current array
 			for (auto &i:other.geometryInstances) geometryInstances.push_back( static_cast< GeometryInstance *>(i->clone())); // Deep copy object pointers into the array
+			globalPose = other.globalPose;
+			physx_dominanceGroup = other.physx_dominanceGroup;
+			physx_ownerClient = other.physx_ownerClient;
+			physx_visualization = other.physx_visualization;
+			physx_sendSleepNotifies = other.physx_sendSleepNotifies;
+			physx_disableSimulation = other.physx_disableSimulation;
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	RigidBody(RigidBody &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	RigidBody& operator=(RigidBody&& other)
+	{
+		if (this != &other )
+		{
+			Node::operator=(std::move(other));
+			geometryInstances = other.geometryInstances;
+			other.geometryInstances.clear(); // Clear the 'other' array now that we have moved it
 			globalPose = other.globalPose;
 			physx_dominanceGroup = other.physx_dominanceGroup;
 			physx_ownerClient = other.physx_ownerClient;
@@ -837,6 +891,25 @@ public:
 		return *this;
 	}
 
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	Collection(Collection &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	Collection& operator=(Collection&& other)
+	{
+		if (this != &other )
+		{
+			Node::operator=(std::move(other));
+			nodes = other.nodes;
+			other.nodes.clear(); // Clear the 'other' array now that we have moved it
+		}
+		return *this;
+	}
+
 	NodeVector   nodes;											// Array of nodes in this collection
 };
 
@@ -1035,6 +1108,26 @@ public:
 			for (auto &i:scenes) delete i; // Delete all of the object pointers in this array
 			scenes.clear(); // Clear the current array
 			for (auto &i:other.scenes) scenes.push_back( static_cast< Scene *>(i->clone())); // Deep copy object pointers into the array
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	PhysicsDOM(PhysicsDOM &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	PhysicsDOM& operator=(PhysicsDOM&& other)
+	{
+		if (this != &other )
+		{
+			collections = other.collections;
+			other.collections.clear(); // Clear the 'other' array now that we have moved it
+			scenes = other.scenes;
+			other.scenes.clear(); // Clear the 'other' array now that we have moved it
 		}
 		return *this;
 	}

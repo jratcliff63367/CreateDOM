@@ -401,66 +401,116 @@ public:
 			cp.printCode(0, "\r\n");
 		}
 		// create the deep copy constructors and such
-		if ( hasArrayOfPointers || hasPointers )
+		if (hasArrayOfPointers || hasPointers)
 		{
-			cp.printCode(0, "\r\n");
-			cp.printCode(1, "// Declare the deep copy constructor; handles copying pointers and pointer arrays\r\n");
-			cp.printCode(1, "%s(const %s &other)\r\n", mName.c_str(), mName.c_str());
-			cp.printCode(1, "{\r\n");
-			cp.printCode(2, "*this = other;\r\n");
-			cp.printCode(1, "}\r\n");
-			cp.printCode(0, "\r\n");
-
-			cp.printCode(0, "\r\n");
-			cp.printCode(1, "// Declare the virtual clone method using a deep copy\r\n");
-			if (mInheritsFrom.empty())
+			// Do the deep copy constructor and assignment operators
 			{
-				cp.printCode(1, "virtual %s* clone() const\r\n", mName.c_str());
-			}
-			else
-			{
-				cp.printCode(1, "virtual %s* clone() const override\r\n", mInheritsFrom.c_str());
-			}
-			cp.printCode(1, "{\r\n");
-			cp.printCode(2, "return new %s(*this);\r\n", mName.c_str());
-			cp.printCode(1, "}\r\n");
-			cp.printCode(0, "\r\n");
+				cp.printCode(0, "\r\n");
+				cp.printCode(1, "// Declare the deep copy constructor; handles copying pointers and pointer arrays\r\n");
+				cp.printCode(1, "%s(const %s &other)\r\n", mName.c_str(), mName.c_str());
+				cp.printCode(1, "{\r\n");
+				cp.printCode(2, "*this = other;\r\n");
+				cp.printCode(1, "}\r\n");
+				cp.printCode(0, "\r\n");
 
-
-			cp.printCode(1, "// Declare and implement the deep copy assignment operator\r\n");
-			cp.printCode(1, "%s& operator=(const %s& other)\r\n", mName.c_str(), mName.c_str());
-			cp.printCode(1, "{\r\n");
-			cp.printCode(2, "if (this != &other )\r\n");
-			cp.printCode(2, "{\r\n");
-
-			if (!mInheritsFrom.empty())
-			{
-				cp.printCode(3, "%s::operator=(other);\r\n", mInheritsFrom.c_str());
-			}
-
-			for (auto &i : mItems)
-			{
-				if (i.mIsArray && i.mIsPointer)
+				cp.printCode(0, "\r\n");
+				cp.printCode(1, "// Declare the virtual clone method using a deep copy\r\n");
+				if (mInheritsFrom.empty())
 				{
-					cp.printCode(3, "for (auto &i:%s) delete i; // Delete all of the object pointers in this array\r\n", i.mName.c_str());
-					cp.printCode(3, "%s.clear(); // Clear the current array\r\n", i.mName.c_str());
-					cp.printCode(3, "for (auto &i:other.%s) %s.push_back( static_cast< %s *>(i->clone())); // Deep copy object pointers into the array\r\n", i.mName.c_str(), i.mName.c_str(), i.mType.c_str());
+					cp.printCode(1, "virtual %s* clone() const\r\n", mName.c_str());
 				}
-				else if (i.mIsPointer)
+				else
 				{
-					cp.printCode(3, "delete %s; // delete any previous pointer.\r\n", i.mName.c_str());
-					cp.printCode(3, "%s = static_cast<%s *>(%s->clone()); // perform the deep copy and assignment here\r\n", i.mName.c_str(), i.mType.c_str(), i.mName.c_str());
+					cp.printCode(1, "virtual %s* clone() const override\r\n", mInheritsFrom.c_str());
 				}
-				else if ( i.mInheritsFrom.empty() )
+				cp.printCode(1, "{\r\n");
+				cp.printCode(2, "return new %s(*this);\r\n", mName.c_str());
+				cp.printCode(1, "}\r\n");
+				cp.printCode(0, "\r\n");
+
+
+				cp.printCode(1, "// Declare and implement the deep copy assignment operator\r\n");
+				cp.printCode(1, "%s& operator=(const %s& other)\r\n", mName.c_str(), mName.c_str());
+				cp.printCode(1, "{\r\n");
+				cp.printCode(2, "if (this != &other )\r\n");
+				cp.printCode(2, "{\r\n");
+
+				if (!mInheritsFrom.empty())
 				{
-					cp.printCode(3, "%s = other.%s;\r\n", i.mName.c_str(), i.mName.c_str());
+					cp.printCode(3, "%s::operator=(other);\r\n", mInheritsFrom.c_str());
 				}
+
+				for (auto &i : mItems)
+				{
+					if (i.mIsArray && i.mIsPointer)
+					{
+						cp.printCode(3, "for (auto &i:%s) delete i; // Delete all of the object pointers in this array\r\n", i.mName.c_str());
+						cp.printCode(3, "%s.clear(); // Clear the current array\r\n", i.mName.c_str());
+						cp.printCode(3, "for (auto &i:other.%s) %s.push_back( static_cast< %s *>(i->clone())); // Deep copy object pointers into the array\r\n", i.mName.c_str(), i.mName.c_str(), i.mType.c_str());
+					}
+					else if (i.mIsPointer)
+					{
+						cp.printCode(3, "delete %s; // delete any previous pointer.\r\n", i.mName.c_str());
+						cp.printCode(3, "%s = static_cast<%s *>(%s->clone()); // perform the deep copy and assignment here\r\n", i.mName.c_str(), i.mType.c_str(), i.mName.c_str());
+					}
+					else if (i.mInheritsFrom.empty())
+					{
+						cp.printCode(3, "%s = other.%s;\r\n", i.mName.c_str(), i.mName.c_str());
+					}
+				}
+
+				cp.printCode(2, "}\r\n");
+				cp.printCode(2, "return *this;\r\n");
+				cp.printCode(1, "}\r\n");
+				cp.printCode(0, "\r\n");
 			}
 
-			cp.printCode(2, "}\r\n");
-			cp.printCode(2, "return *this;\r\n");
-			cp.printCode(1, "}\r\n");
-			cp.printCode(0, "\r\n");
+			// Do the move constructor and assignment operators
+			{
+				cp.printCode(0, "\r\n");
+				cp.printCode(1, "// Declare the move constructor; handles copying pointers and pointer arrays\r\n");
+				cp.printCode(1, "%s(%s &&other)\r\n", mName.c_str(), mName.c_str());
+				cp.printCode(1, "{\r\n");
+				cp.printCode(2, "*this = std::move(other);\r\n");
+				cp.printCode(1, "}\r\n");
+				cp.printCode(0, "\r\n");
+
+				cp.printCode(1, "// Declare and implement the move assignment operator\r\n");
+				cp.printCode(1, "%s& operator=(%s&& other)\r\n", mName.c_str(), mName.c_str());
+				cp.printCode(1, "{\r\n");
+				cp.printCode(2, "if (this != &other )\r\n");
+				cp.printCode(2, "{\r\n");
+
+				if (!mInheritsFrom.empty())
+				{
+					cp.printCode(3, "%s::operator=(std::move(other));\r\n", mInheritsFrom.c_str());
+				}
+
+				for (auto &i : mItems)
+				{
+					if (i.mIsArray && i.mIsPointer)
+					{
+						cp.printCode(3, "%s = other.%s;\r\n", i.mName.c_str(), i.mName.c_str());
+						cp.printCode(3, "other.%s.clear(); // Clear the 'other' array now that we have moved it\r\n", i.mName.c_str());
+					}
+					else if (i.mIsPointer)
+					{
+						cp.printCode(3, "%s = other.%s;\r\n", i.mName.c_str(), i.mName.c_str());
+						cp.printCode(3, "other.%s = nullptr; // Set 'other' pointer to null since we have moved it\r\n", i.mName.c_str());
+					}
+					else if (i.mInheritsFrom.empty())
+					{
+						cp.printCode(3, "%s = other.%s;\r\n", i.mName.c_str(), i.mName.c_str());
+					}
+				}
+
+				cp.printCode(2, "}\r\n");
+				cp.printCode(2, "return *this;\r\n");
+				cp.printCode(1, "}\r\n");
+				cp.printCode(0, "\r\n");
+			}
+
+
 		}
 		
 		if (mClone)
