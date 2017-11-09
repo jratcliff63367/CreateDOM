@@ -18,9 +18,7 @@ class Vec3
 {
 public:
 	// Declare the constructor.
-	Vec3()
-	{
-	}
+	Vec3() { }
 
 	// Declare the assignment constructor.
 	Vec3(const float &_x,const float &_y,const float &_z)
@@ -41,9 +39,7 @@ class Quat
 {
 public:
 	// Declare the constructor.
-	Quat()
-	{
-	}
+	Quat() { }
 
 	// Declare the assignment constructor.
 	Quat(const float &_x,const float &_y,const float &_z,const float &_w)
@@ -66,9 +62,7 @@ class Plane
 {
 public:
 	// Declare the constructor.
-	Plane()
-	{
-	}
+	Plane() { }
 
 	// Declare the assignment constructor.
 	Plane(const Vec3 &_n,const float &_d)
@@ -87,9 +81,7 @@ class Pose
 {
 public:
 	// Declare the constructor.
-	Pose()
-	{
-	}
+	Pose() { }
 
 	// Declare the assignment constructor.
 	Pose(const Quat &_q,const Vec3 &_p)
@@ -108,9 +100,7 @@ class Bounds3
 {
 public:
 	// Declare the constructor.
-	Bounds3()
-	{
-	}
+	Bounds3() { }
 
 	// Declare the assignment constructor.
 	Bounds3(const Vec3 &_bmin,const Vec3 &_bmax)
@@ -157,15 +147,6 @@ public:
 	std::string	visualName;										// Name of associated visual mesh
 	Pose 		localPose;  											// Local relative pose of visual mesh to corresponding physics node
 	Vec3 		localScale;   										// Local relative scale of visual mesh to corresponding physics node
-};
-
-
-class Clone
-{
-public:
-	// Declare the clone method
-	virtual Clone *clone() const = 0;
-
 };
 
 
@@ -218,6 +199,61 @@ public:
 	{
 	}
 
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	PhysicsMaterial(const PhysicsMaterial &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual Node* clone() const override
+	{
+		return new PhysicsMaterial(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	PhysicsMaterial& operator=(const PhysicsMaterial& other)
+	{
+		if (this != &other )
+		{
+			Node::operator=(other);
+			disableFriction = other.disableFriction;
+			disableStrongFriction = other.disableStrongFriction;
+			dynamicFriction = other.dynamicFriction;
+			staticFriction = other.staticFriction;
+			restitution = other.restitution;
+			physx_frictionCombineMode = other.physx_frictionCombineMode;
+			physx_restitutionCombineMode = other.physx_restitutionCombineMode;
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	PhysicsMaterial(PhysicsMaterial &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	PhysicsMaterial& operator=(PhysicsMaterial&& other)
+	{
+		if (this != &other )
+		{
+			Node::operator=(std::move(other));
+			disableFriction = other.disableFriction;
+			disableStrongFriction = other.disableStrongFriction;
+			dynamicFriction = other.dynamicFriction;
+			staticFriction = other.staticFriction;
+			restitution = other.restitution;
+			physx_frictionCombineMode = other.physx_frictionCombineMode;
+			physx_restitutionCombineMode = other.physx_restitutionCombineMode;
+		}
+		return *this;
+	}
+
 	bool 		disableFriction{ false }; 							// If true, then friction is disabled for the material
 	bool 		disableStrongFriction{ false };   					// If true then strong friction is disabled for the material
 	float  		dynamicFriction{ 0.5f };  							// The coefficient of dynamic friction.
@@ -245,6 +281,49 @@ public:
 	{
 	}
 
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	ConvexHull(const ConvexHull &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual Node* clone() const override
+	{
+		return new ConvexHull(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	ConvexHull& operator=(const ConvexHull& other)
+	{
+		if (this != &other )
+		{
+			Node::operator=(other);
+			points = other.points;
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	ConvexHull(ConvexHull &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	ConvexHull& operator=(ConvexHull&& other)
+	{
+		if (this != &other )
+		{
+			Node::operator=(std::move(other));
+			points = other.points;
+		}
+		return *this;
+	}
+
 	Vec3Vector   points; 										// Array of data points describing the convex hull
 };
 
@@ -264,6 +343,53 @@ public:
 	// Declare the virtual destructor.
 	virtual ~TriangleMesh()
 	{
+	}
+
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	TriangleMesh(const TriangleMesh &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual Node* clone() const override
+	{
+		return new TriangleMesh(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	TriangleMesh& operator=(const TriangleMesh& other)
+	{
+		if (this != &other )
+		{
+			Node::operator=(other);
+			points = other.points;
+			triangles = other.triangles;
+			materialIndices = other.materialIndices;
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	TriangleMesh(TriangleMesh &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	TriangleMesh& operator=(TriangleMesh&& other)
+	{
+		if (this != &other )
+		{
+			Node::operator=(std::move(other));
+			points = other.points;
+			triangles = other.triangles;
+			materialIndices = other.materialIndices;
+		}
+		return *this;
 	}
 
 	Vec3Vector   points; 										// Array of vertices for the triangle mesh
@@ -286,6 +412,55 @@ public:
 	// Declare the virtual destructor.
 	virtual ~HeightField()
 	{
+	}
+
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	HeightField(const HeightField &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual Node* clone() const override
+	{
+		return new HeightField(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	HeightField& operator=(const HeightField& other)
+	{
+		if (this != &other )
+		{
+			Node::operator=(other);
+			rowCount = other.rowCount;
+			columnCount = other.columnCount;
+			samples = other.samples;
+			physx_convexEdgeThreshold = other.physx_convexEdgeThreshold;
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	HeightField(HeightField &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	HeightField& operator=(HeightField&& other)
+	{
+		if (this != &other )
+		{
+			Node::operator=(std::move(other));
+			rowCount = other.rowCount;
+			columnCount = other.columnCount;
+			samples = other.samples;
+			physx_convexEdgeThreshold = other.physx_convexEdgeThreshold;
+		}
+		return *this;
 	}
 
 	uint32_t 	rowCount;											// Number of sample rows in the height field samples array.
@@ -335,6 +510,49 @@ public:
 	{
 	}
 
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	BoxGeometry(const BoxGeometry &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual Geometry* clone() const override
+	{
+		return new BoxGeometry(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	BoxGeometry& operator=(const BoxGeometry& other)
+	{
+		if (this != &other )
+		{
+			Geometry::operator=(other);
+			dimensions = other.dimensions;
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	BoxGeometry(BoxGeometry &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	BoxGeometry& operator=(BoxGeometry&& other)
+	{
+		if (this != &other )
+		{
+			Geometry::operator=(std::move(other));
+			dimensions = other.dimensions;
+		}
+		return *this;
+	}
+
 	Vec3 		dimensions{ 1,1,1 };									// Dimensions of the box
 };
 
@@ -355,6 +573,49 @@ public:
 	{
 	}
 
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	SphereGeometry(const SphereGeometry &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual Geometry* clone() const override
+	{
+		return new SphereGeometry(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	SphereGeometry& operator=(const SphereGeometry& other)
+	{
+		if (this != &other )
+		{
+			Geometry::operator=(other);
+			radius = other.radius;
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	SphereGeometry(SphereGeometry &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	SphereGeometry& operator=(SphereGeometry&& other)
+	{
+		if (this != &other )
+		{
+			Geometry::operator=(std::move(other));
+			radius = other.radius;
+		}
+		return *this;
+	}
+
 	float  		radius{ 1 };  										// The radius of the sphere
 };
 
@@ -373,6 +634,51 @@ public:
 	// Declare the virtual destructor.
 	virtual ~CapsuleGeometry()
 	{
+	}
+
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	CapsuleGeometry(const CapsuleGeometry &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual Geometry* clone() const override
+	{
+		return new CapsuleGeometry(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	CapsuleGeometry& operator=(const CapsuleGeometry& other)
+	{
+		if (this != &other )
+		{
+			Geometry::operator=(other);
+			radius = other.radius;
+			height = other.height;
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	CapsuleGeometry(CapsuleGeometry &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	CapsuleGeometry& operator=(CapsuleGeometry&& other)
+	{
+		if (this != &other )
+		{
+			Geometry::operator=(std::move(other));
+			radius = other.radius;
+			height = other.height;
+		}
+		return *this;
 	}
 
 	float  		radius{ 1 };  										// The radius of the capsule
@@ -396,6 +702,51 @@ public:
 	{
 	}
 
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	CylinderGeometry(const CylinderGeometry &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual Geometry* clone() const override
+	{
+		return new CylinderGeometry(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	CylinderGeometry& operator=(const CylinderGeometry& other)
+	{
+		if (this != &other )
+		{
+			Geometry::operator=(other);
+			radius = other.radius;
+			height = other.height;
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	CylinderGeometry(CylinderGeometry &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	CylinderGeometry& operator=(CylinderGeometry&& other)
+	{
+		if (this != &other )
+		{
+			Geometry::operator=(std::move(other));
+			radius = other.radius;
+			height = other.height;
+		}
+		return *this;
+	}
+
 	float  		radius{ 1 };  										// The radius of the cylinder
 	float  		height{ 1 };  										// The height of the cylinder
 };
@@ -415,6 +766,55 @@ public:
 	// Declare the virtual destructor.
 	virtual ~ConvexHullGeometry()
 	{
+	}
+
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	ConvexHullGeometry(const ConvexHullGeometry &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual Geometry* clone() const override
+	{
+		return new ConvexHullGeometry(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	ConvexHullGeometry& operator=(const ConvexHullGeometry& other)
+	{
+		if (this != &other )
+		{
+			Geometry::operator=(other);
+			scale = other.scale;
+			convexMesh = other.convexMesh;
+			physx_maxMargin = other.physx_maxMargin;
+			physx_tightBounds = other.physx_tightBounds;
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	ConvexHullGeometry(ConvexHullGeometry &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	ConvexHullGeometry& operator=(ConvexHullGeometry&& other)
+	{
+		if (this != &other )
+		{
+			Geometry::operator=(std::move(other));
+			scale = other.scale;
+			convexMesh = other.convexMesh;
+			physx_maxMargin = other.physx_maxMargin;
+			physx_tightBounds = other.physx_tightBounds;
+		}
+		return *this;
 	}
 
 	MeshScale  	scale;   										// The scale to apply to this convex mesh
@@ -440,6 +840,53 @@ public:
 	{
 	}
 
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	TriangleMeshGeometry(const TriangleMeshGeometry &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual Geometry* clone() const override
+	{
+		return new TriangleMeshGeometry(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	TriangleMeshGeometry& operator=(const TriangleMeshGeometry& other)
+	{
+		if (this != &other )
+		{
+			Geometry::operator=(other);
+			scale = other.scale;
+			TriangleMesh = other.TriangleMesh;
+			doubleSided = other.doubleSided;
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	TriangleMeshGeometry(TriangleMeshGeometry &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	TriangleMeshGeometry& operator=(TriangleMeshGeometry&& other)
+	{
+		if (this != &other )
+		{
+			Geometry::operator=(std::move(other));
+			scale = other.scale;
+			TriangleMesh = other.TriangleMesh;
+			doubleSided = other.doubleSided;
+		}
+		return *this;
+	}
+
 	MeshScale  	scale;   										// The scale of the triangle mesh
 	std::string	TriangleMesh;  									// The name of the triangle mesh asset
 	bool 		doubleSided{ false }; 								// Whether or not this triangle mesh should be treated as double sided for collision detection
@@ -460,6 +907,57 @@ public:
 	// Declare the virtual destructor.
 	virtual ~HeightFieldGeometry()
 	{
+	}
+
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	HeightFieldGeometry(const HeightFieldGeometry &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual Geometry* clone() const override
+	{
+		return new HeightFieldGeometry(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	HeightFieldGeometry& operator=(const HeightFieldGeometry& other)
+	{
+		if (this != &other )
+		{
+			Geometry::operator=(other);
+			heightField = other.heightField;
+			heightScale = other.heightScale;
+			rowScale = other.rowScale;
+			columnScale = other.columnScale;
+			doubleSided = other.doubleSided;
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	HeightFieldGeometry(HeightFieldGeometry &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	HeightFieldGeometry& operator=(HeightFieldGeometry&& other)
+	{
+		if (this != &other )
+		{
+			Geometry::operator=(std::move(other));
+			heightField = other.heightField;
+			heightScale = other.heightScale;
+			rowScale = other.rowScale;
+			columnScale = other.columnScale;
+			doubleSided = other.doubleSided;
+		}
+		return *this;
 	}
 
 	std::string	heightField; 									// The id of the heightfield data asset
@@ -486,6 +984,47 @@ public:
 	{
 	}
 
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	PlaneGeometry(const PlaneGeometry &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual Geometry* clone() const override
+	{
+		return new PlaneGeometry(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	PlaneGeometry& operator=(const PlaneGeometry& other)
+	{
+		if (this != &other )
+		{
+			Geometry::operator=(other);
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	PlaneGeometry(PlaneGeometry &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	PlaneGeometry& operator=(PlaneGeometry&& other)
+	{
+		if (this != &other )
+		{
+			Geometry::operator=(std::move(other));
+		}
+		return *this;
+	}
+
 };
 
 typedef std::vector< std::string > StringVector; // Forward declare the 'String' vector
@@ -494,6 +1033,10 @@ typedef std::vector< std::string > StringVector; // Forward declare the 'String'
 class GeometryInstance
 {
 public:
+
+	// Declare the constructor.
+	GeometryInstance() { }
+
 
 	// Declare the virtual destructor; cleanup any pointers or arrays of pointers
 	virtual ~GeometryInstance()
@@ -521,7 +1064,11 @@ public:
 		if (this != &other )
 		{
 			delete geometry; // delete any previous pointer.
-			geometry = static_cast<Geometry *>(geometry->clone()); // perform the deep copy and assignment here
+			geometry = nullptr; // set the pointer to null.
+			if ( other.geometry )
+			{
+				geometry = static_cast<Geometry *>(other.geometry->clone()); // perform the deep copy and assignment here
+			}
 			materials = other.materials;
 			localPose = other.localPose;
 			simulationFilterData = other.simulationFilterData;
@@ -683,6 +1230,47 @@ public:
 	{
 	}
 
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	RigidStatic(const RigidStatic &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual RigidBody* clone() const override
+	{
+		return new RigidStatic(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	RigidStatic& operator=(const RigidStatic& other)
+	{
+		if (this != &other )
+		{
+			RigidBody::operator=(other);
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	RigidStatic(RigidStatic &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	RigidStatic& operator=(RigidStatic&& other)
+	{
+		if (this != &other )
+		{
+			RigidBody::operator=(std::move(other));
+		}
+		return *this;
+	}
+
 };
 
 
@@ -700,6 +1288,109 @@ public:
 	// Declare the virtual destructor.
 	virtual ~RigidDynamic()
 	{
+	}
+
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	RigidDynamic(const RigidDynamic &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual RigidBody* clone() const override
+	{
+		return new RigidDynamic(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	RigidDynamic& operator=(const RigidDynamic& other)
+	{
+		if (this != &other )
+		{
+			RigidBody::operator=(other);
+			disableGravity = other.disableGravity;
+			centerOfMassLocalPose = other.centerOfMassLocalPose;
+			mass = other.mass;
+			massSpaceInertiaTensor = other.massSpaceInertiaTensor;
+			linearVelocity = other.linearVelocity;
+			angularVelocity = other.angularVelocity;
+			linearDamping = other.linearDamping;
+			angularDamping = other.angularDamping;
+			maxAngularVelocity = other.maxAngularVelocity;
+			kinematic = other.kinematic;
+			physx_sleepThreshold = other.physx_sleepThreshold;
+			physx_wakeCounter = other.physx_wakeCounter;
+			physx_stabilizationThreshold = other.physx_stabilizationThreshold;
+			physx_kinematicTargetForSceneQueries = other.physx_kinematicTargetForSceneQueries;
+			physx_enableCCD = other.physx_enableCCD;
+			physx_enableCCDFriction = other.physx_enableCCDFriction;
+			physx_poseIntegrationPreview = other.physx_poseIntegrationPreview;
+			physx_speculativeCCD = other.physx_speculativeCCD;
+			physx_enableCCDMaxContactImpulse = other.physx_enableCCDMaxContactImpulse;
+			physx_minCCDAdvanceCoefficient = other.physx_minCCDAdvanceCoefficient;
+			physx_lockLinearX = other.physx_lockLinearX;
+			physx_lockLinearY = other.physx_lockLinearY;
+			physx_lockLinearZ = other.physx_lockLinearZ;
+			physx_lockAngularX = other.physx_lockAngularX;
+			physx_lockAngularY = other.physx_lockAngularY;
+			physx_lockAngularZ = other.physx_lockAngularZ;
+			physx_maxDepenetrationVelocity = other.physx_maxDepenetrationVelocity;
+			physx_maxContactImpulse = other.physx_maxContactImpulse;
+			physx_contactReportThreshold = other.physx_contactReportThreshold;
+			physx_minPositionIters = other.physx_minPositionIters;
+			physx_minVelocityIters = other.physx_minVelocityIters;
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	RigidDynamic(RigidDynamic &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	RigidDynamic& operator=(RigidDynamic&& other)
+	{
+		if (this != &other )
+		{
+			RigidBody::operator=(std::move(other));
+			disableGravity = other.disableGravity;
+			centerOfMassLocalPose = other.centerOfMassLocalPose;
+			mass = other.mass;
+			massSpaceInertiaTensor = other.massSpaceInertiaTensor;
+			linearVelocity = other.linearVelocity;
+			angularVelocity = other.angularVelocity;
+			linearDamping = other.linearDamping;
+			angularDamping = other.angularDamping;
+			maxAngularVelocity = other.maxAngularVelocity;
+			kinematic = other.kinematic;
+			physx_sleepThreshold = other.physx_sleepThreshold;
+			physx_wakeCounter = other.physx_wakeCounter;
+			physx_stabilizationThreshold = other.physx_stabilizationThreshold;
+			physx_kinematicTargetForSceneQueries = other.physx_kinematicTargetForSceneQueries;
+			physx_enableCCD = other.physx_enableCCD;
+			physx_enableCCDFriction = other.physx_enableCCDFriction;
+			physx_poseIntegrationPreview = other.physx_poseIntegrationPreview;
+			physx_speculativeCCD = other.physx_speculativeCCD;
+			physx_enableCCDMaxContactImpulse = other.physx_enableCCDMaxContactImpulse;
+			physx_minCCDAdvanceCoefficient = other.physx_minCCDAdvanceCoefficient;
+			physx_lockLinearX = other.physx_lockLinearX;
+			physx_lockLinearY = other.physx_lockLinearY;
+			physx_lockLinearZ = other.physx_lockLinearZ;
+			physx_lockAngularX = other.physx_lockAngularX;
+			physx_lockAngularY = other.physx_lockAngularY;
+			physx_lockAngularZ = other.physx_lockAngularZ;
+			physx_maxDepenetrationVelocity = other.physx_maxDepenetrationVelocity;
+			physx_maxContactImpulse = other.physx_maxContactImpulse;
+			physx_contactReportThreshold = other.physx_contactReportThreshold;
+			physx_minPositionIters = other.physx_minPositionIters;
+			physx_minVelocityIters = other.physx_minVelocityIters;
+		}
+		return *this;
 	}
 
 	bool 		disableGravity;   									// Disables scene gravity for this actor
@@ -752,6 +1443,85 @@ public:
 	{
 	}
 
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	Joint(const Joint &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual Node* clone() const override
+	{
+		return new Joint(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	Joint& operator=(const Joint& other)
+	{
+		if (this != &other )
+		{
+			Node::operator=(other);
+			body0 = other.body0;
+			body1 = other.body1;
+			localpose0 = other.localpose0;
+			localpose1 = other.localpose1;
+			collisionEnabled = other.collisionEnabled;
+			physx_breakForce = other.physx_breakForce;
+			physx_breakTorque = other.physx_breakTorque;
+			physx_inverseMassScale0 = other.physx_inverseMassScale0;
+			physx_inverseInertiaScale0 = other.physx_inverseInertiaScale0;
+			physx_inverseMassScale1 = other.physx_inverseMassScale1;
+			physx_inverseInertiaScale1 = other.physx_inverseInertiaScale1;
+			physx_broken = other.physx_broken;
+			physx_projectToBody0 = other.physx_projectToBody0;
+			physx_projectToBody1 = other.physx_projectToBody1;
+			physx_visualization = other.physx_visualization;
+			physx_driveLimitsAreForces = other.physx_driveLimitsAreForces;
+			physx_improvedSlerp = other.physx_improvedSlerp;
+			physx_disablePreProcessing = other.physx_disablePreProcessing;
+			physx_gpuCompatible = other.physx_gpuCompatible;
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	Joint(Joint &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	Joint& operator=(Joint&& other)
+	{
+		if (this != &other )
+		{
+			Node::operator=(std::move(other));
+			body0 = other.body0;
+			body1 = other.body1;
+			localpose0 = other.localpose0;
+			localpose1 = other.localpose1;
+			collisionEnabled = other.collisionEnabled;
+			physx_breakForce = other.physx_breakForce;
+			physx_breakTorque = other.physx_breakTorque;
+			physx_inverseMassScale0 = other.physx_inverseMassScale0;
+			physx_inverseInertiaScale0 = other.physx_inverseInertiaScale0;
+			physx_inverseMassScale1 = other.physx_inverseMassScale1;
+			physx_inverseInertiaScale1 = other.physx_inverseInertiaScale1;
+			physx_broken = other.physx_broken;
+			physx_projectToBody0 = other.physx_projectToBody0;
+			physx_projectToBody1 = other.physx_projectToBody1;
+			physx_visualization = other.physx_visualization;
+			physx_driveLimitsAreForces = other.physx_driveLimitsAreForces;
+			physx_improvedSlerp = other.physx_improvedSlerp;
+			physx_disablePreProcessing = other.physx_disablePreProcessing;
+			physx_gpuCompatible = other.physx_gpuCompatible;
+		}
+		return *this;
+	}
+
 	std::string	body0;   										// Id of first rigid body joint is constrained to; if empty string; then constaint to the world
 	std::string	body1;   										// Id of the second rigid body the joint is constrainted to
 	Pose 		localpose0;   										// The parent relative pose; relative to body0
@@ -789,6 +1559,51 @@ public:
 	{
 	}
 
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	FixedJoint(const FixedJoint &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual Joint* clone() const override
+	{
+		return new FixedJoint(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	FixedJoint& operator=(const FixedJoint& other)
+	{
+		if (this != &other )
+		{
+			Joint::operator=(other);
+			projectionLinearTolerance = other.projectionLinearTolerance;
+			projectionAngularTolerance = other.projectionAngularTolerance;
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	FixedJoint(FixedJoint &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	FixedJoint& operator=(FixedJoint&& other)
+	{
+		if (this != &other )
+		{
+			Joint::operator=(std::move(other));
+			projectionLinearTolerance = other.projectionLinearTolerance;
+			projectionAngularTolerance = other.projectionAngularTolerance;
+		}
+		return *this;
+	}
+
 	float  		projectionLinearTolerance;							// 
 	float  		projectionAngularTolerance; 						// 
 };
@@ -820,6 +1635,49 @@ public:
 	{
 	}
 
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	BodyPairFilters(const BodyPairFilters &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual Node* clone() const override
+	{
+		return new BodyPairFilters(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	BodyPairFilters& operator=(const BodyPairFilters& other)
+	{
+		if (this != &other )
+		{
+			Node::operator=(other);
+			bodyPairs = other.bodyPairs;
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	BodyPairFilters(BodyPairFilters &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	BodyPairFilters& operator=(BodyPairFilters&& other)
+	{
+		if (this != &other )
+		{
+			Node::operator=(std::move(other));
+			bodyPairs = other.bodyPairs;
+		}
+		return *this;
+	}
+
 	BodyPairFilterVector bodyPairs;								// Array of body pair filters
 };
 
@@ -837,6 +1695,55 @@ public:
 	// Declare the virtual destructor.
 	virtual ~InstanceCollection()
 	{
+	}
+
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	InstanceCollection(const InstanceCollection &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual Node* clone() const override
+	{
+		return new InstanceCollection(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	InstanceCollection& operator=(const InstanceCollection& other)
+	{
+		if (this != &other )
+		{
+			Node::operator=(other);
+			collection = other.collection;
+			position = other.position;
+			orientation = other.orientation;
+			scale = other.scale;
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	InstanceCollection(InstanceCollection &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	InstanceCollection& operator=(InstanceCollection&& other)
+	{
+		if (this != &other )
+		{
+			Node::operator=(std::move(other));
+			collection = other.collection;
+			position = other.position;
+			orientation = other.orientation;
+			scale = other.scale;
+		}
+		return *this;
 	}
 
 	std::string	collection;										// Name of collection to instance
@@ -1025,6 +1932,131 @@ public:
 	{
 	}
 
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	Scene(const Scene &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual Collection* clone() const override
+	{
+		return new Scene(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	Scene& operator=(const Scene& other)
+	{
+		if (this != &other )
+		{
+			Collection::operator=(other);
+			gravity = other.gravity;
+			physx_tolerancesScale = other.physx_tolerancesScale;
+			physx_bounceThresholdVelocity = other.physx_bounceThresholdVelocity;
+			physx_frictionOffsetThreshold = other.physx_frictionOffsetThreshold;
+			physx_ccdMaxSeparation = other.physx_ccdMaxSeparation;
+			physx_solverOffsetSlop = other.physx_solverOffsetSlop;
+			physx_staticStructure = other.physx_staticStructure;
+			physx_dynamicStructure = other.physx_dynamicStructure;
+			physx_dynamicTreeRebuildRateHint = other.physx_dynamicTreeRebuildRateHint;
+			physx_solverBatchSize = other.physx_solverBatchSize;
+			physx_nbContactDataBlocks = other.physx_nbContactDataBlocks;
+			physx_maxNbContactDataBlocks = other.physx_maxNbContactDataBlocks;
+			physx_maxBiasCoefficient = other.physx_maxBiasCoefficient;
+			physx_contactReportStreamBufferSize = other.physx_contactReportStreamBufferSize;
+			physx_wakeCounterResetValue = other.physx_wakeCounterResetValue;
+			physx_sanityBounds = other.physx_sanityBounds;
+			physx_gpuDynamicsMemoryConfig = other.physx_gpuDynamicsMemoryConfig;
+			physx_gpuMaxNumPartitions = other.physx_gpuMaxNumPartitions;
+			physx_ccdMaxPasses = other.physx_ccdMaxPasses;
+			physx_frictionType = other.physx_frictionType;
+			physx_dominanceGroups = other.physx_dominanceGroups;
+			physx_broadPhaseType = other.physx_broadPhaseType;
+			physx_broadPhaseCaps = other.physx_broadPhaseCaps;
+			physx_broadPhaseRegions = other.physx_broadPhaseRegions;
+			physx_sceneLimits = other.physx_sceneLimits;
+			physx_enableActiveActors = other.physx_enableActiveActors;
+			physx_enableActiveTransforms = other.physx_enableActiveTransforms;
+			physx_enableCCD = other.physx_enableCCD;
+			physx_disableCCDResweep = other.physx_disableCCDResweep;
+			physx_adaptiveForce = other.physx_adaptiveForce;
+			physx_enableKinematicStaticPairs = other.physx_enableKinematicStaticPairs;
+			physx_enableKinematicPairs = other.physx_enableKinematicPairs;
+			physx_enablePCM = other.physx_enablePCM;
+			physx_diasbleContactReportBufferResize = other.physx_diasbleContactReportBufferResize;
+			physx_disableContactCache = other.physx_disableContactCache;
+			physx_requireRWLock = other.physx_requireRWLock;
+			physx_enableStabilization = other.physx_enableStabilization;
+			physx_enableAveragePoint = other.physx_enableAveragePoint;
+			physx_excludeKinematicsFromActiveActors = other.physx_excludeKinematicsFromActiveActors;
+			physx_suppressEagerSceneQueryRefit = other.physx_suppressEagerSceneQueryRefit;
+			physx_enableGPUDynamics = other.physx_enableGPUDynamics;
+			physx_enhancedDeterminism = other.physx_enhancedDeterminism;
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	Scene(Scene &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	Scene& operator=(Scene&& other)
+	{
+		if (this != &other )
+		{
+			Collection::operator=(std::move(other));
+			gravity = other.gravity;
+			physx_tolerancesScale = other.physx_tolerancesScale;
+			physx_bounceThresholdVelocity = other.physx_bounceThresholdVelocity;
+			physx_frictionOffsetThreshold = other.physx_frictionOffsetThreshold;
+			physx_ccdMaxSeparation = other.physx_ccdMaxSeparation;
+			physx_solverOffsetSlop = other.physx_solverOffsetSlop;
+			physx_staticStructure = other.physx_staticStructure;
+			physx_dynamicStructure = other.physx_dynamicStructure;
+			physx_dynamicTreeRebuildRateHint = other.physx_dynamicTreeRebuildRateHint;
+			physx_solverBatchSize = other.physx_solverBatchSize;
+			physx_nbContactDataBlocks = other.physx_nbContactDataBlocks;
+			physx_maxNbContactDataBlocks = other.physx_maxNbContactDataBlocks;
+			physx_maxBiasCoefficient = other.physx_maxBiasCoefficient;
+			physx_contactReportStreamBufferSize = other.physx_contactReportStreamBufferSize;
+			physx_wakeCounterResetValue = other.physx_wakeCounterResetValue;
+			physx_sanityBounds = other.physx_sanityBounds;
+			physx_gpuDynamicsMemoryConfig = other.physx_gpuDynamicsMemoryConfig;
+			physx_gpuMaxNumPartitions = other.physx_gpuMaxNumPartitions;
+			physx_ccdMaxPasses = other.physx_ccdMaxPasses;
+			physx_frictionType = other.physx_frictionType;
+			physx_dominanceGroups = other.physx_dominanceGroups;
+			physx_broadPhaseType = other.physx_broadPhaseType;
+			physx_broadPhaseCaps = other.physx_broadPhaseCaps;
+			physx_broadPhaseRegions = other.physx_broadPhaseRegions;
+			physx_sceneLimits = other.physx_sceneLimits;
+			physx_enableActiveActors = other.physx_enableActiveActors;
+			physx_enableActiveTransforms = other.physx_enableActiveTransforms;
+			physx_enableCCD = other.physx_enableCCD;
+			physx_disableCCDResweep = other.physx_disableCCDResweep;
+			physx_adaptiveForce = other.physx_adaptiveForce;
+			physx_enableKinematicStaticPairs = other.physx_enableKinematicStaticPairs;
+			physx_enableKinematicPairs = other.physx_enableKinematicPairs;
+			physx_enablePCM = other.physx_enablePCM;
+			physx_diasbleContactReportBufferResize = other.physx_diasbleContactReportBufferResize;
+			physx_disableContactCache = other.physx_disableContactCache;
+			physx_requireRWLock = other.physx_requireRWLock;
+			physx_enableStabilization = other.physx_enableStabilization;
+			physx_enableAveragePoint = other.physx_enableAveragePoint;
+			physx_excludeKinematicsFromActiveActors = other.physx_excludeKinematicsFromActiveActors;
+			physx_suppressEagerSceneQueryRefit = other.physx_suppressEagerSceneQueryRefit;
+			physx_enableGPUDynamics = other.physx_enableGPUDynamics;
+			physx_enhancedDeterminism = other.physx_enhancedDeterminism;
+		}
+		return *this;
+	}
+
 	Vec3 		gravity{ 0.0f,-9.8f,0.0f };   						// Gravity
 	PhysX_TolerancesScale physx_tolerancesScale; 				// Scene default tolerances scale
 	float  		physx_bounceThresholdVelocity{ 0.2f };				// Set the bounce threshold velocity.  Collision speeds below this threshold will not cause a bounce.
@@ -1051,12 +2083,13 @@ public:
 	PhysX_BroadPhaseRegionVector physx_broadPhaseRegions;  		// Array of user defined broadphase regions
 	PhysX_SceneLimits physx_sceneLimits; 						// Optional object limits for this scene
 	bool 		physx_enableActiveActors{ false };  					// Enable Active Actors Notification.
+	bool 		physx_enableActiveTransforms{ false };  				// 
 	bool 		physx_enableCCD{ false }; 							// Enables a second broad phase check after integration that makes it possible to prevent objects from tunneling through each other.
 	bool 		physx_disableCCDResweep{ false }; 					// Enables a simplified swept integration strategy, which sacrifices some accuracy for improved performance.
 	bool 		physx_adaptiveForce{ false }; 						// Enable adaptive forces to accelerate convergence of the solver. 
 	bool 		physx_enableKinematicStaticPairs{ false };  			// Enable contact pair filtering between kinematic and static rigid bodies.
 	bool 		physx_enableKinematicPairs{ false };					// Enable contact pair filtering between kinematic rigid bodies.
-	bool 		physx_enablePCM{ false }; 							// Enable GJK-based distance collision detection system.
+	bool 		physx_enablePCM{ true };								// Enable GJK-based distance collision detection system.
 	bool 		physx_diasbleContactReportBufferResize{ false };		// Disable contact report buffer resize. Once the contact buffer is full, the rest of the contact reports will not be buffered and sent.
 	bool 		physx_disableContactCache{ false };   				// Disable contact cache.
 	bool 		physx_requireRWLock{ false }; 						// Require scene-level locking
@@ -1075,6 +2108,10 @@ typedef std::vector< Scene *> SceneVector; // Forward declare the 'Scene' vector
 class PhysicsDOM
 {
 public:
+
+	// Declare the constructor.
+	PhysicsDOM() { }
+
 
 	// Declare the virtual destructor; cleanup any pointers or arrays of pointers
 	virtual ~PhysicsDOM()

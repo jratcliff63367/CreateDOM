@@ -305,12 +305,12 @@ public:
 				break;
 			}
 		}
+		bool haveDefaultConstructor = false;
 		if (mAssignment)
 		{
+			haveDefaultConstructor = true;
 			cp.printCode(1, "// Declare the constructor.\r\n");
-			cp.printCode(1, "%s()\r\n", mName.c_str());
-			cp.printCode(1, "{\r\n");
-			cp.printCode(1, "}\r\n");
+			cp.printCode(1, "%s() { }\r\n", mName.c_str());
 			cp.printCode(0, "\r\n");
 
 			cp.printCode(1, "// Declare the assignment constructor.\r\n");
@@ -338,23 +338,27 @@ public:
 		}
 		if (hasInheritedItemsWithDefaultValues)
 		{
-			cp.printCode(1, "// Declare the constructor.\r\n");
-			cp.printCode(1, "%s()\r\n", mName.c_str());
-			cp.printCode(1, "{\r\n");
-			for (auto &i : mItems)
+			if (!haveDefaultConstructor)
 			{
-				// If this is an 'inherited' data item. Don't clear it here
-				// Because it was already handled in the initializer
-				if (!i.mInheritsFrom.empty() && !i.mDefaultValue.empty())
+				haveDefaultConstructor = true;
+				cp.printCode(1, "// Declare the constructor.\r\n");
+				cp.printCode(1, "%s()\r\n", mName.c_str());
+				cp.printCode(1, "{\r\n");
+				for (auto &i : mItems)
 				{
-					cp.printCode(2, "%s::%s = %s;\r\n",
-						i.mInheritsFrom.c_str(),
-						i.mName.c_str(),
-						getDefaultValueString(i.mDefaultValue.c_str()));
+					// If this is an 'inherited' data item. Don't clear it here
+					// Because it was already handled in the initializer
+					if (!i.mInheritsFrom.empty() && !i.mDefaultValue.empty())
+					{
+						cp.printCode(2, "%s::%s = %s;\r\n",
+							i.mInheritsFrom.c_str(),
+							i.mName.c_str(),
+							getDefaultValueString(i.mDefaultValue.c_str()));
+					}
 				}
+				cp.printCode(1, "};\r\n");
+				cp.printCode(0, "\r\n");
 			}
-			cp.printCode(1, "};\r\n");
-			cp.printCode(0, "\r\n");
 		}
 
 		// see if any items are an array of pointers...
@@ -373,6 +377,15 @@ public:
 		}
 		if (hasArrayOfPointers || hasPointers )
 		{
+			if (!haveDefaultConstructor)
+			{
+				haveDefaultConstructor = true;
+				cp.printCode(0, "\r\n");
+				cp.printCode(1, "// Declare the constructor.\r\n");
+				cp.printCode(1, "%s() { }\r\n", mName.c_str());
+				cp.printCode(0, "\r\n");
+	
+			}
 			cp.printCode(0, "\r\n");
 			cp.printCode(1, "// Declare the virtual destructor; cleanup any pointers or arrays of pointers\r\n");
 			cp.printCode(1, "virtual ~%s()\r\n", mName.c_str());
@@ -401,7 +414,7 @@ public:
 			cp.printCode(0, "\r\n");
 		}
 		// create the deep copy constructors and such
-		if (hasArrayOfPointers || hasPointers)
+		if (hasArrayOfPointers || hasPointers || !mInheritsFrom.empty())
 		{
 			// Do the deep copy constructor and assignment operators
 			{
@@ -451,7 +464,11 @@ public:
 					else if (i.mIsPointer)
 					{
 						cp.printCode(3, "delete %s; // delete any previous pointer.\r\n", i.mName.c_str());
-						cp.printCode(3, "%s = static_cast<%s *>(%s->clone()); // perform the deep copy and assignment here\r\n", i.mName.c_str(), i.mType.c_str(), i.mName.c_str());
+						cp.printCode(3, "%s = nullptr; // set the pointer to null.\r\n", i.mName.c_str());
+						cp.printCode(3, "if ( other.%s )\r\n", i.mName.c_str());
+						cp.printCode(3, "{\r\n");
+						cp.printCode(4, "%s = static_cast<%s *>(other.%s->clone()); // perform the deep copy and assignment here\r\n", i.mName.c_str(), i.mType.c_str(), i.mName.c_str());
+						cp.printCode(3, "}\r\n");
 					}
 					else if (i.mInheritsFrom.empty())
 					{
@@ -831,7 +848,7 @@ public:
 								{
 									mCurrentObject.mClone = true;
 								}
-								if (_stricmp(argv[5], "ASSIGNMENT") == 0)
+								else if (_stricmp(argv[5], "ASSIGNMENT") == 0)
 								{
 									mCurrentObject.mAssignment = true;
 								}
