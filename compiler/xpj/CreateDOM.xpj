@@ -14,7 +14,18 @@
 
       <Files name="CreateDOM" root="../.." type="header">
       	*.cpp
+      	*.cc
       	*.h
+      </Files>
+      <Files name="GoogleProtobuf" root="../../google/protobuf" type="header">
+      	*.cc
+      	*.h
+      	io/*.cc
+      	io/*.h
+      	stubs/*.cc
+      	stubs/*.h
+      	utils/*.cc
+      	utils/*.h
       </Files>
 
       <Configuration name="default" type="console">
@@ -29,6 +40,7 @@
         <LFlags tool="vc8">/NODEFAULTLIB:libcp.lib</LFlags>
 
         <SearchPaths type="header">
+         ../../
         </SearchPaths>
 
         <SearchPaths type="library">
@@ -40,7 +52,7 @@
       <Configuration name="debug" platform="win32">
         <OutDir>../../</OutDir>
         <OutFile>CreateDOMDEBUG.exe</OutFile>
-        <CFlags>/fp:fast /WX /W4 /MTd /Zi</CFlags>
+        <CFlags>/fp:fast /W4 /MTd /Zi</CFlags>
         <LFlags>/DEBUG</LFlags>
         <Preprocessor type="define">
           _DEBUG
@@ -53,7 +65,7 @@
       <Configuration name="release" platform="win32">
         <OutDir>../../</OutDir>
         <OutFile>CreateDOM.exe</OutFile>
-        <CFlags>/fp:fast /WX /W4 /MT /Zi /O2</CFlags>
+        <CFlags>/fp:fast /W4 /MT /Zi /O2</CFlags>
         <LFlags>/DEBUG</LFlags>
         <Preprocessor type="define">NDEBUG</Preprocessor>
         <Libraries>
@@ -63,7 +75,7 @@
       <Configuration name="debug" platform="win64">
         <OutDir>../../</OutDir>
         <OutFile>CreateDOMDEBUG.exe</OutFile>
-        <CFlags>/fp:fast /WX /W4 /MTd /Zi</CFlags>
+        <CFlags>/fp:fast /W4 /MTd /Zi</CFlags>
         <LFlags>/DEBUG</LFlags>
         <Preprocessor type="define">
           _DEBUG
@@ -76,7 +88,7 @@
       <Configuration name="release" platform="win64">
         <OutDir>../../</OutDir>
         <OutFile>CreateDOM.exe</OutFile>
-        <CFlags>/fp:fast /WX /W4 /MT /Zi /O2</CFlags>
+        <CFlags>/fp:fast /W4 /MT /Zi /O2</CFlags>
         <LFlags>/DEBUG</LFlags>
         <Preprocessor type="define">NDEBUG</Preprocessor>
         <Libraries>

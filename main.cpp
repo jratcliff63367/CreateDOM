@@ -5,9 +5,19 @@
 #include <string.h>
 
 #include "CreateDOM.h"
+#include "TestProto.h"
+#include "TestDOM.h"
 
 int main(int argc, const char **argv)
 {
+	{
+		TEST_DOM::TestDOM *t = TEST_DOM::TestDOM::create();
+		t->release();
+	}
+	{
+		TEST_PROTO::TestProto *t = TEST_PROTO::TestProto::create();
+		t->release();
+	}
 	if (argc != 2)
 	{
 		printf("Usage: CreateDOM <fname.csv>\r\n");
