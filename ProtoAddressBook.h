@@ -28,6 +28,7 @@ public:
 	PhoneType  	type;  											// Type of phone number
 };
 
+typedef std::vector< PhoneNumber > PhoneNumberVector; // Forward declare the 'PhoneNumber' vector
 
 // Defines an address and phone number for a person
 class Person
@@ -36,6 +37,16 @@ public:
 	std::string	name;  											// Name of person
 	int32_t		id{ 0 };  											// Unique id of person
 	std::string	email;   										// Email address of person
+	PhoneNumberVector phones;  									// The collection of phone numbers for this person
+};
+
+typedef std::vector< Person > PersonVector; // Forward declare the 'Person' vector
+
+// Defines the full address book of people
+class AddressBook
+{
+public:
+	PersonVector people; 										// The array of people in the address book
 };
 
 

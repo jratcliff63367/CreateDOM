@@ -20,6 +20,7 @@ int main(int argc, const char **argv)
 		cdom->parseCSV(csv);
 		cdom->saveCPP();
 		cdom->saveJSON();
+		cdom->savePROTOBUF();
 		cdom->release();
 	}
 }

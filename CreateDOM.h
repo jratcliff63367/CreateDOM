@@ -22,6 +22,9 @@ public:
 	// Save the DOM as C++ code
 	virtual void saveCPP(void) = 0;
 
+	// Save the DOM as a protobuf file
+	virtual void savePROTOBUF(void) = 0;
+
 	// Save the DOM as a JSON schema
 	virtual void saveJSON(void) = 0;
 
