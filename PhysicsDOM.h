@@ -173,25 +173,6 @@ public:
 };
 
 
-// Enumerated type defines how friction between two materials is computed
-enum PhysX_CombineMode
-{
-	CM_AVERAGE,							// Average: (a + b)/2
-	CM_MIN,								// Minimum: minimum(a,b)
-	CM_MULTIPLY, 						// Multiply: a*b
-	CM_MAX,								// Maximum: maximum(a,b)
-};
-
-
-// PhysX SDK specific material settings
-class PhysX_MaterialSettings
-{
-public:
-	PhysX_CombineMode frictionCombineMode{ CM_AVERAGE }; 		// Friction combine mode to set for this material
-	PhysX_CombineMode restitutionCombineMode{ CM_AVERAGE };		// Restitution combine mode to set for this material
-};
-
-
 // Defines the physical material properties of a surface
 class PhysicsMaterial : public Node
 {
@@ -233,7 +214,6 @@ public:
 			dynamicFriction = other.dynamicFriction;
 			staticFriction = other.staticFriction;
 			restitution = other.restitution;
-			physx_materialSettings = other.physx_materialSettings;
 		}
 		return *this;
 	}
@@ -256,7 +236,6 @@ public:
 			dynamicFriction = other.dynamicFriction;
 			staticFriction = other.staticFriction;
 			restitution = other.restitution;
-			physx_materialSettings = other.physx_materialSettings;
 		}
 		return *this;
 	}
@@ -266,7 +245,6 @@ public:
 	float  		dynamicFriction{ 0.5f };  							// The coefficient of dynamic friction.
 	float  		staticFriction{ 0.5f }; 							// The coefficient of static friction
 	float  		restitution{ 0.5f };  								// The coefficient of resitution.
-	PhysX_MaterialSettings physx_materialSettings;   			// PhysX SDK specific material settings
 };
 
 typedef std::vector< Vec3 > Vec3Vector; // Forward declare the 'Vec3' vector
@@ -443,7 +421,6 @@ public:
 			rowCount = other.rowCount;
 			columnCount = other.columnCount;
 			samples = other.samples;
-			physx_convexEdgeThreshold = other.physx_convexEdgeThreshold;
 		}
 		return *this;
 	}
@@ -464,7 +441,6 @@ public:
 			rowCount = other.rowCount;
 			columnCount = other.columnCount;
 			samples = other.samples;
-			physx_convexEdgeThreshold = other.physx_convexEdgeThreshold;
 		}
 		return *this;
 	}
@@ -472,7 +448,6 @@ public:
 	uint32_t 	rowCount;											// Number of sample rows in the height field samples array.
 	uint32_t 	columnCount;   									// Number of sample columns in the height field samples array.
 	U32Vector  	samples; 										// Heigfield 32 bit samples; low 16 bits is height; high 16 bits determines material index and holes
-	float  		physx_convexEdgeThreshold{ 0 }; 					// This threshold is used by the collision detection to determine if a height field edge is convex and can generate contact points.
 };
 
 
@@ -796,8 +771,6 @@ public:
 			Geometry::operator=(other);
 			scale = other.scale;
 			convexMesh = other.convexMesh;
-			physx_maxMargin = other.physx_maxMargin;
-			physx_tightBounds = other.physx_tightBounds;
 		}
 		return *this;
 	}
@@ -817,16 +790,12 @@ public:
 			Geometry::operator=(std::move(other));
 			scale = other.scale;
 			convexMesh = other.convexMesh;
-			physx_maxMargin = other.physx_maxMargin;
-			physx_tightBounds = other.physx_tightBounds;
 		}
 		return *this;
 	}
 
 	MeshScale  	scale;   										// The scale to apply to this convex mesh
 	std::string	convexMesh;										// The name of the convex mesh asset
-	float  		physx_maxMargin{ 3.40E+38f };   					// The maximum margin. Used to limit how much PCM shrinks the geometry by in collision detection.
-	bool 		physx_tightBounds{ false };   						// Use tighter (but more expensive to compute) bounds around the convex geometry.
 };
 
 
@@ -1033,22 +1002,6 @@ public:
 
 };
 
-
-// PhysX SDK specific Geometry Instance settings
-class PhysX_GeometryInstanceSettings
-{
-public:
-	std::string	simulationFilterData;  							// Collision filtering state for simulation
-	std::string	queryFilterData; 								// Collision filtering state for queries
-	float  		contactOffset{ 0.02f }; 							// Contact offset for this shape
-	float  		restOffset{ 0 };  									// Two shapes will come to rest at a distance equal to the sum of their restOffset values. If the restOffset is 0, they should converge to touching  exactly.  Having a restOffset greater than zero is useful to have objects slide smoothly, so that they do not get hung up on irregularities of  each others' surfaces.
-	bool 		simulationShape{ true };								// The shape will partake in collision in the physical simulation.
-	bool 		sceneQueryShape{ true };								// The shape will partake in scene queries (ray casts, overlap tests, sweeps, ...).
-	bool 		triggerShape{ true }; 								// The shape is a trigger which can send reports whenever other shapes enter/leave its volume.
-	bool 		visualization{ true };  								// Enable debug renderer for this shape
-	bool 		particleDrain{ false };   							// Sets the shape to be a particle drain.
-};
-
 typedef std::vector< std::string > StringVector; // Forward declare the 'String' vector
 
 // Defines a single instance of a geometry
@@ -1094,7 +1047,6 @@ public:
 			materials = other.materials;
 			localPose = other.localPose;
 			collisionFilterSettings = other.collisionFilterSettings;
-			physx_geometryInstanceSettings = other.physx_geometryInstanceSettings;
 		}
 		return *this;
 	}
@@ -1116,7 +1068,6 @@ public:
 			materials = other.materials;
 			localPose = other.localPose;
 			collisionFilterSettings = other.collisionFilterSettings;
-			physx_geometryInstanceSettings = other.physx_geometryInstanceSettings;
 		}
 		return *this;
 	}
@@ -1125,19 +1076,6 @@ public:
 	StringVector materials;										// Array of material id associated with this geometry instance
 	Pose 		localPose;  											// The local pose for this geometry instance
 	std::string	collisionFilterSettings; 						// Describes collision filtering settings; what other types of objects this object will collide with
-	PhysX_GeometryInstanceSettings physx_geometryInstanceSettings;   // PhysX SDK specific settings
-};
-
-
-// PhysX SDK specific rigid body settings
-class PhysX_RigidBodySettings
-{
-public:
-	uint8_t		dominanceGroup{ 0 };  								// Assigns dynamic actors a dominance group identifier.
-	uint8_t		ownerClient{ 0 };   								// the owner client of an actor.
-	bool 		visualization{ true };  								// Enables debug visualization for this object
-	bool 		sendSleepNotifies{ true };  							// Enables the sending of PxSimulationEventCallback::onWake() and PxSimulationEventCallback::onSleep() notify events
-	bool 		disableSimulation{ false };   						// Disables simulation for the actor.
 };
 
 typedef std::vector< GeometryInstance *> GeometryInstanceVector; // Forward declare the 'GeometryInstance' vector
@@ -1183,7 +1121,6 @@ public:
 			geometryInstances.clear(); // Clear the current array
 			for (auto &i:other.geometryInstances) geometryInstances.push_back( static_cast< GeometryInstance *>(i->clone())); // Deep copy object pointers into the array
 			globalPose = other.globalPose;
-			physx_rigidBodySettings = other.physx_rigidBodySettings;
 		}
 		return *this;
 	}
@@ -1204,14 +1141,12 @@ public:
 			geometryInstances = other.geometryInstances;
 			other.geometryInstances.clear(); // Clear the 'other' array now that we have moved it
 			globalPose = other.globalPose;
-			physx_rigidBodySettings = other.physx_rigidBodySettings;
 		}
 		return *this;
 	}
 
 	GeometryInstanceVector geometryInstances;  					// The set of geometries to instance with this actor
 	Pose 		globalPose;   										// The global pose for this actor
-	PhysX_RigidBodySettings physx_rigidBodySettings; 			// PhysX SDK specific rigid body settings
 };
 
 
@@ -1275,33 +1210,6 @@ public:
 };
 
 
-// PhysX SDK RigidDynamic specific settings
-class PhysX_RigidDynamicSettings
-{
-public:
-	float  		sleepThreshold{ 5.00E-05f };  						// Sets the mass-normalized kinetic energy threshold below which an actor may go to sleep.
-	float  		wakeCounter{ 0.4f };  								// Sets the wake counter for the actor.
-	float  		stabilizationThreshold{ 1.00E-05f };  				// Sets the mass-normalized kinetic energy threshold below which an actor may participate in stabilization.
-	bool 		kinematicTargetForSceneQueries{ true };   			// Use the kinematic target transform for scene queries.
-	bool 		enableCCD{ false };   								// Enables swept integration for the actor.
-	bool 		enableCCDFriction{ false };   						// Enabled CCD in swept integration for the actor.
-	bool 		poseIntegrationPreview{ false };						// Register a rigid body for reporting pose changes by the simulation at an early stage.
-	bool 		speculativeCCD{ false };								// Register a rigid body to dynamicly adjust contact offset based on velocity. This can be used to achieve a CCD effect.
-	bool 		enableCCDMaxContactImpulse{ false };					// Permit CCD to limit maxContactImpulse. This is useful for use-cases like a destruction system but can cause visual artefacts so is not enabled by default.
-	float  		minCCDAdvanceCoefficient;   						// 
-	bool 		lockLinearX{ false }; 								// Lock linear movement on the X-axis
-	bool 		lockLinearY{ false }; 								// Lock linear movement on the Y-axis
-	bool 		lockLinearZ{ false }; 								// Lock linear movement on the Z-axis
-	bool 		lockAngularX{ false };  								// Local angular roation on the X-axis
-	bool 		lockAngularY{ false };  								// Local angular roation on the Y-axis
-	bool 		lockAngularZ{ false };  								// Local angular roation on the Z-axis
-	float  		maxContactImpulse{ 1.00E+32f }; 					// 
-	float  		contactReportThreshold{ FLT_MAX };					// Sets the force threshold for contact reports.
-	uint32_t 	minPositionIters{ 4 }; 							// Sets the solver iteration counts for the body. 
-	uint32_t 	minVelocityIters{ 1 }; 							// Sets the solver iteration counts for the body. 
-};
-
-
 // Defines a dynamic rigid body
 class RigidDynamic : public RigidBody
 {
@@ -1348,7 +1256,6 @@ public:
 			angularDamping = other.angularDamping;
 			maxAngularVelocity = other.maxAngularVelocity;
 			kinematic = other.kinematic;
-			physx_rigidDynamicSettings = other.physx_rigidDynamicSettings;
 		}
 		return *this;
 	}
@@ -1376,7 +1283,6 @@ public:
 			angularDamping = other.angularDamping;
 			maxAngularVelocity = other.maxAngularVelocity;
 			kinematic = other.kinematic;
-			physx_rigidDynamicSettings = other.physx_rigidDynamicSettings;
 		}
 		return *this;
 	}
@@ -1391,28 +1297,6 @@ public:
 	float  		angularDamping{ 0.05f };  							// Sets the angular damping coefficient.
 	float  		maxAngularVelocity{ 7 };  							// set the maximum angular velocity permitted for this actor.
 	bool 		kinematic{ false };   								// If true this is a dynamic object; but currently kinematically controlled
-	PhysX_RigidDynamicSettings physx_rigidDynamicSettings;   	// PhysX SDK specific RigidDynamic settings
-};
-
-
-// PhysX SDK specific Joint settings
-class PhysX_JointSettings
-{
-public:
-	float  		breakForce; 										// 
-	float  		breakTorque;  										// 
-	float  		inverseMassScale0;									// 
-	float  		inverseInertiaScale0;   							// 
-	float  		inverseMassScale1;									// 
-	float  		inverseInertiaScale1;   							// 
-	bool 		broken{ false };										// 
-	bool 		projectToBody0{ false };								// 
-	bool 		projectToBody1{ false };								// 
-	bool 		visualization{ true };  								// 
-	bool 		driveLimitsAreForces{ false };  						// 
-	bool 		improvedSlerp{ false };   							// 
-	bool 		disablePreprocessing{ true }; 						// 
-	bool 		gpuCompatible{ false };   							// 
 };
 
 
@@ -1457,7 +1341,6 @@ public:
 			localpose0 = other.localpose0;
 			localpose1 = other.localpose1;
 			collisionEnabled = other.collisionEnabled;
-			physx_jointSettings = other.physx_jointSettings;
 		}
 		return *this;
 	}
@@ -1480,7 +1363,6 @@ public:
 			localpose0 = other.localpose0;
 			localpose1 = other.localpose1;
 			collisionEnabled = other.collisionEnabled;
-			physx_jointSettings = other.physx_jointSettings;
 		}
 		return *this;
 	}
@@ -1490,7 +1372,6 @@ public:
 	Pose 		localpose0;   										// The parent relative pose; relative to body0
 	Pose 		localpose1;   										// The parent relative pose; relative to body1
 	bool 		collisionEnabled{ false };  							// 
-	PhysX_JointSettings physx_jointSettings; 					// PhysX SDK specific joint settings
 };
 
 
@@ -1768,149 +1649,6 @@ public:
 };
 
 
-// Optional maximum limits on various object types in the scene; if zero; then no limit is enforced
-class PhysX_SceneLimits
-{
-public:
-	uint32_t 	maxNbActors{ 0 };									// Expected maximum number of actors
-	uint32_t 	maxNbBodies{ 0 };									// Expected maximum number of dynamic rigid bodies
-	uint32_t 	maxNbStaticShapes{ 0 };  							// Expected maximum number of static shapes
-	uint32_t 	maxNbDynamicShapes{ 0 };   						// Expected maximum number of dynamic shapes
-	uint32_t 	maxNbAggregates{ 0 };								// Expected maximum number of aggregates
-	uint32_t 	maxNbConstraints{ 0 }; 							// Expected maximum number of constraint shaders
-	uint32_t 	maxNbRegions{ 0 }; 								// Expected maximum number of broad-phase regions
-	uint32_t 	maxNbBroadPhaseOverlaps{ 0 };						// Expected maximum number of broad-phase overlaps
-};
-
-
-// Size of pre-allocated buffers to use for GPU dynamics
-class PhysX_GPU_DynamicsMemoryConfig
-{
-public:
-	uint32_t 	constraintBufferCapacity{ 32 * 1024 * 1024 };		// Capacity of constraint buffer allocated in GPU global memory
-	uint32_t 	contactBufferCapacity{ 24 * 1024 * 1024 }; 		// Capacity of contact buffer allocated in GPU global memory
-	uint32_t 	tempBufferCapacity{ 16 * 1024 * 1024 };  			// Capacity of temp buffer allocated in pinned host memory.
-	uint32_t 	contactStreamSize{ 1024 * 512 };   				// Size of contact stream buffer allocated in pinned host memory. This is double-buffered so total allocation size = 2* contactStreamCapacity * sizeof(PxContact).
-	uint32_t 	patchStreamSize{ 1024 * 80 };						// Size of the contact patch stream buffer allocated in pinned host memory. This is double-buffered so total allocation size = 2 * patchStreamCapacity * sizeof(PxContactPatch).
-	uint32_t 	forceStreamCapacity{ 1 * 1024 * 1024 };  			// Capacity of force buffer allocated in pinned host memory.
-	uint32_t 	heapCapacity{ 64 * 1024 * 1024 };					// Initial capacity of the GPU and pinned host memory heaps. Additional memory will be allocated if more memory is required.
-	uint32_t 	foundLostPairsCapacity{ 256 * 1024 };				// Capacity of found and lost buffers allocated in GPU global memory. This is used for the found/lost pair reports in the BP. 
-};
-
-
-// Broad phase algorithm used in the simulation
-enum PhysX_BroadPhaseType
-{
-	BPT_SAP, 							// 3-axes sweep-and-prune
-	BPT_MBP, 							// Multi box pruning
-	BPT_GPU, 							// GPU broadphase
-};
-
-
-// Caps class for broad phase.
-class PhysX_BroadPhaseCaps
-{
-public:
-	uint32_t 	maxNbRegions;										// Max number of regions supported by the broad-phase
-	uint32_t 	maxNbObjects;										// Max number of objects supported by the broad-phase
-	bool 		needsPredefinedBounds;  								// If true, broad-phase needs 'regions' to work
-};
-
-
-// Region of interest
-class PhysX_BroadPhaseRegion
-{
-public:
-	Bounds3		bounds; 											// Region's bounds
-	std::string	userData;  										// Region's user-provided data
-};
-
-
-// Specifies the dominance behavior of contacts between two actors with two certain dominance groups.
-class PhysX_DominanceGroupPair
-{
-public:
-	uint8_t		dominanceGroupA;  									// First group
-	uint8_t		dominanceGroupB;  									// Second group
-};
-
-
-// Enum for selecting the friction algorithm used for simulation.
-enum PhysX_FrictionType
-{
-	FT_PATCH,  							// Select default patch-friction model.
-	FT_ONE_DIRECTIONAL,					// Select one directional per-contact friction model.
-	FT_TWO_DIRECTIONAL,					// Select two directional per-contact friction model.
-};
-
-
-enum PhysX_PruningStructureType
-{
-	PST_NONE,  							// Using a simple data structure
-	PST_DYNAMIC_AABB_TREE,   			// Using a dynamic AABB tree
-	PST_STATIC_AABB_TREE,  				// Using a static AABB tree
-};
-
-
-// Class to define the scale at which simulation runs. Most simulation tolerances are calculated in terms of the values here. 
-class PhysX_TolerancesScale
-{
-public:
-	float  		length{ 1 };  										// The approximate size of objects in the simulation.
-	float  		speed{ 10 };  										// The typical magnitude of velocities of objects in simulation.
-};
-
-typedef std::vector< PhysX_DominanceGroupPair > PhysX_DominanceGroupPairVector; // Forward declare the 'PhysX_DominanceGroupPair' vector
-typedef std::vector< PhysX_BroadPhaseRegion > PhysX_BroadPhaseRegionVector; // Forward declare the 'PhysX_BroadPhaseRegion' vector
-
-// PhysX SDK Scene Description settings
-class PhysX_SceneDesc
-{
-public:
-	PhysX_TolerancesScale tolerancesScale;   					// Scene default tolerances scale
-	float  		bounceThresholdVelocity{ 0.2f };  					// Set the bounce threshold velocity.  Collision speeds below this threshold will not cause a bounce.
-	float  		frictionOffsetThreshold{ 0.04f };   				// A threshold of contact separation distance used to decide if a contact point will experience friction forces.
-	float  		ccdMaxSeparation{ 0.04f };							// A threshold for speculative CCD. Used to control whether bias, restitution or a combination of the two are used to resolve the contacts.
-	float  		solverOffsetSlop{ 0 };								// A slop value used to zero contact offsets from the body's COM on an axis if the offset along that axis is smaller than this threshold. Can be used to compensate for small numerical errors in contact generation.
-	PhysX_PruningStructureType staticStructure{ PST_DYNAMIC_AABB_TREE }; // Defines the structure used to store static objects.
-	PhysX_PruningStructureType dynamicStructure{ PST_DYNAMIC_AABB_TREE }; // Defines the structure used to store dynamic objects.
-	uint32_t 	dynamicTreeRebuildRateHint{ 100 }; 				// Hint for how much work should be done per simulation frame to rebuild the pruning structure.
-	uint32_t 	solverBatchSize{ 128 };  							// Defines the number of actors required to spawn a separate rigid body solver island task chain.
-	uint32_t 	nbContactDataBlocks{ 0 };							// Setting to define the number of 16K blocks that will be initially reserved to store contact, friction, and contact cache data.
-	uint32_t 	maxNbContactDataBlocks{ 65536 };   				// Setting to define the maximum number of 16K blocks that can be allocated to store contact, friction, and contact cache data.
-	float  		maxBiasCoefficient{ FLT_MAX };						// The maximum bias coefficient used in the constraint solver
-	uint32_t 	contactReportStreamBufferSize{ 8192 }; 			// Size of the contact report stream (in bytes).
-	float  		wakeCounterResetValue{ 0.4f };						// The wake counter reset value
-	Bounds3		sanityBounds{ Vec3(-FLT_MAX,-FLT_MAX,-FLT_MAX),Vec3(FLT_MAX,FLT_MAX,FLT_MAX) }; // The bounds used to sanity check user-set positions of actors and articulation links
-	PhysX_GPU_DynamicsMemoryConfig gpuDynamicsMemoryConfig;		// Size of pre-allocated buffers to use for GPU dynamics
-	uint32_t 	gpuMaxNumPartitions{ 8 };							// Limitation for the partitions in the GPU dynamics pipeline.
-	uint32_t 	ccdMaxPasses{ 1 }; 								// Maximum number of CCD passes
-	PhysX_FrictionType frictionType{ FT_PATCH }; 				// Selects the friction algorithm to use for simulation.
-	PhysX_DominanceGroupPairVector dominanceGroups;				// The array of dominance group pairs
-	PhysX_BroadPhaseType broadPhaseType{ BPT_SAP };				// Default to CPU sweep and prune broadphase
-	PhysX_BroadPhaseCaps broadPhaseCaps; 						// Caps for broad phase
-	PhysX_BroadPhaseRegionVector broadPhaseRegions;				// Array of user defined broadphase regions
-	PhysX_SceneLimits sceneLimits;   							// Optional object limits for this scene
-	bool 		enableActiveActors{ false };							// Enable Active Actors Notification.
-	bool 		enableActiveTransforms{ false };						// 
-	bool 		enableCCD{ false };   								// Enables a second broad phase check after integration that makes it possible to prevent objects from tunneling through each other.
-	bool 		disableCCDResweep{ false };   						// Enables a simplified swept integration strategy, which sacrifices some accuracy for improved performance.
-	bool 		adaptiveForce{ false };   							// Enable adaptive forces to accelerate convergence of the solver. 
-	bool 		enableKinematicStaticPairs{ false };					// Enable contact pair filtering between kinematic and static rigid bodies.
-	bool 		enableKinematicPairs{ false };  						// Enable contact pair filtering between kinematic rigid bodies.
-	bool 		enablePCM{ true };  									// Enable GJK-based distance collision detection system.
-	bool 		diasbleContactReportBufferResize{ false };  			// Disable contact report buffer resize. Once the contact buffer is full, the rest of the contact reports will not be buffered and sent.
-	bool 		disableContactCache{ false }; 						// Disable contact cache.
-	bool 		requireRWLock{ false };   							// Require scene-level locking
-	bool 		enableStabilization{ false }; 						// Enables additional stabilization pass in solver
-	bool 		enableAveragePoint{ false };							// Enables average points in contact manifolds
-	bool 		excludeKinematicsFromActiveActors{ false };   		// Do not report kinematics in list of active actors/transforms.
-	bool 		suppressEagerSceneQueryRefit{ false };  				// Lazily refit the dynamic scene query tree, instead of eagerly refitting in fetchResults
-	bool 		enableGPUDynamics{ false };   						// Enables the GPU dynamics pipeline
-	bool 		enhancedDeterminism{ false }; 						// Provides improved determinism at the expense of performance.
-};
-
-
 // A special type of 'collection' which is instantiated on startup
 class Scene : public Collection
 {
@@ -1948,7 +1686,6 @@ public:
 		{
 			Collection::operator=(other);
 			gravity = other.gravity;
-			physx_sceneDesc = other.physx_sceneDesc;
 		}
 		return *this;
 	}
@@ -1967,13 +1704,11 @@ public:
 		{
 			Collection::operator=(std::move(other));
 			gravity = other.gravity;
-			physx_sceneDesc = other.physx_sceneDesc;
 		}
 		return *this;
 	}
 
 	Vec3 		gravity{ 0.0f,-9.8f,0.0f };   						// Gravity
-	PhysX_SceneDesc physx_sceneDesc; 							// PhysX SDK Scene description settings
 };
 
 typedef std::vector< Collection *> CollectionVector; // Forward declare the 'Collection' vector

@@ -22,6 +22,15 @@
 namespace CREATE_DOM
 {
 
+	char lowerCase(char c)
+	{
+		if (c >= 'A' && c <= 'Z')
+		{
+			c += 32;
+		}
+		return c;
+	}
+
 	class CodePrinter
 	{
 	public:
@@ -214,6 +223,50 @@ public:
 		*this = c;
 	}
 
+	const char *getPROTOTypeString(const char *type)
+	{
+		const char *ret = type;
+
+		if (strcmp(type, "string") == 0)
+		{
+			ret = "string";
+		}
+		else if (strcmp(type, "u8") == 0)
+		{
+			ret = "uint32";
+		}
+		else if (strcmp(type, "u16") == 0)
+		{
+			ret = "uint32";
+		}
+		else if (strcmp(type, "u32") == 0)
+		{
+			ret = "uint32";
+		}
+		else if (strcmp(type, "u64") == 0)
+		{
+			ret = "uint64";
+		}
+		else if (strcmp(type, "i8") == 0)
+		{
+			ret = "int32";
+		}
+		else if (strcmp(type, "i16") == 0)
+		{
+			ret = "int32";
+		}
+		else if (strcmp(type, "i32") == 0)
+		{
+			ret = "int32";
+		}
+		else if (strcmp(type, "i64") == 0)
+		{
+			ret = "int64";
+		}
+
+		return ret;
+	}
+
 	void savePROTO(CodePrinter &cp, StringVector &arrays)
 	{
 		if (_stricmp(mType.c_str(), "Enum") == 0)
@@ -238,6 +291,7 @@ public:
 					i.mShortDescription.c_str());
 				id++;
 			}
+
 			cp.printCode(0, "}\r\n");
 			cp.printCode(0, "\r\n");
 			return;
@@ -286,6 +340,8 @@ public:
 		cp.printCode(0, "{\r\n");
 
 		bool hasInheritedItemsWithDefaultValues = false;
+		uint32_t id = 1;
+
 		for (auto &i : mItems)
 		{
 			// If this is an 'inherited' data item. Don't clear it here
@@ -293,8 +349,35 @@ public:
 			if (!i.mInheritsFrom.empty() && !i.mDefaultValue.empty())
 			{
 				hasInheritedItemsWithDefaultValues = true;
-				break;
+				continue;
 			}
+			const char *repeated = "";
+			if (i.mIsArray)
+			{
+				repeated = "repeated ";
+			}
+			cp.printCode(1, "%s%s %s = %d;\r\n",
+				repeated,
+				getPROTOTypeString(i.mType.c_str()),
+				i.mName.c_str(),
+				id);
+			id++;
+		}
+
+		if (!mChildren.empty())
+		{
+			cp.printCode(1, "oneof subtype\r\n");
+			cp.printCode(1, "{\r\n");
+			for (auto &k : mChildren)
+			{
+				char scratch[512];
+				strncpy(scratch, k.c_str(), 512);
+				scratch[0] = lowerCase(scratch[0]);
+				cp.printCode(2, "%s %s = %d;\r\n", k.c_str(), scratch, id);
+				id++;
+			}
+			cp.printCode(1, "}\r\n");
+			cp.printCode(0, "\r\n");
 		}
 
 		cp.printCode(0, "}\r\n");
@@ -689,6 +772,7 @@ public:
 	std::string		mDefaultValue;
 	std::string		mShortDescription;
 	std::string		mLongDescription;
+	StringVector	mChildren;			// Classes which inherit from this class
 	bool			mClone{ false }; // if true, we need to declare the clone virtual method
 	bool			mAssignment{ false };
 	DataItemVector	mItems;
@@ -958,6 +1042,15 @@ public:
 					if (argc >= 4)
 					{
 						mCurrentObject.mInheritsFrom = std::string(argv[3]);
+						{
+							for (auto &j : mDOM.mObjects)
+							{
+								if (j.mName == mCurrentObject.mInheritsFrom)
+								{
+									j.mChildren.push_back(mCurrentObject.mName);
+								}
+							}
+						}
 						if (argc >= 5)
 						{
 							mCurrentObject.mEngineSpecific = std::string(argv[4]);
