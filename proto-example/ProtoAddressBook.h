@@ -15,7 +15,7 @@ namespace PROTO_ADDRESS_BOOK
 
 enum PhoneType
 {
-	MOBILE,								// This ia  mobile/cell phone number
+	MOBILE,								// This is a mobile/cell phone number
 	HOME,  								// This is a person's home telephone number
 	WORK,  								// This is the person's work phone
 };
@@ -29,7 +29,7 @@ public:
 };
 
 
-// Defines the physical material properties of a surface
+// Defines an address and phone number for a person
 class Person
 {
 public:
