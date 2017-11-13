@@ -1,0 +1,14 @@
+URL,https://docs.google.com/spreadsheets/d/1GqDdgpCI4n5tPY2xw2BaLjz2PHIcIAZqQ65Xe48nuf4/edit?usp=sharing,,,,,,,,
+Filename,ProtoTest,Define the name of this DOM; which will control the filenames generated for the C++ source and JSON schema,,,,,,,
+Namespace,PROTO_TEST,Define the C++ namespace for this DOM,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+ObjectName,DataItemName,Type,Inherits From,Engine Specific,DefaultValue,MinValue,MaxValue,ShortDescription,DetailedDescription
+,,,,,,,,,
+PhysicsMaterial,,Class,,,,,,Defines the physical material properties of a surface,
+,,,,,,,,,
+,disableFriction,bool,,,FALSE,,,"If true, then friction is disabled for the material","If this flag is set, friction computations are always skipped between shapes with this material and any other shape."
+,disableStrongFriction,bool,,,FALSE,,,If true then strong friction is disabled for the material,The difference between 'normal' and 'strong' friction is that the strong friction feature remembers the 'friction error' between simulation steps.
+,dynamicFriction,float,,,0.5,0,FLT_MAX,The coefficient of dynamic friction.,"The coefficient of dynamic friction should be in [0, MAX_F32). If set to greater than staticFriction, the effective value of staticFriction will be increased to match."
+,staticFriction,float,,,0.5,0,FLT_MAX,The coefficient of static friction,"The coefficient of dynamic friction should be in [0, PX_MAX_F32). If set to greater than staticFriction, the effective value of staticFriction will be increased to match."
+,restitution,float,,,0.5,0,1,The coefficient of resitution.,"A coefficient of 0 makes the object bounce as little as possible, higher values up to 1.0 result in more bounce."

@@ -12,7 +12,9 @@
 #include <assert.h>
 
 #if 0
-#include "PhysicsDOM.h"
+//#include "PhysicsDOM.h"
+//#include "ProtoTest.h"
+#include "ProtoAddressBook.h"
 #else
 
 #pragma warning(disable:4100)
@@ -614,7 +616,7 @@ public:
 		StringVector arrays;
 
 		char temp[512];
-		STRING_HELPER::stringFormat(temp, 512, "%s_H", mFilename);
+		STRING_HELPER::stringFormat(temp, 512, "%s_H", mFilename.c_str());
 		_strupr(temp);
 		cp.printCode(0, "#ifndef %s\r\n", temp);
 		cp.printCode(0, "#define %s\r\n", temp);
@@ -766,7 +768,7 @@ public:
 			return;
 		}
 		char scratch[512];
-		STRING_HELPER::stringFormat(scratch, 512, "%s.h", mDOM.mFilename);
+		STRING_HELPER::stringFormat(scratch, 512, "%s.h", mDOM.mFilename.c_str());
 		FILE *fph = fopen(scratch, "wb");
 		if (fph == nullptr)
 		{
