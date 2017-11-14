@@ -12,9 +12,7 @@
 #include <assert.h>
 
 #if 0
-//#include "PhysicsDOM.h"
-//#include "ProtoTest.h"
-#include "ProtoAddressBook.h"
+#include "PhysicsDOM.h"
 #else
 
 #pragma warning(disable:4100)

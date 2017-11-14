@@ -150,6 +150,26 @@ public:
 };
 
 
+// Describes a key-value pair for custom properties on a node
+class KeyValuePair
+{
+public:
+	std::string	key; 											// They 'key' identifier; what this property is
+	std::string	value;   										// The value of this property; up to each the user to figure out how to interpret each property relative to the keyword
+};
+
+typedef std::vector< KeyValuePair > KeyValuePairVector; // Forward declare the 'KeyValuePair' vector
+
+// A collection of key/value pair properties relative to a particular category
+class AdditionalProperties
+{
+public:
+	std::string	category;  										// The category this set of key/value pairs is associated with (example 'physx', 'mujoco', etc.
+	KeyValuePairVector keyValuePairs;  							// The array of key/value pairs associated with this category
+};
+
+typedef std::vector< AdditionalProperties > AdditionalPropertiesVector; // Forward declare the 'AdditionalProperties' vector
+
 // Base class that specifies a unique ID and an optional description name field for an object
 class Node
 {
@@ -160,7 +180,8 @@ public:
 	std::string	id;												// Unique Id for this object
 	std::string	name;  											// Optional name for this object
 	NodeType 	type{ NT_NODE };   								// The type of node
-	VisualBinding  visual;   									// 
+	VisualBinding  visual;   									// Optional visual bindings for this node; for exaple some physics components have a corresponding named graphics component
+	AdditionalPropertiesVector additionalProperties; 			// An optional set of properties for this node; a set of key-value pairs for each application/engine specific category
 };
 
 
