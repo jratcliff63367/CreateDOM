@@ -17,6 +17,8 @@ public:
 			CreateDOM::PhysicsDOM dom;
 			dom.add_collections();
 			dom.add_scenes();
+
+
 			std::string foo = dom.SerializeAsString();
 			FILE *fph = fopen("foo.txt", "wb");
 			if (fph)
