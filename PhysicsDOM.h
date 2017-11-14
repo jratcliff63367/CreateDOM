@@ -128,12 +128,6 @@ enum NodeType
 	NT_RIGID_DYNAMIC,  					// A dynamic rigid body
 	NT_BODY_PAIR_FILTERS,  				// A node representing a collection of body pair filters
 	NT_JOINT,  							// Base class for a joint
-	NT_FIXED_JOINT,						// A fixed joint
-	NT_SPHERICAL_JOINT,					// A spherical joint
-	NT_REVOLUTE_JOINT,   				// A revolute joint
-	NT_PRISMATIC_JOINT,					// A prismatic joint
-	NT_DISTANCE_JOINT,   				// A distance joint
-	NT_D6_JOINT, 						// A six degree of freedom joint
 	NT_INSTANCE_COLLECTION,				// Instantiates a collection of nodes
 	NT_COLLECTION,   					// Defines a collection of nodes
 	NT_SCENE,  							// Defines a collection that gets instantiated on startup into a physics scene
@@ -403,75 +397,6 @@ public:
 };
 
 
-// The data for a heighfield; as 2d array of 32 bit samples; 16 bits for height, 16 bits for material indices, holes, and other metadata
-class HeightField : public Node
-{
-public:
-	// Declare the constructor.
-	HeightField()
-	{
-		Node::type = NT_HEIGHTFIELD;
-	};
-
-
-	// Declare the virtual destructor.
-	virtual ~HeightField()
-	{
-	}
-
-
-	// Declare the deep copy constructor; handles copying pointers and pointer arrays
-	HeightField(const HeightField &other)
-	{
-		*this = other;
-	}
-
-
-	// Declare the virtual clone method using a deep copy
-	virtual Node* clone() const override
-	{
-		return new HeightField(*this);
-	}
-
-	// Declare and implement the deep copy assignment operator
-	HeightField& operator=(const HeightField& other)
-	{
-		if (this != &other )
-		{
-			Node::operator=(other);
-			rowCount = other.rowCount;
-			columnCount = other.columnCount;
-			samples = other.samples;
-		}
-		return *this;
-	}
-
-
-	// Declare the move constructor; handles copying pointers and pointer arrays
-	HeightField(HeightField &&other)
-	{
-		*this = std::move(other);
-	}
-
-	// Declare and implement the move assignment operator
-	HeightField& operator=(HeightField&& other)
-	{
-		if (this != &other )
-		{
-			Node::operator=(std::move(other));
-			rowCount = other.rowCount;
-			columnCount = other.columnCount;
-			samples = other.samples;
-		}
-		return *this;
-	}
-
-	uint32_t 	rowCount;											// Number of sample rows in the height field samples array.
-	uint32_t 	columnCount;   									// Number of sample columns in the height field samples array.
-	U32Vector  	samples; 										// Heigfield 32 bit samples; low 16 bits is height; high 16 bits determines material index and holes
-};
-
-
 enum GeometryType
 {
 	GT_BOX_GEOMETRY, 					// A basic sphere primitive
@@ -481,7 +406,6 @@ enum GeometryType
 	GT_CYLINDER_GEOMETRY,  				// A cylinder 
 	GT_CONVEXHULL_GEOMETRY,				// A convex hull geometry
 	GT_TRIANGLEMESH_GEOMETRY,  			// A triangle mesh (can only be static, not dynamic)
-	GT_HEIGHTFIELD_GEOMETRY, 			// A heightfield (can only be static, not dynamic)
 };
 
 
@@ -886,81 +810,6 @@ public:
 	MeshScale  	scale;   										// The scale of the triangle mesh
 	std::string	TriangleMesh;  									// The name of the triangle mesh asset
 	bool 		doubleSided{ false }; 								// Whether or not this triangle mesh should be treated as double sided for collision detection
-};
-
-
-// Defines a heightfield geometry
-class HeightFieldGeometry : public Geometry
-{
-public:
-	// Declare the constructor.
-	HeightFieldGeometry()
-	{
-		Geometry::type = GT_HEIGHTFIELD_GEOMETRY;
-	};
-
-
-	// Declare the virtual destructor.
-	virtual ~HeightFieldGeometry()
-	{
-	}
-
-
-	// Declare the deep copy constructor; handles copying pointers and pointer arrays
-	HeightFieldGeometry(const HeightFieldGeometry &other)
-	{
-		*this = other;
-	}
-
-
-	// Declare the virtual clone method using a deep copy
-	virtual Geometry* clone() const override
-	{
-		return new HeightFieldGeometry(*this);
-	}
-
-	// Declare and implement the deep copy assignment operator
-	HeightFieldGeometry& operator=(const HeightFieldGeometry& other)
-	{
-		if (this != &other )
-		{
-			Geometry::operator=(other);
-			heightField = other.heightField;
-			heightScale = other.heightScale;
-			rowScale = other.rowScale;
-			columnScale = other.columnScale;
-			doubleSided = other.doubleSided;
-		}
-		return *this;
-	}
-
-
-	// Declare the move constructor; handles copying pointers and pointer arrays
-	HeightFieldGeometry(HeightFieldGeometry &&other)
-	{
-		*this = std::move(other);
-	}
-
-	// Declare and implement the move assignment operator
-	HeightFieldGeometry& operator=(HeightFieldGeometry&& other)
-	{
-		if (this != &other )
-		{
-			Geometry::operator=(std::move(other));
-			heightField = other.heightField;
-			heightScale = other.heightScale;
-			rowScale = other.rowScale;
-			columnScale = other.columnScale;
-			doubleSided = other.doubleSided;
-		}
-		return *this;
-	}
-
-	std::string	heightField; 									// The id of the heightfield data asset
-	float  		heightScale;  										// The scaling factor for the height field in vertical direction (y direction in local space).
-	float  		rowScale;   										// The scaling factor for the height field in the row direction (x direction in local space).
-	float  		columnScale;  										// The scaling factor for the height field in the column direction (z direction in local space).
-	bool 		doubleSided{ false }; 								// Whether or not this heighfield should be treated as double sided for collision detection
 };
 
 
@@ -1393,71 +1242,6 @@ public:
 	Pose 		localpose0;   										// The parent relative pose; relative to body0
 	Pose 		localpose1;   										// The parent relative pose; relative to body1
 	bool 		collisionEnabled{ false };  							// 
-};
-
-
-class FixedJoint : public Joint
-{
-public:
-	// Declare the constructor.
-	FixedJoint()
-	{
-		Joint::type = NT_FIXED_JOINT;
-	};
-
-
-	// Declare the virtual destructor.
-	virtual ~FixedJoint()
-	{
-	}
-
-
-	// Declare the deep copy constructor; handles copying pointers and pointer arrays
-	FixedJoint(const FixedJoint &other)
-	{
-		*this = other;
-	}
-
-
-	// Declare the virtual clone method using a deep copy
-	virtual Joint* clone() const override
-	{
-		return new FixedJoint(*this);
-	}
-
-	// Declare and implement the deep copy assignment operator
-	FixedJoint& operator=(const FixedJoint& other)
-	{
-		if (this != &other )
-		{
-			Joint::operator=(other);
-			projectionLinearTolerance = other.projectionLinearTolerance;
-			projectionAngularTolerance = other.projectionAngularTolerance;
-		}
-		return *this;
-	}
-
-
-	// Declare the move constructor; handles copying pointers and pointer arrays
-	FixedJoint(FixedJoint &&other)
-	{
-		*this = std::move(other);
-	}
-
-	// Declare and implement the move assignment operator
-	FixedJoint& operator=(FixedJoint&& other)
-	{
-		if (this != &other )
-		{
-			Joint::operator=(std::move(other));
-			projectionLinearTolerance = other.projectionLinearTolerance;
-			projectionAngularTolerance = other.projectionAngularTolerance;
-		}
-		return *this;
-	}
-
-	float  		projectionLinearTolerance;							// 
-	float  		projectionAngularTolerance; 						// 
 };
 
 

@@ -67,15 +67,9 @@ enum NodeType
 	NT_RIGID_DYNAMIC = 8;  				// A dynamic rigid body
 	NT_BODY_PAIR_FILTERS = 9;  			// A node representing a collection of body pair filters
 	NT_JOINT = 10;   					// Base class for a joint
-	NT_FIXED_JOINT = 11; 				// A fixed joint
-	NT_SPHERICAL_JOINT = 12; 			// A spherical joint
-	NT_REVOLUTE_JOINT = 13;				// A revolute joint
-	NT_PRISMATIC_JOINT = 14; 			// A prismatic joint
-	NT_DISTANCE_JOINT = 15;				// A distance joint
-	NT_D6_JOINT = 16;  					// A six degree of freedom joint
-	NT_INSTANCE_COLLECTION = 17; 		// Instantiates a collection of nodes
-	NT_COLLECTION = 18;					// Defines a collection of nodes
-	NT_SCENE = 19;   					// Defines a collection that gets instantiated on startup into a physics scene
+	NT_INSTANCE_COLLECTION = 11; 		// Instantiates a collection of nodes
+	NT_COLLECTION = 12;					// Defines a collection of nodes
+	NT_SCENE = 13;   					// Defines a collection that gets instantiated on startup into a physics scene
 }
 
 
@@ -117,12 +111,11 @@ message Node
 		PhysicsMaterial physicsMaterial = 6;
 		ConvexHull convexHull = 7;
 		TriangleMesh triangleMesh = 8;
-		HeightField heightField = 9;
-		RigidBody rigidBody = 10;
-		Joint joint = 11;
-		BodyPairFilters bodyPairFilters = 12;
-		InstanceCollection instanceCollection = 13;
-		Collection collection = 14;
+		RigidBody rigidBody = 9;
+		Joint joint = 10;
+		BodyPairFilters bodyPairFilters = 11;
+		InstanceCollection instanceCollection = 12;
+		Collection collection = 13;
 	}
 
 }
@@ -163,15 +156,6 @@ message TriangleMesh
 }
 
 
-// The data for a heighfield; as 2d array of 32 bit samples; 16 bits for height, 16 bits for material indices, holes, and other metadata
-message HeightField
-{
-	uint32 rowCount = 1;
-	uint32 columnCount = 2;
-	repeated uint32 samples = 3;
-}
-
-
 enum GeometryType
 {
 	GT_BOX_GEOMETRY = 0; 				// A basic sphere primitive
@@ -181,7 +165,6 @@ enum GeometryType
 	GT_CYLINDER_GEOMETRY = 4;  			// A cylinder 
 	GT_CONVEXHULL_GEOMETRY = 5;			// A convex hull geometry
 	GT_TRIANGLEMESH_GEOMETRY = 6;  		// A triangle mesh (can only be static, not dynamic)
-	GT_HEIGHTFIELD_GEOMETRY = 7; 		// A heightfield (can only be static, not dynamic)
 }
 
 
@@ -197,8 +180,7 @@ message Geometry
 		CylinderGeometry cylinderGeometry = 5;
 		ConvexHullGeometry convexHullGeometry = 6;
 		TriangleMeshGeometry triangleMeshGeometry = 7;
-		HeightFieldGeometry heightFieldGeometry = 8;
-		PlaneGeometry planeGeometry = 9;
+		PlaneGeometry planeGeometry = 8;
 	}
 
 }
@@ -248,17 +230,6 @@ message TriangleMeshGeometry
 	MeshScale scale = 1;
 	string TriangleMesh = 2;
 	bool doubleSided = 3;
-}
-
-
-// Defines a heightfield geometry
-message HeightFieldGeometry
-{
-	string heightField = 1;
-	float heightScale = 2;
-	float rowScale = 3;
-	float columnScale = 4;
-	bool doubleSided = 5;
 }
 
 
@@ -322,18 +293,6 @@ message Joint
 	Pose localpose0 = 3;
 	Pose localpose1 = 4;
 	bool collisionEnabled = 5;
-	oneof subtype
-	{
-		FixedJoint fixedJoint = 6;
-	}
-
-}
-
-
-message FixedJoint
-{
-	float projectionLinearTolerance = 1;
-	float projectionAngularTolerance = 2;
 }
 
 
