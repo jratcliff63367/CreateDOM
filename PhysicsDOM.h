@@ -338,7 +338,7 @@ public:
 	};
 
 	MeshScale  	scale;   										// The scale of the triangle mesh
-	const char * TriangleMesh;   								// The name of the triangle mesh asset
+	const char * triangleMesh;   								// The name of the triangle mesh asset
 	bool 		doubleSided{ false }; 								// Whether or not this triangle mesh should be treated as double sided for collision detection
 };
 

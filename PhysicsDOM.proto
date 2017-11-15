@@ -227,7 +227,7 @@ message ConvexHullGeometry
 message TriangleMeshGeometry
 {
 	MeshScale scale = 1;
-	string TriangleMesh = 2;
+	string triangleMesh = 2;
 	bool doubleSided = 3;
 }
 
