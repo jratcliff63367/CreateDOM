@@ -1,6 +1,10 @@
 #include "TestDOM.h"
-#include "PhysicsDOM.h"
 
+#define ENABLED 0
+
+#if ENABLED
+#include "PhysicsDOMImpl.h"
+#endif
 
 namespace TEST_DOM
 {
@@ -10,7 +14,7 @@ class TestDOMImpl : public TestDOM
 public:
 	TestDOMImpl(void)
 	{
-
+#if ENABLED
 		PHYSICS_DOM::PhysicsDOM dom;
 		PHYSICS_DOM::Collection *c = new PHYSICS_DOM::Collection;
 		c->id = "0";
@@ -20,7 +24,7 @@ public:
 		PHYSICS_DOM::BoxGeometry *box = new PHYSICS_DOM::BoxGeometry;
 		PHYSICS_DOM::GeometryInstance *box_instance = new PHYSICS_DOM::GeometryInstance;
 		box_instance->geometry = box;
-		box_instance->materials.push_back("1");
+		box_instance->material = "1";
 		PHYSICS_DOM::RigidDynamic *rd = new PHYSICS_DOM::RigidDynamic;
 		rd->id = "2";
 		rd->geometryInstances.push_back(box_instance);
@@ -33,6 +37,7 @@ public:
 		ic->id = "3";			// Node '3'
 		ic->collection = "0";	// Instance node '0' 
 		s->nodes.push_back(ic);
+#endif
 	}
 
 	virtual ~TestDOMImpl(void)

@@ -152,7 +152,6 @@ message TriangleMesh
 {
 	repeated Vec3 points = 1;
 	repeated uint32 triangles = 2;
-	repeated uint32 materialIndices = 3;
 }
 
 
@@ -243,7 +242,7 @@ message PlaneGeometry
 message GeometryInstance
 {
 	Geometry geometry = 1;
-	repeated string materials = 2;
+	string material = 2;
 	Pose localPose = 3;
 	string collisionFilterSettings = 4;
 }
