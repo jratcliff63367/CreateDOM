@@ -14,19 +14,21 @@
 namespace PHYSICS_DOM
 {
 
+class CloneObject
+{
+	virtual CloneObject *clone(void) const = 0;
+};
 
 // Defines an optional visual mesh binding to a physics node
-class VisualBindingImpl : public VisualBinding
+class VisualBindingImpl: public VisualBinding
 {
 public:
 	std::string	mVisualName; 									// Name of associated visual mesh
-	Pose 		mLocalPose;   										// Local relative pose of visual mesh to corresponding physics node
-	Vec3 		mLocalScale;											// Local relative scale of visual mesh to corresponding physics node
 };
 
 
 // Describes a key-value pair for custom properties on a node
-class KeyValuePairImpl : public KeyValuePair
+class KeyValuePairImpl: public KeyValuePair
 {
 public:
 	std::string	mKey;  											// They 'key' identifier; what this property is
@@ -36,7 +38,7 @@ public:
 typedef std::vector< KeyValuePair > KeyValuePairVector; // Forward declare the 'KeyValuePair' vector
 
 // A collection of key/value pair properties relative to a particular category
-class AdditionalPropertiesImpl : public AdditionalProperties
+class AdditionalPropertiesImpl: public AdditionalProperties
 {
 public:
 	std::string	mCategory;   									// The category this set of key/value pairs is associated with (example 'physx', 'mujoco', etc.
@@ -46,30 +48,64 @@ public:
 typedef std::vector< AdditionalProperties > AdditionalPropertiesVector; // Forward declare the 'AdditionalProperties' vector
 
 // Base class that specifies a unique ID and an optional description name field for an object
-class NodeImpl : public Node
+class NodeImpl: public Node, public CloneObject
 {
 public:
-	// Declare the clone method
-	virtual Node *clone() const = 0;
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	NodeImpl(const NodeImpl &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual CloneObject* clone() const
+	{
+		return new NodeImpl(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	NodeImpl& operator=(const NodeImpl& other)
+	{
+		if (this != &other )
+		{
+			mId = other.mId;
+			mName = other.mName;
+			mAdditionalProperties = other.mAdditionalProperties;
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	NodeImpl(NodeImpl &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	NodeImpl& operator=(NodeImpl&& other)
+	{
+		if (this != &other )
+		{
+			mId = other.mId;
+			mName = other.mName;
+			mAdditionalProperties = other.mAdditionalProperties;
+		}
+		return *this;
+	}
 
 	std::string	mId; 											// Unique Id for this object
 	std::string	mName;   										// Optional name for this object
-	NodeType 	mType{ NT_NODE };									// The type of node
-	VisualBinding  mVisual;										// Optional visual bindings for this node; for exaple some physics components have a corresponding named graphics component
 	AdditionalPropertiesVector mAdditionalProperties;  			// An optional set of properties for this node; a set of key-value pairs for each application/engine specific category
 };
 
 
 // Defines the physical material properties of a surface
-class PhysicsMaterialImpl : public Node, public PhysicsMaterial
+class PhysicsMaterialImpl: public PhysicsMaterial, public CloneObject
 {
 public:
-	// Declare the constructor.
-	PhysicsMaterialImpl()
-	{
-		Node::mType = NT_PHYSICS_MATERIAL;
-	};
-
 
 	// Declare the virtual destructor.
 	virtual ~PhysicsMaterialImpl()
@@ -85,7 +121,7 @@ public:
 
 
 	// Declare the virtual clone method using a deep copy
-	virtual Node* clone() const override
+	virtual CloneObject* clone() const override
 	{
 		return new PhysicsMaterialImpl(*this);
 	}
@@ -96,11 +132,6 @@ public:
 		if (this != &other )
 		{
 			Node::operator=(other);
-			mDisableFriction = other.mDisableFriction;
-			mDisableStrongFriction = other.mDisableStrongFriction;
-			mDynamicFriction = other.mDynamicFriction;
-			mStaticFriction = other.mStaticFriction;
-			mRestitution = other.mRestitution;
 		}
 		return *this;
 	}
@@ -118,34 +149,18 @@ public:
 		if (this != &other )
 		{
 			Node::operator=(std::move(other));
-			mDisableFriction = other.mDisableFriction;
-			mDisableStrongFriction = other.mDisableStrongFriction;
-			mDynamicFriction = other.mDynamicFriction;
-			mStaticFriction = other.mStaticFriction;
-			mRestitution = other.mRestitution;
 		}
 		return *this;
 	}
 
-	bool 		mDisableFriction{ false };  							// If true, then friction is disabled for the material
-	bool 		mDisableStrongFriction{ false };						// If true then strong friction is disabled for the material
-	float  		mDynamicFriction{ 0.5f };   						// The coefficient of dynamic friction.
-	float  		mStaticFriction{ 0.5f };  							// The coefficient of static friction
-	float  		mRestitution{ 0.5f };   							// The coefficient of resitution.
 };
 
 typedef std::vector< Vec3 > Vec3Vector; // Forward declare the 'Vec3' vector
 
 // Describes the data for a convex hull
-class ConvexHullImpl : public Node, public ConvexHull
+class ConvexHullImpl: public ConvexHull, public CloneObject
 {
 public:
-	// Declare the constructor.
-	ConvexHullImpl()
-	{
-		Node::mType = NT_CONVEXHULL;
-	};
-
 
 	// Declare the virtual destructor.
 	virtual ~ConvexHullImpl()
@@ -161,7 +176,7 @@ public:
 
 
 	// Declare the virtual clone method using a deep copy
-	virtual Node* clone() const override
+	virtual CloneObject* clone() const override
 	{
 		return new ConvexHullImpl(*this);
 	}
@@ -199,17 +214,12 @@ public:
 };
 
 typedef std::vector< uint32_t > U32Vector; // Forward declare the 'U32' vector
+typedef std::vector< uint8_t > U8Vector; // Forward declare the 'U8' vector
 
 // Describes the data for a triangle mesh
-class TriangleMeshImpl : public Node, public TriangleMesh
+class TriangleMeshImpl: public TriangleMesh, public CloneObject
 {
 public:
-	// Declare the constructor.
-	TriangleMeshImpl()
-	{
-		Node::mType = NT_TRIANGLEMESH;
-	};
-
 
 	// Declare the virtual destructor.
 	virtual ~TriangleMeshImpl()
@@ -225,7 +235,7 @@ public:
 
 
 	// Declare the virtual clone method using a deep copy
-	virtual Node* clone() const override
+	virtual CloneObject* clone() const override
 	{
 		return new TriangleMeshImpl(*this);
 	}
@@ -238,6 +248,7 @@ public:
 			Node::operator=(other);
 			mPoints = other.mPoints;
 			mTriangles = other.mTriangles;
+			mMaterialIndices = other.mMaterialIndices;
 		}
 		return *this;
 	}
@@ -257,25 +268,128 @@ public:
 			Node::operator=(std::move(other));
 			mPoints = other.mPoints;
 			mTriangles = other.mTriangles;
+			mMaterialIndices = other.mMaterialIndices;
 		}
 		return *this;
 	}
 
 	Vec3Vector   mPoints;  										// Array of vertices for the triangle mesh
 	U32Vector  	mTriangles;										// Array of triangle indices
+	U8Vector 	mMaterialIndices;									// Optional per-triangle material index
+};
+
+typedef std::vector< uint16_t > U16Vector; // Forward declare the 'U16' vector
+
+// The data for a heighfield; as 2d array of 32 bit samples; 16 bits for height, 16 bits for material indices, holes, and other metadata
+class HeightFieldImpl: public HeightField, public CloneObject
+{
+public:
+
+	// Declare the virtual destructor.
+	virtual ~HeightFieldImpl()
+	{
+	}
+
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	HeightFieldImpl(const HeightFieldImpl &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual CloneObject* clone() const override
+	{
+		return new HeightFieldImpl(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	HeightFieldImpl& operator=(const HeightFieldImpl& other)
+	{
+		if (this != &other )
+		{
+			Node::operator=(other);
+			mSamples = other.mSamples;
+			mMetaData = other.mMetaData;
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	HeightFieldImpl(HeightFieldImpl &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	HeightFieldImpl& operator=(HeightFieldImpl&& other)
+	{
+		if (this != &other )
+		{
+			Node::operator=(std::move(other));
+			mSamples = other.mSamples;
+			mMetaData = other.mMetaData;
+		}
+		return *this;
+	}
+
+	U16Vector  	mSamples;  										// Heightfield sample data
+	U16Vector  	mMetaData;   									// Optional meta data for each sample; determines per sample material, winding order, and whether or not to treat it as a hole
+};
+
+
+// Base class for all geometries
+class GeometryImpl: public Geometry, public CloneObject
+{
+public:
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	GeometryImpl(const GeometryImpl &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual CloneObject* clone() const
+	{
+		return new GeometryImpl(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	GeometryImpl& operator=(const GeometryImpl& other)
+	{
+		if (this != &other )
+		{
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	GeometryImpl(GeometryImpl &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	GeometryImpl& operator=(GeometryImpl&& other)
+	{
+		if (this != &other )
+		{
+		}
+		return *this;
+	}
+
 };
 
 
 // Defines a box geometry
-class BoxGeometryImpl : public Geometry, public BoxGeometry
+class BoxGeometryImpl: public BoxGeometry, public CloneObject
 {
 public:
-	// Declare the constructor.
-	BoxGeometryImpl()
-	{
-		Geometry::mType = GT_BOX_GEOMETRY;
-	};
-
 
 	// Declare the virtual destructor.
 	virtual ~BoxGeometryImpl()
@@ -291,7 +405,7 @@ public:
 
 
 	// Declare the virtual clone method using a deep copy
-	virtual Geometry* clone() const override
+	virtual CloneObject* clone() const override
 	{
 		return new BoxGeometryImpl(*this);
 	}
@@ -302,7 +416,6 @@ public:
 		if (this != &other )
 		{
 			Geometry::operator=(other);
-			mDimensions = other.mDimensions;
 		}
 		return *this;
 	}
@@ -320,25 +433,17 @@ public:
 		if (this != &other )
 		{
 			Geometry::operator=(std::move(other));
-			mDimensions = other.mDimensions;
 		}
 		return *this;
 	}
 
-	Vec3 		mDimensions{ 1,1,1 }; 								// Dimensions of the box
 };
 
 
 // Defines a sphere geometry
-class SphereGeometryImpl : public Geometry, public SphereGeometry
+class SphereGeometryImpl: public SphereGeometry, public CloneObject
 {
 public:
-	// Declare the constructor.
-	SphereGeometryImpl()
-	{
-		Geometry::mType = GT_SPHERE_GEOMETRY;
-	};
-
 
 	// Declare the virtual destructor.
 	virtual ~SphereGeometryImpl()
@@ -354,7 +459,7 @@ public:
 
 
 	// Declare the virtual clone method using a deep copy
-	virtual Geometry* clone() const override
+	virtual CloneObject* clone() const override
 	{
 		return new SphereGeometryImpl(*this);
 	}
@@ -365,7 +470,6 @@ public:
 		if (this != &other )
 		{
 			Geometry::operator=(other);
-			mRadius = other.mRadius;
 		}
 		return *this;
 	}
@@ -383,25 +487,17 @@ public:
 		if (this != &other )
 		{
 			Geometry::operator=(std::move(other));
-			mRadius = other.mRadius;
 		}
 		return *this;
 	}
 
-	float  		mRadius{ 1 };   									// The radius of the sphere
 };
 
 
 // Defines a capsule geometry
-class CapsuleGeometryImpl : public Geometry, public CapsuleGeometry
+class CapsuleGeometryImpl: public CapsuleGeometry, public CloneObject
 {
 public:
-	// Declare the constructor.
-	CapsuleGeometryImpl()
-	{
-		Geometry::mType = GT_CAPSULE_GEOMETRY;
-	};
-
 
 	// Declare the virtual destructor.
 	virtual ~CapsuleGeometryImpl()
@@ -417,7 +513,7 @@ public:
 
 
 	// Declare the virtual clone method using a deep copy
-	virtual Geometry* clone() const override
+	virtual CloneObject* clone() const override
 	{
 		return new CapsuleGeometryImpl(*this);
 	}
@@ -428,8 +524,6 @@ public:
 		if (this != &other )
 		{
 			Geometry::operator=(other);
-			mRadius = other.mRadius;
-			mHeight = other.mHeight;
 		}
 		return *this;
 	}
@@ -447,27 +541,17 @@ public:
 		if (this != &other )
 		{
 			Geometry::operator=(std::move(other));
-			mRadius = other.mRadius;
-			mHeight = other.mHeight;
 		}
 		return *this;
 	}
 
-	float  		mRadius{ 1 };   									// The radius of the capsule
-	float  		mHeight{ 1 };   									// The height of the capsule
 };
 
 
 // Defines a cylinder geometry
-class CylinderGeometryImpl : public Geometry, public CylinderGeometry
+class CylinderGeometryImpl: public CylinderGeometry, public CloneObject
 {
 public:
-	// Declare the constructor.
-	CylinderGeometryImpl()
-	{
-		Geometry::mType = GT_CYLINDER_GEOMETRY;
-	};
-
 
 	// Declare the virtual destructor.
 	virtual ~CylinderGeometryImpl()
@@ -483,7 +567,7 @@ public:
 
 
 	// Declare the virtual clone method using a deep copy
-	virtual Geometry* clone() const override
+	virtual CloneObject* clone() const override
 	{
 		return new CylinderGeometryImpl(*this);
 	}
@@ -494,8 +578,6 @@ public:
 		if (this != &other )
 		{
 			Geometry::operator=(other);
-			mRadius = other.mRadius;
-			mHeight = other.mHeight;
 		}
 		return *this;
 	}
@@ -513,27 +595,17 @@ public:
 		if (this != &other )
 		{
 			Geometry::operator=(std::move(other));
-			mRadius = other.mRadius;
-			mHeight = other.mHeight;
 		}
 		return *this;
 	}
 
-	float  		mRadius{ 1 };   									// The radius of the cylinder
-	float  		mHeight{ 1 };   									// The height of the cylinder
 };
 
 
 // Defines a convex mesh geometry
-class ConvexHullGeometryImpl : public Geometry, public ConvexHullGeometry
+class ConvexHullGeometryImpl: public ConvexHullGeometry, public CloneObject
 {
 public:
-	// Declare the constructor.
-	ConvexHullGeometryImpl()
-	{
-		Geometry::mType = GT_CONVEXHULL_GEOMETRY;
-	};
-
 
 	// Declare the virtual destructor.
 	virtual ~ConvexHullGeometryImpl()
@@ -549,7 +621,7 @@ public:
 
 
 	// Declare the virtual clone method using a deep copy
-	virtual Geometry* clone() const override
+	virtual CloneObject* clone() const override
 	{
 		return new ConvexHullGeometryImpl(*this);
 	}
@@ -560,7 +632,6 @@ public:
 		if (this != &other )
 		{
 			Geometry::operator=(other);
-			mScale = other.mScale;
 			mConvexMesh = other.mConvexMesh;
 		}
 		return *this;
@@ -579,27 +650,19 @@ public:
 		if (this != &other )
 		{
 			Geometry::operator=(std::move(other));
-			mScale = other.mScale;
 			mConvexMesh = other.mConvexMesh;
 		}
 		return *this;
 	}
 
-	MeshScale  	mScale;											// The scale to apply to this convex mesh
 	std::string	mConvexMesh; 									// The name of the convex mesh asset
 };
 
 
 // Defines a triangle mesh geometry
-class TriangleMeshGeometryImpl : public Geometry, public TriangleMeshGeometry
+class TriangleMeshGeometryImpl: public TriangleMeshGeometry, public CloneObject
 {
 public:
-	// Declare the constructor.
-	TriangleMeshGeometryImpl()
-	{
-		Geometry::mType = GT_TRIANGLEMESH_GEOMETRY;
-	};
-
 
 	// Declare the virtual destructor.
 	virtual ~TriangleMeshGeometryImpl()
@@ -615,7 +678,7 @@ public:
 
 
 	// Declare the virtual clone method using a deep copy
-	virtual Geometry* clone() const override
+	virtual CloneObject* clone() const override
 	{
 		return new TriangleMeshGeometryImpl(*this);
 	}
@@ -626,9 +689,7 @@ public:
 		if (this != &other )
 		{
 			Geometry::operator=(other);
-			mScale = other.mScale;
 			mTriangleMesh = other.mTriangleMesh;
-			mDoubleSided = other.mDoubleSided;
 		}
 		return *this;
 	}
@@ -646,29 +707,76 @@ public:
 		if (this != &other )
 		{
 			Geometry::operator=(std::move(other));
-			mScale = other.mScale;
 			mTriangleMesh = other.mTriangleMesh;
-			mDoubleSided = other.mDoubleSided;
 		}
 		return *this;
 	}
 
-	MeshScale  	mScale;											// The scale of the triangle mesh
 	std::string	mTriangleMesh;   								// The name of the triangle mesh asset
-	bool 		mDoubleSided{ false };  								// Whether or not this triangle mesh should be treated as double sided for collision detection
+};
+
+
+// Defines a heightfield geometry
+class HeightFieldGeometryImpl: public HeightFieldGeometry, public CloneObject
+{
+public:
+
+	// Declare the virtual destructor.
+	virtual ~HeightFieldGeometryImpl()
+	{
+	}
+
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	HeightFieldGeometryImpl(const HeightFieldGeometryImpl &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual CloneObject* clone() const override
+	{
+		return new HeightFieldGeometryImpl(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	HeightFieldGeometryImpl& operator=(const HeightFieldGeometryImpl& other)
+	{
+		if (this != &other )
+		{
+			Geometry::operator=(other);
+			mHeightField = other.mHeightField;
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	HeightFieldGeometryImpl(HeightFieldGeometryImpl &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	HeightFieldGeometryImpl& operator=(HeightFieldGeometryImpl&& other)
+	{
+		if (this != &other )
+		{
+			Geometry::operator=(std::move(other));
+			mHeightField = other.mHeightField;
+		}
+		return *this;
+	}
+
+	std::string	mHeightField;  									// The id of the heightfield data asset
 };
 
 
 // Defines a plane equation geometry (position and orientation of the plane come from the geometry instance)
-class PlaneGeometryImpl : public Geometry, public PlaneGeometry
+class PlaneGeometryImpl: public PlaneGeometry, public CloneObject
 {
 public:
-	// Declare the constructor.
-	PlaneGeometryImpl()
-	{
-		Geometry::mType = GT_PLANE_GEOMETRY;
-	};
-
 
 	// Declare the virtual destructor.
 	virtual ~PlaneGeometryImpl()
@@ -684,7 +792,7 @@ public:
 
 
 	// Declare the virtual clone method using a deep copy
-	virtual Geometry* clone() const override
+	virtual CloneObject* clone() const override
 	{
 		return new PlaneGeometryImpl(*this);
 	}
@@ -718,9 +826,10 @@ public:
 
 };
 
+typedef std::vector< std::string > StringVector; // Forward declare the 'String' vector
 
 // Defines a single instance of a geometry
-class GeometryInstanceImpl : public GeometryInstance
+class GeometryInstanceImpl: public GeometryInstance, public CloneObject
 {
 public:
 
@@ -743,7 +852,7 @@ public:
 
 
 	// Declare the virtual clone method using a deep copy
-	virtual GeometryInstanceImpl* clone() const
+	virtual CloneObject* clone() const
 	{
 		return new GeometryInstanceImpl(*this);
 	}
@@ -757,10 +866,9 @@ public:
 			mGeometry = nullptr; // set the pointer to null.
 			if ( other.mGeometry )
 			{
-				mGeometry = static_cast<Geometry *>(other.mGeometry->clone()); // perform the deep copy and assignment here
+				mGeometry = static_cast<GeometryImpl *>(other.mGeometry->clone()); // perform the deep copy and assignment here
 			}
-			mMaterial = other.mMaterial;
-			mLocalPose = other.mLocalPose;
+			mMaterials = other.mMaterials;
 			mCollisionFilterSettings = other.mCollisionFilterSettings;
 		}
 		return *this;
@@ -780,30 +888,26 @@ public:
 		{
 			mGeometry = other.mGeometry;
 			other.mGeometry = nullptr; // Set 'other' pointer to null since we have moved it
-			mMaterial = other.mMaterial;
-			mLocalPose = other.mLocalPose;
+			mMaterials = other.mMaterials;
 			mCollisionFilterSettings = other.mCollisionFilterSettings;
 		}
 		return *this;
 	}
 
-	Geometry 	*mGeometry{ nullptr }; 							// The geometry associated with this instance
-	std::string	mMaterial;   									// Id of physical material associated with this propery
-	Pose 		mLocalPose;   										// The local pose for this geometry instance
+	GeometryImpl *mGeometry{ nullptr };							// The geometry associated with this instance
+	StringVector mMaterials; 									// Id of physical material(s) associated with this geometry instance (usually one material; but for heightifields and triangle meshes can be more than one)
 	std::string	mCollisionFilterSettings;  						// Describes collision filtering settings; what other types of objects this object will collide with
 };
 
-typedef std::vector< GeometryInstance *> GeometryInstanceVector; // Forward declare the 'GeometryInstance' vector
+typedef std::vector< GeometryInstanceImpl *> GeometryInstanceVector; // Forward declare the 'GeometryInstance' vector
 
 // Defines the common properties for a rigid body
-class RigidBodyImpl : public Node, public RigidBody
+class RigidBodyImpl: public RigidBody, public CloneObject
 {
 public:
+
 	// Declare the constructor.
-	RigidBodyImpl()
-	{
-		Node::mType = NT_RIGID_BODY;
-	};
+	RigidBodyImpl() { }
 
 
 	// Declare the virtual destructor; cleanup any pointers or arrays of pointers
@@ -821,7 +925,7 @@ public:
 
 
 	// Declare the virtual clone method using a deep copy
-	virtual Node* clone() const override
+	virtual CloneObject* clone() const override
 	{
 		return new RigidBodyImpl(*this);
 	}
@@ -834,8 +938,7 @@ public:
 			Node::operator=(other);
 			for (auto &i:mGeometryInstances) delete i; // Delete all of the object pointers in this array
 			mGeometryInstances.clear(); // Clear the current array
-			for (auto &i:other.mGeometryInstances) mGeometryInstances.push_back( static_cast< GeometryInstance *>(i->clone())); // Deep copy object pointers into the array
-			mGlobalPose = other.mGlobalPose;
+			for (auto &i:other.mGeometryInstances) mGeometryInstances.push_back( static_cast< GeometryInstanceImpl *>(i->clone())); // Deep copy object pointers into the array
 		}
 		return *this;
 	}
@@ -855,26 +958,18 @@ public:
 			Node::operator=(std::move(other));
 			mGeometryInstances = other.mGeometryInstances;
 			other.mGeometryInstances.clear(); // Clear the 'other' array now that we have moved it
-			mGlobalPose = other.mGlobalPose;
 		}
 		return *this;
 	}
 
 	GeometryInstanceVector mGeometryInstances;   				// The set of geometries to instance with this actor
-	Pose 		mGlobalPose;											// The global pose for this actor
 };
 
 
 // Defines a static rigid body
-class RigidStaticImpl : public RigidBody, public RigidStatic
+class RigidStaticImpl: public RigidStatic, public CloneObject
 {
 public:
-	// Declare the constructor.
-	RigidStaticImpl()
-	{
-		Node::mType = NT_RIGID_STATIC;
-	};
-
 
 	// Declare the virtual destructor.
 	virtual ~RigidStaticImpl()
@@ -890,7 +985,7 @@ public:
 
 
 	// Declare the virtual clone method using a deep copy
-	virtual RigidBody* clone() const override
+	virtual CloneObject* clone() const override
 	{
 		return new RigidStaticImpl(*this);
 	}
@@ -926,15 +1021,9 @@ public:
 
 
 // Defines a dynamic rigid body
-class RigidDynamicImpl : public RigidBody, public RigidDynamic
+class RigidDynamicImpl: public RigidDynamic, public CloneObject
 {
 public:
-	// Declare the constructor.
-	RigidDynamicImpl()
-	{
-		Node::mType = NT_RIGID_DYNAMIC;
-	};
-
 
 	// Declare the virtual destructor.
 	virtual ~RigidDynamicImpl()
@@ -950,7 +1039,7 @@ public:
 
 
 	// Declare the virtual clone method using a deep copy
-	virtual RigidBody* clone() const override
+	virtual CloneObject* clone() const override
 	{
 		return new RigidDynamicImpl(*this);
 	}
@@ -961,16 +1050,6 @@ public:
 		if (this != &other )
 		{
 			RigidBody::operator=(other);
-			mDisableGravity = other.mDisableGravity;
-			mCenterOfMassLocalPose = other.mCenterOfMassLocalPose;
-			mMass = other.mMass;
-			mMassSpaceInertiaTensor = other.mMassSpaceInertiaTensor;
-			mLinearVelocity = other.mLinearVelocity;
-			mAngularVelocity = other.mAngularVelocity;
-			mLinearDamping = other.mLinearDamping;
-			mAngularDamping = other.mAngularDamping;
-			mMaxAngularVelocity = other.mMaxAngularVelocity;
-			mKinematic = other.mKinematic;
 		}
 		return *this;
 	}
@@ -988,43 +1067,17 @@ public:
 		if (this != &other )
 		{
 			RigidBody::operator=(std::move(other));
-			mDisableGravity = other.mDisableGravity;
-			mCenterOfMassLocalPose = other.mCenterOfMassLocalPose;
-			mMass = other.mMass;
-			mMassSpaceInertiaTensor = other.mMassSpaceInertiaTensor;
-			mLinearVelocity = other.mLinearVelocity;
-			mAngularVelocity = other.mAngularVelocity;
-			mLinearDamping = other.mLinearDamping;
-			mAngularDamping = other.mAngularDamping;
-			mMaxAngularVelocity = other.mMaxAngularVelocity;
-			mKinematic = other.mKinematic;
 		}
 		return *this;
 	}
 
-	bool 		mDisableGravity;										// Disables scene gravity for this actor
-	Pose 		mCenterOfMassLocalPose;   							// Center of mass and local pose
-	float  		mMass;												// Sets the mass of a dynamic actor.
-	Vec3 		mMassSpaceInertiaTensor;								// Sets the inertia tensor, using a parameter specified in mass space coordinates.
-	Vec3 		mLinearVelocity;										// Sets the linear velocity of the actor.
-	Vec3 		mAngularVelocity; 									// Sets the angular velocity of the actor.
-	float  		mLinearDamping{ 0 };  								// Sets the linear damping coefficient.
-	float  		mAngularDamping{ 0.05f };   						// Sets the angular damping coefficient.
-	float  		mMaxAngularVelocity{ 7 };   						// set the maximum angular velocity permitted for this actor.
-	bool 		mKinematic{ false };									// If true this is a dynamic object; but currently kinematically controlled
 };
 
 
 // Defines the common properties for a joint
-class JointImpl : public Node, public Joint
+class JointImpl: public Joint, public CloneObject
 {
 public:
-	// Declare the constructor.
-	JointImpl()
-	{
-		Node::mType = NT_JOINT;
-	};
-
 
 	// Declare the virtual destructor.
 	virtual ~JointImpl()
@@ -1040,7 +1093,7 @@ public:
 
 
 	// Declare the virtual clone method using a deep copy
-	virtual Node* clone() const override
+	virtual CloneObject* clone() const override
 	{
 		return new JointImpl(*this);
 	}
@@ -1053,9 +1106,6 @@ public:
 			Node::operator=(other);
 			mBody0 = other.mBody0;
 			mBody1 = other.mBody1;
-			mLocalpose0 = other.mLocalpose0;
-			mLocalpose1 = other.mLocalpose1;
-			mCollisionEnabled = other.mCollisionEnabled;
 		}
 		return *this;
 	}
@@ -1075,23 +1125,402 @@ public:
 			Node::operator=(std::move(other));
 			mBody0 = other.mBody0;
 			mBody1 = other.mBody1;
-			mLocalpose0 = other.mLocalpose0;
-			mLocalpose1 = other.mLocalpose1;
-			mCollisionEnabled = other.mCollisionEnabled;
 		}
 		return *this;
 	}
 
 	std::string	mBody0;											// Id of first rigid body joint is constrained to; if empty string; then constaint to the world
 	std::string	mBody1;											// Id of the second rigid body the joint is constrainted to
-	Pose 		mLocalpose0;											// The parent relative pose; relative to body0
-	Pose 		mLocalpose1;											// The parent relative pose; relative to body1
-	bool 		mCollisionEnabled{ false };   						// 
+};
+
+
+// Defines the properties speciic to a fixed joint 
+// Not all properties yet defined!
+class FixedJointImpl: public FixedJoint, public CloneObject
+{
+public:
+
+	// Declare the virtual destructor.
+	virtual ~FixedJointImpl()
+	{
+	}
+
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	FixedJointImpl(const FixedJointImpl &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual CloneObject* clone() const override
+	{
+		return new FixedJointImpl(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	FixedJointImpl& operator=(const FixedJointImpl& other)
+	{
+		if (this != &other )
+		{
+			Joint::operator=(other);
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	FixedJointImpl(FixedJointImpl &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	FixedJointImpl& operator=(FixedJointImpl&& other)
+	{
+		if (this != &other )
+		{
+			Joint::operator=(std::move(other));
+		}
+		return *this;
+	}
+
+};
+
+
+// Defines the properties speciic to a spherical joint 
+// Not all properties yet defined!
+class SphericalJointImpl: public SphericalJoint, public CloneObject
+{
+public:
+
+	// Declare the virtual destructor.
+	virtual ~SphericalJointImpl()
+	{
+	}
+
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	SphericalJointImpl(const SphericalJointImpl &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual CloneObject* clone() const override
+	{
+		return new SphericalJointImpl(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	SphericalJointImpl& operator=(const SphericalJointImpl& other)
+	{
+		if (this != &other )
+		{
+			Joint::operator=(other);
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	SphericalJointImpl(SphericalJointImpl &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	SphericalJointImpl& operator=(SphericalJointImpl&& other)
+	{
+		if (this != &other )
+		{
+			Joint::operator=(std::move(other));
+		}
+		return *this;
+	}
+
+};
+
+
+// Defines the properties speciic to a revolute joint 
+// Not all properties yet defined!
+class RevoluteJointImpl: public RevoluteJoint, public CloneObject
+{
+public:
+
+	// Declare the virtual destructor.
+	virtual ~RevoluteJointImpl()
+	{
+	}
+
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	RevoluteJointImpl(const RevoluteJointImpl &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual CloneObject* clone() const override
+	{
+		return new RevoluteJointImpl(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	RevoluteJointImpl& operator=(const RevoluteJointImpl& other)
+	{
+		if (this != &other )
+		{
+			Joint::operator=(other);
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	RevoluteJointImpl(RevoluteJointImpl &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	RevoluteJointImpl& operator=(RevoluteJointImpl&& other)
+	{
+		if (this != &other )
+		{
+			Joint::operator=(std::move(other));
+		}
+		return *this;
+	}
+
+};
+
+
+// Defines the properties speciic to a prismatic joint 
+// Not all properties yet defined!
+class PrismaticJointImpl: public PrismaticJoint, public CloneObject
+{
+public:
+
+	// Declare the virtual destructor.
+	virtual ~PrismaticJointImpl()
+	{
+	}
+
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	PrismaticJointImpl(const PrismaticJointImpl &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual CloneObject* clone() const override
+	{
+		return new PrismaticJointImpl(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	PrismaticJointImpl& operator=(const PrismaticJointImpl& other)
+	{
+		if (this != &other )
+		{
+			Joint::operator=(other);
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	PrismaticJointImpl(PrismaticJointImpl &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	PrismaticJointImpl& operator=(PrismaticJointImpl&& other)
+	{
+		if (this != &other )
+		{
+			Joint::operator=(std::move(other));
+		}
+		return *this;
+	}
+
+};
+
+
+// Defines the properties speciic to a distance joint 
+// Not all properties yet defined!
+class DistanceJointImpl: public DistanceJoint, public CloneObject
+{
+public:
+
+	// Declare the virtual destructor.
+	virtual ~DistanceJointImpl()
+	{
+	}
+
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	DistanceJointImpl(const DistanceJointImpl &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual CloneObject* clone() const override
+	{
+		return new DistanceJointImpl(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	DistanceJointImpl& operator=(const DistanceJointImpl& other)
+	{
+		if (this != &other )
+		{
+			Joint::operator=(other);
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	DistanceJointImpl(DistanceJointImpl &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	DistanceJointImpl& operator=(DistanceJointImpl&& other)
+	{
+		if (this != &other )
+		{
+			Joint::operator=(std::move(other));
+		}
+		return *this;
+	}
+
+};
+
+
+// Defines the properties speciic to a ball and socket joint 
+// Not all properties yet defined!
+class BallAndSocketJointImpl: public BallAndSocketJoint, public CloneObject
+{
+public:
+
+	// Declare the virtual destructor.
+	virtual ~BallAndSocketJointImpl()
+	{
+	}
+
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	BallAndSocketJointImpl(const BallAndSocketJointImpl &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual CloneObject* clone() const override
+	{
+		return new BallAndSocketJointImpl(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	BallAndSocketJointImpl& operator=(const BallAndSocketJointImpl& other)
+	{
+		if (this != &other )
+		{
+			Joint::operator=(other);
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	BallAndSocketJointImpl(BallAndSocketJointImpl &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	BallAndSocketJointImpl& operator=(BallAndSocketJointImpl&& other)
+	{
+		if (this != &other )
+		{
+			Joint::operator=(std::move(other));
+		}
+		return *this;
+	}
+
+};
+
+
+// Defines the properties speciic to a six degree of freedom joint 
+// Not all properties yet defined!
+class D6JointImpl: public D6Joint, public CloneObject
+{
+public:
+
+	// Declare the virtual destructor.
+	virtual ~D6JointImpl()
+	{
+	}
+
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	D6JointImpl(const D6JointImpl &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual CloneObject* clone() const override
+	{
+		return new D6JointImpl(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	D6JointImpl& operator=(const D6JointImpl& other)
+	{
+		if (this != &other )
+		{
+			Joint::operator=(other);
+		}
+		return *this;
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	D6JointImpl(D6JointImpl &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	D6JointImpl& operator=(D6JointImpl&& other)
+	{
+		if (this != &other )
+		{
+			Joint::operator=(std::move(other));
+		}
+		return *this;
+	}
+
 };
 
 
 // Defines two bodies, by id, that should not collide with each other
-class BodyPairFilterImpl : public BodyPairFilter
+class BodyPairFilterImpl: public BodyPairFilter
 {
 public:
 	std::string	mBodyA;											// Id of first body
@@ -1101,15 +1530,9 @@ public:
 typedef std::vector< BodyPairFilter > BodyPairFilterVector; // Forward declare the 'BodyPairFilter' vector
 
 // A collection of body pair filters
-class BodyPairFiltersImpl : public Node, public BodyPairFilters
+class BodyPairFiltersImpl: public BodyPairFilters, public CloneObject
 {
 public:
-	// Declare the constructor.
-	BodyPairFiltersImpl()
-	{
-		Node::mType = NT_BODY_PAIR_FILTERS;
-	};
-
 
 	// Declare the virtual destructor.
 	virtual ~BodyPairFiltersImpl()
@@ -1125,7 +1548,7 @@ public:
 
 
 	// Declare the virtual clone method using a deep copy
-	virtual Node* clone() const override
+	virtual CloneObject* clone() const override
 	{
 		return new BodyPairFiltersImpl(*this);
 	}
@@ -1163,15 +1586,9 @@ public:
 };
 
 
-class InstanceCollectionImpl : public Node, public InstanceCollection
+class InstanceCollectionImpl: public InstanceCollection, public CloneObject
 {
 public:
-	// Declare the constructor.
-	InstanceCollectionImpl()
-	{
-		Node::mType = NT_INSTANCE_COLLECTION;
-	};
-
 
 	// Declare the virtual destructor.
 	virtual ~InstanceCollectionImpl()
@@ -1187,7 +1604,7 @@ public:
 
 
 	// Declare the virtual clone method using a deep copy
-	virtual Node* clone() const override
+	virtual CloneObject* clone() const override
 	{
 		return new InstanceCollectionImpl(*this);
 	}
@@ -1199,8 +1616,6 @@ public:
 		{
 			Node::operator=(other);
 			mCollection = other.mCollection;
-			mPose = other.mPose;
-			mScale = other.mScale;
 		}
 		return *this;
 	}
@@ -1219,28 +1634,22 @@ public:
 		{
 			Node::operator=(std::move(other));
 			mCollection = other.mCollection;
-			mPose = other.mPose;
-			mScale = other.mScale;
 		}
 		return *this;
 	}
 
 	std::string	mCollection; 									// Name of collection to instance
-	Pose 		mPose;  												// Pose to instance collection at
-	Vec3 		mScale;   											// Scale of instance
 };
 
-typedef std::vector< Node *> NodeVector; // Forward declare the 'Node' vector
+typedef std::vector< NodeImpl *> NodeVector; // Forward declare the 'Node' vector
 
 // A collection of nodes
-class CollectionImpl : public Node, public Collection
+class CollectionImpl: public Collection, public CloneObject
 {
 public:
+
 	// Declare the constructor.
-	CollectionImpl()
-	{
-		Node::mType = NT_COLLECTION;
-	};
+	CollectionImpl() { }
 
 
 	// Declare the virtual destructor; cleanup any pointers or arrays of pointers
@@ -1258,7 +1667,7 @@ public:
 
 
 	// Declare the virtual clone method using a deep copy
-	virtual Node* clone() const override
+	virtual CloneObject* clone() const override
 	{
 		return new CollectionImpl(*this);
 	}
@@ -1271,7 +1680,7 @@ public:
 			Node::operator=(other);
 			for (auto &i:mNodes) delete i; // Delete all of the object pointers in this array
 			mNodes.clear(); // Clear the current array
-			for (auto &i:other.mNodes) mNodes.push_back( static_cast< Node *>(i->clone())); // Deep copy object pointers into the array
+			for (auto &i:other.mNodes) mNodes.push_back( static_cast< NodeImpl *>(i->clone())); // Deep copy object pointers into the array
 		}
 		return *this;
 	}
@@ -1300,15 +1709,9 @@ public:
 
 
 // A special type of 'collection' which is instantiated on startup
-class SceneImpl : public Collection, public Scene
+class SceneImpl: public Scene, public CloneObject
 {
 public:
-	// Declare the constructor.
-	SceneImpl()
-	{
-		Node::mType = NT_SCENE;
-	};
-
 
 	// Declare the virtual destructor.
 	virtual ~SceneImpl()
@@ -1324,7 +1727,7 @@ public:
 
 
 	// Declare the virtual clone method using a deep copy
-	virtual Collection* clone() const override
+	virtual CloneObject* clone() const override
 	{
 		return new SceneImpl(*this);
 	}
@@ -1335,7 +1738,6 @@ public:
 		if (this != &other )
 		{
 			Collection::operator=(other);
-			mGravity = other.mGravity;
 		}
 		return *this;
 	}
@@ -1353,19 +1755,17 @@ public:
 		if (this != &other )
 		{
 			Collection::operator=(std::move(other));
-			mGravity = other.mGravity;
 		}
 		return *this;
 	}
 
-	Vec3 		mGravity{ 0.0f,-9.8f,0.0f };							// Gravity
 };
 
-typedef std::vector< Collection *> CollectionVector; // Forward declare the 'Collection' vector
-typedef std::vector< Scene *> SceneVector; // Forward declare the 'Scene' vector
+typedef std::vector< CollectionImpl *> CollectionVector; // Forward declare the 'Collection' vector
+typedef std::vector< SceneImpl *> SceneVector; // Forward declare the 'Scene' vector
 
 // The root node container
-class PhysicsDOMImpl : public PhysicsDOM
+class PhysicsDOMImpl: public PhysicsDOM, public CloneObject
 {
 public:
 
@@ -1389,7 +1789,7 @@ public:
 
 
 	// Declare the virtual clone method using a deep copy
-	virtual PhysicsDOMImpl* clone() const
+	virtual CloneObject* clone() const
 	{
 		return new PhysicsDOMImpl(*this);
 	}
@@ -1401,10 +1801,10 @@ public:
 		{
 			for (auto &i:mCollections) delete i; // Delete all of the object pointers in this array
 			mCollections.clear(); // Clear the current array
-			for (auto &i:other.mCollections) mCollections.push_back( static_cast< Collection *>(i->clone())); // Deep copy object pointers into the array
+			for (auto &i:other.mCollections) mCollections.push_back( static_cast< CollectionImpl *>(i->clone())); // Deep copy object pointers into the array
 			for (auto &i:mScenes) delete i; // Delete all of the object pointers in this array
 			mScenes.clear(); // Clear the current array
-			for (auto &i:other.mScenes) mScenes.push_back( static_cast< Scene *>(i->clone())); // Deep copy object pointers into the array
+			for (auto &i:other.mScenes) mScenes.push_back( static_cast< SceneImpl *>(i->clone())); // Deep copy object pointers into the array
 		}
 		return *this;
 	}

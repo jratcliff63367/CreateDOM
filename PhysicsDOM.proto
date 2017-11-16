@@ -67,9 +67,16 @@ enum NodeType
 	NT_RIGID_DYNAMIC = 8;  				// A dynamic rigid body
 	NT_BODY_PAIR_FILTERS = 9;  			// A node representing a collection of body pair filters
 	NT_JOINT = 10;   					// Base class for a joint
-	NT_INSTANCE_COLLECTION = 11; 		// Instantiates a collection of nodes
-	NT_COLLECTION = 12;					// Defines a collection of nodes
-	NT_SCENE = 13;   					// Defines a collection that gets instantiated on startup into a physics scene
+	NT_FIXED_JOINT = 11; 				// A fixed joint
+	NT_SPHERICAL_JOINT = 12; 			// A spherical joint
+	NT_REVOLUTE_JOINT = 13;				// A revolute joint
+	NT_PRISMATIC_JOINT = 14; 			// A prismatic joint
+	NT_DISTANCE_JOINT = 15;				// A distance joint
+	NT_BALL_AND_SOCKET_JOINT = 16;   	// A ball and socket joint
+	NT_D6_JOINT = 17;  					// A six degree of freedom joint
+	NT_INSTANCE_COLLECTION = 18; 		// Instantiates a collection of nodes
+	NT_COLLECTION = 19;					// Defines a collection of nodes
+	NT_SCENE = 20;   					// Defines a collection that gets instantiated on startup into a physics scene
 }
 
 
@@ -111,11 +118,12 @@ message Node
 		PhysicsMaterial physicsMaterial = 6;
 		ConvexHull convexHull = 7;
 		TriangleMesh triangleMesh = 8;
-		RigidBody rigidBody = 9;
-		Joint joint = 10;
-		BodyPairFilters bodyPairFilters = 11;
-		InstanceCollection instanceCollection = 12;
-		Collection collection = 13;
+		HeightField heightField = 9;
+		RigidBody rigidBody = 10;
+		Joint joint = 11;
+		BodyPairFilters bodyPairFilters = 12;
+		InstanceCollection instanceCollection = 13;
+		Collection collection = 14;
 	}
 
 }
@@ -152,6 +160,17 @@ message TriangleMesh
 {
 	repeated Vec3 points = 1;
 	repeated uint32 triangles = 2;
+	repeated uint32 materialIndices = 3;
+}
+
+
+// The data for a heighfield; as 2d array of 32 bit samples; 16 bits for height, 16 bits for material indices, holes, and other metadata
+message HeightField
+{
+	uint32 rowCount = 1;
+	uint32 columnCount = 2;
+	repeated uint32 samples = 3;
+	repeated uint32 metaData = 4;
 }
 
 
@@ -164,6 +183,7 @@ enum GeometryType
 	GT_CYLINDER_GEOMETRY = 4;  			// A cylinder 
 	GT_CONVEXHULL_GEOMETRY = 5;			// A convex hull geometry
 	GT_TRIANGLEMESH_GEOMETRY = 6;  		// A triangle mesh (can only be static, not dynamic)
+	GT_HEIGHTFIELD_GEOMETRY = 7; 		// A heightfield (can only be static, not dynamic)
 }
 
 
@@ -179,7 +199,8 @@ message Geometry
 		CylinderGeometry cylinderGeometry = 5;
 		ConvexHullGeometry convexHullGeometry = 6;
 		TriangleMeshGeometry triangleMeshGeometry = 7;
-		PlaneGeometry planeGeometry = 8;
+		HeightFieldGeometry heightFieldGeometry = 8;
+		PlaneGeometry planeGeometry = 9;
 	}
 
 }
@@ -232,6 +253,17 @@ message TriangleMeshGeometry
 }
 
 
+// Defines a heightfield geometry
+message HeightFieldGeometry
+{
+	string heightField = 1;
+	float heightScale = 2;
+	float rowScale = 3;
+	float columnScale = 4;
+	bool doubleSided = 5;
+}
+
+
 // Defines a plane equation geometry (position and orientation of the plane come from the geometry instance)
 message PlaneGeometry
 {
@@ -242,7 +274,7 @@ message PlaneGeometry
 message GeometryInstance
 {
 	Geometry geometry = 1;
-	string material = 2;
+	repeated string materials = 2;
 	Pose localPose = 3;
 	string collisionFilterSettings = 4;
 }
@@ -292,6 +324,66 @@ message Joint
 	Pose localpose0 = 3;
 	Pose localpose1 = 4;
 	bool collisionEnabled = 5;
+	oneof subtype
+	{
+		FixedJoint fixedJoint = 6;
+		SphericalJoint sphericalJoint = 7;
+		RevoluteJoint revoluteJoint = 8;
+		PrismaticJoint prismaticJoint = 9;
+		DistanceJoint distanceJoint = 10;
+		BallAndSocketJoint ballAndSocketJoint = 11;
+		D6Joint d6Joint = 12;
+	}
+
+}
+
+
+// Defines the properties speciic to a fixed joint 
+// Not all properties yet defined!
+message FixedJoint
+{
+}
+
+
+// Defines the properties speciic to a spherical joint 
+// Not all properties yet defined!
+message SphericalJoint
+{
+}
+
+
+// Defines the properties speciic to a revolute joint 
+// Not all properties yet defined!
+message RevoluteJoint
+{
+}
+
+
+// Defines the properties speciic to a prismatic joint 
+// Not all properties yet defined!
+message PrismaticJoint
+{
+}
+
+
+// Defines the properties speciic to a distance joint 
+// Not all properties yet defined!
+message DistanceJoint
+{
+}
+
+
+// Defines the properties speciic to a ball and socket joint 
+// Not all properties yet defined!
+message BallAndSocketJoint
+{
+}
+
+
+// Defines the properties speciic to a six degree of freedom joint 
+// Not all properties yet defined!
+message D6Joint
+{
 }
 
 

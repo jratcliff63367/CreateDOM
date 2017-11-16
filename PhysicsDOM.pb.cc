@@ -362,7 +362,6 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_ATTRIBUTE_SECTION
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriangleMesh, points_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriangleMesh, triangles_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriangleMesh, materialindices_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Geometry, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -429,7 +428,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_ATTRIBUTE_SECTION
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GeometryInstance, geometry_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GeometryInstance, materials_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GeometryInstance, material_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GeometryInstance, localpose_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GeometryInstance, collisionfiltersettings_),
   ~0u,  // no _has_bits_
@@ -529,25 +528,25 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_ATTR
   { 86, -1, sizeof(PhysicsMaterial)},
   { 96, -1, sizeof(ConvexHull)},
   { 102, -1, sizeof(TriangleMesh)},
-  { 110, -1, sizeof(Geometry)},
-  { 124, -1, sizeof(BoxGeometry)},
-  { 130, -1, sizeof(SphereGeometry)},
-  { 136, -1, sizeof(CapsuleGeometry)},
-  { 143, -1, sizeof(CylinderGeometry)},
-  { 150, -1, sizeof(ConvexHullGeometry)},
-  { 157, -1, sizeof(TriangleMeshGeometry)},
-  { 165, -1, sizeof(PlaneGeometry)},
-  { 170, -1, sizeof(GeometryInstance)},
-  { 179, -1, sizeof(RigidBody)},
-  { 189, -1, sizeof(RigidStatic)},
-  { 194, -1, sizeof(RigidDynamic)},
-  { 209, -1, sizeof(Joint)},
-  { 219, -1, sizeof(BodyPairFilter)},
-  { 226, -1, sizeof(BodyPairFilters)},
-  { 232, -1, sizeof(InstanceCollection)},
-  { 240, -1, sizeof(Collection)},
-  { 248, -1, sizeof(Scene)},
-  { 254, -1, sizeof(PhysicsDOM)},
+  { 109, -1, sizeof(Geometry)},
+  { 123, -1, sizeof(BoxGeometry)},
+  { 129, -1, sizeof(SphereGeometry)},
+  { 135, -1, sizeof(CapsuleGeometry)},
+  { 142, -1, sizeof(CylinderGeometry)},
+  { 149, -1, sizeof(ConvexHullGeometry)},
+  { 156, -1, sizeof(TriangleMeshGeometry)},
+  { 164, -1, sizeof(PlaneGeometry)},
+  { 169, -1, sizeof(GeometryInstance)},
+  { 178, -1, sizeof(RigidBody)},
+  { 188, -1, sizeof(RigidStatic)},
+  { 193, -1, sizeof(RigidDynamic)},
+  { 208, -1, sizeof(Joint)},
+  { 218, -1, sizeof(BodyPairFilter)},
+  { 225, -1, sizeof(BodyPairFilters)},
+  { 231, -1, sizeof(InstanceCollection)},
+  { 239, -1, sizeof(Collection)},
+  { 247, -1, sizeof(Scene)},
+  { 253, -1, sizeof(PhysicsDOM)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -805,79 +804,78 @@ void AddDescriptorsImpl() {
       "tion\030\001 \001(\010\022\035\n\025disableStrongFriction\030\002 \001("
       "\010\022\027\n\017dynamicFriction\030\003 \001(\002\022\026\n\016staticFric"
       "tion\030\004 \001(\002\022\023\n\013restitution\030\005 \001(\002\"-\n\nConve"
-      "xHull\022\037\n\006points\030\001 \003(\0132\017.CreateDOM.Vec3\"["
+      "xHull\022\037\n\006points\030\001 \003(\0132\017.CreateDOM.Vec3\"B"
       "\n\014TriangleMesh\022\037\n\006points\030\001 \003(\0132\017.CreateD"
-      "OM.Vec3\022\021\n\ttriangles\030\002 \003(\r\022\027\n\017materialIn"
-      "dices\030\003 \003(\r\"\301\003\n\010Geometry\022%\n\004type\030\001 \001(\0162\027"
-      ".CreateDOM.GeometryType\022-\n\013boxGeometry\030\002"
-      " \001(\0132\026.CreateDOM.BoxGeometryH\000\0223\n\016sphere"
-      "Geometry\030\003 \001(\0132\031.CreateDOM.SphereGeometr"
-      "yH\000\0225\n\017capsuleGeometry\030\004 \001(\0132\032.CreateDOM"
-      ".CapsuleGeometryH\000\0227\n\020cylinderGeometry\030\005"
-      " \001(\0132\033.CreateDOM.CylinderGeometryH\000\022;\n\022c"
-      "onvexHullGeometry\030\006 \001(\0132\035.CreateDOM.Conv"
-      "exHullGeometryH\000\022\?\n\024triangleMeshGeometry"
-      "\030\007 \001(\0132\037.CreateDOM.TriangleMeshGeometryH"
-      "\000\0221\n\rplaneGeometry\030\010 \001(\0132\030.CreateDOM.Pla"
-      "neGeometryH\000B\t\n\007subtype\"2\n\013BoxGeometry\022#"
-      "\n\ndimensions\030\001 \001(\0132\017.CreateDOM.Vec3\" \n\016S"
-      "phereGeometry\022\016\n\006radius\030\001 \001(\002\"1\n\017Capsule"
-      "Geometry\022\016\n\006radius\030\001 \001(\002\022\016\n\006height\030\002 \001(\002"
-      "\"2\n\020CylinderGeometry\022\016\n\006radius\030\001 \001(\002\022\016\n\006"
-      "height\030\002 \001(\002\"M\n\022ConvexHullGeometry\022#\n\005sc"
-      "ale\030\001 \001(\0132\024.CreateDOM.MeshScale\022\022\n\nconve"
-      "xMesh\030\002 \001(\t\"f\n\024TriangleMeshGeometry\022#\n\005s"
-      "cale\030\001 \001(\0132\024.CreateDOM.MeshScale\022\024\n\014Tria"
-      "ngleMesh\030\002 \001(\t\022\023\n\013doubleSided\030\003 \001(\010\"\017\n\rP"
-      "laneGeometry\"\221\001\n\020GeometryInstance\022%\n\010geo"
-      "metry\030\001 \001(\0132\023.CreateDOM.Geometry\022\021\n\tmate"
-      "rials\030\002 \003(\t\022\"\n\tlocalPose\030\003 \001(\0132\017.CreateD"
-      "OM.Pose\022\037\n\027collisionFilterSettings\030\004 \001(\t"
-      "\"\323\001\n\tRigidBody\0226\n\021geometryInstances\030\001 \003("
-      "\0132\033.CreateDOM.GeometryInstance\022#\n\nglobal"
-      "Pose\030\002 \001(\0132\017.CreateDOM.Pose\022-\n\013rigidStat"
-      "ic\030\003 \001(\0132\026.CreateDOM.RigidStaticH\000\022/\n\014ri"
-      "gidDynamic\030\004 \001(\0132\027.CreateDOM.RigidDynami"
-      "cH\000B\t\n\007subtype\"\r\n\013RigidStatic\"\306\002\n\014RigidD"
-      "ynamic\022\026\n\016disableGravity\030\001 \001(\010\022.\n\025center"
-      "OfMassLocalPose\030\002 \001(\0132\017.CreateDOM.Pose\022\014"
-      "\n\004mass\030\003 \001(\002\022/\n\026massSpaceInertiaTensor\030\004"
-      " \001(\0132\017.CreateDOM.Vec3\022\'\n\016linearVelocity\030"
-      "\005 \001(\0132\017.CreateDOM.Vec3\022(\n\017angularVelocit"
-      "y\030\006 \001(\0132\017.CreateDOM.Vec3\022\025\n\rlinearDampin"
-      "g\030\007 \001(\002\022\026\n\016angularDamping\030\010 \001(\002\022\032\n\022maxAn"
-      "gularVelocity\030\t \001(\002\022\021\n\tkinematic\030\n \001(\010\"\211"
-      "\001\n\005Joint\022\r\n\005body0\030\001 \001(\t\022\r\n\005body1\030\002 \001(\t\022#"
-      "\n\nlocalpose0\030\003 \001(\0132\017.CreateDOM.Pose\022#\n\nl"
-      "ocalpose1\030\004 \001(\0132\017.CreateDOM.Pose\022\030\n\020coll"
-      "isionEnabled\030\005 \001(\010\".\n\016BodyPairFilter\022\r\n\005"
-      "bodyA\030\001 \001(\t\022\r\n\005bodyB\030\002 \001(\t\"\?\n\017BodyPairFi"
-      "lters\022,\n\tbodyPairs\030\001 \003(\0132\031.CreateDOM.Bod"
-      "yPairFilter\"g\n\022InstanceCollection\022\022\n\ncol"
-      "lection\030\001 \001(\t\022\035\n\004pose\030\002 \001(\0132\017.CreateDOM."
-      "Pose\022\036\n\005scale\030\003 \001(\0132\017.CreateDOM.Vec3\"Z\n\n"
-      "Collection\022\036\n\005nodes\030\001 \003(\0132\017.CreateDOM.No"
-      "de\022!\n\005scene\030\002 \001(\0132\020.CreateDOM.SceneH\000B\t\n"
-      "\007subtype\")\n\005Scene\022 \n\007gravity\030\001 \001(\0132\017.Cre"
-      "ateDOM.Vec3\"Z\n\nPhysicsDOM\022*\n\013collections"
-      "\030\001 \003(\0132\025.CreateDOM.Collection\022 \n\006scenes\030"
-      "\002 \003(\0132\020.CreateDOM.Scene*\251\002\n\010NodeType\022\013\n\007"
-      "NT_NODE\020\000\022\027\n\023NT_PHYSICS_MATERIAL\020\001\022\030\n\024NT"
-      "_GEOMETRY_INSTANCE\020\002\022\023\n\017NT_TRIANGLEMESH\020"
-      "\003\022\021\n\rNT_CONVEXHULL\020\004\022\022\n\016NT_HEIGHTFIELD\020\005"
-      "\022\021\n\rNT_RIGID_BODY\020\006\022\023\n\017NT_RIGID_STATIC\020\007"
-      "\022\024\n\020NT_RIGID_DYNAMIC\020\010\022\030\n\024NT_BODY_PAIR_F"
-      "ILTERS\020\t\022\014\n\010NT_JOINT\020\n\022\032\n\026NT_INSTANCE_CO"
-      "LLECTION\020\013\022\021\n\rNT_COLLECTION\020\014\022\014\n\010NT_SCEN"
-      "E\020\r*\277\001\n\014GeometryType\022\023\n\017GT_BOX_GEOMETRY\020"
-      "\000\022\026\n\022GT_SPHERE_GEOMETRY\020\001\022\027\n\023GT_CAPSULE_"
-      "GEOMETRY\020\002\022\025\n\021GT_PLANE_GEOMETRY\020\003\022\030\n\024GT_"
-      "CYLINDER_GEOMETRY\020\004\022\032\n\026GT_CONVEXHULL_GEO"
-      "METRY\020\005\022\034\n\030GT_TRIANGLEMESH_GEOMETRY\020\006b\006p"
-      "roto3"
+      "OM.Vec3\022\021\n\ttriangles\030\002 \003(\r\"\301\003\n\010Geometry\022"
+      "%\n\004type\030\001 \001(\0162\027.CreateDOM.GeometryType\022-"
+      "\n\013boxGeometry\030\002 \001(\0132\026.CreateDOM.BoxGeome"
+      "tryH\000\0223\n\016sphereGeometry\030\003 \001(\0132\031.CreateDO"
+      "M.SphereGeometryH\000\0225\n\017capsuleGeometry\030\004 "
+      "\001(\0132\032.CreateDOM.CapsuleGeometryH\000\0227\n\020cyl"
+      "inderGeometry\030\005 \001(\0132\033.CreateDOM.Cylinder"
+      "GeometryH\000\022;\n\022convexHullGeometry\030\006 \001(\0132\035"
+      ".CreateDOM.ConvexHullGeometryH\000\022\?\n\024trian"
+      "gleMeshGeometry\030\007 \001(\0132\037.CreateDOM.Triang"
+      "leMeshGeometryH\000\0221\n\rplaneGeometry\030\010 \001(\0132"
+      "\030.CreateDOM.PlaneGeometryH\000B\t\n\007subtype\"2"
+      "\n\013BoxGeometry\022#\n\ndimensions\030\001 \001(\0132\017.Crea"
+      "teDOM.Vec3\" \n\016SphereGeometry\022\016\n\006radius\030\001"
+      " \001(\002\"1\n\017CapsuleGeometry\022\016\n\006radius\030\001 \001(\002\022"
+      "\016\n\006height\030\002 \001(\002\"2\n\020CylinderGeometry\022\016\n\006r"
+      "adius\030\001 \001(\002\022\016\n\006height\030\002 \001(\002\"M\n\022ConvexHul"
+      "lGeometry\022#\n\005scale\030\001 \001(\0132\024.CreateDOM.Mes"
+      "hScale\022\022\n\nconvexMesh\030\002 \001(\t\"f\n\024TriangleMe"
+      "shGeometry\022#\n\005scale\030\001 \001(\0132\024.CreateDOM.Me"
+      "shScale\022\024\n\014triangleMesh\030\002 \001(\t\022\023\n\013doubleS"
+      "ided\030\003 \001(\010\"\017\n\rPlaneGeometry\"\220\001\n\020Geometry"
+      "Instance\022%\n\010geometry\030\001 \001(\0132\023.CreateDOM.G"
+      "eometry\022\020\n\010material\030\002 \001(\t\022\"\n\tlocalPose\030\003"
+      " \001(\0132\017.CreateDOM.Pose\022\037\n\027collisionFilter"
+      "Settings\030\004 \001(\t\"\323\001\n\tRigidBody\0226\n\021geometry"
+      "Instances\030\001 \003(\0132\033.CreateDOM.GeometryInst"
+      "ance\022#\n\nglobalPose\030\002 \001(\0132\017.CreateDOM.Pos"
+      "e\022-\n\013rigidStatic\030\003 \001(\0132\026.CreateDOM.Rigid"
+      "StaticH\000\022/\n\014rigidDynamic\030\004 \001(\0132\027.CreateD"
+      "OM.RigidDynamicH\000B\t\n\007subtype\"\r\n\013RigidSta"
+      "tic\"\306\002\n\014RigidDynamic\022\026\n\016disableGravity\030\001"
+      " \001(\010\022.\n\025centerOfMassLocalPose\030\002 \001(\0132\017.Cr"
+      "eateDOM.Pose\022\014\n\004mass\030\003 \001(\002\022/\n\026massSpaceI"
+      "nertiaTensor\030\004 \001(\0132\017.CreateDOM.Vec3\022\'\n\016l"
+      "inearVelocity\030\005 \001(\0132\017.CreateDOM.Vec3\022(\n\017"
+      "angularVelocity\030\006 \001(\0132\017.CreateDOM.Vec3\022\025"
+      "\n\rlinearDamping\030\007 \001(\002\022\026\n\016angularDamping\030"
+      "\010 \001(\002\022\032\n\022maxAngularVelocity\030\t \001(\002\022\021\n\tkin"
+      "ematic\030\n \001(\010\"\211\001\n\005Joint\022\r\n\005body0\030\001 \001(\t\022\r\n"
+      "\005body1\030\002 \001(\t\022#\n\nlocalpose0\030\003 \001(\0132\017.Creat"
+      "eDOM.Pose\022#\n\nlocalpose1\030\004 \001(\0132\017.CreateDO"
+      "M.Pose\022\030\n\020collisionEnabled\030\005 \001(\010\".\n\016Body"
+      "PairFilter\022\r\n\005bodyA\030\001 \001(\t\022\r\n\005bodyB\030\002 \001(\t"
+      "\"\?\n\017BodyPairFilters\022,\n\tbodyPairs\030\001 \003(\0132\031"
+      ".CreateDOM.BodyPairFilter\"g\n\022InstanceCol"
+      "lection\022\022\n\ncollection\030\001 \001(\t\022\035\n\004pose\030\002 \001("
+      "\0132\017.CreateDOM.Pose\022\036\n\005scale\030\003 \001(\0132\017.Crea"
+      "teDOM.Vec3\"Z\n\nCollection\022\036\n\005nodes\030\001 \003(\0132"
+      "\017.CreateDOM.Node\022!\n\005scene\030\002 \001(\0132\020.Create"
+      "DOM.SceneH\000B\t\n\007subtype\")\n\005Scene\022 \n\007gravi"
+      "ty\030\001 \001(\0132\017.CreateDOM.Vec3\"Z\n\nPhysicsDOM\022"
+      "*\n\013collections\030\001 \003(\0132\025.CreateDOM.Collect"
+      "ion\022 \n\006scenes\030\002 \003(\0132\020.CreateDOM.Scene*\251\002"
+      "\n\010NodeType\022\013\n\007NT_NODE\020\000\022\027\n\023NT_PHYSICS_MA"
+      "TERIAL\020\001\022\030\n\024NT_GEOMETRY_INSTANCE\020\002\022\023\n\017NT"
+      "_TRIANGLEMESH\020\003\022\021\n\rNT_CONVEXHULL\020\004\022\022\n\016NT"
+      "_HEIGHTFIELD\020\005\022\021\n\rNT_RIGID_BODY\020\006\022\023\n\017NT_"
+      "RIGID_STATIC\020\007\022\024\n\020NT_RIGID_DYNAMIC\020\010\022\030\n\024"
+      "NT_BODY_PAIR_FILTERS\020\t\022\014\n\010NT_JOINT\020\n\022\032\n\026"
+      "NT_INSTANCE_COLLECTION\020\013\022\021\n\rNT_COLLECTIO"
+      "N\020\014\022\014\n\010NT_SCENE\020\r*\277\001\n\014GeometryType\022\023\n\017GT"
+      "_BOX_GEOMETRY\020\000\022\026\n\022GT_SPHERE_GEOMETRY\020\001\022"
+      "\027\n\023GT_CAPSULE_GEOMETRY\020\002\022\025\n\021GT_PLANE_GEO"
+      "METRY\020\003\022\030\n\024GT_CYLINDER_GEOMETRY\020\004\022\032\n\026GT_"
+      "CONVEXHULL_GEOMETRY\020\005\022\034\n\030GT_TRIANGLEMESH"
+      "_GEOMETRY\020\006b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 4125);
+      descriptor, 4099);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "PhysicsDOM.proto", &protobuf_RegisterTypes);
 }
@@ -6620,7 +6618,6 @@ ConvexHull::points() const {
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int TriangleMesh::kPointsFieldNumber;
 const int TriangleMesh::kTrianglesFieldNumber;
-const int TriangleMesh::kMaterialIndicesFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 TriangleMesh::TriangleMesh()
@@ -6636,7 +6633,6 @@ TriangleMesh::TriangleMesh(const TriangleMesh& from)
       _internal_metadata_(NULL),
       points_(from.points_),
       triangles_(from.triangles_),
-      materialindices_(from.materialindices_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:CreateDOM.TriangleMesh)
@@ -6685,7 +6681,6 @@ void TriangleMesh::Clear() {
 
   points_.Clear();
   triangles_.Clear();
-  materialindices_.Clear();
   _internal_metadata_.Clear();
 }
 
@@ -6724,25 +6719,6 @@ bool TriangleMesh::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  1, 18u, input, this->mutable_triangles())));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // repeated uint32 materialIndices = 3;
-      case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, this->mutable_materialindices())));
-        } else if (
-            static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 1, 26u, input, this->mutable_materialindices())));
         } else {
           goto handle_unusual;
         }
@@ -6793,17 +6769,6 @@ void TriangleMesh::SerializeWithCachedSizes(
       this->triangles(i), output);
   }
 
-  // repeated uint32 materialIndices = 3;
-  if (this->materialindices_size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteTag(3, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
-    output->WriteVarint32(static_cast< ::google::protobuf::uint32>(
-        _materialindices_cached_byte_size_));
-  }
-  for (int i = 0, n = this->materialindices_size(); i < n; i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32NoTag(
-      this->materialindices(i), output);
-  }
-
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -6837,19 +6802,6 @@ void TriangleMesh::SerializeWithCachedSizes(
             _triangles_cached_byte_size_), target);
     target = ::google::protobuf::internal::WireFormatLite::
       WriteUInt32NoTagToArray(this->triangles_, target);
-  }
-
-  // repeated uint32 materialIndices = 3;
-  if (this->materialindices_size() > 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
-      3,
-      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
-      target);
-    target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
-        static_cast< ::google::protobuf::uint32>(
-            _materialindices_cached_byte_size_), target);
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteUInt32NoTagToArray(this->materialindices_, target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -6896,22 +6848,6 @@ size_t TriangleMesh::ByteSizeLong() const {
     total_size += data_size;
   }
 
-  // repeated uint32 materialIndices = 3;
-  {
-    size_t data_size = ::google::protobuf::internal::WireFormatLite::
-      UInt32Size(this->materialindices_);
-    if (data_size > 0) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-            static_cast< ::google::protobuf::int32>(data_size));
-    }
-    int cached_size = ::google::protobuf::internal::ToCachedSize(data_size);
-    GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-    _materialindices_cached_byte_size_ = cached_size;
-    GOOGLE_SAFE_CONCURRENT_WRITES_END();
-    total_size += data_size;
-  }
-
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -6943,7 +6879,6 @@ void TriangleMesh::MergeFrom(const TriangleMesh& from) {
 
   points_.MergeFrom(from.points_);
   triangles_.MergeFrom(from.triangles_);
-  materialindices_.MergeFrom(from.materialindices_);
 }
 
 void TriangleMesh::CopyFrom(const ::google::protobuf::Message& from) {
@@ -6972,7 +6907,6 @@ void TriangleMesh::InternalSwap(TriangleMesh* other) {
   using std::swap;
   points_.InternalSwap(&other->points_);
   triangles_.InternalSwap(&other->triangles_);
-  materialindices_.InternalSwap(&other->materialindices_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
@@ -7043,36 +6977,6 @@ TriangleMesh::triangles() const {
 TriangleMesh::mutable_triangles() {
   // @@protoc_insertion_point(field_mutable_list:CreateDOM.TriangleMesh.triangles)
   return &triangles_;
-}
-
-// repeated uint32 materialIndices = 3;
-int TriangleMesh::materialindices_size() const {
-  return materialindices_.size();
-}
-void TriangleMesh::clear_materialindices() {
-  materialindices_.Clear();
-}
-::google::protobuf::uint32 TriangleMesh::materialindices(int index) const {
-  // @@protoc_insertion_point(field_get:CreateDOM.TriangleMesh.materialIndices)
-  return materialindices_.Get(index);
-}
-void TriangleMesh::set_materialindices(int index, ::google::protobuf::uint32 value) {
-  materialindices_.Set(index, value);
-  // @@protoc_insertion_point(field_set:CreateDOM.TriangleMesh.materialIndices)
-}
-void TriangleMesh::add_materialindices(::google::protobuf::uint32 value) {
-  materialindices_.Add(value);
-  // @@protoc_insertion_point(field_add:CreateDOM.TriangleMesh.materialIndices)
-}
-const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
-TriangleMesh::materialindices() const {
-  // @@protoc_insertion_point(field_list:CreateDOM.TriangleMesh.materialIndices)
-  return materialindices_;
-}
-::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
-TriangleMesh::mutable_materialindices() {
-  // @@protoc_insertion_point(field_mutable_list:CreateDOM.TriangleMesh.materialIndices)
-  return &materialindices_;
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -9691,7 +9595,7 @@ bool TriangleMeshGeometry::MergePartialFromCodedStream(
         break;
       }
 
-      // string TriangleMesh = 2;
+      // string triangleMesh = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
@@ -9700,7 +9604,7 @@ bool TriangleMeshGeometry::MergePartialFromCodedStream(
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             this->trianglemesh().data(), static_cast<int>(this->trianglemesh().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "CreateDOM.TriangleMeshGeometry.TriangleMesh"));
+            "CreateDOM.TriangleMeshGeometry.triangleMesh"));
         } else {
           goto handle_unusual;
         }
@@ -9753,12 +9657,12 @@ void TriangleMeshGeometry::SerializeWithCachedSizes(
       1, *this->scale_, output);
   }
 
-  // string TriangleMesh = 2;
+  // string triangleMesh = 2;
   if (this->trianglemesh().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->trianglemesh().data(), static_cast<int>(this->trianglemesh().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "CreateDOM.TriangleMeshGeometry.TriangleMesh");
+      "CreateDOM.TriangleMeshGeometry.triangleMesh");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       2, this->trianglemesh(), output);
   }
@@ -9789,12 +9693,12 @@ void TriangleMeshGeometry::SerializeWithCachedSizes(
         1, *this->scale_, deterministic, target);
   }
 
-  // string TriangleMesh = 2;
+  // string triangleMesh = 2;
   if (this->trianglemesh().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->trianglemesh().data(), static_cast<int>(this->trianglemesh().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "CreateDOM.TriangleMeshGeometry.TriangleMesh");
+      "CreateDOM.TriangleMeshGeometry.triangleMesh");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
         2, this->trianglemesh(), target);
@@ -9822,7 +9726,7 @@ size_t TriangleMeshGeometry::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // string TriangleMesh = 2;
+  // string triangleMesh = 2;
   if (this->trianglemesh().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -9961,46 +9865,46 @@ void TriangleMeshGeometry::set_allocated_scale(::CreateDOM::MeshScale* scale) {
   // @@protoc_insertion_point(field_set_allocated:CreateDOM.TriangleMeshGeometry.scale)
 }
 
-// string TriangleMesh = 2;
+// string triangleMesh = 2;
 void TriangleMeshGeometry::clear_trianglemesh() {
   trianglemesh_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 const ::std::string& TriangleMeshGeometry::trianglemesh() const {
-  // @@protoc_insertion_point(field_get:CreateDOM.TriangleMeshGeometry.TriangleMesh)
+  // @@protoc_insertion_point(field_get:CreateDOM.TriangleMeshGeometry.triangleMesh)
   return trianglemesh_.GetNoArena();
 }
 void TriangleMeshGeometry::set_trianglemesh(const ::std::string& value) {
   
   trianglemesh_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:CreateDOM.TriangleMeshGeometry.TriangleMesh)
+  // @@protoc_insertion_point(field_set:CreateDOM.TriangleMeshGeometry.triangleMesh)
 }
 #if LANG_CXX11
 void TriangleMeshGeometry::set_trianglemesh(::std::string&& value) {
   
   trianglemesh_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:CreateDOM.TriangleMeshGeometry.TriangleMesh)
+  // @@protoc_insertion_point(field_set_rvalue:CreateDOM.TriangleMeshGeometry.triangleMesh)
 }
 #endif
 void TriangleMeshGeometry::set_trianglemesh(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
   trianglemesh_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:CreateDOM.TriangleMeshGeometry.TriangleMesh)
+  // @@protoc_insertion_point(field_set_char:CreateDOM.TriangleMeshGeometry.triangleMesh)
 }
 void TriangleMeshGeometry::set_trianglemesh(const char* value, size_t size) {
   
   trianglemesh_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:CreateDOM.TriangleMeshGeometry.TriangleMesh)
+  // @@protoc_insertion_point(field_set_pointer:CreateDOM.TriangleMeshGeometry.triangleMesh)
 }
 ::std::string* TriangleMeshGeometry::mutable_trianglemesh() {
   
-  // @@protoc_insertion_point(field_mutable:CreateDOM.TriangleMeshGeometry.TriangleMesh)
+  // @@protoc_insertion_point(field_mutable:CreateDOM.TriangleMeshGeometry.triangleMesh)
   return trianglemesh_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 ::std::string* TriangleMeshGeometry::release_trianglemesh() {
-  // @@protoc_insertion_point(field_release:CreateDOM.TriangleMeshGeometry.TriangleMesh)
+  // @@protoc_insertion_point(field_release:CreateDOM.TriangleMeshGeometry.triangleMesh)
   
   return trianglemesh_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -10011,7 +9915,7 @@ void TriangleMeshGeometry::set_allocated_trianglemesh(::std::string* trianglemes
     
   }
   trianglemesh_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), trianglemesh);
-  // @@protoc_insertion_point(field_set_allocated:CreateDOM.TriangleMeshGeometry.TriangleMesh)
+  // @@protoc_insertion_point(field_set_allocated:CreateDOM.TriangleMeshGeometry.triangleMesh)
 }
 
 // bool doubleSided = 3;
@@ -10230,7 +10134,7 @@ void PlaneGeometry::InternalSwap(PlaneGeometry* other) {
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int GeometryInstance::kGeometryFieldNumber;
-const int GeometryInstance::kMaterialsFieldNumber;
+const int GeometryInstance::kMaterialFieldNumber;
 const int GeometryInstance::kLocalPoseFieldNumber;
 const int GeometryInstance::kCollisionFilterSettingsFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
@@ -10246,9 +10150,12 @@ GeometryInstance::GeometryInstance()
 GeometryInstance::GeometryInstance(const GeometryInstance& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
-      materials_(from.materials_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  material_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.material().size() > 0) {
+    material_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.material_);
+  }
   collisionfiltersettings_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (from.collisionfiltersettings().size() > 0) {
     collisionfiltersettings_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.collisionfiltersettings_);
@@ -10267,6 +10174,7 @@ GeometryInstance::GeometryInstance(const GeometryInstance& from)
 }
 
 void GeometryInstance::SharedCtor() {
+  material_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   collisionfiltersettings_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&geometry_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&localpose_) -
@@ -10280,6 +10188,7 @@ GeometryInstance::~GeometryInstance() {
 }
 
 void GeometryInstance::SharedDtor() {
+  material_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   collisionfiltersettings_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != internal_default_instance()) delete geometry_;
   if (this != internal_default_instance()) delete localpose_;
@@ -10314,7 +10223,7 @@ void GeometryInstance::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  materials_.Clear();
+  material_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   collisionfiltersettings_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (GetArenaNoVirtual() == NULL && geometry_ != NULL) {
     delete geometry_;
@@ -10349,17 +10258,16 @@ bool GeometryInstance::MergePartialFromCodedStream(
         break;
       }
 
-      // repeated string materials = 2;
+      // string material = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->add_materials()));
+                input, this->mutable_material()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->materials(this->materials_size() - 1).data(),
-            static_cast<int>(this->materials(this->materials_size() - 1).length()),
+            this->material().data(), static_cast<int>(this->material().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "CreateDOM.GeometryInstance.materials"));
+            "CreateDOM.GeometryInstance.material"));
         } else {
           goto handle_unusual;
         }
@@ -10426,14 +10334,14 @@ void GeometryInstance::SerializeWithCachedSizes(
       1, *this->geometry_, output);
   }
 
-  // repeated string materials = 2;
-  for (int i = 0, n = this->materials_size(); i < n; i++) {
+  // string material = 2;
+  if (this->material().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->materials(i).data(), static_cast<int>(this->materials(i).length()),
+      this->material().data(), static_cast<int>(this->material().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "CreateDOM.GeometryInstance.materials");
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      2, this->materials(i), output);
+      "CreateDOM.GeometryInstance.material");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->material(), output);
   }
 
   // .CreateDOM.Pose localPose = 3;
@@ -10473,14 +10381,15 @@ void GeometryInstance::SerializeWithCachedSizes(
         1, *this->geometry_, deterministic, target);
   }
 
-  // repeated string materials = 2;
-  for (int i = 0, n = this->materials_size(); i < n; i++) {
+  // string material = 2;
+  if (this->material().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->materials(i).data(), static_cast<int>(this->materials(i).length()),
+      this->material().data(), static_cast<int>(this->material().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "CreateDOM.GeometryInstance.materials");
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteStringToArray(2, this->materials(i), target);
+      "CreateDOM.GeometryInstance.material");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->material(), target);
   }
 
   // .CreateDOM.Pose localPose = 3;
@@ -10518,12 +10427,11 @@ size_t GeometryInstance::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // repeated string materials = 2;
-  total_size += 1 *
-      ::google::protobuf::internal::FromIntSize(this->materials_size());
-  for (int i = 0, n = this->materials_size(); i < n; i++) {
-    total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
-      this->materials(i));
+  // string material = 2;
+  if (this->material().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->material());
   }
 
   // string collisionFilterSettings = 4;
@@ -10576,7 +10484,10 @@ void GeometryInstance::MergeFrom(const GeometryInstance& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  materials_.MergeFrom(from.materials_);
+  if (from.material().size() > 0) {
+
+    material_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.material_);
+  }
   if (from.collisionfiltersettings().size() > 0) {
 
     collisionfiltersettings_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.collisionfiltersettings_);
@@ -10613,7 +10524,7 @@ void GeometryInstance::Swap(GeometryInstance* other) {
 }
 void GeometryInstance::InternalSwap(GeometryInstance* other) {
   using std::swap;
-  materials_.InternalSwap(&other->materials_);
+  material_.Swap(&other->material_);
   collisionfiltersettings_.Swap(&other->collisionfiltersettings_);
   swap(geometry_, other->geometry_);
   swap(localpose_, other->localpose_);
@@ -10669,73 +10580,57 @@ void GeometryInstance::set_allocated_geometry(::CreateDOM::Geometry* geometry) {
   // @@protoc_insertion_point(field_set_allocated:CreateDOM.GeometryInstance.geometry)
 }
 
-// repeated string materials = 2;
-int GeometryInstance::materials_size() const {
-  return materials_.size();
+// string material = 2;
+void GeometryInstance::clear_material() {
+  material_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-void GeometryInstance::clear_materials() {
-  materials_.Clear();
+const ::std::string& GeometryInstance::material() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.GeometryInstance.material)
+  return material_.GetNoArena();
 }
-const ::std::string& GeometryInstance::materials(int index) const {
-  // @@protoc_insertion_point(field_get:CreateDOM.GeometryInstance.materials)
-  return materials_.Get(index);
-}
-::std::string* GeometryInstance::mutable_materials(int index) {
-  // @@protoc_insertion_point(field_mutable:CreateDOM.GeometryInstance.materials)
-  return materials_.Mutable(index);
-}
-void GeometryInstance::set_materials(int index, const ::std::string& value) {
-  // @@protoc_insertion_point(field_set:CreateDOM.GeometryInstance.materials)
-  materials_.Mutable(index)->assign(value);
+void GeometryInstance::set_material(const ::std::string& value) {
+  
+  material_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CreateDOM.GeometryInstance.material)
 }
 #if LANG_CXX11
-void GeometryInstance::set_materials(int index, ::std::string&& value) {
-  // @@protoc_insertion_point(field_set:CreateDOM.GeometryInstance.materials)
-  materials_.Mutable(index)->assign(std::move(value));
+void GeometryInstance::set_material(::std::string&& value) {
+  
+  material_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CreateDOM.GeometryInstance.material)
 }
 #endif
-void GeometryInstance::set_materials(int index, const char* value) {
+void GeometryInstance::set_material(const char* value) {
   GOOGLE_DCHECK(value != NULL);
-  materials_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set_char:CreateDOM.GeometryInstance.materials)
+  
+  material_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CreateDOM.GeometryInstance.material)
 }
-void GeometryInstance::set_materials(int index, const char* value, size_t size) {
-  materials_.Mutable(index)->assign(
-    reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:CreateDOM.GeometryInstance.materials)
+void GeometryInstance::set_material(const char* value, size_t size) {
+  
+  material_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CreateDOM.GeometryInstance.material)
 }
-::std::string* GeometryInstance::add_materials() {
-  // @@protoc_insertion_point(field_add_mutable:CreateDOM.GeometryInstance.materials)
-  return materials_.Add();
+::std::string* GeometryInstance::mutable_material() {
+  
+  // @@protoc_insertion_point(field_mutable:CreateDOM.GeometryInstance.material)
+  return material_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-void GeometryInstance::add_materials(const ::std::string& value) {
-  materials_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add:CreateDOM.GeometryInstance.materials)
+::std::string* GeometryInstance::release_material() {
+  // @@protoc_insertion_point(field_release:CreateDOM.GeometryInstance.material)
+  
+  return material_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-#if LANG_CXX11
-void GeometryInstance::add_materials(::std::string&& value) {
-  materials_.Add(std::move(value));
-  // @@protoc_insertion_point(field_add:CreateDOM.GeometryInstance.materials)
-}
-#endif
-void GeometryInstance::add_materials(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  materials_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add_char:CreateDOM.GeometryInstance.materials)
-}
-void GeometryInstance::add_materials(const char* value, size_t size) {
-  materials_.Add()->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_add_pointer:CreateDOM.GeometryInstance.materials)
-}
-const ::google::protobuf::RepeatedPtrField< ::std::string>&
-GeometryInstance::materials() const {
-  // @@protoc_insertion_point(field_list:CreateDOM.GeometryInstance.materials)
-  return materials_;
-}
-::google::protobuf::RepeatedPtrField< ::std::string>*
-GeometryInstance::mutable_materials() {
-  // @@protoc_insertion_point(field_mutable_list:CreateDOM.GeometryInstance.materials)
-  return &materials_;
+void GeometryInstance::set_allocated_material(::std::string* material) {
+  if (material != NULL) {
+    
+  } else {
+    
+  }
+  material_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), material);
+  // @@protoc_insertion_point(field_set_allocated:CreateDOM.GeometryInstance.material)
 }
 
 // .CreateDOM.Pose localPose = 3;

@@ -15,12 +15,12 @@ public:
 	TestDOMImpl(void)
 	{
 #if ENABLED
-		PHYSICS_DOM::PhysicsDOM dom;
-		PHYSICS_DOM::Collection *c = new PHYSICS_DOM::Collection;
+		PHYSICS_DOM::PhysicsDOMImpl dom;
+		PHYSICS_DOM::CollectionImpl *c = new PHYSICS_DOM::CollectionImpl;
 		c->id = "0";
-		PHYSICS_DOM::PhysicsMaterial *pm = new PHYSICS_DOM::PhysicsMaterial;
+		PHYSICS_DOM::PhysicsMaterialImpl *pm = new PHYSICS_DOM::PhysicsMaterialImpl;
 		pm->id = "1";
-		c->nodes.push_back(pm);
+		c->mNodes.push_back(pm);
 		PHYSICS_DOM::BoxGeometry *box = new PHYSICS_DOM::BoxGeometry;
 		PHYSICS_DOM::GeometryInstance *box_instance = new PHYSICS_DOM::GeometryInstance;
 		box_instance->geometry = box;

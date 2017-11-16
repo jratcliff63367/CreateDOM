@@ -127,6 +127,13 @@ enum NodeType
 	NT_RIGID_DYNAMIC,  					// A dynamic rigid body
 	NT_BODY_PAIR_FILTERS,  				// A node representing a collection of body pair filters
 	NT_JOINT,  							// Base class for a joint
+	NT_FIXED_JOINT,						// A fixed joint
+	NT_SPHERICAL_JOINT,					// A spherical joint
+	NT_REVOLUTE_JOINT,   				// A revolute joint
+	NT_PRISMATIC_JOINT,					// A prismatic joint
+	NT_DISTANCE_JOINT,   				// A distance joint
+	NT_BALL_AND_SOCKET_JOINT,  			// A ball and socket joint
+	NT_D6_JOINT, 						// A six degree of freedom joint
 	NT_INSTANCE_COLLECTION,				// Instantiates a collection of nodes
 	NT_COLLECTION,   					// Defines a collection of nodes
 	NT_SCENE,  							// Defines a collection that gets instantiated on startup into a physics scene
@@ -194,6 +201,12 @@ public:
 		Node::type = NT_PHYSICS_MATERIAL;
 	};
 
+
+	// Declare the virtual destructor.
+	virtual ~PhysicsMaterial()
+	{
+	}
+
 	bool 		disableFriction{ false }; 							// If true, then friction is disabled for the material
 	bool 		disableStrongFriction{ false };   					// If true then strong friction is disabled for the material
 	float  		dynamicFriction{ 0.5f };  							// The coefficient of dynamic friction.
@@ -212,6 +225,12 @@ public:
 		Node::type = NT_CONVEXHULL;
 	};
 
+
+	// Declare the virtual destructor.
+	virtual ~ConvexHull()
+	{
+	}
+
 	uint32_t 	pointsCount { 0 };
 	const Vec3*	points;											// Array of data points describing the convex hull
 };
@@ -227,10 +246,43 @@ public:
 		Node::type = NT_TRIANGLEMESH;
 	};
 
+
+	// Declare the virtual destructor.
+	virtual ~TriangleMesh()
+	{
+	}
+
 	uint32_t 	pointsCount { 0 };
 	const Vec3*	points;											// Array of vertices for the triangle mesh
 	uint32_t 	trianglesCount { 0 };
 	const uint32_t* triangles;   								// Array of triangle indices
+	uint32_t 	materialIndicesCount { 0 };
+	const uint8_t*   materialIndices;  							// Optional per-triangle material index
+};
+
+
+// The data for a heighfield; as 2d array of 32 bit samples; 16 bits for height, 16 bits for material indices, holes, and other metadata
+class HeightField : public Node
+{
+public:
+	// Declare the constructor.
+	HeightField()
+	{
+		Node::type = NT_HEIGHTFIELD;
+	};
+
+
+	// Declare the virtual destructor.
+	virtual ~HeightField()
+	{
+	}
+
+	uint32_t 	rowCount;											// Number of sample rows in the height field samples array.
+	uint32_t 	columnCount;   									// Number of sample columns in the height field samples array.
+	uint32_t 	samplesCount { 0 };
+	const uint16_t* samples; 									// Heightfield sample data
+	uint32_t 	metaDataCount { 0 };
+	const uint16_t* metaData;  									// Optional meta data for each sample; determines per sample material, winding order, and whether or not to treat it as a hole
 };
 
 
@@ -243,6 +295,7 @@ enum GeometryType
 	GT_CYLINDER_GEOMETRY,  				// A cylinder 
 	GT_CONVEXHULL_GEOMETRY,				// A convex hull geometry
 	GT_TRIANGLEMESH_GEOMETRY,  			// A triangle mesh (can only be static, not dynamic)
+	GT_HEIGHTFIELD_GEOMETRY, 			// A heightfield (can only be static, not dynamic)
 };
 
 
@@ -264,6 +317,12 @@ public:
 		Geometry::type = GT_BOX_GEOMETRY;
 	};
 
+
+	// Declare the virtual destructor.
+	virtual ~BoxGeometry()
+	{
+	}
+
 	Vec3 		dimensions{ 1,1,1 };									// Dimensions of the box
 };
 
@@ -278,6 +337,12 @@ public:
 		Geometry::type = GT_SPHERE_GEOMETRY;
 	};
 
+
+	// Declare the virtual destructor.
+	virtual ~SphereGeometry()
+	{
+	}
+
 	float  		radius{ 1 };  										// The radius of the sphere
 };
 
@@ -291,6 +356,12 @@ public:
 	{
 		Geometry::type = GT_CAPSULE_GEOMETRY;
 	};
+
+
+	// Declare the virtual destructor.
+	virtual ~CapsuleGeometry()
+	{
+	}
 
 	float  		radius{ 1 };  										// The radius of the capsule
 	float  		height{ 1 };  										// The height of the capsule
@@ -307,6 +378,12 @@ public:
 		Geometry::type = GT_CYLINDER_GEOMETRY;
 	};
 
+
+	// Declare the virtual destructor.
+	virtual ~CylinderGeometry()
+	{
+	}
+
 	float  		radius{ 1 };  										// The radius of the cylinder
 	float  		height{ 1 };  										// The height of the cylinder
 };
@@ -321,6 +398,12 @@ public:
 	{
 		Geometry::type = GT_CONVEXHULL_GEOMETRY;
 	};
+
+
+	// Declare the virtual destructor.
+	virtual ~ConvexHullGeometry()
+	{
+	}
 
 	MeshScale  	scale;   										// The scale to apply to this convex mesh
 	const char * convexMesh; 									// The name of the convex mesh asset
@@ -337,9 +420,39 @@ public:
 		Geometry::type = GT_TRIANGLEMESH_GEOMETRY;
 	};
 
+
+	// Declare the virtual destructor.
+	virtual ~TriangleMeshGeometry()
+	{
+	}
+
 	MeshScale  	scale;   										// The scale of the triangle mesh
 	const char * triangleMesh;   								// The name of the triangle mesh asset
 	bool 		doubleSided{ false }; 								// Whether or not this triangle mesh should be treated as double sided for collision detection
+};
+
+
+// Defines a heightfield geometry
+class HeightFieldGeometry : public Geometry
+{
+public:
+	// Declare the constructor.
+	HeightFieldGeometry()
+	{
+		Geometry::type = GT_HEIGHTFIELD_GEOMETRY;
+	};
+
+
+	// Declare the virtual destructor.
+	virtual ~HeightFieldGeometry()
+	{
+	}
+
+	const char * heightField;  									// The id of the heightfield data asset
+	float  		heightScale;  										// The scaling factor for the height field in vertical direction (y direction in local space).
+	float  		rowScale;   										// The scaling factor for the height field in the row direction (x direction in local space).
+	float  		columnScale;  										// The scaling factor for the height field in the column direction (z direction in local space).
+	bool 		doubleSided{ false }; 								// Whether or not this heighfield should be treated as double sided for collision detection
 };
 
 
@@ -353,6 +466,12 @@ public:
 		Geometry::type = GT_PLANE_GEOMETRY;
 	};
 
+
+	// Declare the virtual destructor.
+	virtual ~PlaneGeometry()
+	{
+	}
+
 };
 
 
@@ -364,8 +483,15 @@ public:
 	// Declare the constructor.
 	GeometryInstance() { }
 
+
+	// Declare the virtual destructor; cleanup any pointers or arrays of pointers
+	virtual ~GeometryInstance()
+	{
+	}
+
 	Geometry 	*geometry{ nullptr };								// The geometry associated with this instance
-	const char * material;   									// Id of physical material associated with this propery
+	uint32_t 	materialsCount { 0 };
+	const char **  materials;  									// Id of physical material(s) associated with this geometry instance (usually one material; but for heightifields and triangle meshes can be more than one)
 	Pose 		localPose;  											// The local pose for this geometry instance
 	const char * collisionFilterSettings;  						// Describes collision filtering settings; what other types of objects this object will collide with
 };
@@ -380,6 +506,12 @@ public:
 	{
 		Node::type = NT_RIGID_BODY;
 	};
+
+
+	// Declare the virtual destructor; cleanup any pointers or arrays of pointers
+	virtual ~RigidBody()
+	{
+	}
 
 	uint32_t 	geometryInstancesCount { 0 };
 	const GeometryInstance* geometryInstances;   				// The set of geometries to instance with this actor
@@ -397,6 +529,12 @@ public:
 		Node::type = NT_RIGID_STATIC;
 	};
 
+
+	// Declare the virtual destructor.
+	virtual ~RigidStatic()
+	{
+	}
+
 };
 
 
@@ -410,12 +548,18 @@ public:
 		Node::type = NT_RIGID_DYNAMIC;
 	};
 
-	bool 		disableGravity;   									// Disables scene gravity for this actor
+
+	// Declare the virtual destructor.
+	virtual ~RigidDynamic()
+	{
+	}
+
+	bool 		disableGravity{ false };								// Disables scene gravity for this actor
 	Pose 		centerOfMassLocalPose;  								// Center of mass and local pose
-	float  		mass;   											// Sets the mass of a dynamic actor.
-	Vec3 		massSpaceInertiaTensor;   							// Sets the inertia tensor, using a parameter specified in mass space coordinates.
-	Vec3 		linearVelocity;   									// Sets the linear velocity of the actor.
-	Vec3 		angularVelocity;										// Sets the angular velocity of the actor.
+	float  		mass{ 1 };											// Sets the mass of a dynamic actor.
+	Vec3 		massSpaceInertiaTensor{ 1,1,1 };						// Sets the inertia tensor, using a parameter specified in mass space coordinates.
+	Vec3 		linearVelocity{ 0,0,0 };								// Sets the linear velocity of the actor.
+	Vec3 		angularVelocity{ 0,0,0 }; 							// Sets the angular velocity of the actor.
 	float  		linearDamping{ 0 }; 								// Sets the linear damping coefficient.
 	float  		angularDamping{ 0.05f };  							// Sets the angular damping coefficient.
 	float  		maxAngularVelocity{ 7 };  							// set the maximum angular velocity permitted for this actor.
@@ -433,11 +577,157 @@ public:
 		Node::type = NT_JOINT;
 	};
 
+
+	// Declare the virtual destructor.
+	virtual ~Joint()
+	{
+	}
+
 	const char * body0;											// Id of first rigid body joint is constrained to; if empty string; then constaint to the world
 	const char * body1;											// Id of the second rigid body the joint is constrainted to
 	Pose 		localpose0;   										// The parent relative pose; relative to body0
 	Pose 		localpose1;   										// The parent relative pose; relative to body1
 	bool 		collisionEnabled{ false };  							// 
+};
+
+
+// Defines the properties speciic to a fixed joint 
+// Not all properties yet defined!
+class FixedJoint : public Joint
+{
+public:
+	// Declare the constructor.
+	FixedJoint()
+	{
+		Joint::type = NT_FIXED_JOINT;
+	};
+
+
+	// Declare the virtual destructor.
+	virtual ~FixedJoint()
+	{
+	}
+
+};
+
+
+// Defines the properties speciic to a spherical joint 
+// Not all properties yet defined!
+class SphericalJoint : public Joint
+{
+public:
+	// Declare the constructor.
+	SphericalJoint()
+	{
+		Joint::type = NT_SPHERICAL_JOINT;
+	};
+
+
+	// Declare the virtual destructor.
+	virtual ~SphericalJoint()
+	{
+	}
+
+};
+
+
+// Defines the properties speciic to a revolute joint 
+// Not all properties yet defined!
+class RevoluteJoint : public Joint
+{
+public:
+	// Declare the constructor.
+	RevoluteJoint()
+	{
+		Joint::type = NT_REVOLUTE_JOINT;
+	};
+
+
+	// Declare the virtual destructor.
+	virtual ~RevoluteJoint()
+	{
+	}
+
+};
+
+
+// Defines the properties speciic to a prismatic joint 
+// Not all properties yet defined!
+class PrismaticJoint : public Joint
+{
+public:
+	// Declare the constructor.
+	PrismaticJoint()
+	{
+		Joint::type = NT_PRISMATIC_JOINT;
+	};
+
+
+	// Declare the virtual destructor.
+	virtual ~PrismaticJoint()
+	{
+	}
+
+};
+
+
+// Defines the properties speciic to a distance joint 
+// Not all properties yet defined!
+class DistanceJoint : public Joint
+{
+public:
+	// Declare the constructor.
+	DistanceJoint()
+	{
+		Joint::type = NT_DISTANCE_JOINT;
+	};
+
+
+	// Declare the virtual destructor.
+	virtual ~DistanceJoint()
+	{
+	}
+
+};
+
+
+// Defines the properties speciic to a ball and socket joint 
+// Not all properties yet defined!
+class BallAndSocketJoint : public Joint
+{
+public:
+	// Declare the constructor.
+	BallAndSocketJoint()
+	{
+		Joint::type = NT_BALL_AND_SOCKET_JOINT;
+	};
+
+
+	// Declare the virtual destructor.
+	virtual ~BallAndSocketJoint()
+	{
+	}
+
+};
+
+
+// Defines the properties speciic to a six degree of freedom joint 
+// Not all properties yet defined!
+class D6Joint : public Joint
+{
+public:
+	// Declare the constructor.
+	D6Joint()
+	{
+		Joint::type = NT_D6_JOINT;
+	};
+
+
+	// Declare the virtual destructor.
+	virtual ~D6Joint()
+	{
+	}
+
 };
 
 
@@ -460,6 +750,12 @@ public:
 		Node::type = NT_BODY_PAIR_FILTERS;
 	};
 
+
+	// Declare the virtual destructor.
+	virtual ~BodyPairFilters()
+	{
+	}
+
 	uint32_t 	bodyPairsCount { 0 };
 	const BodyPairFilter* bodyPairs; 							// Array of body pair filters
 };
@@ -473,6 +769,12 @@ public:
 	{
 		Node::type = NT_INSTANCE_COLLECTION;
 	};
+
+
+	// Declare the virtual destructor.
+	virtual ~InstanceCollection()
+	{
+	}
 
 	const char * collection; 									// Name of collection to instance
 	Pose 		pose; 												// Pose to instance collection at
@@ -490,6 +792,12 @@ public:
 		Node::type = NT_COLLECTION;
 	};
 
+
+	// Declare the virtual destructor; cleanup any pointers or arrays of pointers
+	virtual ~Collection()
+	{
+	}
+
 	uint32_t 	nodesCount { 0 };
 	const Node*	nodes;   										// Array of nodes in this collection
 };
@@ -505,6 +813,12 @@ public:
 		Node::type = NT_SCENE;
 	};
 
+
+	// Declare the virtual destructor.
+	virtual ~Scene()
+	{
+	}
+
 	Vec3 		gravity{ 0.0f,-9.8f,0.0f };   						// Gravity
 };
 
@@ -516,6 +830,12 @@ public:
 
 	// Declare the constructor.
 	PhysicsDOM() { }
+
+
+	// Declare the virtual destructor; cleanup any pointers or arrays of pointers
+	virtual ~PhysicsDOM()
+	{
+	}
 
 	uint32_t 	collectionsCount { 0 };
 	const Collection* collections;   							// The array of top level collections

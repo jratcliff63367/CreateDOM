@@ -1830,18 +1830,6 @@ class TriangleMesh : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
       mutable_triangles();
 
-  // repeated uint32 materialIndices = 3;
-  int materialindices_size() const;
-  void clear_materialindices();
-  static const int kMaterialIndicesFieldNumber = 3;
-  ::google::protobuf::uint32 materialindices(int index) const;
-  void set_materialindices(int index, ::google::protobuf::uint32 value);
-  void add_materialindices(::google::protobuf::uint32 value);
-  const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
-      materialindices() const;
-  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
-      mutable_materialindices();
-
   // @@protoc_insertion_point(class_scope:CreateDOM.TriangleMesh)
  private:
 
@@ -1849,8 +1837,6 @@ class TriangleMesh : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::google::protobuf::RepeatedPtrField< ::CreateDOM::Vec3 > points_;
   ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > triangles_;
   mutable int _triangles_cached_byte_size_;
-  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > materialindices_;
-  mutable int _materialindices_cached_byte_size_;
   mutable int _cached_size_;
   friend struct protobuf_PhysicsDOM_2eproto::TableStruct;
 };
@@ -2652,7 +2638,7 @@ class TriangleMeshGeometry : public ::google::protobuf::Message /* @@protoc_inse
 
   // accessors -------------------------------------------------------
 
-  // string TriangleMesh = 2;
+  // string triangleMesh = 2;
   void clear_trianglemesh();
   static const int kTriangleMeshFieldNumber = 2;
   const ::std::string& trianglemesh() const;
@@ -2864,27 +2850,19 @@ class GeometryInstance : public ::google::protobuf::Message /* @@protoc_insertio
 
   // accessors -------------------------------------------------------
 
-  // repeated string materials = 2;
-  int materials_size() const;
-  void clear_materials();
-  static const int kMaterialsFieldNumber = 2;
-  const ::std::string& materials(int index) const;
-  ::std::string* mutable_materials(int index);
-  void set_materials(int index, const ::std::string& value);
+  // string material = 2;
+  void clear_material();
+  static const int kMaterialFieldNumber = 2;
+  const ::std::string& material() const;
+  void set_material(const ::std::string& value);
   #if LANG_CXX11
-  void set_materials(int index, ::std::string&& value);
+  void set_material(::std::string&& value);
   #endif
-  void set_materials(int index, const char* value);
-  void set_materials(int index, const char* value, size_t size);
-  ::std::string* add_materials();
-  void add_materials(const ::std::string& value);
-  #if LANG_CXX11
-  void add_materials(::std::string&& value);
-  #endif
-  void add_materials(const char* value);
-  void add_materials(const char* value, size_t size);
-  const ::google::protobuf::RepeatedPtrField< ::std::string>& materials() const;
-  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_materials();
+  void set_material(const char* value);
+  void set_material(const char* value, size_t size);
+  ::std::string* mutable_material();
+  ::std::string* release_material();
+  void set_allocated_material(::std::string* material);
 
   // string collisionFilterSettings = 4;
   void clear_collisionfiltersettings();
@@ -2922,7 +2900,7 @@ class GeometryInstance : public ::google::protobuf::Message /* @@protoc_insertio
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::std::string> materials_;
+  ::google::protobuf::internal::ArenaStringPtr material_;
   ::google::protobuf::internal::ArenaStringPtr collisionfiltersettings_;
   ::CreateDOM::Geometry* geometry_;
   ::CreateDOM::Pose* localpose_;
@@ -5699,36 +5677,6 @@ TriangleMesh::mutable_triangles() {
   return &triangles_;
 }
 
-// repeated uint32 materialIndices = 3;
-inline int TriangleMesh::materialindices_size() const {
-  return materialindices_.size();
-}
-inline void TriangleMesh::clear_materialindices() {
-  materialindices_.Clear();
-}
-inline ::google::protobuf::uint32 TriangleMesh::materialindices(int index) const {
-  // @@protoc_insertion_point(field_get:CreateDOM.TriangleMesh.materialIndices)
-  return materialindices_.Get(index);
-}
-inline void TriangleMesh::set_materialindices(int index, ::google::protobuf::uint32 value) {
-  materialindices_.Set(index, value);
-  // @@protoc_insertion_point(field_set:CreateDOM.TriangleMesh.materialIndices)
-}
-inline void TriangleMesh::add_materialindices(::google::protobuf::uint32 value) {
-  materialindices_.Add(value);
-  // @@protoc_insertion_point(field_add:CreateDOM.TriangleMesh.materialIndices)
-}
-inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
-TriangleMesh::materialindices() const {
-  // @@protoc_insertion_point(field_list:CreateDOM.TriangleMesh.materialIndices)
-  return materialindices_;
-}
-inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
-TriangleMesh::mutable_materialindices() {
-  // @@protoc_insertion_point(field_mutable_list:CreateDOM.TriangleMesh.materialIndices)
-  return &materialindices_;
-}
-
 // -------------------------------------------------------------------
 
 // Geometry
@@ -6359,46 +6307,46 @@ inline void TriangleMeshGeometry::set_allocated_scale(::CreateDOM::MeshScale* sc
   // @@protoc_insertion_point(field_set_allocated:CreateDOM.TriangleMeshGeometry.scale)
 }
 
-// string TriangleMesh = 2;
+// string triangleMesh = 2;
 inline void TriangleMeshGeometry::clear_trianglemesh() {
   trianglemesh_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline const ::std::string& TriangleMeshGeometry::trianglemesh() const {
-  // @@protoc_insertion_point(field_get:CreateDOM.TriangleMeshGeometry.TriangleMesh)
+  // @@protoc_insertion_point(field_get:CreateDOM.TriangleMeshGeometry.triangleMesh)
   return trianglemesh_.GetNoArena();
 }
 inline void TriangleMeshGeometry::set_trianglemesh(const ::std::string& value) {
   
   trianglemesh_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:CreateDOM.TriangleMeshGeometry.TriangleMesh)
+  // @@protoc_insertion_point(field_set:CreateDOM.TriangleMeshGeometry.triangleMesh)
 }
 #if LANG_CXX11
 inline void TriangleMeshGeometry::set_trianglemesh(::std::string&& value) {
   
   trianglemesh_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:CreateDOM.TriangleMeshGeometry.TriangleMesh)
+  // @@protoc_insertion_point(field_set_rvalue:CreateDOM.TriangleMeshGeometry.triangleMesh)
 }
 #endif
 inline void TriangleMeshGeometry::set_trianglemesh(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
   trianglemesh_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:CreateDOM.TriangleMeshGeometry.TriangleMesh)
+  // @@protoc_insertion_point(field_set_char:CreateDOM.TriangleMeshGeometry.triangleMesh)
 }
 inline void TriangleMeshGeometry::set_trianglemesh(const char* value, size_t size) {
   
   trianglemesh_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:CreateDOM.TriangleMeshGeometry.TriangleMesh)
+  // @@protoc_insertion_point(field_set_pointer:CreateDOM.TriangleMeshGeometry.triangleMesh)
 }
 inline ::std::string* TriangleMeshGeometry::mutable_trianglemesh() {
   
-  // @@protoc_insertion_point(field_mutable:CreateDOM.TriangleMeshGeometry.TriangleMesh)
+  // @@protoc_insertion_point(field_mutable:CreateDOM.TriangleMeshGeometry.triangleMesh)
   return trianglemesh_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* TriangleMeshGeometry::release_trianglemesh() {
-  // @@protoc_insertion_point(field_release:CreateDOM.TriangleMeshGeometry.TriangleMesh)
+  // @@protoc_insertion_point(field_release:CreateDOM.TriangleMeshGeometry.triangleMesh)
   
   return trianglemesh_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -6409,7 +6357,7 @@ inline void TriangleMeshGeometry::set_allocated_trianglemesh(::std::string* tria
     
   }
   trianglemesh_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), trianglemesh);
-  // @@protoc_insertion_point(field_set_allocated:CreateDOM.TriangleMeshGeometry.TriangleMesh)
+  // @@protoc_insertion_point(field_set_allocated:CreateDOM.TriangleMeshGeometry.triangleMesh)
 }
 
 // bool doubleSided = 3;
@@ -6474,73 +6422,57 @@ inline void GeometryInstance::set_allocated_geometry(::CreateDOM::Geometry* geom
   // @@protoc_insertion_point(field_set_allocated:CreateDOM.GeometryInstance.geometry)
 }
 
-// repeated string materials = 2;
-inline int GeometryInstance::materials_size() const {
-  return materials_.size();
+// string material = 2;
+inline void GeometryInstance::clear_material() {
+  material_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void GeometryInstance::clear_materials() {
-  materials_.Clear();
+inline const ::std::string& GeometryInstance::material() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.GeometryInstance.material)
+  return material_.GetNoArena();
 }
-inline const ::std::string& GeometryInstance::materials(int index) const {
-  // @@protoc_insertion_point(field_get:CreateDOM.GeometryInstance.materials)
-  return materials_.Get(index);
-}
-inline ::std::string* GeometryInstance::mutable_materials(int index) {
-  // @@protoc_insertion_point(field_mutable:CreateDOM.GeometryInstance.materials)
-  return materials_.Mutable(index);
-}
-inline void GeometryInstance::set_materials(int index, const ::std::string& value) {
-  // @@protoc_insertion_point(field_set:CreateDOM.GeometryInstance.materials)
-  materials_.Mutable(index)->assign(value);
+inline void GeometryInstance::set_material(const ::std::string& value) {
+  
+  material_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CreateDOM.GeometryInstance.material)
 }
 #if LANG_CXX11
-inline void GeometryInstance::set_materials(int index, ::std::string&& value) {
-  // @@protoc_insertion_point(field_set:CreateDOM.GeometryInstance.materials)
-  materials_.Mutable(index)->assign(std::move(value));
+inline void GeometryInstance::set_material(::std::string&& value) {
+  
+  material_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CreateDOM.GeometryInstance.material)
 }
 #endif
-inline void GeometryInstance::set_materials(int index, const char* value) {
+inline void GeometryInstance::set_material(const char* value) {
   GOOGLE_DCHECK(value != NULL);
-  materials_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set_char:CreateDOM.GeometryInstance.materials)
+  
+  material_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CreateDOM.GeometryInstance.material)
 }
-inline void GeometryInstance::set_materials(int index, const char* value, size_t size) {
-  materials_.Mutable(index)->assign(
-    reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:CreateDOM.GeometryInstance.materials)
+inline void GeometryInstance::set_material(const char* value, size_t size) {
+  
+  material_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CreateDOM.GeometryInstance.material)
 }
-inline ::std::string* GeometryInstance::add_materials() {
-  // @@protoc_insertion_point(field_add_mutable:CreateDOM.GeometryInstance.materials)
-  return materials_.Add();
+inline ::std::string* GeometryInstance::mutable_material() {
+  
+  // @@protoc_insertion_point(field_mutable:CreateDOM.GeometryInstance.material)
+  return material_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void GeometryInstance::add_materials(const ::std::string& value) {
-  materials_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add:CreateDOM.GeometryInstance.materials)
+inline ::std::string* GeometryInstance::release_material() {
+  // @@protoc_insertion_point(field_release:CreateDOM.GeometryInstance.material)
+  
+  return material_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-#if LANG_CXX11
-inline void GeometryInstance::add_materials(::std::string&& value) {
-  materials_.Add(std::move(value));
-  // @@protoc_insertion_point(field_add:CreateDOM.GeometryInstance.materials)
-}
-#endif
-inline void GeometryInstance::add_materials(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  materials_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add_char:CreateDOM.GeometryInstance.materials)
-}
-inline void GeometryInstance::add_materials(const char* value, size_t size) {
-  materials_.Add()->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_add_pointer:CreateDOM.GeometryInstance.materials)
-}
-inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
-GeometryInstance::materials() const {
-  // @@protoc_insertion_point(field_list:CreateDOM.GeometryInstance.materials)
-  return materials_;
-}
-inline ::google::protobuf::RepeatedPtrField< ::std::string>*
-GeometryInstance::mutable_materials() {
-  // @@protoc_insertion_point(field_mutable_list:CreateDOM.GeometryInstance.materials)
-  return &materials_;
+inline void GeometryInstance::set_allocated_material(::std::string* material) {
+  if (material != NULL) {
+    
+  } else {
+    
+  }
+  material_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), material);
+  // @@protoc_insertion_point(field_set_allocated:CreateDOM.GeometryInstance.material)
 }
 
 // .CreateDOM.Pose localPose = 3;

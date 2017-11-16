@@ -11,8 +11,16 @@
 #include <algorithm>
 #include <assert.h>
 
-#if 0
-#include "PhysicsDOM.h"
+#if 1
+//#include "PhysicsDOMImpl.h"
+#include "DeepCopyImpl.h"
+
+void testDeepCopy(void)
+{
+	DEEP_COPY::GeometryInstanceImpl g;
+	g.mGeometry = static_cast< DEEP_COPY::GeometryImpl *>(new DEEP_COPY::BoxGeometryImpl);
+}
+
 #else
 
 #pragma warning(disable:4100)
@@ -144,8 +152,20 @@ static const char *getDefaultValueString(const char *df)
 class DataItem
 {
 public:
+	bool needsReflection(void) const
+	{
+		bool ret = false;
+
+		if (mIsArray || mIsPointer || mIsString)
+		{
+			ret = true;
+		}
+
+		return ret;
+	}
 	bool			mIsArray{ false }; // true if this data item is an array
 	bool			mIsPointer{ false };
+	bool			mIsString{ false };
 	std::string		mMember;	// name of this data item
 	std::string		mType;	// Type of data item
 	std::string		mInheritsFrom;
@@ -281,6 +301,10 @@ public:
 			STRING_HELPER::stringFormat(scratch, 512, "%sImpl", name.c_str());
 			ret = scratch;
 		}
+		if (strcmp(ret, "PhysicsMaterial") == 0)
+		{
+//			printf("debug me");
+		}
 		return ret;
 	}
 
@@ -295,6 +319,10 @@ public:
 			temp[0] = upcase(temp[0]); // upper case the first character of the member variable name
 			STRING_HELPER::stringFormat(scratch, 512, "m%s", temp);
 			ret = scratch;
+		}
+		if (strcmp(ret, "mGeometry") == 0)
+		{
+//			printf("debug me");
 		}
 		return ret;
 	}
@@ -366,7 +394,7 @@ public:
 					temp[0] = upcase(temp[0]);
 					if (i.mIsPointer)
 					{
-						impl.printCode(0, "typedef std::vector< %s *> %sVector; // Forward declare the '%s' vector\r\n", type, temp, temp);
+						impl.printCode(0, "typedef std::vector< %sImpl *> %sVector; // Forward declare the '%s' vector\r\n", type, temp, temp);
 					}
 					else
 					{
@@ -376,18 +404,21 @@ public:
 				}
 			}
 		}
-
 		bool needsImpl = false;
-		if (hasArrays || hasInheritance || hasPointer || hasStrings )
+		if (hasArrays || hasInheritance || hasPointer || hasStrings || mClone )
 		{
 			needsImpl = true;
 		}
 		// ok..we need to decide if this class needs an implementation/reflection
 		// version. It only needs one if:
 		// It contains arrays, has inheritance, pointers..
+		if (strcmp(mName.c_str(), "Geometry") == 0)
+		{
+//			printf("debug me");
+		}
 
 
-		auto classDefinition = [this](CodePrinter &cp, bool isImpl)
+		auto classDefinition = [this](CodePrinter &cp, bool isImpl,bool needsDeepCopy)
 		{
 			cp.printCode(0, "\r\n");
 			if (!mShortDescription.empty())
@@ -399,36 +430,60 @@ public:
 				cp.printCode(0, "// %s\r\n", mLongDescription.c_str());
 			}
 			cp.printCode(0, "class %s", getClassNameString(mName,isImpl)); 
+			bool firstInherit = true;
 			if (!mInheritsFrom.empty() || isImpl)
 			{
-				cp.printCode(0, " : public", mInheritsFrom.c_str());
-				if (!mInheritsFrom.empty())
-				{
-					cp.printCode(0, " %s", mInheritsFrom.c_str());
-				}
+				firstInherit = false;
 				if (isImpl)
 				{
-					if (!mInheritsFrom.empty())
-					{
-						cp.printCode(0,", public");
-					}
-					cp.printCode(0, " %s", mName.c_str());
+					cp.printCode(0, ": public %s", mName.c_str());
 				}
+				else
+				{
+					cp.printCode(0, " : public %s", mInheritsFrom.c_str());
+				}
+			}
+			if (needsDeepCopy && isImpl )
+			{
+				cp.printCode(0, "%s public CloneObject", firstInherit ? ":" : ",");
 			}
 			cp.printCode(0, "\r\n");
 			cp.printCode(0, "{\r\n");
 
 			cp.printCode(0, "public:\r\n");
 		};
+
+		bool needsDeepCopy = mInheritsFrom.empty() ? false : true;
+		if ( !needsDeepCopy )
+		{
+			needsDeepCopy = mClone;
+			if (!needsDeepCopy)
+			{
+				for (auto &i : mItems)
+				{
+					if (i.mIsArray && i.mIsPointer)
+					{
+						needsDeepCopy = true;
+						break;
+					}
+					else if (i.mIsPointer)
+					{
+						needsDeepCopy = true;
+						break;
+					}
+				}
+			}
+		}
+
 		// If we need an implementation class
 		if (needsImpl)
 		{
-			classDefinition(impl, true);
+			classDefinition(impl, true, needsDeepCopy);
 		}
-		classDefinition(dom, false);
+		classDefinition(dom, false, needsDeepCopy);
 
-		// Implemention of the class body..
-		auto classBody = [this](CodePrinter &cp, bool isImpl)
+		// Implementation of the class body..
+		auto classBody = [this](CodePrinter &cp, bool isImpl,bool needsDeepCopy)
 		{
 			bool hasInheritedItemsWithDefaultValues = false;
 			for (auto &i : mItems)
@@ -473,7 +528,7 @@ public:
 				cp.printCode(0, "\r\n");
 			}
 
-			if (hasInheritedItemsWithDefaultValues)
+			if (hasInheritedItemsWithDefaultValues )
 			{
 				if (!haveDefaultConstructor)
 				{
@@ -481,19 +536,22 @@ public:
 					cp.printCode(1, "// Declare the constructor.\r\n");
 					cp.printCode(1, "%s()\r\n", getClassNameString(mName,isImpl));
 					cp.printCode(1, "{\r\n");
-					for (auto &i : mItems)
+					if (!isImpl)
 					{
-						// If this is an 'inherited' data item. Don't clear it here
-						// Because it was already handled in the initializer
-						if (!i.mInheritsFrom.empty() && !i.mDefaultValue.empty())
+						for (auto &i : mItems)
 						{
-							cp.printCode(2, "%s::%s = %s;\r\n",
-								i.mInheritsFrom.c_str(),
-								getMemberName(i.mMember,isImpl),
-								getDefaultValueString(i.mDefaultValue.c_str()));
+							// If this is an 'inherited' data item. Don't clear it here
+							// Because it was already handled in the initializer
+							if (!i.mInheritsFrom.empty() && !i.mDefaultValue.empty())
+							{
+								cp.printCode(2, "%s::%s = %s;\r\n",
+									i.mInheritsFrom.c_str(),
+									getMemberName(i.mMember, isImpl),
+									getDefaultValueString(i.mDefaultValue.c_str()));
+							}
 						}
 					}
-					cp.printCode(1, "};\r\n");
+					cp.printCode(1, "}\r\n");
 					cp.printCode(0, "\r\n");
 				}
 			}
@@ -512,6 +570,7 @@ public:
 					hasPointers = true;
 				}
 			}
+
 			if (hasArrayOfPointers || hasPointers)
 			{
 				if (!haveDefaultConstructor)
@@ -523,21 +582,24 @@ public:
 					cp.printCode(0, "\r\n");
 				}
 
-				if (isImpl)
+				if (needsDeepCopy )
 				{
 					cp.printCode(0, "\r\n");
 					cp.printCode(1, "// Declare the virtual destructor; cleanup any pointers or arrays of pointers\r\n");
 					cp.printCode(1, "virtual ~%s()\r\n", getClassNameString(mName, isImpl));
 					cp.printCode(1, "{\r\n");
-					for (auto &i : mItems)
+					if (isImpl)
 					{
-						if (i.mIsArray && i.mIsPointer)
+						for (auto &i : mItems)
 						{
-							cp.printCode(2, "for (auto &i:%s) delete i; // Delete all of the object pointers in this array\r\n", getMemberName(i.mMember, isImpl));
-						}
-						else if (i.mIsPointer)
-						{
-							cp.printCode(2, "delete %s; // Delete this object\r\n", getMemberName(i.mMember, isImpl));
+							if (i.mIsArray && i.mIsPointer)
+							{
+								cp.printCode(2, "for (auto &i:%s) delete i; // Delete all of the object pointers in this array\r\n", getMemberName(i.mMember, isImpl));
+							}
+							else if (i.mIsPointer)
+							{
+								cp.printCode(2, "delete %s; // Delete this object\r\n", getMemberName(i.mMember, isImpl));
+							}
 						}
 					}
 					cp.printCode(1, "}\r\n");
@@ -546,7 +608,7 @@ public:
 			}
 			else if (!mInheritsFrom.empty())
 			{
-				if (isImpl)
+				if (needsDeepCopy)
 				{
 					cp.printCode(0, "\r\n");
 					cp.printCode(1, "// Declare the virtual destructor.\r\n");
@@ -557,7 +619,7 @@ public:
 				}
 			}
 			// create the deep copy constructors and such
-			if (hasArrayOfPointers || hasPointers || !mInheritsFrom.empty())
+			if (needsDeepCopy)
 			{
 				// Do the deep copy constructor and assignment operators
 				if ( isImpl )
@@ -574,11 +636,11 @@ public:
 					cp.printCode(1, "// Declare the virtual clone method using a deep copy\r\n");
 					if (mInheritsFrom.empty())
 					{
-						cp.printCode(1, "virtual %s* clone() const\r\n", getClassNameString(mName,isImpl));
+						cp.printCode(1, "virtual CloneObject* clone() const\r\n" );
 					}
 					else
 					{
-						cp.printCode(1, "virtual %s* clone() const override\r\n", mInheritsFrom.c_str());
+						cp.printCode(1, "virtual CloneObject* clone() const override\r\n");
 					}
 					cp.printCode(1, "{\r\n");
 					cp.printCode(2, "return new %s(*this);\r\n", getClassNameString(mName,isImpl));
@@ -599,11 +661,13 @@ public:
 
 					for (auto &i : mItems)
 					{
+						if ( !i.needsReflection() && isImpl)
+							continue;
 						if (i.mIsArray && i.mIsPointer)
 						{
 							cp.printCode(3, "for (auto &i:%s) delete i; // Delete all of the object pointers in this array\r\n", getMemberName(i.mMember,isImpl));
 							cp.printCode(3, "%s.clear(); // Clear the current array\r\n", getMemberName(i.mMember,isImpl));
-							cp.printCode(3, "for (auto &i:other.%s) %s.push_back( static_cast< %s *>(i->clone())); // Deep copy object pointers into the array\r\n", getMemberName(i.mMember,isImpl), getMemberName(i.mMember,isImpl), i.mType.c_str());
+							cp.printCode(3, "for (auto &i:other.%s) %s.push_back( static_cast< %sImpl *>(i->clone())); // Deep copy object pointers into the array\r\n", getMemberName(i.mMember,isImpl), getMemberName(i.mMember,isImpl), i.mType.c_str());
 						}
 						else if (i.mIsPointer)
 						{
@@ -611,7 +675,10 @@ public:
 							cp.printCode(3, "%s = nullptr; // set the pointer to null.\r\n", getMemberName(i.mMember,isImpl));
 							cp.printCode(3, "if ( other.%s )\r\n", getMemberName(i.mMember,isImpl));
 							cp.printCode(3, "{\r\n");
-							cp.printCode(4, "%s = static_cast<%s *>(other.%s->clone()); // perform the deep copy and assignment here\r\n", getMemberName(i.mMember,isImpl), i.mType.c_str(), getMemberName(i.mMember,isImpl));
+							cp.printCode(4, "%s = static_cast<%sImpl *>(other.%s->clone()); // perform the deep copy and assignment here\r\n", 
+								getMemberName(i.mMember,isImpl), 
+								i.mType.c_str(), 
+								getMemberName(i.mMember,isImpl));
 							cp.printCode(3, "}\r\n");
 						}
 						else if (i.mInheritsFrom.empty())
@@ -650,6 +717,8 @@ public:
 
 					for (auto &i : mItems)
 					{
+						if (!i.needsReflection() && isImpl)
+							continue;
 						if (i.mIsArray && i.mIsPointer)
 						{
 							cp.printCode(3, "%s = other.%s;\r\n", getMemberName(i.mMember,isImpl), getMemberName(i.mMember,isImpl));
@@ -665,21 +734,11 @@ public:
 							cp.printCode(3, "%s = other.%s;\r\n", getMemberName(i.mMember, isImpl), getMemberName(i.mMember, isImpl));
 						}
 					}
-
 					cp.printCode(2, "}\r\n");
 					cp.printCode(2, "return *this;\r\n");
 					cp.printCode(1, "}\r\n");
 					cp.printCode(0, "\r\n");
 				}
-
-
-			}
-
-			if (mClone && isImpl )
-			{
-				cp.printCode(1, "// Declare the clone method\r\n");
-				cp.printCode(1, "virtual %s *clone() const = 0;\r\n", mName.c_str());
-				cp.printCode(0, "\r\n");
 			}
 
 			for (auto &i : mItems)
@@ -690,6 +749,12 @@ public:
 				{
 					continue;
 				}
+
+				if (!i.needsReflection() && isImpl )
+					continue;
+
+				getMemberName(i.mMember, isImpl);
+
 				if (i.mIsArray)
 				{
 					if (isImpl)
@@ -705,13 +770,30 @@ public:
 					{
 						cp.printCode(1, "uint32_t");
 						cp.printCode(4, "%sCount { 0 };\r\n", getMemberName(i.mMember,isImpl) );
-
-						cp.printCode(1, "const %s*", getTypeString(i.mType.c_str(), isImpl));
+						if (i.mIsString && !isImpl)
+						{
+							cp.printCode(1, "%s*", getTypeString(i.mType.c_str(), isImpl));
+						}
+						else
+						{
+							cp.printCode(1, "const %s*", getTypeString(i.mType.c_str(), isImpl));
+						}
 					}
 				}
 				else
 				{
-					cp.printCode(1, "%s", getTypeString(i.mType.c_str(),isImpl));
+					if (strcmp(i.mType.c_str(), "Geometry") == 0)
+					{
+//						printf("debug me");
+					}
+					if (isImpl && i.mIsPointer && !i.mIsArray)
+					{
+						cp.printCode(1, "%sImpl", getTypeString(i.mType.c_str(), isImpl));
+					}
+					else
+					{
+						cp.printCode(1, "%s", getTypeString(i.mType.c_str(), isImpl));
+					}
 				}
 
 				if (i.mIsPointer && !i.mIsArray)
@@ -743,9 +825,9 @@ public:
 
 		if (needsImpl)
 		{
-			classBody(impl, true);
+			classBody(impl, true, needsDeepCopy);
 		}
-		classBody(dom, false);
+		classBody(dom, false, needsDeepCopy);
 
 		auto endClass = [this](CodePrinter &cp)
 		{
@@ -957,6 +1039,14 @@ public:
 			cp.printCode(0, "namespace %s\r\n", mNamespace.c_str());
 			cp.printCode(0, "{\r\n");
 			cp.printCode(0, "\r\n");
+			if (isImpl)
+			{
+				cp.printCode(0, "class CloneObject\r\n");
+				cp.printCode(0, "{\r\n");
+				cp.printCode(1, "virtual CloneObject *clone(void) const = 0;\r\n");
+				cp.printCode(0, "};\r\n");
+
+			}
 		};
 
 		headerBegin(impl, true);
@@ -1245,6 +1335,7 @@ public:
 					if (argc >= 3)
 					{
 						di.mType = std::string(argv[2]);
+						di.mIsString = strcmp(di.mType.c_str(), "string") == 0;
 						if (argc >= 4)
 						{
 							di.mInheritsFrom = std::string(argv[3]);
