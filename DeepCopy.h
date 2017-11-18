@@ -11,6 +11,15 @@
 namespace DEEP_COPY
 {
 
+// Declare the clone-object class for deep copies
+// of objects by the implementation classes
+// Not to be used with the base DOM classes;
+// they do not support deep copies
+class CloneObject
+{
+public:
+	virtual CloneObject *clone(void) const { return nullptr; };
+};
 
 enum GeometryType
 {
@@ -20,7 +29,7 @@ enum GeometryType
 
 
 // Base class for all geometries
-class Geometry
+class Geometry: public CloneObject
 {
 public:
 	GeometryType type;   										// 
@@ -70,7 +79,7 @@ public:
 
 
 // Defines a single instance of a geometry
-class GeometryInstance
+class GeometryInstance: public CloneObject
 {
 public:
 
@@ -83,11 +92,12 @@ public:
 	{
 	}
 
-	Geometry 	*geometry{ nullptr };								// The geometry associated with this instance
+	uint32_t 	geometriesCount { 0 };
+	const Geometry* geometries;									// The geometry associated with this instance
 };
 
 
 
 } // End of DEEP_COPY namespace
 
-#endif // End of DEEPCOPY_H
+#endif // End of Geometry

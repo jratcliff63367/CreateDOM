@@ -14,19 +14,11 @@
 namespace DEEP_COPY
 {
 
-class CloneObject
-{
-	virtual CloneObject *clone(void) const = 0;
-};
 
 // Base class for all geometries
-class GeometryImpl: public Geometry, public CloneObject
+class GeometryImpl: public Geometry
 {
 public:
-	GeometryImpl(void)
-	{
-
-	}
 
 	// Declare the deep copy constructor; handles copying pointers and pointer arrays
 	GeometryImpl(const GeometryImpl &other)
@@ -70,7 +62,7 @@ public:
 
 
 // Defines a box geometry
-class BoxGeometryImpl: public GeometryImpl
+class BoxGeometryImpl: public BoxGeometry
 {
 public:
 	// Declare the constructor.
@@ -129,7 +121,7 @@ public:
 
 
 // Defines a sphere geometry
-class SphereGeometryImpl: public GeometryImpl
+class SphereGeometryImpl: public SphereGeometry
 {
 public:
 	// Declare the constructor.
@@ -186,9 +178,10 @@ public:
 
 };
 
+typedef std::vector< Geometry *> GeometryVector; // Forward declare the 'Geometry' vector for the implementation object pointers
 
 // Defines a single instance of a geometry
-class GeometryInstanceImpl: public GeometryInstance, public CloneObject
+class GeometryInstanceImpl: public GeometryInstance
 {
 public:
 
@@ -199,7 +192,7 @@ public:
 	// Declare the virtual destructor; cleanup any pointers or arrays of pointers
 	virtual ~GeometryInstanceImpl()
 	{
-		delete mGeometry; // Delete this object
+		for (auto &i:mGeometries) delete i; // Delete all of the object pointers in this array
 	}
 
 
@@ -221,12 +214,10 @@ public:
 	{
 		if (this != &other )
 		{
-			delete mGeometry; // delete any previous pointer.
-			mGeometry = nullptr; // set the pointer to null.
-			if ( other.mGeometry )
-			{
-				mGeometry = static_cast<GeometryImpl *>(other.mGeometry->clone()); // perform the deep copy and assignment here
-			}
+			for (auto &i:mGeometries) delete i; // Delete all of the object pointers in this array
+			mGeometries.clear(); // Clear the current array
+			mGeometries.reserve(other.mGeometries.size()); // Reserve number of items for the new array
+			for (auto &i:other.mGeometries) mGeometries.push_back( static_cast< GeometryImpl *>(i->clone())); // Deep copy object pointers into the array
 		}
 		return *this;
 	}
@@ -243,17 +234,17 @@ public:
 	{
 		if (this != &other )
 		{
-			mGeometry = other.mGeometry;
-			other.mGeometry = nullptr; // Set 'other' pointer to null since we have moved it
+			mGeometries = other.mGeometries;
+			other.mGeometries.clear(); // Clear the 'other' array now that we have moved it
 		}
 		return *this;
 	}
 
-	GeometryImpl *mGeometry{ nullptr };							// The geometry associated with this instance
+	GeometryVector   mGeometries;  								// The geometry associated with this instance
 };
 
 
 
 } // End of DEEP_COPY namespace
 
-#endif // End of DEEPCOPY_H
+#endif // End of Geometry

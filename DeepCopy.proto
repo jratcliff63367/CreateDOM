@@ -49,7 +49,7 @@ message SphereGeometry
 // Defines a single instance of a geometry
 message GeometryInstance
 {
-	Geometry geometry = 1;
+	repeated Geometry geometries = 1;
 }
 
 

@@ -11,6 +11,19 @@
 namespace PHYSICS_DOM
 {
 
+// Declare the clone-object class for deep copies
+// of objects by the implementation classes
+// Not to be used with the base DOM classes;
+// they do not support deep copies
+// Also declares the virtual method to init the DOM contents.
+class CloneObject
+{
+public:
+	// Declare the default virtual clone method; not implemented for DOM objects; only used for the implementation versions.
+	virtual CloneObject *clone(void) const { return nullptr; };
+	// Declare the default initDOM method; which is only needed for some implementation objects.
+	virtual void initDOM(void) {  };
+};
 
 // Defines a basic 3d vector type
 class Vec3
@@ -170,7 +183,7 @@ public:
 
 
 // Base class that specifies a unique ID and an optional description name field for an object
-class Node
+class Node: public CloneObject
 {
 public:
 	const char * id; 											// Unique Id for this object
@@ -199,7 +212,7 @@ public:
 	PhysicsMaterial()
 	{
 		Node::type = NT_PHYSICS_MATERIAL;
-	};
+	}
 
 
 	// Declare the virtual destructor.
@@ -223,7 +236,7 @@ public:
 	ConvexHull()
 	{
 		Node::type = NT_CONVEXHULL;
-	};
+	}
 
 
 	// Declare the virtual destructor.
@@ -244,7 +257,7 @@ public:
 	TriangleMesh()
 	{
 		Node::type = NT_TRIANGLEMESH;
-	};
+	}
 
 
 	// Declare the virtual destructor.
@@ -269,7 +282,7 @@ public:
 	HeightField()
 	{
 		Node::type = NT_HEIGHTFIELD;
-	};
+	}
 
 
 	// Declare the virtual destructor.
@@ -300,7 +313,7 @@ enum GeometryType
 
 
 // Base class for all geometries
-class Geometry
+class Geometry: public CloneObject
 {
 public:
 	GeometryType type;   										// 
@@ -315,7 +328,7 @@ public:
 	BoxGeometry()
 	{
 		Geometry::type = GT_BOX_GEOMETRY;
-	};
+	}
 
 
 	// Declare the virtual destructor.
@@ -335,7 +348,7 @@ public:
 	SphereGeometry()
 	{
 		Geometry::type = GT_SPHERE_GEOMETRY;
-	};
+	}
 
 
 	// Declare the virtual destructor.
@@ -355,7 +368,7 @@ public:
 	CapsuleGeometry()
 	{
 		Geometry::type = GT_CAPSULE_GEOMETRY;
-	};
+	}
 
 
 	// Declare the virtual destructor.
@@ -376,7 +389,7 @@ public:
 	CylinderGeometry()
 	{
 		Geometry::type = GT_CYLINDER_GEOMETRY;
-	};
+	}
 
 
 	// Declare the virtual destructor.
@@ -397,7 +410,7 @@ public:
 	ConvexHullGeometry()
 	{
 		Geometry::type = GT_CONVEXHULL_GEOMETRY;
-	};
+	}
 
 
 	// Declare the virtual destructor.
@@ -418,7 +431,7 @@ public:
 	TriangleMeshGeometry()
 	{
 		Geometry::type = GT_TRIANGLEMESH_GEOMETRY;
-	};
+	}
 
 
 	// Declare the virtual destructor.
@@ -440,7 +453,7 @@ public:
 	HeightFieldGeometry()
 	{
 		Geometry::type = GT_HEIGHTFIELD_GEOMETRY;
-	};
+	}
 
 
 	// Declare the virtual destructor.
@@ -464,7 +477,7 @@ public:
 	PlaneGeometry()
 	{
 		Geometry::type = GT_PLANE_GEOMETRY;
-	};
+	}
 
 
 	// Declare the virtual destructor.
@@ -476,7 +489,7 @@ public:
 
 
 // Defines a single instance of a geometry
-class GeometryInstance
+class GeometryInstance: public CloneObject
 {
 public:
 
@@ -505,7 +518,7 @@ public:
 	RigidBody()
 	{
 		Node::type = NT_RIGID_BODY;
-	};
+	}
 
 
 	// Declare the virtual destructor; cleanup any pointers or arrays of pointers
@@ -527,7 +540,7 @@ public:
 	RigidStatic()
 	{
 		Node::type = NT_RIGID_STATIC;
-	};
+	}
 
 
 	// Declare the virtual destructor.
@@ -546,7 +559,7 @@ public:
 	RigidDynamic()
 	{
 		Node::type = NT_RIGID_DYNAMIC;
-	};
+	}
 
 
 	// Declare the virtual destructor.
@@ -575,7 +588,7 @@ public:
 	Joint()
 	{
 		Node::type = NT_JOINT;
-	};
+	}
 
 
 	// Declare the virtual destructor.
@@ -600,7 +613,7 @@ public:
 	FixedJoint()
 	{
 		Joint::type = NT_FIXED_JOINT;
-	};
+	}
 
 
 	// Declare the virtual destructor.
@@ -620,7 +633,7 @@ public:
 	SphericalJoint()
 	{
 		Joint::type = NT_SPHERICAL_JOINT;
-	};
+	}
 
 
 	// Declare the virtual destructor.
@@ -640,7 +653,7 @@ public:
 	RevoluteJoint()
 	{
 		Joint::type = NT_REVOLUTE_JOINT;
-	};
+	}
 
 
 	// Declare the virtual destructor.
@@ -660,7 +673,7 @@ public:
 	PrismaticJoint()
 	{
 		Joint::type = NT_PRISMATIC_JOINT;
-	};
+	}
 
 
 	// Declare the virtual destructor.
@@ -680,7 +693,7 @@ public:
 	DistanceJoint()
 	{
 		Joint::type = NT_DISTANCE_JOINT;
-	};
+	}
 
 
 	// Declare the virtual destructor.
@@ -700,7 +713,7 @@ public:
 	BallAndSocketJoint()
 	{
 		Joint::type = NT_BALL_AND_SOCKET_JOINT;
-	};
+	}
 
 
 	// Declare the virtual destructor.
@@ -720,7 +733,7 @@ public:
 	D6Joint()
 	{
 		Joint::type = NT_D6_JOINT;
-	};
+	}
 
 
 	// Declare the virtual destructor.
@@ -748,7 +761,7 @@ public:
 	BodyPairFilters()
 	{
 		Node::type = NT_BODY_PAIR_FILTERS;
-	};
+	}
 
 
 	// Declare the virtual destructor.
@@ -768,7 +781,7 @@ public:
 	InstanceCollection()
 	{
 		Node::type = NT_INSTANCE_COLLECTION;
-	};
+	}
 
 
 	// Declare the virtual destructor.
@@ -790,7 +803,7 @@ public:
 	Collection()
 	{
 		Node::type = NT_COLLECTION;
-	};
+	}
 
 
 	// Declare the virtual destructor; cleanup any pointers or arrays of pointers
@@ -811,7 +824,7 @@ public:
 	Scene()
 	{
 		Node::type = NT_SCENE;
-	};
+	}
 
 
 	// Declare the virtual destructor.
@@ -824,7 +837,7 @@ public:
 
 
 // The root node container
-class PhysicsDOM
+class PhysicsDOM: public CloneObject
 {
 public:
 

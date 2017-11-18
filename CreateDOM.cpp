@@ -11,14 +11,12 @@
 #include <algorithm>
 #include <assert.h>
 
-#if 1
-//#include "PhysicsDOMImpl.h"
-#include "DeepCopyImpl.h"
+#if 0
+#include "PhysicsDOMImpl.h"
+//#include "DeepCopyImpl.h"
 
 void testDeepCopy(void)
 {
-	DEEP_COPY::GeometryInstanceImpl g;
-	g.mGeometry = static_cast< DEEP_COPY::GeometryImpl *>(new DEEP_COPY::BoxGeometryImpl);
 }
 
 #else
@@ -394,7 +392,7 @@ public:
 					temp[0] = upcase(temp[0]);
 					if (i.mIsPointer)
 					{
-						impl.printCode(0, "typedef std::vector< %sImpl *> %sVector; // Forward declare the '%s' vector\r\n", type, temp, temp);
+						impl.printCode(0, "typedef std::vector< %s *> %sVector; // Forward declare the '%s' vector for the implementation object pointers\r\n", type, temp, temp);
 					}
 					else
 					{
@@ -443,10 +441,12 @@ public:
 					cp.printCode(0, " : public %s", mInheritsFrom.c_str());
 				}
 			}
-			if (needsDeepCopy && isImpl )
+
+			if (mClone && !isImpl )
 			{
 				cp.printCode(0, "%s public CloneObject", firstInherit ? ":" : ",");
 			}
+
 			cp.printCode(0, "\r\n");
 			cp.printCode(0, "{\r\n");
 
@@ -632,6 +632,9 @@ public:
 					cp.printCode(1, "}\r\n");
 					cp.printCode(0, "\r\n");
 
+					// **********************************************
+					// Start of the clone code
+					// **********************************************
 					cp.printCode(0, "\r\n");
 					cp.printCode(1, "// Declare the virtual clone method using a deep copy\r\n");
 					if (mInheritsFrom.empty())
@@ -667,6 +670,7 @@ public:
 						{
 							cp.printCode(3, "for (auto &i:%s) delete i; // Delete all of the object pointers in this array\r\n", getMemberName(i.mMember,isImpl));
 							cp.printCode(3, "%s.clear(); // Clear the current array\r\n", getMemberName(i.mMember,isImpl));
+							cp.printCode(3, "%s.reserve(other.%s.size()); // Reserve number of items for the new array\r\n", getMemberName(i.mMember, isImpl), getMemberName(i.mMember, isImpl));
 							cp.printCode(3, "for (auto &i:other.%s) %s.push_back( static_cast< %sImpl *>(i->clone())); // Deep copy object pointers into the array\r\n", getMemberName(i.mMember,isImpl), getMemberName(i.mMember,isImpl), i.mType.c_str());
 						}
 						else if (i.mIsPointer)
@@ -692,6 +696,45 @@ public:
 					cp.printCode(1, "}\r\n");
 					cp.printCode(0, "\r\n");
 				}
+				// **********************************************
+				// End of the clone code
+				// **********************************************
+
+				// initDOM code
+				// Do the move constructor and assignment operators
+				if (isImpl)
+				{
+					cp.printCode(1, "// Declare and implement the initDOM method\r\n");
+					cp.printCode(1, "void initDOM(void)\r\n", getClassNameString(mName, isImpl), getClassNameString(mName, isImpl));
+					cp.printCode(1, "{\r\n");
+					if (!mInheritsFrom.empty())
+					{
+						cp.printCode(2, "%s::initDOM();\r\n", mInheritsFrom.c_str());
+					}
+
+					for (auto &i : mItems)
+					{
+						if (!i.needsReflection())
+							continue;
+						if (i.mIsString)
+						{
+							cp.printCode(2, "%s = %s.c_str(); // Assign the current string pointer.\r\n", getMemberName(i.mMember, false), getMemberName(i.mMember, true));
+						}
+						else if (i.mIsArray && i.mIsPointer)
+						{
+							cp.printCode(2, "%s = %s; // Assign the current object pointer.\r\n", getMemberName(i.mMember, false), getMemberName(i.mMember, isImpl));
+						}
+//						else if (i.mIsPointer)
+//						{
+//							cp.printCode(3, "%s = other.%s;\r\n", getMemberName(i.mMember, isImpl), getMemberName(i.mMember, isImpl));
+//							cp.printCode(3, "other.%s = nullptr; // Set 'other' pointer to null since we have moved it\r\n", getMemberName(i.mMember, isImpl));
+//						}
+					}
+					cp.printCode(1, "}\r\n");
+					cp.printCode(0, "\r\n");
+				}
+
+
 
 				// Do the move constructor and assignment operators
 				if ( isImpl )
@@ -741,6 +784,8 @@ public:
 				}
 			}
 
+			bool needsDOMVector = false; // True if we need to declare the DOM vector
+
 			for (auto &i : mItems)
 			{
 				// If this is an 'inherited' data item. Don't clear it here
@@ -753,8 +798,7 @@ public:
 				if (!i.needsReflection() && isImpl )
 					continue;
 
-				getMemberName(i.mMember, isImpl);
-
+				// Output the member variable declaration.
 				if (i.mIsArray)
 				{
 					if (isImpl)
@@ -782,10 +826,6 @@ public:
 				}
 				else
 				{
-					if (strcmp(i.mType.c_str(), "Geometry") == 0)
-					{
-//						printf("debug me");
-					}
 					if (isImpl && i.mIsPointer && !i.mIsArray)
 					{
 						cp.printCode(1, "%sImpl", getTypeString(i.mType.c_str(), isImpl));
@@ -820,7 +860,13 @@ public:
 				cp.printCode(0, ";");
 
 				cp.printCode(16, "// %s\r\n", i.mShortDescription.c_str());
+
+				if (i.mIsArray && isImpl && i.mIsPointer)
+				{
+					needsDOMVector = true;
+				}
 			}
+
 		};
 
 		if (needsImpl)
@@ -1039,14 +1085,24 @@ public:
 			cp.printCode(0, "namespace %s\r\n", mNamespace.c_str());
 			cp.printCode(0, "{\r\n");
 			cp.printCode(0, "\r\n");
-			if (isImpl)
+
+			if (!isImpl)
 			{
+				cp.printCode(0, "// Declare the clone-object class for deep copies\r\n");
+				cp.printCode(0, "// of objects by the implementation classes\r\n");
+				cp.printCode(0, "// Not to be used with the base DOM classes;\r\n");
+				cp.printCode(0, "// they do not support deep copies\r\n");
+				cp.printCode(0, "// Also declares the virtual method to init the DOM contents.\r\n");
 				cp.printCode(0, "class CloneObject\r\n");
 				cp.printCode(0, "{\r\n");
-				cp.printCode(1, "virtual CloneObject *clone(void) const = 0;\r\n");
+				cp.printCode(0, "public:\r\n");
+				cp.printCode(1, "// Declare the default virtual clone method; not implemented for DOM objects; only used for the implementation versions.\r\n");
+				cp.printCode(1, "virtual CloneObject *clone(void) const { return nullptr; };\r\n");
+				cp.printCode(1, "// Declare the default initDOM method; which is only needed for some implementation objects.\r\n");
+				cp.printCode(1, "virtual void initDOM(void) {  };\r\n");
 				cp.printCode(0, "};\r\n");
-
 			}
+
 		};
 
 		headerBegin(impl, true);
@@ -1410,6 +1466,7 @@ public:
 
 CreateDOM *CreateDOM::create(void)
 {
+	//testDeepCopy();
 	CreateDOMImpl *in = new CreateDOMImpl;
 	return static_cast<CreateDOM *>(in);
 }

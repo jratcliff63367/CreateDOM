@@ -14,10 +14,6 @@
 namespace PHYSICS_DOM
 {
 
-class CloneObject
-{
-	virtual CloneObject *clone(void) const = 0;
-};
 
 // Defines an optional visual mesh binding to a physics node
 class VisualBindingImpl: public VisualBinding
@@ -48,7 +44,7 @@ public:
 typedef std::vector< AdditionalProperties > AdditionalPropertiesVector; // Forward declare the 'AdditionalProperties' vector
 
 // Base class that specifies a unique ID and an optional description name field for an object
-class NodeImpl: public Node, public CloneObject
+class NodeImpl: public Node
 {
 public:
 
@@ -77,6 +73,13 @@ public:
 		return *this;
 	}
 
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		id = mId.c_str(); // Assign the current string pointer.
+		name = mName.c_str(); // Assign the current string pointer.
+	}
+
 
 	// Declare the move constructor; handles copying pointers and pointer arrays
 	NodeImpl(NodeImpl &&other)
@@ -103,9 +106,14 @@ public:
 
 
 // Defines the physical material properties of a surface
-class PhysicsMaterialImpl: public PhysicsMaterial, public CloneObject
+class PhysicsMaterialImpl: public PhysicsMaterial
 {
 public:
+	// Declare the constructor.
+	PhysicsMaterialImpl()
+	{
+	}
+
 
 	// Declare the virtual destructor.
 	virtual ~PhysicsMaterialImpl()
@@ -136,6 +144,12 @@ public:
 		return *this;
 	}
 
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		Node::initDOM();
+	}
+
 
 	// Declare the move constructor; handles copying pointers and pointer arrays
 	PhysicsMaterialImpl(PhysicsMaterialImpl &&other)
@@ -158,9 +172,14 @@ public:
 typedef std::vector< Vec3 > Vec3Vector; // Forward declare the 'Vec3' vector
 
 // Describes the data for a convex hull
-class ConvexHullImpl: public ConvexHull, public CloneObject
+class ConvexHullImpl: public ConvexHull
 {
 public:
+	// Declare the constructor.
+	ConvexHullImpl()
+	{
+	}
+
 
 	// Declare the virtual destructor.
 	virtual ~ConvexHullImpl()
@@ -192,6 +211,12 @@ public:
 		return *this;
 	}
 
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		Node::initDOM();
+	}
+
 
 	// Declare the move constructor; handles copying pointers and pointer arrays
 	ConvexHullImpl(ConvexHullImpl &&other)
@@ -217,9 +242,14 @@ typedef std::vector< uint32_t > U32Vector; // Forward declare the 'U32' vector
 typedef std::vector< uint8_t > U8Vector; // Forward declare the 'U8' vector
 
 // Describes the data for a triangle mesh
-class TriangleMeshImpl: public TriangleMesh, public CloneObject
+class TriangleMeshImpl: public TriangleMesh
 {
 public:
+	// Declare the constructor.
+	TriangleMeshImpl()
+	{
+	}
+
 
 	// Declare the virtual destructor.
 	virtual ~TriangleMeshImpl()
@@ -253,6 +283,12 @@ public:
 		return *this;
 	}
 
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		Node::initDOM();
+	}
+
 
 	// Declare the move constructor; handles copying pointers and pointer arrays
 	TriangleMeshImpl(TriangleMeshImpl &&other)
@@ -281,9 +317,14 @@ public:
 typedef std::vector< uint16_t > U16Vector; // Forward declare the 'U16' vector
 
 // The data for a heighfield; as 2d array of 32 bit samples; 16 bits for height, 16 bits for material indices, holes, and other metadata
-class HeightFieldImpl: public HeightField, public CloneObject
+class HeightFieldImpl: public HeightField
 {
 public:
+	// Declare the constructor.
+	HeightFieldImpl()
+	{
+	}
+
 
 	// Declare the virtual destructor.
 	virtual ~HeightFieldImpl()
@@ -316,6 +357,12 @@ public:
 		return *this;
 	}
 
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		Node::initDOM();
+	}
+
 
 	// Declare the move constructor; handles copying pointers and pointer arrays
 	HeightFieldImpl(HeightFieldImpl &&other)
@@ -341,7 +388,7 @@ public:
 
 
 // Base class for all geometries
-class GeometryImpl: public Geometry, public CloneObject
+class GeometryImpl: public Geometry
 {
 public:
 
@@ -367,6 +414,11 @@ public:
 		return *this;
 	}
 
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+	}
+
 
 	// Declare the move constructor; handles copying pointers and pointer arrays
 	GeometryImpl(GeometryImpl &&other)
@@ -387,9 +439,14 @@ public:
 
 
 // Defines a box geometry
-class BoxGeometryImpl: public BoxGeometry, public CloneObject
+class BoxGeometryImpl: public BoxGeometry
 {
 public:
+	// Declare the constructor.
+	BoxGeometryImpl()
+	{
+	}
+
 
 	// Declare the virtual destructor.
 	virtual ~BoxGeometryImpl()
@@ -420,6 +477,12 @@ public:
 		return *this;
 	}
 
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		Geometry::initDOM();
+	}
+
 
 	// Declare the move constructor; handles copying pointers and pointer arrays
 	BoxGeometryImpl(BoxGeometryImpl &&other)
@@ -441,9 +504,14 @@ public:
 
 
 // Defines a sphere geometry
-class SphereGeometryImpl: public SphereGeometry, public CloneObject
+class SphereGeometryImpl: public SphereGeometry
 {
 public:
+	// Declare the constructor.
+	SphereGeometryImpl()
+	{
+	}
+
 
 	// Declare the virtual destructor.
 	virtual ~SphereGeometryImpl()
@@ -474,6 +542,12 @@ public:
 		return *this;
 	}
 
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		Geometry::initDOM();
+	}
+
 
 	// Declare the move constructor; handles copying pointers and pointer arrays
 	SphereGeometryImpl(SphereGeometryImpl &&other)
@@ -495,9 +569,14 @@ public:
 
 
 // Defines a capsule geometry
-class CapsuleGeometryImpl: public CapsuleGeometry, public CloneObject
+class CapsuleGeometryImpl: public CapsuleGeometry
 {
 public:
+	// Declare the constructor.
+	CapsuleGeometryImpl()
+	{
+	}
+
 
 	// Declare the virtual destructor.
 	virtual ~CapsuleGeometryImpl()
@@ -528,6 +607,12 @@ public:
 		return *this;
 	}
 
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		Geometry::initDOM();
+	}
+
 
 	// Declare the move constructor; handles copying pointers and pointer arrays
 	CapsuleGeometryImpl(CapsuleGeometryImpl &&other)
@@ -549,9 +634,14 @@ public:
 
 
 // Defines a cylinder geometry
-class CylinderGeometryImpl: public CylinderGeometry, public CloneObject
+class CylinderGeometryImpl: public CylinderGeometry
 {
 public:
+	// Declare the constructor.
+	CylinderGeometryImpl()
+	{
+	}
+
 
 	// Declare the virtual destructor.
 	virtual ~CylinderGeometryImpl()
@@ -582,6 +672,12 @@ public:
 		return *this;
 	}
 
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		Geometry::initDOM();
+	}
+
 
 	// Declare the move constructor; handles copying pointers and pointer arrays
 	CylinderGeometryImpl(CylinderGeometryImpl &&other)
@@ -603,9 +699,14 @@ public:
 
 
 // Defines a convex mesh geometry
-class ConvexHullGeometryImpl: public ConvexHullGeometry, public CloneObject
+class ConvexHullGeometryImpl: public ConvexHullGeometry
 {
 public:
+	// Declare the constructor.
+	ConvexHullGeometryImpl()
+	{
+	}
+
 
 	// Declare the virtual destructor.
 	virtual ~ConvexHullGeometryImpl()
@@ -637,6 +738,13 @@ public:
 		return *this;
 	}
 
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		Geometry::initDOM();
+		convexMesh = mConvexMesh.c_str(); // Assign the current string pointer.
+	}
+
 
 	// Declare the move constructor; handles copying pointers and pointer arrays
 	ConvexHullGeometryImpl(ConvexHullGeometryImpl &&other)
@@ -660,9 +768,14 @@ public:
 
 
 // Defines a triangle mesh geometry
-class TriangleMeshGeometryImpl: public TriangleMeshGeometry, public CloneObject
+class TriangleMeshGeometryImpl: public TriangleMeshGeometry
 {
 public:
+	// Declare the constructor.
+	TriangleMeshGeometryImpl()
+	{
+	}
+
 
 	// Declare the virtual destructor.
 	virtual ~TriangleMeshGeometryImpl()
@@ -694,6 +807,13 @@ public:
 		return *this;
 	}
 
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		Geometry::initDOM();
+		triangleMesh = mTriangleMesh.c_str(); // Assign the current string pointer.
+	}
+
 
 	// Declare the move constructor; handles copying pointers and pointer arrays
 	TriangleMeshGeometryImpl(TriangleMeshGeometryImpl &&other)
@@ -717,9 +837,14 @@ public:
 
 
 // Defines a heightfield geometry
-class HeightFieldGeometryImpl: public HeightFieldGeometry, public CloneObject
+class HeightFieldGeometryImpl: public HeightFieldGeometry
 {
 public:
+	// Declare the constructor.
+	HeightFieldGeometryImpl()
+	{
+	}
+
 
 	// Declare the virtual destructor.
 	virtual ~HeightFieldGeometryImpl()
@@ -751,6 +876,13 @@ public:
 		return *this;
 	}
 
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		Geometry::initDOM();
+		heightField = mHeightField.c_str(); // Assign the current string pointer.
+	}
+
 
 	// Declare the move constructor; handles copying pointers and pointer arrays
 	HeightFieldGeometryImpl(HeightFieldGeometryImpl &&other)
@@ -774,9 +906,14 @@ public:
 
 
 // Defines a plane equation geometry (position and orientation of the plane come from the geometry instance)
-class PlaneGeometryImpl: public PlaneGeometry, public CloneObject
+class PlaneGeometryImpl: public PlaneGeometry
 {
 public:
+	// Declare the constructor.
+	PlaneGeometryImpl()
+	{
+	}
+
 
 	// Declare the virtual destructor.
 	virtual ~PlaneGeometryImpl()
@@ -807,6 +944,12 @@ public:
 		return *this;
 	}
 
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		Geometry::initDOM();
+	}
+
 
 	// Declare the move constructor; handles copying pointers and pointer arrays
 	PlaneGeometryImpl(PlaneGeometryImpl &&other)
@@ -829,7 +972,7 @@ public:
 typedef std::vector< std::string > StringVector; // Forward declare the 'String' vector
 
 // Defines a single instance of a geometry
-class GeometryInstanceImpl: public GeometryInstance, public CloneObject
+class GeometryInstanceImpl: public GeometryInstance
 {
 public:
 
@@ -874,6 +1017,13 @@ public:
 		return *this;
 	}
 
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		materials = mMaterials.c_str(); // Assign the current string pointer.
+		collisionFilterSettings = mCollisionFilterSettings.c_str(); // Assign the current string pointer.
+	}
+
 
 	// Declare the move constructor; handles copying pointers and pointer arrays
 	GeometryInstanceImpl(GeometryInstanceImpl &&other)
@@ -899,15 +1049,16 @@ public:
 	std::string	mCollisionFilterSettings;  						// Describes collision filtering settings; what other types of objects this object will collide with
 };
 
-typedef std::vector< GeometryInstanceImpl *> GeometryInstanceVector; // Forward declare the 'GeometryInstance' vector
+typedef std::vector< GeometryInstance *> GeometryInstanceVector; // Forward declare the 'GeometryInstance' vector for the implementation object pointers
 
 // Defines the common properties for a rigid body
-class RigidBodyImpl: public RigidBody, public CloneObject
+class RigidBodyImpl: public RigidBody
 {
 public:
-
 	// Declare the constructor.
-	RigidBodyImpl() { }
+	RigidBodyImpl()
+	{
+	}
 
 
 	// Declare the virtual destructor; cleanup any pointers or arrays of pointers
@@ -938,9 +1089,17 @@ public:
 			Node::operator=(other);
 			for (auto &i:mGeometryInstances) delete i; // Delete all of the object pointers in this array
 			mGeometryInstances.clear(); // Clear the current array
+			mGeometryInstances.reserve(other.mGeometryInstances.size()); // Reserve number of items for the new array
 			for (auto &i:other.mGeometryInstances) mGeometryInstances.push_back( static_cast< GeometryInstanceImpl *>(i->clone())); // Deep copy object pointers into the array
 		}
 		return *this;
+	}
+
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		Node::initDOM();
+		geometryInstances = mGeometryInstances; // Assign the current object pointer.
 	}
 
 
@@ -967,9 +1126,14 @@ public:
 
 
 // Defines a static rigid body
-class RigidStaticImpl: public RigidStatic, public CloneObject
+class RigidStaticImpl: public RigidStatic
 {
 public:
+	// Declare the constructor.
+	RigidStaticImpl()
+	{
+	}
+
 
 	// Declare the virtual destructor.
 	virtual ~RigidStaticImpl()
@@ -1000,6 +1164,12 @@ public:
 		return *this;
 	}
 
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		RigidBody::initDOM();
+	}
+
 
 	// Declare the move constructor; handles copying pointers and pointer arrays
 	RigidStaticImpl(RigidStaticImpl &&other)
@@ -1021,9 +1191,14 @@ public:
 
 
 // Defines a dynamic rigid body
-class RigidDynamicImpl: public RigidDynamic, public CloneObject
+class RigidDynamicImpl: public RigidDynamic
 {
 public:
+	// Declare the constructor.
+	RigidDynamicImpl()
+	{
+	}
+
 
 	// Declare the virtual destructor.
 	virtual ~RigidDynamicImpl()
@@ -1054,6 +1229,12 @@ public:
 		return *this;
 	}
 
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		RigidBody::initDOM();
+	}
+
 
 	// Declare the move constructor; handles copying pointers and pointer arrays
 	RigidDynamicImpl(RigidDynamicImpl &&other)
@@ -1075,9 +1256,14 @@ public:
 
 
 // Defines the common properties for a joint
-class JointImpl: public Joint, public CloneObject
+class JointImpl: public Joint
 {
 public:
+	// Declare the constructor.
+	JointImpl()
+	{
+	}
+
 
 	// Declare the virtual destructor.
 	virtual ~JointImpl()
@@ -1110,6 +1296,14 @@ public:
 		return *this;
 	}
 
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		Node::initDOM();
+		body0 = mBody0.c_str(); // Assign the current string pointer.
+		body1 = mBody1.c_str(); // Assign the current string pointer.
+	}
+
 
 	// Declare the move constructor; handles copying pointers and pointer arrays
 	JointImpl(JointImpl &&other)
@@ -1136,9 +1330,14 @@ public:
 
 // Defines the properties speciic to a fixed joint 
 // Not all properties yet defined!
-class FixedJointImpl: public FixedJoint, public CloneObject
+class FixedJointImpl: public FixedJoint
 {
 public:
+	// Declare the constructor.
+	FixedJointImpl()
+	{
+	}
+
 
 	// Declare the virtual destructor.
 	virtual ~FixedJointImpl()
@@ -1169,6 +1368,12 @@ public:
 		return *this;
 	}
 
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		Joint::initDOM();
+	}
+
 
 	// Declare the move constructor; handles copying pointers and pointer arrays
 	FixedJointImpl(FixedJointImpl &&other)
@@ -1191,9 +1396,14 @@ public:
 
 // Defines the properties speciic to a spherical joint 
 // Not all properties yet defined!
-class SphericalJointImpl: public SphericalJoint, public CloneObject
+class SphericalJointImpl: public SphericalJoint
 {
 public:
+	// Declare the constructor.
+	SphericalJointImpl()
+	{
+	}
+
 
 	// Declare the virtual destructor.
 	virtual ~SphericalJointImpl()
@@ -1224,6 +1434,12 @@ public:
 		return *this;
 	}
 
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		Joint::initDOM();
+	}
+
 
 	// Declare the move constructor; handles copying pointers and pointer arrays
 	SphericalJointImpl(SphericalJointImpl &&other)
@@ -1246,9 +1462,14 @@ public:
 
 // Defines the properties speciic to a revolute joint 
 // Not all properties yet defined!
-class RevoluteJointImpl: public RevoluteJoint, public CloneObject
+class RevoluteJointImpl: public RevoluteJoint
 {
 public:
+	// Declare the constructor.
+	RevoluteJointImpl()
+	{
+	}
+
 
 	// Declare the virtual destructor.
 	virtual ~RevoluteJointImpl()
@@ -1279,6 +1500,12 @@ public:
 		return *this;
 	}
 
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		Joint::initDOM();
+	}
+
 
 	// Declare the move constructor; handles copying pointers and pointer arrays
 	RevoluteJointImpl(RevoluteJointImpl &&other)
@@ -1301,9 +1528,14 @@ public:
 
 // Defines the properties speciic to a prismatic joint 
 // Not all properties yet defined!
-class PrismaticJointImpl: public PrismaticJoint, public CloneObject
+class PrismaticJointImpl: public PrismaticJoint
 {
 public:
+	// Declare the constructor.
+	PrismaticJointImpl()
+	{
+	}
+
 
 	// Declare the virtual destructor.
 	virtual ~PrismaticJointImpl()
@@ -1334,6 +1566,12 @@ public:
 		return *this;
 	}
 
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		Joint::initDOM();
+	}
+
 
 	// Declare the move constructor; handles copying pointers and pointer arrays
 	PrismaticJointImpl(PrismaticJointImpl &&other)
@@ -1356,9 +1594,14 @@ public:
 
 // Defines the properties speciic to a distance joint 
 // Not all properties yet defined!
-class DistanceJointImpl: public DistanceJoint, public CloneObject
+class DistanceJointImpl: public DistanceJoint
 {
 public:
+	// Declare the constructor.
+	DistanceJointImpl()
+	{
+	}
+
 
 	// Declare the virtual destructor.
 	virtual ~DistanceJointImpl()
@@ -1389,6 +1632,12 @@ public:
 		return *this;
 	}
 
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		Joint::initDOM();
+	}
+
 
 	// Declare the move constructor; handles copying pointers and pointer arrays
 	DistanceJointImpl(DistanceJointImpl &&other)
@@ -1411,9 +1660,14 @@ public:
 
 // Defines the properties speciic to a ball and socket joint 
 // Not all properties yet defined!
-class BallAndSocketJointImpl: public BallAndSocketJoint, public CloneObject
+class BallAndSocketJointImpl: public BallAndSocketJoint
 {
 public:
+	// Declare the constructor.
+	BallAndSocketJointImpl()
+	{
+	}
+
 
 	// Declare the virtual destructor.
 	virtual ~BallAndSocketJointImpl()
@@ -1444,6 +1698,12 @@ public:
 		return *this;
 	}
 
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		Joint::initDOM();
+	}
+
 
 	// Declare the move constructor; handles copying pointers and pointer arrays
 	BallAndSocketJointImpl(BallAndSocketJointImpl &&other)
@@ -1466,9 +1726,14 @@ public:
 
 // Defines the properties speciic to a six degree of freedom joint 
 // Not all properties yet defined!
-class D6JointImpl: public D6Joint, public CloneObject
+class D6JointImpl: public D6Joint
 {
 public:
+	// Declare the constructor.
+	D6JointImpl()
+	{
+	}
+
 
 	// Declare the virtual destructor.
 	virtual ~D6JointImpl()
@@ -1497,6 +1762,12 @@ public:
 			Joint::operator=(other);
 		}
 		return *this;
+	}
+
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		Joint::initDOM();
 	}
 
 
@@ -1530,9 +1801,14 @@ public:
 typedef std::vector< BodyPairFilter > BodyPairFilterVector; // Forward declare the 'BodyPairFilter' vector
 
 // A collection of body pair filters
-class BodyPairFiltersImpl: public BodyPairFilters, public CloneObject
+class BodyPairFiltersImpl: public BodyPairFilters
 {
 public:
+	// Declare the constructor.
+	BodyPairFiltersImpl()
+	{
+	}
+
 
 	// Declare the virtual destructor.
 	virtual ~BodyPairFiltersImpl()
@@ -1564,6 +1840,12 @@ public:
 		return *this;
 	}
 
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		Node::initDOM();
+	}
+
 
 	// Declare the move constructor; handles copying pointers and pointer arrays
 	BodyPairFiltersImpl(BodyPairFiltersImpl &&other)
@@ -1586,9 +1868,14 @@ public:
 };
 
 
-class InstanceCollectionImpl: public InstanceCollection, public CloneObject
+class InstanceCollectionImpl: public InstanceCollection
 {
 public:
+	// Declare the constructor.
+	InstanceCollectionImpl()
+	{
+	}
+
 
 	// Declare the virtual destructor.
 	virtual ~InstanceCollectionImpl()
@@ -1620,6 +1907,13 @@ public:
 		return *this;
 	}
 
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		Node::initDOM();
+		collection = mCollection.c_str(); // Assign the current string pointer.
+	}
+
 
 	// Declare the move constructor; handles copying pointers and pointer arrays
 	InstanceCollectionImpl(InstanceCollectionImpl &&other)
@@ -1641,15 +1935,16 @@ public:
 	std::string	mCollection; 									// Name of collection to instance
 };
 
-typedef std::vector< NodeImpl *> NodeVector; // Forward declare the 'Node' vector
+typedef std::vector< Node *> NodeVector; // Forward declare the 'Node' vector for the implementation object pointers
 
 // A collection of nodes
-class CollectionImpl: public Collection, public CloneObject
+class CollectionImpl: public Collection
 {
 public:
-
 	// Declare the constructor.
-	CollectionImpl() { }
+	CollectionImpl()
+	{
+	}
 
 
 	// Declare the virtual destructor; cleanup any pointers or arrays of pointers
@@ -1680,9 +1975,17 @@ public:
 			Node::operator=(other);
 			for (auto &i:mNodes) delete i; // Delete all of the object pointers in this array
 			mNodes.clear(); // Clear the current array
+			mNodes.reserve(other.mNodes.size()); // Reserve number of items for the new array
 			for (auto &i:other.mNodes) mNodes.push_back( static_cast< NodeImpl *>(i->clone())); // Deep copy object pointers into the array
 		}
 		return *this;
+	}
+
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		Node::initDOM();
+		nodes = mNodes; // Assign the current object pointer.
 	}
 
 
@@ -1709,9 +2012,14 @@ public:
 
 
 // A special type of 'collection' which is instantiated on startup
-class SceneImpl: public Scene, public CloneObject
+class SceneImpl: public Scene
 {
 public:
+	// Declare the constructor.
+	SceneImpl()
+	{
+	}
+
 
 	// Declare the virtual destructor.
 	virtual ~SceneImpl()
@@ -1742,6 +2050,12 @@ public:
 		return *this;
 	}
 
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		Collection::initDOM();
+	}
+
 
 	// Declare the move constructor; handles copying pointers and pointer arrays
 	SceneImpl(SceneImpl &&other)
@@ -1761,11 +2075,11 @@ public:
 
 };
 
-typedef std::vector< CollectionImpl *> CollectionVector; // Forward declare the 'Collection' vector
-typedef std::vector< SceneImpl *> SceneVector; // Forward declare the 'Scene' vector
+typedef std::vector< Collection *> CollectionVector; // Forward declare the 'Collection' vector for the implementation object pointers
+typedef std::vector< Scene *> SceneVector; // Forward declare the 'Scene' vector for the implementation object pointers
 
 // The root node container
-class PhysicsDOMImpl: public PhysicsDOM, public CloneObject
+class PhysicsDOMImpl: public PhysicsDOM
 {
 public:
 
@@ -1801,12 +2115,21 @@ public:
 		{
 			for (auto &i:mCollections) delete i; // Delete all of the object pointers in this array
 			mCollections.clear(); // Clear the current array
+			mCollections.reserve(other.mCollections.size()); // Reserve number of items for the new array
 			for (auto &i:other.mCollections) mCollections.push_back( static_cast< CollectionImpl *>(i->clone())); // Deep copy object pointers into the array
 			for (auto &i:mScenes) delete i; // Delete all of the object pointers in this array
 			mScenes.clear(); // Clear the current array
+			mScenes.reserve(other.mScenes.size()); // Reserve number of items for the new array
 			for (auto &i:other.mScenes) mScenes.push_back( static_cast< SceneImpl *>(i->clone())); // Deep copy object pointers into the array
 		}
 		return *this;
+	}
+
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		collections = mCollections; // Assign the current object pointer.
+		scenes = mScenes; // Assign the current object pointer.
 	}
 
 
