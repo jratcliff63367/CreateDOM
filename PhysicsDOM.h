@@ -178,7 +178,7 @@ class AdditionalProperties
 public:
 	const char * category;   									// The category this set of key/value pairs is associated with (example 'physx', 'mujoco', etc.
 	uint32_t 	keyValuePairsCount { 0 };
-	const KeyValuePair* keyValuePairs;   						// The array of key/value pairs associated with this category
+	KeyValuePair**   keyValuePairs;								// The array of key/value pairs associated with this category
 };
 
 
@@ -191,7 +191,7 @@ public:
 	NodeType 	type{ NT_NODE };   								// The type of node
 	VisualBinding  visual;   									// Optional visual bindings for this node; for exaple some physics components have a corresponding named graphics component
 	uint32_t 	additionalPropertiesCount { 0 };
-	const AdditionalProperties* additionalProperties;  			// An optional set of properties for this node; a set of key-value pairs for each application/engine specific category
+	AdditionalProperties** additionalProperties; 				// An optional set of properties for this node; a set of key-value pairs for each application/engine specific category
 };
 
 
@@ -245,7 +245,7 @@ public:
 	}
 
 	uint32_t 	pointsCount { 0 };
-	const Vec3*	points;											// Array of data points describing the convex hull
+	Vec3**   	points;  											// Array of data points describing the convex hull
 };
 
 
@@ -266,11 +266,11 @@ public:
 	}
 
 	uint32_t 	pointsCount { 0 };
-	const Vec3*	points;											// Array of vertices for the triangle mesh
+	Vec3**   	points;  											// Array of vertices for the triangle mesh
 	uint32_t 	trianglesCount { 0 };
-	const uint32_t* triangles;   								// Array of triangle indices
+	uint32_t**   triangles;										// Array of triangle indices
 	uint32_t 	materialIndicesCount { 0 };
-	const uint8_t*   materialIndices;  							// Optional per-triangle material index
+	uint8_t**  	materialIndices; 								// Optional per-triangle material index
 };
 
 
@@ -293,9 +293,9 @@ public:
 	uint32_t 	rowCount;											// Number of sample rows in the height field samples array.
 	uint32_t 	columnCount;   									// Number of sample columns in the height field samples array.
 	uint32_t 	samplesCount { 0 };
-	const uint16_t* samples; 									// Heightfield sample data
+	uint16_t**   samples;  										// Heightfield sample data
 	uint32_t 	metaDataCount { 0 };
-	const uint16_t* metaData;  									// Optional meta data for each sample; determines per sample material, winding order, and whether or not to treat it as a hole
+	uint16_t**   metaData;   									// Optional meta data for each sample; determines per sample material, winding order, and whether or not to treat it as a hole
 };
 
 
@@ -527,7 +527,7 @@ public:
 	}
 
 	uint32_t 	geometryInstancesCount { 0 };
-	const GeometryInstance* geometryInstances;   				// The set of geometries to instance with this actor
+	GeometryInstance** geometryInstances;  						// The set of geometries to instance with this actor
 	Pose 		globalPose;   										// The global pose for this actor
 };
 
@@ -770,7 +770,7 @@ public:
 	}
 
 	uint32_t 	bodyPairsCount { 0 };
-	const BodyPairFilter* bodyPairs; 							// Array of body pair filters
+	BodyPairFilter** bodyPairs;									// Array of body pair filters
 };
 
 
@@ -812,7 +812,7 @@ public:
 	}
 
 	uint32_t 	nodesCount { 0 };
-	const Node*	nodes;   										// Array of nodes in this collection
+	Node**   	nodes; 											// Array of nodes in this collection
 };
 
 
@@ -851,9 +851,9 @@ public:
 	}
 
 	uint32_t 	collectionsCount { 0 };
-	const Collection* collections;   							// The array of top level collections
+	Collection** collections;  									// The array of top level collections
 	uint32_t 	scenesCount { 0 };
-	const Scene* scenes; 										// The array of top level scenes; a scene is instantiated into the physics simulation
+	Scene**		scenes; 											// The array of top level scenes; a scene is instantiated into the physics simulation
 };
 
 

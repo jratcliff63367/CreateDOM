@@ -15,10 +15,38 @@ namespace PHYSICS_DOM
 {
 
 
+// Forward declare the to types of string vector containers.
+typedef std::vector< std::string > StringVector;
+typedef std::vector< const char * > ConstCharVector;
+
+
 // Defines an optional visual mesh binding to a physics node
 class VisualBindingImpl: public VisualBinding
 {
 public:
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		VisualBinding::visualName = mVisualName.c_str(); // Assign the current string pointer.
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	VisualBindingImpl(VisualBindingImpl &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	VisualBindingImpl& operator=(VisualBindingImpl&& other)
+	{
+		if (this != &other )
+		{
+			mVisualName = other.mVisualName;
+		}
+		return *this;
+	}
+
 	std::string	mVisualName; 									// Name of associated visual mesh
 };
 
@@ -27,6 +55,31 @@ public:
 class KeyValuePairImpl: public KeyValuePair
 {
 public:
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		KeyValuePair::key = mKey.c_str(); // Assign the current string pointer.
+		KeyValuePair::value = mValue.c_str(); // Assign the current string pointer.
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	KeyValuePairImpl(KeyValuePairImpl &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	KeyValuePairImpl& operator=(KeyValuePairImpl&& other)
+	{
+		if (this != &other )
+		{
+			mKey = other.mKey;
+			mValue = other.mValue;
+		}
+		return *this;
+	}
+
 	std::string	mKey;  											// They 'key' identifier; what this property is
 	std::string	mValue;											// The value of this property; up to each the user to figure out how to interpret each property relative to the keyword
 };
@@ -37,6 +90,30 @@ typedef std::vector< KeyValuePair > KeyValuePairVector; // Forward declare the '
 class AdditionalPropertiesImpl: public AdditionalProperties
 {
 public:
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		AdditionalProperties::category = mCategory.c_str(); // Assign the current string pointer.
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	AdditionalPropertiesImpl(AdditionalPropertiesImpl &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	AdditionalPropertiesImpl& operator=(AdditionalPropertiesImpl&& other)
+	{
+		if (this != &other )
+		{
+			mCategory = other.mCategory;
+			mKeyValuePairs = other.mKeyValuePairs;
+		}
+		return *this;
+	}
+
 	std::string	mCategory;   									// The category this set of key/value pairs is associated with (example 'physx', 'mujoco', etc.
 	KeyValuePairVector mKeyValuePairs;   						// The array of key/value pairs associated with this category
 };
@@ -76,8 +153,12 @@ public:
 	// Declare and implement the initDOM method
 	void initDOM(void)
 	{
-		id = mId.c_str(); // Assign the current string pointer.
-		name = mName.c_str(); // Assign the current string pointer.
+		Node::id = mId.c_str(); // Assign the current string pointer.
+		Node::name = mName.c_str(); // Assign the current string pointer.
+		{
+			VisualBindingImpl *impl = static_cast< VisualBindingImpl *>(&visual); // static cast to the implementation class.
+			impl->initDOM(); // Initialize DOM components of member variable.
+		}
 	}
 
 
@@ -742,7 +823,7 @@ public:
 	void initDOM(void)
 	{
 		Geometry::initDOM();
-		convexMesh = mConvexMesh.c_str(); // Assign the current string pointer.
+		ConvexHullGeometry::convexMesh = mConvexMesh.c_str(); // Assign the current string pointer.
 	}
 
 
@@ -811,7 +892,7 @@ public:
 	void initDOM(void)
 	{
 		Geometry::initDOM();
-		triangleMesh = mTriangleMesh.c_str(); // Assign the current string pointer.
+		TriangleMeshGeometry::triangleMesh = mTriangleMesh.c_str(); // Assign the current string pointer.
 	}
 
 
@@ -880,7 +961,7 @@ public:
 	void initDOM(void)
 	{
 		Geometry::initDOM();
-		heightField = mHeightField.c_str(); // Assign the current string pointer.
+		HeightFieldGeometry::heightField = mHeightField.c_str(); // Assign the current string pointer.
 	}
 
 
@@ -1020,8 +1101,13 @@ public:
 	// Declare and implement the initDOM method
 	void initDOM(void)
 	{
-		materials = mMaterials.c_str(); // Assign the current string pointer.
-		collisionFilterSettings = mCollisionFilterSettings.c_str(); // Assign the current string pointer.
+		// Initialize the const char * array from the array of std::strings vector mMaterials
+		mMaterialsImpl.reserve(mMaterials.size()); // Reserve room for string pointers.
+		for (auto &i: mMaterials) // For each std::string
+			mMaterialsImpl.push_back( i.c_str() ); // Add the const char * for the string.
+		GeometryInstance::materialsCount = uint32_t(mMaterialsImpl.size()); // Assign the number of strings
+		GeometryInstance::materials = materialsCount ? &mMaterialsImpl[0] : nullptr; // Assign the pointer array.
+		GeometryInstance::collisionFilterSettings = mCollisionFilterSettings.c_str(); // Assign the current string pointer.
 	}
 
 
@@ -1047,6 +1133,9 @@ public:
 	GeometryImpl *mGeometry{ nullptr };							// The geometry associated with this instance
 	StringVector mMaterials; 									// Id of physical material(s) associated with this geometry instance (usually one material; but for heightifields and triangle meshes can be more than one)
 	std::string	mCollisionFilterSettings;  						// Describes collision filtering settings; what other types of objects this object will collide with
+// Declare private temporary array(s) to hold array of strings pointers.
+private:
+	ConstCharVector mMaterialsImpl; // Scratch array for const char pointers.
 };
 
 typedef std::vector< GeometryInstance *> GeometryInstanceVector; // Forward declare the 'GeometryInstance' vector for the implementation object pointers
@@ -1099,7 +1188,10 @@ public:
 	void initDOM(void)
 	{
 		Node::initDOM();
-		geometryInstances = mGeometryInstances; // Assign the current object pointer.
+		for (auto &i:mGeometryInstances)
+			i->initDOM();
+		geometryInstancesCount = uint32_t(mGeometryInstances.size()); // assign the number of items in the array.
+		geometryInstances = geometryInstancesCount ? &mGeometryInstances[0] : nullptr; // Assign the pointer array
 	}
 
 
@@ -1300,8 +1392,8 @@ public:
 	void initDOM(void)
 	{
 		Node::initDOM();
-		body0 = mBody0.c_str(); // Assign the current string pointer.
-		body1 = mBody1.c_str(); // Assign the current string pointer.
+		Joint::body0 = mBody0.c_str(); // Assign the current string pointer.
+		Joint::body1 = mBody1.c_str(); // Assign the current string pointer.
 	}
 
 
@@ -1794,6 +1886,31 @@ public:
 class BodyPairFilterImpl: public BodyPairFilter
 {
 public:
+	// Declare and implement the initDOM method
+	void initDOM(void)
+	{
+		BodyPairFilter::bodyA = mBodyA.c_str(); // Assign the current string pointer.
+		BodyPairFilter::bodyB  = mBodyB .c_str(); // Assign the current string pointer.
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	BodyPairFilterImpl(BodyPairFilterImpl &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	BodyPairFilterImpl& operator=(BodyPairFilterImpl&& other)
+	{
+		if (this != &other )
+		{
+			mBodyA = other.mBodyA;
+			mBodyB  = other.mBodyB ;
+		}
+		return *this;
+	}
+
 	std::string	mBodyA;											// Id of first body
 	std::string	mBodyB ; 										// Id of second body
 };
@@ -1911,7 +2028,7 @@ public:
 	void initDOM(void)
 	{
 		Node::initDOM();
-		collection = mCollection.c_str(); // Assign the current string pointer.
+		InstanceCollection::collection = mCollection.c_str(); // Assign the current string pointer.
 	}
 
 
@@ -1985,7 +2102,10 @@ public:
 	void initDOM(void)
 	{
 		Node::initDOM();
-		nodes = mNodes; // Assign the current object pointer.
+		for (auto &i:mNodes)
+			i->initDOM();
+		nodesCount = uint32_t(mNodes.size()); // assign the number of items in the array.
+		nodes = nodesCount ? &mNodes[0] : nullptr; // Assign the pointer array
 	}
 
 
@@ -2128,8 +2248,14 @@ public:
 	// Declare and implement the initDOM method
 	void initDOM(void)
 	{
-		collections = mCollections; // Assign the current object pointer.
-		scenes = mScenes; // Assign the current object pointer.
+		for (auto &i:mCollections)
+			i->initDOM();
+		collectionsCount = uint32_t(mCollections.size()); // assign the number of items in the array.
+		collections = collectionsCount ? &mCollections[0] : nullptr; // Assign the pointer array
+		for (auto &i:mScenes)
+			i->initDOM();
+		scenesCount = uint32_t(mScenes.size()); // assign the number of items in the array.
+		scenes = scenesCount ? &mScenes[0] : nullptr; // Assign the pointer array
 	}
 
 
