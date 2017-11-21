@@ -157,7 +157,7 @@ enum NodeType
 class VisualBinding
 {
 public:
-	const char * visualName; 									// Name of associated visual mesh
+	const char * visualName{ nullptr };							// Name of associated visual mesh
 	Pose 		localPose;  											// Local relative pose of visual mesh to corresponding physics node
 	Vec3 		localScale;   										// Local relative scale of visual mesh to corresponding physics node
 };
@@ -167,8 +167,8 @@ public:
 class KeyValuePair
 {
 public:
-	const char * key;  											// They 'key' identifier; what this property is
-	const char * value;											// The value of this property; up to each the user to figure out how to interpret each property relative to the keyword
+	const char * key{ nullptr }; 								// They 'key' identifier; what this property is
+	const char * value{ nullptr };   							// The value of this property; up to each the user to figure out how to interpret each property relative to the keyword
 };
 
 
@@ -176,9 +176,9 @@ public:
 class AdditionalProperties
 {
 public:
-	const char * category;   									// The category this set of key/value pairs is associated with (example 'physx', 'mujoco', etc.
+	const char * category{ nullptr };  							// The category this set of key/value pairs is associated with (example 'physx', 'mujoco', etc.
 	uint32_t 	keyValuePairsCount { 0 };
-	KeyValuePair**   keyValuePairs;								// The array of key/value pairs associated with this category
+	KeyValuePair*  keyValuePairs{ nullptr }; 					// The array of key/value pairs associated with this category
 };
 
 
@@ -186,12 +186,12 @@ public:
 class Node: public CloneObject
 {
 public:
-	const char * id; 											// Unique Id for this object
-	const char * name;   										// Optional name for this object
+	const char * id{ nullptr };									// Unique Id for this object
+	const char * name{ nullptr };  								// Optional name for this object
 	NodeType 	type{ NT_NODE };   								// The type of node
 	VisualBinding  visual;   									// Optional visual bindings for this node; for exaple some physics components have a corresponding named graphics component
 	uint32_t 	additionalPropertiesCount { 0 };
-	AdditionalProperties** additionalProperties; 				// An optional set of properties for this node; a set of key-value pairs for each application/engine specific category
+	AdditionalProperties* additionalProperties{ nullptr };   	// An optional set of properties for this node; a set of key-value pairs for each application/engine specific category
 };
 
 
@@ -245,7 +245,7 @@ public:
 	}
 
 	uint32_t 	pointsCount { 0 };
-	Vec3**   	points;  											// Array of data points describing the convex hull
+	Vec3*  		points{ nullptr };									// Array of data points describing the convex hull
 };
 
 
@@ -266,11 +266,11 @@ public:
 	}
 
 	uint32_t 	pointsCount { 0 };
-	Vec3**   	points;  											// Array of vertices for the triangle mesh
+	Vec3*  		points{ nullptr };									// Array of vertices for the triangle mesh
 	uint32_t 	trianglesCount { 0 };
-	uint32_t**   triangles;										// Array of triangle indices
+	uint32_t*  	triangles{ nullptr };  							// Array of triangle indices
 	uint32_t 	materialIndicesCount { 0 };
-	uint8_t**  	materialIndices; 								// Optional per-triangle material index
+	uint8_t* 	materialIndices{ nullptr };  						// Optional per-triangle material index
 };
 
 
@@ -290,12 +290,12 @@ public:
 	{
 	}
 
-	uint32_t 	rowCount;											// Number of sample rows in the height field samples array.
-	uint32_t 	columnCount;   									// Number of sample columns in the height field samples array.
+	uint32_t 	rowCount{ 0 }; 									// Number of sample rows in the height field samples array.
+	uint32_t 	columnCount{ 0 };									// Number of sample columns in the height field samples array.
 	uint32_t 	samplesCount { 0 };
-	uint16_t**   samples;  										// Heightfield sample data
+	uint16_t*  	samples{ nullptr };								// Heightfield sample data
 	uint32_t 	metaDataCount { 0 };
-	uint16_t**   metaData;   									// Optional meta data for each sample; determines per sample material, winding order, and whether or not to treat it as a hole
+	uint16_t*  	metaData{ nullptr }; 							// Optional meta data for each sample; determines per sample material, winding order, and whether or not to treat it as a hole
 };
 
 
@@ -419,7 +419,7 @@ public:
 	}
 
 	MeshScale  	scale;   										// The scale to apply to this convex mesh
-	const char * convexMesh; 									// The name of the convex mesh asset
+	const char * convexMesh{ nullptr };							// The name of the convex mesh asset
 };
 
 
@@ -440,7 +440,7 @@ public:
 	}
 
 	MeshScale  	scale;   										// The scale of the triangle mesh
-	const char * triangleMesh;   								// The name of the triangle mesh asset
+	const char * triangleMesh{ nullptr };  						// The name of the triangle mesh asset
 	bool 		doubleSided{ false }; 								// Whether or not this triangle mesh should be treated as double sided for collision detection
 };
 
@@ -461,10 +461,10 @@ public:
 	{
 	}
 
-	const char * heightField;  									// The id of the heightfield data asset
-	float  		heightScale;  										// The scaling factor for the height field in vertical direction (y direction in local space).
-	float  		rowScale;   										// The scaling factor for the height field in the row direction (x direction in local space).
-	float  		columnScale;  										// The scaling factor for the height field in the column direction (z direction in local space).
+	const char * heightField{ nullptr }; 						// The id of the heightfield data asset
+	float  		heightScale{ 1 };   								// The scaling factor for the height field in vertical direction (y direction in local space).
+	float  		rowScale{ 1 };										// The scaling factor for the height field in the row direction (x direction in local space).
+	float  		columnScale{ 1 };   								// The scaling factor for the height field in the column direction (z direction in local space).
 	bool 		doubleSided{ false }; 								// Whether or not this heighfield should be treated as double sided for collision detection
 };
 
@@ -504,9 +504,9 @@ public:
 
 	Geometry 	*geometry{ nullptr };								// The geometry associated with this instance
 	uint32_t 	materialsCount { 0 };
-	const char **  materials;  									// Id of physical material(s) associated with this geometry instance (usually one material; but for heightifields and triangle meshes can be more than one)
+	const char **  materials{ nullptr }; 						// Id of physical material(s) associated with this geometry instance (usually one material; but for heightifields and triangle meshes can be more than one)
 	Pose 		localPose;  											// The local pose for this geometry instance
-	const char * collisionFilterSettings;  						// Describes collision filtering settings; what other types of objects this object will collide with
+	const char * collisionFilterSettings{ nullptr }; 			// Describes collision filtering settings; what other types of objects this object will collide with
 };
 
 
@@ -527,7 +527,7 @@ public:
 	}
 
 	uint32_t 	geometryInstancesCount { 0 };
-	GeometryInstance** geometryInstances;  						// The set of geometries to instance with this actor
+	GeometryInstance** geometryInstances{ nullptr }; 			// The set of geometries to instance with this actor
 	Pose 		globalPose;   										// The global pose for this actor
 };
 
@@ -596,15 +596,15 @@ public:
 	{
 	}
 
-	const char * body0;											// Id of first rigid body joint is constrained to; if empty string; then constaint to the world
-	const char * body1;											// Id of the second rigid body the joint is constrainted to
+	const char * body0{ nullptr };   							// Id of first rigid body joint is constrained to; if empty string; then constaint to the world
+	const char * body1{ nullptr };   							// Id of the second rigid body the joint is constrainted to
 	Pose 		localpose0;   										// The parent relative pose; relative to body0
 	Pose 		localpose1;   										// The parent relative pose; relative to body1
 	bool 		collisionEnabled{ false };  							// 
 };
 
 
-// Defines the properties speciic to a fixed joint 
+// Defines the properties specific to a fixed joint 
 // Not all properties yet defined!
 class FixedJoint : public Joint
 {
@@ -624,7 +624,7 @@ public:
 };
 
 
-// Defines the properties speciic to a spherical joint 
+// Defines the properties specific to a spherical joint 
 // Not all properties yet defined!
 class SphericalJoint : public Joint
 {
@@ -644,7 +644,7 @@ public:
 };
 
 
-// Defines the properties speciic to a revolute joint 
+// Defines the properties specific to a revolute joint 
 // Not all properties yet defined!
 class RevoluteJoint : public Joint
 {
@@ -664,7 +664,7 @@ public:
 };
 
 
-// Defines the properties speciic to a prismatic joint 
+// Defines the properties specific to a prismatic joint 
 // Not all properties yet defined!
 class PrismaticJoint : public Joint
 {
@@ -684,7 +684,7 @@ public:
 };
 
 
-// Defines the properties speciic to a distance joint 
+// Defines the properties specific to a distance joint 
 // Not all properties yet defined!
 class DistanceJoint : public Joint
 {
@@ -704,7 +704,7 @@ public:
 };
 
 
-// Defines the properties speciic to a ball and socket joint 
+// Defines the properties specific to a ball and socket joint 
 // Not all properties yet defined!
 class BallAndSocketJoint : public Joint
 {
@@ -724,7 +724,7 @@ public:
 };
 
 
-// Defines the properties speciic to a six degree of freedom joint 
+// Defines the properties specific to a six degree of freedom joint 
 // Not all properties yet defined!
 class D6Joint : public Joint
 {
@@ -748,8 +748,8 @@ public:
 class BodyPairFilter
 {
 public:
-	const char * bodyA;											// Id of first body
-	const char * bodyB ; 										// Id of second body
+	const char * bodyA{ nullptr };   							// Id of first body
+	const char * bodyB { nullptr };								// Id of second body
 };
 
 
@@ -770,7 +770,7 @@ public:
 	}
 
 	uint32_t 	bodyPairsCount { 0 };
-	BodyPairFilter** bodyPairs;									// Array of body pair filters
+	BodyPairFilter* bodyPairs{ nullptr };  						// Array of body pair filters
 };
 
 
@@ -789,7 +789,7 @@ public:
 	{
 	}
 
-	const char * collection; 									// Name of collection to instance
+	const char * collection{ nullptr };							// Name of collection to instance
 	Pose 		pose; 												// Pose to instance collection at
 	Vec3 		scale;  												// Scale of instance
 };
@@ -812,12 +812,12 @@ public:
 	}
 
 	uint32_t 	nodesCount { 0 };
-	Node**   	nodes; 											// Array of nodes in this collection
+	Node**   	nodes{ nullptr };									// Array of nodes in this collection
 };
 
 
 // A special type of 'collection' which is instantiated on startup
-class Scene : public Collection
+class Scene : public Node
 {
 public:
 	// Declare the constructor.
@@ -827,12 +827,14 @@ public:
 	}
 
 
-	// Declare the virtual destructor.
+	// Declare the virtual destructor; cleanup any pointers or arrays of pointers
 	virtual ~Scene()
 	{
 	}
 
 	Vec3 		gravity{ 0.0f,-9.8f,0.0f };   						// Gravity
+	uint32_t 	nodesCount { 0 };
+	Node**   	nodes{ nullptr };									// Array of nodes in this collection
 };
 
 
@@ -851,9 +853,9 @@ public:
 	}
 
 	uint32_t 	collectionsCount { 0 };
-	Collection** collections;  									// The array of top level collections
+	Collection** collections{ nullptr }; 						// The array of top level collections
 	uint32_t 	scenesCount { 0 };
-	Scene**		scenes; 											// The array of top level scenes; a scene is instantiated into the physics simulation
+	Scene**		scenes{ nullptr };									// The array of top level scenes; a scene is instantiated into the physics simulation
 };
 
 

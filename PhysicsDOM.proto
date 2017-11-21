@@ -124,6 +124,7 @@ message Node
 		BodyPairFilters bodyPairFilters = 12;
 		InstanceCollection instanceCollection = 13;
 		Collection collection = 14;
+		Scene scene = 15;
 	}
 
 }
@@ -338,49 +339,49 @@ message Joint
 }
 
 
-// Defines the properties speciic to a fixed joint 
+// Defines the properties specific to a fixed joint 
 // Not all properties yet defined!
 message FixedJoint
 {
 }
 
 
-// Defines the properties speciic to a spherical joint 
+// Defines the properties specific to a spherical joint 
 // Not all properties yet defined!
 message SphericalJoint
 {
 }
 
 
-// Defines the properties speciic to a revolute joint 
+// Defines the properties specific to a revolute joint 
 // Not all properties yet defined!
 message RevoluteJoint
 {
 }
 
 
-// Defines the properties speciic to a prismatic joint 
+// Defines the properties specific to a prismatic joint 
 // Not all properties yet defined!
 message PrismaticJoint
 {
 }
 
 
-// Defines the properties speciic to a distance joint 
+// Defines the properties specific to a distance joint 
 // Not all properties yet defined!
 message DistanceJoint
 {
 }
 
 
-// Defines the properties speciic to a ball and socket joint 
+// Defines the properties specific to a ball and socket joint 
 // Not all properties yet defined!
 message BallAndSocketJoint
 {
 }
 
 
-// Defines the properties speciic to a six degree of freedom joint 
+// Defines the properties specific to a six degree of freedom joint 
 // Not all properties yet defined!
 message D6Joint
 {
@@ -414,11 +415,6 @@ message InstanceCollection
 message Collection
 {
 	repeated Node nodes = 1;
-	oneof subtype
-	{
-		Scene scene = 2;
-	}
-
 }
 
 
@@ -426,6 +422,7 @@ message Collection
 message Scene
 {
 	Vec3 gravity = 1;
+	repeated Node nodes = 2;
 }
 
 

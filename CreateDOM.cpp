@@ -11,7 +11,7 @@
 #include <algorithm>
 #include <assert.h>
 
-#if 1
+#if 0
 #include "PhysicsDOMImpl.h"
 //#include "DeepCopyImpl.h"
 
@@ -771,13 +771,30 @@ public:
 								getMemberName(i.mMember, false),
 								getMemberName(i.mMember, false),
 								getMemberName(i.mMember, true));
-//							cp.printCode(2, "%s = %s; // Assign the current object pointer.\r\n", getMemberName(i.mMember, false), getMemberName(i.mMember, isImpl));
 						}
-//						else if (i.mIsPointer)
-//						{
-//							cp.printCode(3, "%s = other.%s;\r\n", getMemberName(i.mMember, isImpl), getMemberName(i.mMember, isImpl));
-//							cp.printCode(3, "other.%s = nullptr; // Set 'other' pointer to null since we have moved it\r\n", getMemberName(i.mMember, isImpl));
-//						}
+						else if (i.mIsArray)
+						{
+							cp.printCode(2, "%sCount = uint32_t(%s.size()); // assign the number of items in the array.\r\n",
+								getMemberName(i.mMember, false),
+								getMemberName(i.mMember, true));
+							cp.printCode(2, "%s = %sCount ? &%s[0] : nullptr; // Assign the pointer array\r\n",
+								getMemberName(i.mMember, false),
+								getMemberName(i.mMember, false),
+								getMemberName(i.mMember, true));
+						}
+						else if (i.mIsPointer)
+						{
+							cp.printCode(2, "%s = static_cast< %s *>(%s); // assign the DOM reflection pointer.\r\n",
+								getMemberName(i.mMember, false),
+								i.mType.c_str(),
+								getMemberName(i.mMember, true));
+							cp.printCode(2, "if ( %s )\r\n", getMemberName(i.mMember, true));
+							cp.printCode(2, "{\r\n");
+							cp.printCode(3, "%s->initDOM(); // Initialize any DOM components of this object.\r\n",
+								getMemberName(i.mMember, true));
+							cp.printCode(2, "}\r\n");
+
+						}
 					}
 					cp.printCode(1, "}\r\n");
 					cp.printCode(0, "\r\n");
@@ -843,6 +860,8 @@ public:
 					continue;
 				}
 
+				bool needsNull = false;
+
 				if (!i.needsReflection() && isImpl)
 				{
 					continue;
@@ -870,6 +889,7 @@ public:
 					}
 					else
 					{
+						needsNull = true;
 						cp.printCode(1, "uint32_t");
 						cp.printCode(4, "%sCount { 0 };\r\n", getMemberName(i.mMember,isImpl) );
 						if (i.mIsString && !isImpl)
@@ -878,7 +898,14 @@ public:
 						}
 						else
 						{
-							cp.printCode(1, "%s**", getTypeString(i.mType.c_str(), isImpl));
+							if (i.mIsPointer)
+							{
+								cp.printCode(1, "%s**", getTypeString(i.mType.c_str(), isImpl));
+							}
+							else
+							{
+								cp.printCode(1, "%s*", getTypeString(i.mType.c_str(), isImpl));
+							}
 						}
 					}
 				}
@@ -886,16 +913,22 @@ public:
 				{
 					if (isImpl && i.mIsPointer && !i.mIsArray)
 					{
-						cp.printCode(1, "%sImpl", getTypeString(i.mType.c_str(), isImpl));
+						needsNull = true;
+						cp.printCode(1, "%s", getTypeString(i.mType.c_str(), isImpl));
 					}
 					else
 					{
+						if (i.mIsString && !isImpl )
+						{
+							needsNull = true;
+						}
 						cp.printCode(1, "%s", getTypeString(i.mType.c_str(), isImpl));
 					}
 				}
 
 				if (i.mIsPointer && !i.mIsArray)
 				{
+					needsNull = true;
 					cp.printCode(4, "*%s", getMemberName(i.mMember, isImpl));
 				}
 				else
@@ -905,7 +938,7 @@ public:
 
 				if (i.mDefaultValue.empty())
 				{
-					if (i.mIsPointer && !i.mIsArray)
+					if ( needsNull )
 					{
 						cp.printCode(0, "{ nullptr }");
 					}
@@ -1220,7 +1253,7 @@ public:
 			else
 			{
 				cp.printCode(0, "\r\n");
-				cp.printCode(0, "// Forward declare the to types of string vector containers.\r\n");
+				cp.printCode(0, "// Forward declare the two types of string vector containers.\r\n");
 				cp.printCode(0, "typedef std::vector< std::string > StringVector;\r\n");
 				cp.printCode(0, "typedef std::vector< const char * > ConstCharVector;\r\n");
 				cp.printCode(0, "\r\n");

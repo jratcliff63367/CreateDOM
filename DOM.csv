@@ -96,8 +96,8 @@ TriangleMesh,,Class,Node,,,,,Describes the data for a triangle mesh,
 ,,,,,,,,,
 HeightField,,Class,Node,,,,,"The data for a heighfield; as 2d array of 32 bit samples; 16 bits for height, 16 bits for material indices, holes, and other metadata",
 ,type,NodeType,Node,,NT_HEIGHTFIELD,,,,
-,rowCount,u32,,,,,,Number of sample rows in the height field samples array.,Local space X-axis corresponds to rows.
-,columnCount,u32,,,,,,Number of sample columns in the height field samples array.,Local space Z-axis corresponds to columns.
+,rowCount,u32,,,0,,,Number of sample rows in the height field samples array.,Local space X-axis corresponds to rows.
+,columnCount,u32,,,0,,,Number of sample columns in the height field samples array.,Local space Z-axis corresponds to columns.
 ,samples[],u16,,,,,,Heightfield sample data,
 ,metaData[],u16,,,,,,"Optional meta data for each sample; determines per sample material, winding order, and whether or not to treat it as a hole",
 ,,,,,,,,,
@@ -146,9 +146,9 @@ TriangleMeshGeometry,,Class,Geometry,,,,,Defines a triangle mesh geometry,
 HeightFieldGeometry,,Class,Geometry,,,,,Defines a heightfield geometry,
 ,type,GeometryType,Geometry,,GT_HEIGHTFIELD_GEOMETRY,,,,
 ,heightField,string,,,,,,The id of the heightfield data asset,
-,heightScale,float,,,,,,The scaling factor for the height field in vertical direction (y direction in local space).,
-,rowScale,float,,,,,,The scaling factor for the height field in the row direction (x direction in local space).,
-,columnScale,float,,,,,,The scaling factor for the height field in the column direction (z direction in local space).,
+,heightScale,float,,,1,,,The scaling factor for the height field in vertical direction (y direction in local space).,
+,rowScale,float,,,1,,,The scaling factor for the height field in the row direction (x direction in local space).,
+,columnScale,float,,,1,,,The scaling factor for the height field in the column direction (z direction in local space).,
 ,doubleSided,bool,,,FALSE,,,Whether or not this heighfield should be treated as double sided for collision detection,
 ,,,,,,,,,
 PlaneGeometry,,Class,Geometry,,,,,Defines a plane equation geometry (position and orientation of the plane come from the geometry instance),
@@ -190,25 +190,25 @@ Joint,,Class,Node,,,,,Defines the common properties for a joint,
 ,localpose1,Pose,,,,,,The parent relative pose; relative to body1,
 ,collisionEnabled,bool,,,FALSE,,,,
 ,,,,,,,,,
-FixedJoint,,Class,Joint,,,,,Defines the properties speciic to a fixed joint ,Not all properties yet defined!
+FixedJoint,,Class,Joint,,,,,Defines the properties specific to a fixed joint ,Not all properties yet defined!
 ,type,NodeType,Joint,,NT_FIXED_JOINT,,,,
 ,,,,,,,,,
-SphericalJoint,,Class,Joint,,,,,Defines the properties speciic to a spherical joint ,Not all properties yet defined!
+SphericalJoint,,Class,Joint,,,,,Defines the properties specific to a spherical joint ,Not all properties yet defined!
 ,type,NodeType,Joint,,NT_SPHERICAL_JOINT,,,,
 ,,,,,,,,,
-RevoluteJoint,,Class,Joint,,,,,Defines the properties speciic to a revolute joint ,Not all properties yet defined!
+RevoluteJoint,,Class,Joint,,,,,Defines the properties specific to a revolute joint ,Not all properties yet defined!
 ,type,NodeType,Joint,,NT_REVOLUTE_JOINT,,,,
 ,,,,,,,,,
-PrismaticJoint,,Class,Joint,,,,,Defines the properties speciic to a prismatic joint ,Not all properties yet defined!
+PrismaticJoint,,Class,Joint,,,,,Defines the properties specific to a prismatic joint ,Not all properties yet defined!
 ,type,NodeType,Joint,,NT_PRISMATIC_JOINT,,,,
 ,,,,,,,,,
-DistanceJoint,,Class,Joint,,,,,Defines the properties speciic to a distance joint ,Not all properties yet defined!
+DistanceJoint,,Class,Joint,,,,,Defines the properties specific to a distance joint ,Not all properties yet defined!
 ,type,NodeType,Joint,,NT_DISTANCE_JOINT,,,,
 ,,,,,,,,,
-BallAndSocketJoint,,Class,Joint,,,,,Defines the properties speciic to a ball and socket joint ,Not all properties yet defined!
+BallAndSocketJoint,,Class,Joint,,,,,Defines the properties specific to a ball and socket joint ,Not all properties yet defined!
 ,type,NodeType,Joint,,NT_BALL_AND_SOCKET_JOINT,,,,
 ,,,,,,,,,
-D6Joint,,Class,Joint,,,,,Defines the properties speciic to a six degree of freedom joint ,Not all properties yet defined!
+D6Joint,,Class,Joint,,,,,Defines the properties specific to a six degree of freedom joint ,Not all properties yet defined!
 ,type,NodeType,Joint,,NT_D6_JOINT,,,,
 ,,,,,,,,,
 BodyPairFilter,,Class,,,,,,"Defines two bodies, by id, that should not collide with each other",
@@ -229,9 +229,10 @@ Collection,,Class,Node,,,,,A collection of nodes,
 ,type,NodeType,Node,,NT_COLLECTION,,,,
 ,nodes[*],Node,,,,,,Array of nodes in this collection,
 ,,,,,,,,,
-Scene,,Class,Collection,,,,,A special type of 'collection' which is instantiated on startup,
+Scene,,Class,Node,,,,,A special type of 'collection' which is instantiated on startup,
 ,type,NodeType,Node,,NT_SCENE,,,,
 ,gravity,Vec3,,,"0.0f,-9.8f,0.0f",,,Gravity,
+,nodes[*],Node,,,,,,Array of nodes in this collection,
 ,,,,,,,,,
 PhysicsDOM,,Class,,,CLONE,,,The root node container,
 ,collections[*],Collection,,,,,,The array of top level collections,

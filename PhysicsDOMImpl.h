@@ -15,7 +15,7 @@ namespace PHYSICS_DOM
 {
 
 
-// Forward declare the to types of string vector containers.
+// Forward declare the two types of string vector containers.
 typedef std::vector< std::string > StringVector;
 typedef std::vector< const char * > ConstCharVector;
 
@@ -94,6 +94,8 @@ public:
 	void initDOM(void)
 	{
 		AdditionalProperties::category = mCategory.c_str(); // Assign the current string pointer.
+		keyValuePairsCount = uint32_t(mKeyValuePairs.size()); // assign the number of items in the array.
+		keyValuePairs = keyValuePairsCount ? &mKeyValuePairs[0] : nullptr; // Assign the pointer array
 	}
 
 
@@ -159,6 +161,8 @@ public:
 			VisualBindingImpl *impl = static_cast< VisualBindingImpl *>(&visual); // static cast to the implementation class.
 			impl->initDOM(); // Initialize DOM components of member variable.
 		}
+		additionalPropertiesCount = uint32_t(mAdditionalProperties.size()); // assign the number of items in the array.
+		additionalProperties = additionalPropertiesCount ? &mAdditionalProperties[0] : nullptr; // Assign the pointer array
 	}
 
 
@@ -296,6 +300,8 @@ public:
 	void initDOM(void)
 	{
 		Node::initDOM();
+		pointsCount = uint32_t(mPoints.size()); // assign the number of items in the array.
+		points = pointsCount ? &mPoints[0] : nullptr; // Assign the pointer array
 	}
 
 
@@ -368,6 +374,12 @@ public:
 	void initDOM(void)
 	{
 		Node::initDOM();
+		pointsCount = uint32_t(mPoints.size()); // assign the number of items in the array.
+		points = pointsCount ? &mPoints[0] : nullptr; // Assign the pointer array
+		trianglesCount = uint32_t(mTriangles.size()); // assign the number of items in the array.
+		triangles = trianglesCount ? &mTriangles[0] : nullptr; // Assign the pointer array
+		materialIndicesCount = uint32_t(mMaterialIndices.size()); // assign the number of items in the array.
+		materialIndices = materialIndicesCount ? &mMaterialIndices[0] : nullptr; // Assign the pointer array
 	}
 
 
@@ -442,6 +454,10 @@ public:
 	void initDOM(void)
 	{
 		Node::initDOM();
+		samplesCount = uint32_t(mSamples.size()); // assign the number of items in the array.
+		samples = samplesCount ? &mSamples[0] : nullptr; // Assign the pointer array
+		metaDataCount = uint32_t(mMetaData.size()); // assign the number of items in the array.
+		metaData = metaDataCount ? &mMetaData[0] : nullptr; // Assign the pointer array
 	}
 
 
@@ -1101,6 +1117,11 @@ public:
 	// Declare and implement the initDOM method
 	void initDOM(void)
 	{
+		geometry = static_cast< Geometry *>(mGeometry); // assign the DOM reflection pointer.
+		if ( mGeometry )
+		{
+			mGeometry->initDOM(); // Initialize any DOM components of this object.
+		}
 		// Initialize the const char * array from the array of std::strings vector mMaterials
 		mMaterialsImpl.reserve(mMaterials.size()); // Reserve room for string pointers.
 		for (auto &i: mMaterials) // For each std::string
@@ -1130,7 +1151,7 @@ public:
 		return *this;
 	}
 
-	GeometryImpl *mGeometry{ nullptr };							// The geometry associated with this instance
+	Geometry 	*mGeometry{ nullptr }; 							// The geometry associated with this instance
 	StringVector mMaterials; 									// Id of physical material(s) associated with this geometry instance (usually one material; but for heightifields and triangle meshes can be more than one)
 	std::string	mCollisionFilterSettings;  						// Describes collision filtering settings; what other types of objects this object will collide with
 // Declare private temporary array(s) to hold array of strings pointers.
@@ -1420,7 +1441,7 @@ public:
 };
 
 
-// Defines the properties speciic to a fixed joint 
+// Defines the properties specific to a fixed joint 
 // Not all properties yet defined!
 class FixedJointImpl: public FixedJoint
 {
@@ -1486,7 +1507,7 @@ public:
 };
 
 
-// Defines the properties speciic to a spherical joint 
+// Defines the properties specific to a spherical joint 
 // Not all properties yet defined!
 class SphericalJointImpl: public SphericalJoint
 {
@@ -1552,7 +1573,7 @@ public:
 };
 
 
-// Defines the properties speciic to a revolute joint 
+// Defines the properties specific to a revolute joint 
 // Not all properties yet defined!
 class RevoluteJointImpl: public RevoluteJoint
 {
@@ -1618,7 +1639,7 @@ public:
 };
 
 
-// Defines the properties speciic to a prismatic joint 
+// Defines the properties specific to a prismatic joint 
 // Not all properties yet defined!
 class PrismaticJointImpl: public PrismaticJoint
 {
@@ -1684,7 +1705,7 @@ public:
 };
 
 
-// Defines the properties speciic to a distance joint 
+// Defines the properties specific to a distance joint 
 // Not all properties yet defined!
 class DistanceJointImpl: public DistanceJoint
 {
@@ -1750,7 +1771,7 @@ public:
 };
 
 
-// Defines the properties speciic to a ball and socket joint 
+// Defines the properties specific to a ball and socket joint 
 // Not all properties yet defined!
 class BallAndSocketJointImpl: public BallAndSocketJoint
 {
@@ -1816,7 +1837,7 @@ public:
 };
 
 
-// Defines the properties speciic to a six degree of freedom joint 
+// Defines the properties specific to a six degree of freedom joint 
 // Not all properties yet defined!
 class D6JointImpl: public D6Joint
 {
@@ -1961,6 +1982,8 @@ public:
 	void initDOM(void)
 	{
 		Node::initDOM();
+		bodyPairsCount = uint32_t(mBodyPairs.size()); // assign the number of items in the array.
+		bodyPairs = bodyPairsCount ? &mBodyPairs[0] : nullptr; // Assign the pointer array
 	}
 
 
@@ -2141,9 +2164,10 @@ public:
 	}
 
 
-	// Declare the virtual destructor.
+	// Declare the virtual destructor; cleanup any pointers or arrays of pointers
 	virtual ~SceneImpl()
 	{
+		for (auto &i:mNodes) delete i; // Delete all of the object pointers in this array
 	}
 
 
@@ -2165,7 +2189,11 @@ public:
 	{
 		if (this != &other )
 		{
-			Collection::operator=(other);
+			Node::operator=(other);
+			for (auto &i:mNodes) delete i; // Delete all of the object pointers in this array
+			mNodes.clear(); // Clear the current array
+			mNodes.reserve(other.mNodes.size()); // Reserve number of items for the new array
+			for (auto &i:other.mNodes) mNodes.push_back( static_cast< NodeImpl *>(i->clone())); // Deep copy object pointers into the array
 		}
 		return *this;
 	}
@@ -2173,7 +2201,11 @@ public:
 	// Declare and implement the initDOM method
 	void initDOM(void)
 	{
-		Collection::initDOM();
+		Node::initDOM();
+		for (auto &i:mNodes)
+			i->initDOM();
+		nodesCount = uint32_t(mNodes.size()); // assign the number of items in the array.
+		nodes = nodesCount ? &mNodes[0] : nullptr; // Assign the pointer array
 	}
 
 
@@ -2188,11 +2220,14 @@ public:
 	{
 		if (this != &other )
 		{
-			Collection::operator=(std::move(other));
+			Node::operator=(std::move(other));
+			mNodes = other.mNodes;
+			other.mNodes.clear(); // Clear the 'other' array now that we have moved it
 		}
 		return *this;
 	}
 
+	NodeVector   mNodes; 										// Array of nodes in this collection
 };
 
 typedef std::vector< Collection *> CollectionVector; // Forward declare the 'Collection' vector for the implementation object pointers
