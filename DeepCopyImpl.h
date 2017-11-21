@@ -15,10 +15,32 @@ namespace DEEP_COPY
 {
 
 
-// Base class for all geometries
-class GeometryImpl: public Geometry
+// Forward declare the two types of string vector containers.
+typedef std::vector< std::string > StringVector;
+typedef std::vector< const char * > ConstCharVector;
+
+// Declare the clone-object class for deep copies
+// of objects by the implementation classes
+// Not to be used with the base DOM classes;
+// they do not support deep copies
+// Also declares the virtual method to init the DOM contents.
+class CloneObject
 {
 public:
+	// Declare the default virtual clone method; not implemented for DOM objects; only used for the implementation versions.
+	virtual CloneObject *clone(void) const { return nullptr; };
+	// Declare the default initDOM method; which is only needed for some implementation objects.
+	virtual void initDOM(void) {  };
+};
+
+// Base class for all geometries
+class GeometryImpl: public CloneObject
+{
+public:
+
+	// Declare the constructor.
+	GeometryImpl() { }
+
 
 	// Declare the deep copy constructor; handles copying pointers and pointer arrays
 	GeometryImpl(const GeometryImpl &other)
@@ -38,8 +60,21 @@ public:
 	{
 		if (this != &other )
 		{
+			mType = other.mType;
 		}
 		return *this;
+	}
+
+
+	// Declare the helper method to return the DOM version of this class.
+	Geometry *getDOM(void)
+	{
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
 	}
 
 
@@ -54,20 +89,25 @@ public:
 	{
 		if (this != &other )
 		{
+			mType = other.mType;
 		}
 		return *this;
 	}
 
+	GeometryType mType;											// 
+private:
+	Geometry 	mDOM; // Declare the DOM version.
 };
 
 
 // Defines a box geometry
-class BoxGeometryImpl: public BoxGeometry
+class BoxGeometryImpl : public GeometryImpl
 {
 public:
 	// Declare the constructor.
 	BoxGeometryImpl()
 	{
+		GeometryImpl::mType = GT_BOX_GEOMETRY;
 	}
 
 
@@ -95,9 +135,31 @@ public:
 	{
 		if (this != &other )
 		{
-			Geometry::operator=(other);
+			GeometryImpl::operator=(other);
+			mWidth = other.mWidth;
+			mDepth = other.mDepth;
+			mHeight = other.mHeight;
 		}
 		return *this;
+	}
+
+
+	// Declare the helper method to return the DOM version of this class.
+	BoxGeometry *getDOM(void)
+	{
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		// Initialize the DOM for the base class.
+		GeometryImpl::initDOM();
+		// Copy the elements from the base class DOM to our reflection DOM
+		{
+			Geometry *dom = static_cast< Geometry *>(&mDOM); // Get the DOM base class.
+			*dom = *(GeometryImpl::getDOM()); // Assign the base class DOM components.
+		}
 	}
 
 
@@ -112,21 +174,30 @@ public:
 	{
 		if (this != &other )
 		{
-			Geometry::operator=(std::move(other));
+			GeometryImpl::operator=(std::move(other));
+			mWidth = other.mWidth;
+			mDepth = other.mDepth;
+			mHeight = other.mHeight;
 		}
 		return *this;
 	}
 
+	float  		mWidth{ 1 };  										// 
+	float  		mDepth{ 1 };  										// 
+	float  		mHeight{ 1 };   									// Dimensions of the box
+private:
+	BoxGeometry	mDOM; // Declare the DOM version.
 };
 
 
 // Defines a sphere geometry
-class SphereGeometryImpl: public SphereGeometry
+class SphereGeometryImpl : public GeometryImpl
 {
 public:
 	// Declare the constructor.
 	SphereGeometryImpl()
 	{
+		GeometryImpl::mType = GT_SPHERE_GEOMETRY;
 	}
 
 
@@ -154,9 +225,29 @@ public:
 	{
 		if (this != &other )
 		{
-			Geometry::operator=(other);
+			GeometryImpl::operator=(other);
+			mRadius = other.mRadius;
 		}
 		return *this;
+	}
+
+
+	// Declare the helper method to return the DOM version of this class.
+	SphereGeometry *getDOM(void)
+	{
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		// Initialize the DOM for the base class.
+		GeometryImpl::initDOM();
+		// Copy the elements from the base class DOM to our reflection DOM
+		{
+			Geometry *dom = static_cast< Geometry *>(&mDOM); // Get the DOM base class.
+			*dom = *(GeometryImpl::getDOM()); // Assign the base class DOM components.
+		}
 	}
 
 
@@ -171,17 +262,22 @@ public:
 	{
 		if (this != &other )
 		{
-			Geometry::operator=(std::move(other));
+			GeometryImpl::operator=(std::move(other));
+			mRadius = other.mRadius;
 		}
 		return *this;
 	}
 
+	float  		mRadius{ 1 };   									// The radius of the sphere
+private:
+	SphereGeometry   mDOM; // Declare the DOM version.
 };
 
-typedef std::vector< Geometry *> GeometryVector; // Forward declare the 'Geometry' vector for the implementation object pointers
+typedef std::vector< GeometryImpl *> GeometryVectorImpl; // Forward declare the 'Geometry' vector for the implementation object pointers
+typedef std::vector< Geometry *> GeometryVectorDOM; // Forward declare the 'Geometry' vector for the implementation object pointers
 
 // Defines a single instance of a geometry
-class GeometryInstanceImpl: public GeometryInstance
+class GeometryInstanceImpl: public CloneObject
 {
 public:
 
@@ -223,6 +319,27 @@ public:
 	}
 
 
+	// Declare the helper method to return the DOM version of this class.
+	GeometryInstance *getDOM(void)
+	{
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		mGeometriesDOM.clear();
+		mGeometriesDOM.reserve( mGeometries.size() );
+		for (auto &i:mGeometries)
+		{
+			i->initDOM();
+			mGeometriesDOM.push_back( i->getDOM() );
+		}
+		mDOM.geometriesCount = uint32_t(mGeometriesDOM.size()); // assign the number of items in the array.
+		mDOM.geometries = mDOM.geometriesCount ? &mGeometriesDOM[0] : nullptr; // Assign the pointer array
+	}
+
+
 	// Declare the move constructor; handles copying pointers and pointer arrays
 	GeometryInstanceImpl(GeometryInstanceImpl &&other)
 	{
@@ -240,7 +357,11 @@ public:
 		return *this;
 	}
 
-	GeometryVector   mGeometries;  								// The geometry associated with this instance
+	GeometryVectorImpl mGeometries;								// The geometry associated with this instance
+private:
+	GeometryInstance mDOM; // Declare the DOM version.
+// Declare private temporary array(s) to hold flat DOM version of arrays.
+	GeometryVectorDOM mGeometriesDOM; // Scratch array for const char pointers.
 };
 
 

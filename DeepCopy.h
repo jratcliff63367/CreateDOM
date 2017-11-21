@@ -11,15 +11,6 @@
 namespace DEEP_COPY
 {
 
-// Declare the clone-object class for deep copies
-// of objects by the implementation classes
-// Not to be used with the base DOM classes;
-// they do not support deep copies
-class CloneObject
-{
-public:
-	virtual CloneObject *clone(void) const { return nullptr; };
-};
 
 enum GeometryType
 {
@@ -29,7 +20,7 @@ enum GeometryType
 
 
 // Base class for all geometries
-class Geometry: public CloneObject
+class Geometry
 {
 public:
 	GeometryType type;   										// 
@@ -44,12 +35,6 @@ public:
 	BoxGeometry()
 	{
 		Geometry::type = GT_BOX_GEOMETRY;
-	}
-
-
-	// Declare the virtual destructor.
-	virtual ~BoxGeometry()
-	{
 	}
 
 	float  		width{ 1 }; 										// 
@@ -68,32 +53,16 @@ public:
 		Geometry::type = GT_SPHERE_GEOMETRY;
 	}
 
-
-	// Declare the virtual destructor.
-	virtual ~SphereGeometry()
-	{
-	}
-
 	float  		radius{ 1 };  										// The radius of the sphere
 };
 
 
 // Defines a single instance of a geometry
-class GeometryInstance: public CloneObject
+class GeometryInstance
 {
 public:
-
-	// Declare the constructor.
-	GeometryInstance() { }
-
-
-	// Declare the virtual destructor; cleanup any pointers or arrays of pointers
-	virtual ~GeometryInstance()
-	{
-	}
-
 	uint32_t 	geometriesCount { 0 };
-	const Geometry* geometries;									// The geometry associated with this instance
+	Geometry**   geometries{ nullptr };							// The geometry associated with this instance
 };
 
 

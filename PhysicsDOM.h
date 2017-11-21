@@ -11,19 +11,6 @@
 namespace PHYSICS_DOM
 {
 
-// Declare the clone-object class for deep copies
-// of objects by the implementation classes
-// Not to be used with the base DOM classes;
-// they do not support deep copies
-// Also declares the virtual method to init the DOM contents.
-class CloneObject
-{
-public:
-	// Declare the default virtual clone method; not implemented for DOM objects; only used for the implementation versions.
-	virtual CloneObject *clone(void) const { return nullptr; };
-	// Declare the default initDOM method; which is only needed for some implementation objects.
-	virtual void initDOM(void) {  };
-};
 
 // Defines a basic 3d vector type
 class Vec3
@@ -183,7 +170,7 @@ public:
 
 
 // Base class that specifies a unique ID and an optional description name field for an object
-class Node: public CloneObject
+class Node
 {
 public:
 	const char * id{ nullptr };									// Unique Id for this object
@@ -214,12 +201,6 @@ public:
 		Node::type = NT_PHYSICS_MATERIAL;
 	}
 
-
-	// Declare the virtual destructor.
-	virtual ~PhysicsMaterial()
-	{
-	}
-
 	bool 		disableFriction{ false }; 							// If true, then friction is disabled for the material
 	bool 		disableStrongFriction{ false };   					// If true then strong friction is disabled for the material
 	float  		dynamicFriction{ 0.5f };  							// The coefficient of dynamic friction.
@@ -238,12 +219,6 @@ public:
 		Node::type = NT_CONVEXHULL;
 	}
 
-
-	// Declare the virtual destructor.
-	virtual ~ConvexHull()
-	{
-	}
-
 	uint32_t 	pointsCount { 0 };
 	Vec3*  		points{ nullptr };									// Array of data points describing the convex hull
 };
@@ -257,12 +232,6 @@ public:
 	TriangleMesh()
 	{
 		Node::type = NT_TRIANGLEMESH;
-	}
-
-
-	// Declare the virtual destructor.
-	virtual ~TriangleMesh()
-	{
 	}
 
 	uint32_t 	pointsCount { 0 };
@@ -282,12 +251,6 @@ public:
 	HeightField()
 	{
 		Node::type = NT_HEIGHTFIELD;
-	}
-
-
-	// Declare the virtual destructor.
-	virtual ~HeightField()
-	{
 	}
 
 	uint32_t 	rowCount{ 0 }; 									// Number of sample rows in the height field samples array.
@@ -313,7 +276,7 @@ enum GeometryType
 
 
 // Base class for all geometries
-class Geometry: public CloneObject
+class Geometry
 {
 public:
 	GeometryType type;   										// 
@@ -330,12 +293,6 @@ public:
 		Geometry::type = GT_BOX_GEOMETRY;
 	}
 
-
-	// Declare the virtual destructor.
-	virtual ~BoxGeometry()
-	{
-	}
-
 	Vec3 		dimensions{ 1,1,1 };									// Dimensions of the box
 };
 
@@ -350,12 +307,6 @@ public:
 		Geometry::type = GT_SPHERE_GEOMETRY;
 	}
 
-
-	// Declare the virtual destructor.
-	virtual ~SphereGeometry()
-	{
-	}
-
 	float  		radius{ 1 };  										// The radius of the sphere
 };
 
@@ -368,12 +319,6 @@ public:
 	CapsuleGeometry()
 	{
 		Geometry::type = GT_CAPSULE_GEOMETRY;
-	}
-
-
-	// Declare the virtual destructor.
-	virtual ~CapsuleGeometry()
-	{
 	}
 
 	float  		radius{ 1 };  										// The radius of the capsule
@@ -391,12 +336,6 @@ public:
 		Geometry::type = GT_CYLINDER_GEOMETRY;
 	}
 
-
-	// Declare the virtual destructor.
-	virtual ~CylinderGeometry()
-	{
-	}
-
 	float  		radius{ 1 };  										// The radius of the cylinder
 	float  		height{ 1 };  										// The height of the cylinder
 };
@@ -410,12 +349,6 @@ public:
 	ConvexHullGeometry()
 	{
 		Geometry::type = GT_CONVEXHULL_GEOMETRY;
-	}
-
-
-	// Declare the virtual destructor.
-	virtual ~ConvexHullGeometry()
-	{
 	}
 
 	MeshScale  	scale;   										// The scale to apply to this convex mesh
@@ -433,12 +366,6 @@ public:
 		Geometry::type = GT_TRIANGLEMESH_GEOMETRY;
 	}
 
-
-	// Declare the virtual destructor.
-	virtual ~TriangleMeshGeometry()
-	{
-	}
-
 	MeshScale  	scale;   										// The scale of the triangle mesh
 	const char * triangleMesh{ nullptr };  						// The name of the triangle mesh asset
 	bool 		doubleSided{ false }; 								// Whether or not this triangle mesh should be treated as double sided for collision detection
@@ -453,12 +380,6 @@ public:
 	HeightFieldGeometry()
 	{
 		Geometry::type = GT_HEIGHTFIELD_GEOMETRY;
-	}
-
-
-	// Declare the virtual destructor.
-	virtual ~HeightFieldGeometry()
-	{
 	}
 
 	const char * heightField{ nullptr }; 						// The id of the heightfield data asset
@@ -479,29 +400,13 @@ public:
 		Geometry::type = GT_PLANE_GEOMETRY;
 	}
 
-
-	// Declare the virtual destructor.
-	virtual ~PlaneGeometry()
-	{
-	}
-
 };
 
 
 // Defines a single instance of a geometry
-class GeometryInstance: public CloneObject
+class GeometryInstance
 {
 public:
-
-	// Declare the constructor.
-	GeometryInstance() { }
-
-
-	// Declare the virtual destructor; cleanup any pointers or arrays of pointers
-	virtual ~GeometryInstance()
-	{
-	}
-
 	Geometry 	*geometry{ nullptr };								// The geometry associated with this instance
 	uint32_t 	materialsCount { 0 };
 	const char **  materials{ nullptr }; 						// Id of physical material(s) associated with this geometry instance (usually one material; but for heightifields and triangle meshes can be more than one)
@@ -520,12 +425,6 @@ public:
 		Node::type = NT_RIGID_BODY;
 	}
 
-
-	// Declare the virtual destructor; cleanup any pointers or arrays of pointers
-	virtual ~RigidBody()
-	{
-	}
-
 	uint32_t 	geometryInstancesCount { 0 };
 	GeometryInstance** geometryInstances{ nullptr }; 			// The set of geometries to instance with this actor
 	Pose 		globalPose;   										// The global pose for this actor
@@ -542,12 +441,6 @@ public:
 		Node::type = NT_RIGID_STATIC;
 	}
 
-
-	// Declare the virtual destructor.
-	virtual ~RigidStatic()
-	{
-	}
-
 };
 
 
@@ -559,12 +452,6 @@ public:
 	RigidDynamic()
 	{
 		Node::type = NT_RIGID_DYNAMIC;
-	}
-
-
-	// Declare the virtual destructor.
-	virtual ~RigidDynamic()
-	{
 	}
 
 	bool 		disableGravity{ false };								// Disables scene gravity for this actor
@@ -590,12 +477,6 @@ public:
 		Node::type = NT_JOINT;
 	}
 
-
-	// Declare the virtual destructor.
-	virtual ~Joint()
-	{
-	}
-
 	const char * body0{ nullptr };   							// Id of first rigid body joint is constrained to; if empty string; then constaint to the world
 	const char * body1{ nullptr };   							// Id of the second rigid body the joint is constrainted to
 	Pose 		localpose0;   										// The parent relative pose; relative to body0
@@ -615,12 +496,6 @@ public:
 		Joint::type = NT_FIXED_JOINT;
 	}
 
-
-	// Declare the virtual destructor.
-	virtual ~FixedJoint()
-	{
-	}
-
 };
 
 
@@ -633,12 +508,6 @@ public:
 	SphericalJoint()
 	{
 		Joint::type = NT_SPHERICAL_JOINT;
-	}
-
-
-	// Declare the virtual destructor.
-	virtual ~SphericalJoint()
-	{
 	}
 
 };
@@ -655,12 +524,6 @@ public:
 		Joint::type = NT_REVOLUTE_JOINT;
 	}
 
-
-	// Declare the virtual destructor.
-	virtual ~RevoluteJoint()
-	{
-	}
-
 };
 
 
@@ -673,12 +536,6 @@ public:
 	PrismaticJoint()
 	{
 		Joint::type = NT_PRISMATIC_JOINT;
-	}
-
-
-	// Declare the virtual destructor.
-	virtual ~PrismaticJoint()
-	{
 	}
 
 };
@@ -695,12 +552,6 @@ public:
 		Joint::type = NT_DISTANCE_JOINT;
 	}
 
-
-	// Declare the virtual destructor.
-	virtual ~DistanceJoint()
-	{
-	}
-
 };
 
 
@@ -715,12 +566,6 @@ public:
 		Joint::type = NT_BALL_AND_SOCKET_JOINT;
 	}
 
-
-	// Declare the virtual destructor.
-	virtual ~BallAndSocketJoint()
-	{
-	}
-
 };
 
 
@@ -733,12 +578,6 @@ public:
 	D6Joint()
 	{
 		Joint::type = NT_D6_JOINT;
-	}
-
-
-	// Declare the virtual destructor.
-	virtual ~D6Joint()
-	{
 	}
 
 };
@@ -763,12 +602,6 @@ public:
 		Node::type = NT_BODY_PAIR_FILTERS;
 	}
 
-
-	// Declare the virtual destructor.
-	virtual ~BodyPairFilters()
-	{
-	}
-
 	uint32_t 	bodyPairsCount { 0 };
 	BodyPairFilter* bodyPairs{ nullptr };  						// Array of body pair filters
 };
@@ -781,12 +614,6 @@ public:
 	InstanceCollection()
 	{
 		Node::type = NT_INSTANCE_COLLECTION;
-	}
-
-
-	// Declare the virtual destructor.
-	virtual ~InstanceCollection()
-	{
 	}
 
 	const char * collection{ nullptr };							// Name of collection to instance
@@ -805,12 +632,6 @@ public:
 		Node::type = NT_COLLECTION;
 	}
 
-
-	// Declare the virtual destructor; cleanup any pointers or arrays of pointers
-	virtual ~Collection()
-	{
-	}
-
 	uint32_t 	nodesCount { 0 };
 	Node**   	nodes{ nullptr };									// Array of nodes in this collection
 };
@@ -826,12 +647,6 @@ public:
 		Node::type = NT_SCENE;
 	}
 
-
-	// Declare the virtual destructor; cleanup any pointers or arrays of pointers
-	virtual ~Scene()
-	{
-	}
-
 	Vec3 		gravity{ 0.0f,-9.8f,0.0f };   						// Gravity
 	uint32_t 	nodesCount { 0 };
 	Node**   	nodes{ nullptr };									// Array of nodes in this collection
@@ -839,19 +654,9 @@ public:
 
 
 // The root node container
-class PhysicsDOM: public CloneObject
+class PhysicsDOM
 {
 public:
-
-	// Declare the constructor.
-	PhysicsDOM() { }
-
-
-	// Declare the virtual destructor; cleanup any pointers or arrays of pointers
-	virtual ~PhysicsDOM()
-	{
-	}
-
 	uint32_t 	collectionsCount { 0 };
 	Collection** collections{ nullptr }; 						// The array of top level collections
 	uint32_t 	scenesCount { 0 };

@@ -19,15 +19,28 @@ namespace PHYSICS_DOM
 typedef std::vector< std::string > StringVector;
 typedef std::vector< const char * > ConstCharVector;
 
+// Declare the clone-object class for deep copies
+// of objects by the implementation classes
+// Not to be used with the base DOM classes;
+// they do not support deep copies
+// Also declares the virtual method to init the DOM contents.
+class CloneObject
+{
+public:
+	// Declare the default virtual clone method; not implemented for DOM objects; only used for the implementation versions.
+	virtual CloneObject *clone(void) const { return nullptr; };
+	// Declare the default initDOM method; which is only needed for some implementation objects.
+	virtual void initDOM(void) {  };
+};
 
 // Defines an optional visual mesh binding to a physics node
-class VisualBindingImpl: public VisualBinding
+class VisualBindingImpl
 {
 public:
 	// Declare and implement the initDOM method
 	void initDOM(void)
 	{
-		VisualBinding::visualName = mVisualName.c_str(); // Assign the current string pointer.
+		mDOM.visualName = mVisualName.c_str(); // Assign the current string pointer.
 	}
 
 
@@ -43,23 +56,29 @@ public:
 		if (this != &other )
 		{
 			mVisualName = other.mVisualName;
+			mLocalPose = other.mLocalPose;
+			mLocalScale = other.mLocalScale;
 		}
 		return *this;
 	}
 
 	std::string	mVisualName; 									// Name of associated visual mesh
+	Pose 		mLocalPose;   										// Local relative pose of visual mesh to corresponding physics node
+	Vec3 		mLocalScale;											// Local relative scale of visual mesh to corresponding physics node
+private:
+	VisualBinding  mDOM; // Declare the DOM version.
 };
 
 
 // Describes a key-value pair for custom properties on a node
-class KeyValuePairImpl: public KeyValuePair
+class KeyValuePairImpl
 {
 public:
 	// Declare and implement the initDOM method
 	void initDOM(void)
 	{
-		KeyValuePair::key = mKey.c_str(); // Assign the current string pointer.
-		KeyValuePair::value = mValue.c_str(); // Assign the current string pointer.
+		mDOM.key = mKey.c_str(); // Assign the current string pointer.
+		mDOM.value = mValue.c_str(); // Assign the current string pointer.
 	}
 
 
@@ -82,20 +101,22 @@ public:
 
 	std::string	mKey;  											// They 'key' identifier; what this property is
 	std::string	mValue;											// The value of this property; up to each the user to figure out how to interpret each property relative to the keyword
+private:
+	KeyValuePair mDOM; // Declare the DOM version.
 };
 
-typedef std::vector< KeyValuePair > KeyValuePairVector; // Forward declare the 'KeyValuePair' vector
+typedef std::vector< KeyValuePairImpl > KeyValuePairVector; // Forward declare the 'KeyValuePair' vector
 
 // A collection of key/value pair properties relative to a particular category
-class AdditionalPropertiesImpl: public AdditionalProperties
+class AdditionalPropertiesImpl
 {
 public:
 	// Declare and implement the initDOM method
 	void initDOM(void)
 	{
-		AdditionalProperties::category = mCategory.c_str(); // Assign the current string pointer.
-		keyValuePairsCount = uint32_t(mKeyValuePairs.size()); // assign the number of items in the array.
-		keyValuePairs = keyValuePairsCount ? &mKeyValuePairs[0] : nullptr; // Assign the pointer array
+		mDOM.category = mCategory.c_str(); // Assign the current string pointer.
+		mDOM.keyValuePairsCount = uint32_t(mKeyValuePairs.size()); // assign the number of items in the array.
+		mDOM.keyValuePairs = mDOM.keyValuePairsCount ? &mKeyValuePairs[0] : nullptr; // Assign the pointer array
 	}
 
 
@@ -118,12 +139,14 @@ public:
 
 	std::string	mCategory;   									// The category this set of key/value pairs is associated with (example 'physx', 'mujoco', etc.
 	KeyValuePairVector mKeyValuePairs;   						// The array of key/value pairs associated with this category
+private:
+	AdditionalProperties mDOM; // Declare the DOM version.
 };
 
-typedef std::vector< AdditionalProperties > AdditionalPropertiesVector; // Forward declare the 'AdditionalProperties' vector
+typedef std::vector< AdditionalPropertiesImpl > AdditionalPropertiesVector; // Forward declare the 'AdditionalProperties' vector
 
 // Base class that specifies a unique ID and an optional description name field for an object
-class NodeImpl: public Node
+class NodeImpl: public CloneObject
 {
 public:
 
@@ -147,6 +170,8 @@ public:
 		{
 			mId = other.mId;
 			mName = other.mName;
+			mType = other.mType;
+			mVisual = other.mVisual;
 			mAdditionalProperties = other.mAdditionalProperties;
 		}
 		return *this;
@@ -155,14 +180,14 @@ public:
 	// Declare and implement the initDOM method
 	void initDOM(void)
 	{
-		Node::id = mId.c_str(); // Assign the current string pointer.
-		Node::name = mName.c_str(); // Assign the current string pointer.
+		mDOM.id = mId.c_str(); // Assign the current string pointer.
+		mDOM.name = mName.c_str(); // Assign the current string pointer.
 		{
 			VisualBindingImpl *impl = static_cast< VisualBindingImpl *>(&visual); // static cast to the implementation class.
 			impl->initDOM(); // Initialize DOM components of member variable.
 		}
-		additionalPropertiesCount = uint32_t(mAdditionalProperties.size()); // assign the number of items in the array.
-		additionalProperties = additionalPropertiesCount ? &mAdditionalProperties[0] : nullptr; // Assign the pointer array
+		mDOM.additionalPropertiesCount = uint32_t(mAdditionalProperties.size()); // assign the number of items in the array.
+		mDOM.additionalProperties = mDOM.additionalPropertiesCount ? &mAdditionalProperties[0] : nullptr; // Assign the pointer array
 	}
 
 
@@ -179,6 +204,8 @@ public:
 		{
 			mId = other.mId;
 			mName = other.mName;
+			mType = other.mType;
+			mVisual = other.mVisual;
 			mAdditionalProperties = other.mAdditionalProperties;
 		}
 		return *this;
@@ -186,12 +213,16 @@ public:
 
 	std::string	mId; 											// Unique Id for this object
 	std::string	mName;   										// Optional name for this object
+	NodeType 	mType{ NT_NODE };									// The type of node
+	VisualBinding  mVisual;										// Optional visual bindings for this node; for exaple some physics components have a corresponding named graphics component
 	AdditionalPropertiesVector mAdditionalProperties;  			// An optional set of properties for this node; a set of key-value pairs for each application/engine specific category
+private:
+	Node 		mDOM; // Declare the DOM version.
 };
 
 
 // Defines the physical material properties of a surface
-class PhysicsMaterialImpl: public PhysicsMaterial
+class PhysicsMaterialImpl : public NodeImpl
 {
 public:
 	// Declare the constructor.
@@ -225,6 +256,11 @@ public:
 		if (this != &other )
 		{
 			Node::operator=(other);
+			mDisableFriction = other.mDisableFriction;
+			mDisableStrongFriction = other.mDisableStrongFriction;
+			mDynamicFriction = other.mDynamicFriction;
+			mStaticFriction = other.mStaticFriction;
+			mRestitution = other.mRestitution;
 		}
 		return *this;
 	}
@@ -248,16 +284,28 @@ public:
 		if (this != &other )
 		{
 			Node::operator=(std::move(other));
+			mDisableFriction = other.mDisableFriction;
+			mDisableStrongFriction = other.mDisableStrongFriction;
+			mDynamicFriction = other.mDynamicFriction;
+			mStaticFriction = other.mStaticFriction;
+			mRestitution = other.mRestitution;
 		}
 		return *this;
 	}
 
+	bool 		mDisableFriction{ false };  							// If true, then friction is disabled for the material
+	bool 		mDisableStrongFriction{ false };						// If true then strong friction is disabled for the material
+	float  		mDynamicFriction{ 0.5f };   						// The coefficient of dynamic friction.
+	float  		mStaticFriction{ 0.5f };  							// The coefficient of static friction
+	float  		mRestitution{ 0.5f };   							// The coefficient of resitution.
+private:
+	PhysicsMaterial mDOM; // Declare the DOM version.
 };
 
-typedef std::vector< Vec3 > Vec3Vector; // Forward declare the 'Vec3' vector
+typedef std::vector< Vec3Impl > Vec3Vector; // Forward declare the 'Vec3' vector
 
 // Describes the data for a convex hull
-class ConvexHullImpl: public ConvexHull
+class ConvexHullImpl : public NodeImpl
 {
 public:
 	// Declare the constructor.
@@ -300,8 +348,8 @@ public:
 	void initDOM(void)
 	{
 		Node::initDOM();
-		pointsCount = uint32_t(mPoints.size()); // assign the number of items in the array.
-		points = pointsCount ? &mPoints[0] : nullptr; // Assign the pointer array
+		mDOM.pointsCount = uint32_t(mPoints.size()); // assign the number of items in the array.
+		mDOM.points = mDOM.pointsCount ? &mPoints[0] : nullptr; // Assign the pointer array
 	}
 
 
@@ -323,13 +371,15 @@ public:
 	}
 
 	Vec3Vector   mPoints;  										// Array of data points describing the convex hull
+private:
+	ConvexHull   mDOM; // Declare the DOM version.
 };
 
-typedef std::vector< uint32_t > U32Vector; // Forward declare the 'U32' vector
-typedef std::vector< uint8_t > U8Vector; // Forward declare the 'U8' vector
+typedef std::vector< uint32_tImpl > U32Vector; // Forward declare the 'U32' vector
+typedef std::vector< uint8_tImpl > U8Vector; // Forward declare the 'U8' vector
 
 // Describes the data for a triangle mesh
-class TriangleMeshImpl: public TriangleMesh
+class TriangleMeshImpl : public NodeImpl
 {
 public:
 	// Declare the constructor.
@@ -374,12 +424,12 @@ public:
 	void initDOM(void)
 	{
 		Node::initDOM();
-		pointsCount = uint32_t(mPoints.size()); // assign the number of items in the array.
-		points = pointsCount ? &mPoints[0] : nullptr; // Assign the pointer array
-		trianglesCount = uint32_t(mTriangles.size()); // assign the number of items in the array.
-		triangles = trianglesCount ? &mTriangles[0] : nullptr; // Assign the pointer array
-		materialIndicesCount = uint32_t(mMaterialIndices.size()); // assign the number of items in the array.
-		materialIndices = materialIndicesCount ? &mMaterialIndices[0] : nullptr; // Assign the pointer array
+		mDOM.pointsCount = uint32_t(mPoints.size()); // assign the number of items in the array.
+		mDOM.points = mDOM.pointsCount ? &mPoints[0] : nullptr; // Assign the pointer array
+		mDOM.trianglesCount = uint32_t(mTriangles.size()); // assign the number of items in the array.
+		mDOM.triangles = mDOM.trianglesCount ? &mTriangles[0] : nullptr; // Assign the pointer array
+		mDOM.materialIndicesCount = uint32_t(mMaterialIndices.size()); // assign the number of items in the array.
+		mDOM.materialIndices = mDOM.materialIndicesCount ? &mMaterialIndices[0] : nullptr; // Assign the pointer array
 	}
 
 
@@ -405,12 +455,14 @@ public:
 	Vec3Vector   mPoints;  										// Array of vertices for the triangle mesh
 	U32Vector  	mTriangles;										// Array of triangle indices
 	U8Vector 	mMaterialIndices;									// Optional per-triangle material index
+private:
+	TriangleMesh mDOM; // Declare the DOM version.
 };
 
-typedef std::vector< uint16_t > U16Vector; // Forward declare the 'U16' vector
+typedef std::vector< uint16_tImpl > U16Vector; // Forward declare the 'U16' vector
 
 // The data for a heighfield; as 2d array of 32 bit samples; 16 bits for height, 16 bits for material indices, holes, and other metadata
-class HeightFieldImpl: public HeightField
+class HeightFieldImpl : public NodeImpl
 {
 public:
 	// Declare the constructor.
@@ -444,6 +496,8 @@ public:
 		if (this != &other )
 		{
 			Node::operator=(other);
+			mRowCount = other.mRowCount;
+			mColumnCount = other.mColumnCount;
 			mSamples = other.mSamples;
 			mMetaData = other.mMetaData;
 		}
@@ -454,10 +508,10 @@ public:
 	void initDOM(void)
 	{
 		Node::initDOM();
-		samplesCount = uint32_t(mSamples.size()); // assign the number of items in the array.
-		samples = samplesCount ? &mSamples[0] : nullptr; // Assign the pointer array
-		metaDataCount = uint32_t(mMetaData.size()); // assign the number of items in the array.
-		metaData = metaDataCount ? &mMetaData[0] : nullptr; // Assign the pointer array
+		mDOM.samplesCount = uint32_t(mSamples.size()); // assign the number of items in the array.
+		mDOM.samples = mDOM.samplesCount ? &mSamples[0] : nullptr; // Assign the pointer array
+		mDOM.metaDataCount = uint32_t(mMetaData.size()); // assign the number of items in the array.
+		mDOM.metaData = mDOM.metaDataCount ? &mMetaData[0] : nullptr; // Assign the pointer array
 	}
 
 
@@ -473,19 +527,25 @@ public:
 		if (this != &other )
 		{
 			Node::operator=(std::move(other));
+			mRowCount = other.mRowCount;
+			mColumnCount = other.mColumnCount;
 			mSamples = other.mSamples;
 			mMetaData = other.mMetaData;
 		}
 		return *this;
 	}
 
+	uint32_t 	mRowCount{ 0 };  									// Number of sample rows in the height field samples array.
+	uint32_t 	mColumnCount{ 0 }; 								// Number of sample columns in the height field samples array.
 	U16Vector  	mSamples;  										// Heightfield sample data
 	U16Vector  	mMetaData;   									// Optional meta data for each sample; determines per sample material, winding order, and whether or not to treat it as a hole
+private:
+	HeightField	mDOM; // Declare the DOM version.
 };
 
 
 // Base class for all geometries
-class GeometryImpl: public Geometry
+class GeometryImpl: public CloneObject
 {
 public:
 
@@ -507,6 +567,7 @@ public:
 	{
 		if (this != &other )
 		{
+			mType = other.mType;
 		}
 		return *this;
 	}
@@ -528,15 +589,19 @@ public:
 	{
 		if (this != &other )
 		{
+			mType = other.mType;
 		}
 		return *this;
 	}
 
+	GeometryType mType;											// 
+private:
+	Geometry 	mDOM; // Declare the DOM version.
 };
 
 
 // Defines a box geometry
-class BoxGeometryImpl: public BoxGeometry
+class BoxGeometryImpl : public GeometryImpl
 {
 public:
 	// Declare the constructor.
@@ -570,6 +635,7 @@ public:
 		if (this != &other )
 		{
 			Geometry::operator=(other);
+			mDimensions = other.mDimensions;
 		}
 		return *this;
 	}
@@ -593,15 +659,19 @@ public:
 		if (this != &other )
 		{
 			Geometry::operator=(std::move(other));
+			mDimensions = other.mDimensions;
 		}
 		return *this;
 	}
 
+	Vec3 		mDimensions{ 1,1,1 }; 								// Dimensions of the box
+private:
+	BoxGeometry	mDOM; // Declare the DOM version.
 };
 
 
 // Defines a sphere geometry
-class SphereGeometryImpl: public SphereGeometry
+class SphereGeometryImpl : public GeometryImpl
 {
 public:
 	// Declare the constructor.
@@ -635,6 +705,7 @@ public:
 		if (this != &other )
 		{
 			Geometry::operator=(other);
+			mRadius = other.mRadius;
 		}
 		return *this;
 	}
@@ -658,15 +729,19 @@ public:
 		if (this != &other )
 		{
 			Geometry::operator=(std::move(other));
+			mRadius = other.mRadius;
 		}
 		return *this;
 	}
 
+	float  		mRadius{ 1 };   									// The radius of the sphere
+private:
+	SphereGeometry   mDOM; // Declare the DOM version.
 };
 
 
 // Defines a capsule geometry
-class CapsuleGeometryImpl: public CapsuleGeometry
+class CapsuleGeometryImpl : public GeometryImpl
 {
 public:
 	// Declare the constructor.
@@ -700,6 +775,8 @@ public:
 		if (this != &other )
 		{
 			Geometry::operator=(other);
+			mRadius = other.mRadius;
+			mHeight = other.mHeight;
 		}
 		return *this;
 	}
@@ -723,15 +800,21 @@ public:
 		if (this != &other )
 		{
 			Geometry::operator=(std::move(other));
+			mRadius = other.mRadius;
+			mHeight = other.mHeight;
 		}
 		return *this;
 	}
 
+	float  		mRadius{ 1 };   									// The radius of the capsule
+	float  		mHeight{ 1 };   									// The height of the capsule
+private:
+	CapsuleGeometry mDOM; // Declare the DOM version.
 };
 
 
 // Defines a cylinder geometry
-class CylinderGeometryImpl: public CylinderGeometry
+class CylinderGeometryImpl : public GeometryImpl
 {
 public:
 	// Declare the constructor.
@@ -765,6 +848,8 @@ public:
 		if (this != &other )
 		{
 			Geometry::operator=(other);
+			mRadius = other.mRadius;
+			mHeight = other.mHeight;
 		}
 		return *this;
 	}
@@ -788,15 +873,21 @@ public:
 		if (this != &other )
 		{
 			Geometry::operator=(std::move(other));
+			mRadius = other.mRadius;
+			mHeight = other.mHeight;
 		}
 		return *this;
 	}
 
+	float  		mRadius{ 1 };   									// The radius of the cylinder
+	float  		mHeight{ 1 };   									// The height of the cylinder
+private:
+	CylinderGeometry mDOM; // Declare the DOM version.
 };
 
 
 // Defines a convex mesh geometry
-class ConvexHullGeometryImpl: public ConvexHullGeometry
+class ConvexHullGeometryImpl : public GeometryImpl
 {
 public:
 	// Declare the constructor.
@@ -830,6 +921,7 @@ public:
 		if (this != &other )
 		{
 			Geometry::operator=(other);
+			mScale = other.mScale;
 			mConvexMesh = other.mConvexMesh;
 		}
 		return *this;
@@ -839,7 +931,7 @@ public:
 	void initDOM(void)
 	{
 		Geometry::initDOM();
-		ConvexHullGeometry::convexMesh = mConvexMesh.c_str(); // Assign the current string pointer.
+		mDOM.convexMesh = mConvexMesh.c_str(); // Assign the current string pointer.
 	}
 
 
@@ -855,17 +947,21 @@ public:
 		if (this != &other )
 		{
 			Geometry::operator=(std::move(other));
+			mScale = other.mScale;
 			mConvexMesh = other.mConvexMesh;
 		}
 		return *this;
 	}
 
+	MeshScale  	mScale;											// The scale to apply to this convex mesh
 	std::string	mConvexMesh; 									// The name of the convex mesh asset
+private:
+	ConvexHullGeometry mDOM; // Declare the DOM version.
 };
 
 
 // Defines a triangle mesh geometry
-class TriangleMeshGeometryImpl: public TriangleMeshGeometry
+class TriangleMeshGeometryImpl : public GeometryImpl
 {
 public:
 	// Declare the constructor.
@@ -899,7 +995,9 @@ public:
 		if (this != &other )
 		{
 			Geometry::operator=(other);
+			mScale = other.mScale;
 			mTriangleMesh = other.mTriangleMesh;
+			mDoubleSided = other.mDoubleSided;
 		}
 		return *this;
 	}
@@ -908,7 +1006,7 @@ public:
 	void initDOM(void)
 	{
 		Geometry::initDOM();
-		TriangleMeshGeometry::triangleMesh = mTriangleMesh.c_str(); // Assign the current string pointer.
+		mDOM.triangleMesh = mTriangleMesh.c_str(); // Assign the current string pointer.
 	}
 
 
@@ -924,17 +1022,23 @@ public:
 		if (this != &other )
 		{
 			Geometry::operator=(std::move(other));
+			mScale = other.mScale;
 			mTriangleMesh = other.mTriangleMesh;
+			mDoubleSided = other.mDoubleSided;
 		}
 		return *this;
 	}
 
+	MeshScale  	mScale;											// The scale of the triangle mesh
 	std::string	mTriangleMesh;   								// The name of the triangle mesh asset
+	bool 		mDoubleSided{ false };  								// Whether or not this triangle mesh should be treated as double sided for collision detection
+private:
+	TriangleMeshGeometry mDOM; // Declare the DOM version.
 };
 
 
 // Defines a heightfield geometry
-class HeightFieldGeometryImpl: public HeightFieldGeometry
+class HeightFieldGeometryImpl : public GeometryImpl
 {
 public:
 	// Declare the constructor.
@@ -969,6 +1073,10 @@ public:
 		{
 			Geometry::operator=(other);
 			mHeightField = other.mHeightField;
+			mHeightScale = other.mHeightScale;
+			mRowScale = other.mRowScale;
+			mColumnScale = other.mColumnScale;
+			mDoubleSided = other.mDoubleSided;
 		}
 		return *this;
 	}
@@ -977,7 +1085,7 @@ public:
 	void initDOM(void)
 	{
 		Geometry::initDOM();
-		HeightFieldGeometry::heightField = mHeightField.c_str(); // Assign the current string pointer.
+		mDOM.heightField = mHeightField.c_str(); // Assign the current string pointer.
 	}
 
 
@@ -994,16 +1102,26 @@ public:
 		{
 			Geometry::operator=(std::move(other));
 			mHeightField = other.mHeightField;
+			mHeightScale = other.mHeightScale;
+			mRowScale = other.mRowScale;
+			mColumnScale = other.mColumnScale;
+			mDoubleSided = other.mDoubleSided;
 		}
 		return *this;
 	}
 
 	std::string	mHeightField;  									// The id of the heightfield data asset
+	float  		mHeightScale{ 1 };									// The scaling factor for the height field in vertical direction (y direction in local space).
+	float  		mRowScale{ 1 }; 									// The scaling factor for the height field in the row direction (x direction in local space).
+	float  		mColumnScale{ 1 };									// The scaling factor for the height field in the column direction (z direction in local space).
+	bool 		mDoubleSided{ false };  								// Whether or not this heighfield should be treated as double sided for collision detection
+private:
+	HeightFieldGeometry mDOM; // Declare the DOM version.
 };
 
 
 // Defines a plane equation geometry (position and orientation of the plane come from the geometry instance)
-class PlaneGeometryImpl: public PlaneGeometry
+class PlaneGeometryImpl : public GeometryImpl
 {
 public:
 	// Declare the constructor.
@@ -1064,12 +1182,14 @@ public:
 		return *this;
 	}
 
+private:
+	PlaneGeometry  mDOM; // Declare the DOM version.
 };
 
-typedef std::vector< std::string > StringVector; // Forward declare the 'String' vector
+typedef std::vector< std::stringImpl > StringVector; // Forward declare the 'String' vector
 
 // Defines a single instance of a geometry
-class GeometryInstanceImpl: public GeometryInstance
+class GeometryInstanceImpl: public CloneObject
 {
 public:
 
@@ -1109,6 +1229,7 @@ public:
 				mGeometry = static_cast<GeometryImpl *>(other.mGeometry->clone()); // perform the deep copy and assignment here
 			}
 			mMaterials = other.mMaterials;
+			mLocalPose = other.mLocalPose;
 			mCollisionFilterSettings = other.mCollisionFilterSettings;
 		}
 		return *this;
@@ -1117,7 +1238,7 @@ public:
 	// Declare and implement the initDOM method
 	void initDOM(void)
 	{
-		geometry = static_cast< Geometry *>(mGeometry); // assign the DOM reflection pointer.
+		mDOM.geometry = static_cast< Geometry *>(mGeometry); // assign the DOM reflection pointer.
 		if ( mGeometry )
 		{
 			mGeometry->initDOM(); // Initialize any DOM components of this object.
@@ -1126,9 +1247,9 @@ public:
 		mMaterialsImpl.reserve(mMaterials.size()); // Reserve room for string pointers.
 		for (auto &i: mMaterials) // For each std::string
 			mMaterialsImpl.push_back( i.c_str() ); // Add the const char * for the string.
-		GeometryInstance::materialsCount = uint32_t(mMaterialsImpl.size()); // Assign the number of strings
-		GeometryInstance::materials = materialsCount ? &mMaterialsImpl[0] : nullptr; // Assign the pointer array.
-		GeometryInstance::collisionFilterSettings = mCollisionFilterSettings.c_str(); // Assign the current string pointer.
+		mDOM.materialsCount = uint32_t(mMaterialsImpl.size()); // Assign the number of strings
+		mDOM.materials = materialsCount ? &mMaterialsImpl[0] : nullptr; // Assign the pointer array.
+		mDOM.collisionFilterSettings = mCollisionFilterSettings.c_str(); // Assign the current string pointer.
 	}
 
 
@@ -1146,6 +1267,7 @@ public:
 			mGeometry = other.mGeometry;
 			other.mGeometry = nullptr; // Set 'other' pointer to null since we have moved it
 			mMaterials = other.mMaterials;
+			mLocalPose = other.mLocalPose;
 			mCollisionFilterSettings = other.mCollisionFilterSettings;
 		}
 		return *this;
@@ -1153,16 +1275,18 @@ public:
 
 	Geometry 	*mGeometry{ nullptr }; 							// The geometry associated with this instance
 	StringVector mMaterials; 									// Id of physical material(s) associated with this geometry instance (usually one material; but for heightifields and triangle meshes can be more than one)
+	Pose 		mLocalPose;   										// The local pose for this geometry instance
 	std::string	mCollisionFilterSettings;  						// Describes collision filtering settings; what other types of objects this object will collide with
-// Declare private temporary array(s) to hold array of strings pointers.
 private:
+	GeometryInstance mDOM; // Declare the DOM version.
+// Declare private temporary array(s) to hold array of strings pointers.
 	ConstCharVector mMaterialsImpl; // Scratch array for const char pointers.
 };
 
-typedef std::vector< GeometryInstance *> GeometryInstanceVector; // Forward declare the 'GeometryInstance' vector for the implementation object pointers
+typedef std::vector< GeometryInstanceImpl *> GeometryInstanceVector; // Forward declare the 'GeometryInstance' vector for the implementation object pointers
 
 // Defines the common properties for a rigid body
-class RigidBodyImpl: public RigidBody
+class RigidBodyImpl : public NodeImpl
 {
 public:
 	// Declare the constructor.
@@ -1201,6 +1325,7 @@ public:
 			mGeometryInstances.clear(); // Clear the current array
 			mGeometryInstances.reserve(other.mGeometryInstances.size()); // Reserve number of items for the new array
 			for (auto &i:other.mGeometryInstances) mGeometryInstances.push_back( static_cast< GeometryInstanceImpl *>(i->clone())); // Deep copy object pointers into the array
+			mGlobalPose = other.mGlobalPose;
 		}
 		return *this;
 	}
@@ -1211,8 +1336,8 @@ public:
 		Node::initDOM();
 		for (auto &i:mGeometryInstances)
 			i->initDOM();
-		geometryInstancesCount = uint32_t(mGeometryInstances.size()); // assign the number of items in the array.
-		geometryInstances = geometryInstancesCount ? &mGeometryInstances[0] : nullptr; // Assign the pointer array
+		mDOM.geometryInstancesCount = uint32_t(mGeometryInstances.size()); // assign the number of items in the array.
+		mDOM.geometryInstances = mDOM.geometryInstancesCount ? &mGeometryInstances[0] : nullptr; // Assign the pointer array
 	}
 
 
@@ -1230,16 +1355,20 @@ public:
 			Node::operator=(std::move(other));
 			mGeometryInstances = other.mGeometryInstances;
 			other.mGeometryInstances.clear(); // Clear the 'other' array now that we have moved it
+			mGlobalPose = other.mGlobalPose;
 		}
 		return *this;
 	}
 
 	GeometryInstanceVector mGeometryInstances;   				// The set of geometries to instance with this actor
+	Pose 		mGlobalPose;											// The global pose for this actor
+private:
+	RigidBody  	mDOM; // Declare the DOM version.
 };
 
 
 // Defines a static rigid body
-class RigidStaticImpl: public RigidStatic
+class RigidStaticImpl : public RigidBodyImpl
 {
 public:
 	// Declare the constructor.
@@ -1300,11 +1429,13 @@ public:
 		return *this;
 	}
 
+private:
+	RigidStatic	mDOM; // Declare the DOM version.
 };
 
 
 // Defines a dynamic rigid body
-class RigidDynamicImpl: public RigidDynamic
+class RigidDynamicImpl : public RigidBodyImpl
 {
 public:
 	// Declare the constructor.
@@ -1338,6 +1469,16 @@ public:
 		if (this != &other )
 		{
 			RigidBody::operator=(other);
+			mDisableGravity = other.mDisableGravity;
+			mCenterOfMassLocalPose = other.mCenterOfMassLocalPose;
+			mMass = other.mMass;
+			mMassSpaceInertiaTensor = other.mMassSpaceInertiaTensor;
+			mLinearVelocity = other.mLinearVelocity;
+			mAngularVelocity = other.mAngularVelocity;
+			mLinearDamping = other.mLinearDamping;
+			mAngularDamping = other.mAngularDamping;
+			mMaxAngularVelocity = other.mMaxAngularVelocity;
+			mKinematic = other.mKinematic;
 		}
 		return *this;
 	}
@@ -1361,15 +1502,37 @@ public:
 		if (this != &other )
 		{
 			RigidBody::operator=(std::move(other));
+			mDisableGravity = other.mDisableGravity;
+			mCenterOfMassLocalPose = other.mCenterOfMassLocalPose;
+			mMass = other.mMass;
+			mMassSpaceInertiaTensor = other.mMassSpaceInertiaTensor;
+			mLinearVelocity = other.mLinearVelocity;
+			mAngularVelocity = other.mAngularVelocity;
+			mLinearDamping = other.mLinearDamping;
+			mAngularDamping = other.mAngularDamping;
+			mMaxAngularVelocity = other.mMaxAngularVelocity;
+			mKinematic = other.mKinematic;
 		}
 		return *this;
 	}
 
+	bool 		mDisableGravity{ false }; 							// Disables scene gravity for this actor
+	Pose 		mCenterOfMassLocalPose;   							// Center of mass and local pose
+	float  		mMass{ 1 }; 										// Sets the mass of a dynamic actor.
+	Vec3 		mMassSpaceInertiaTensor{ 1,1,1 }; 					// Sets the inertia tensor, using a parameter specified in mass space coordinates.
+	Vec3 		mLinearVelocity{ 0,0,0 }; 							// Sets the linear velocity of the actor.
+	Vec3 		mAngularVelocity{ 0,0,0 };  							// Sets the angular velocity of the actor.
+	float  		mLinearDamping{ 0 };  								// Sets the linear damping coefficient.
+	float  		mAngularDamping{ 0.05f };   						// Sets the angular damping coefficient.
+	float  		mMaxAngularVelocity{ 7 };   						// set the maximum angular velocity permitted for this actor.
+	bool 		mKinematic{ false };									// If true this is a dynamic object; but currently kinematically controlled
+private:
+	RigidDynamic mDOM; // Declare the DOM version.
 };
 
 
 // Defines the common properties for a joint
-class JointImpl: public Joint
+class JointImpl : public NodeImpl
 {
 public:
 	// Declare the constructor.
@@ -1405,6 +1568,9 @@ public:
 			Node::operator=(other);
 			mBody0 = other.mBody0;
 			mBody1 = other.mBody1;
+			mLocalpose0 = other.mLocalpose0;
+			mLocalpose1 = other.mLocalpose1;
+			mCollisionEnabled = other.mCollisionEnabled;
 		}
 		return *this;
 	}
@@ -1413,8 +1579,8 @@ public:
 	void initDOM(void)
 	{
 		Node::initDOM();
-		Joint::body0 = mBody0.c_str(); // Assign the current string pointer.
-		Joint::body1 = mBody1.c_str(); // Assign the current string pointer.
+		mDOM.body0 = mBody0.c_str(); // Assign the current string pointer.
+		mDOM.body1 = mBody1.c_str(); // Assign the current string pointer.
 	}
 
 
@@ -1432,18 +1598,26 @@ public:
 			Node::operator=(std::move(other));
 			mBody0 = other.mBody0;
 			mBody1 = other.mBody1;
+			mLocalpose0 = other.mLocalpose0;
+			mLocalpose1 = other.mLocalpose1;
+			mCollisionEnabled = other.mCollisionEnabled;
 		}
 		return *this;
 	}
 
 	std::string	mBody0;											// Id of first rigid body joint is constrained to; if empty string; then constaint to the world
 	std::string	mBody1;											// Id of the second rigid body the joint is constrainted to
+	Pose 		mLocalpose0;											// The parent relative pose; relative to body0
+	Pose 		mLocalpose1;											// The parent relative pose; relative to body1
+	bool 		mCollisionEnabled{ false };   						// 
+private:
+	Joint  		mDOM; // Declare the DOM version.
 };
 
 
 // Defines the properties specific to a fixed joint 
 // Not all properties yet defined!
-class FixedJointImpl: public FixedJoint
+class FixedJointImpl : public JointImpl
 {
 public:
 	// Declare the constructor.
@@ -1504,12 +1678,14 @@ public:
 		return *this;
 	}
 
+private:
+	FixedJoint   mDOM; // Declare the DOM version.
 };
 
 
 // Defines the properties specific to a spherical joint 
 // Not all properties yet defined!
-class SphericalJointImpl: public SphericalJoint
+class SphericalJointImpl : public JointImpl
 {
 public:
 	// Declare the constructor.
@@ -1570,12 +1746,14 @@ public:
 		return *this;
 	}
 
+private:
+	SphericalJoint   mDOM; // Declare the DOM version.
 };
 
 
 // Defines the properties specific to a revolute joint 
 // Not all properties yet defined!
-class RevoluteJointImpl: public RevoluteJoint
+class RevoluteJointImpl : public JointImpl
 {
 public:
 	// Declare the constructor.
@@ -1636,12 +1814,14 @@ public:
 		return *this;
 	}
 
+private:
+	RevoluteJoint  mDOM; // Declare the DOM version.
 };
 
 
 // Defines the properties specific to a prismatic joint 
 // Not all properties yet defined!
-class PrismaticJointImpl: public PrismaticJoint
+class PrismaticJointImpl : public JointImpl
 {
 public:
 	// Declare the constructor.
@@ -1702,12 +1882,14 @@ public:
 		return *this;
 	}
 
+private:
+	PrismaticJoint   mDOM; // Declare the DOM version.
 };
 
 
 // Defines the properties specific to a distance joint 
 // Not all properties yet defined!
-class DistanceJointImpl: public DistanceJoint
+class DistanceJointImpl : public JointImpl
 {
 public:
 	// Declare the constructor.
@@ -1768,12 +1950,14 @@ public:
 		return *this;
 	}
 
+private:
+	DistanceJoint  mDOM; // Declare the DOM version.
 };
 
 
 // Defines the properties specific to a ball and socket joint 
 // Not all properties yet defined!
-class BallAndSocketJointImpl: public BallAndSocketJoint
+class BallAndSocketJointImpl : public JointImpl
 {
 public:
 	// Declare the constructor.
@@ -1834,12 +2018,14 @@ public:
 		return *this;
 	}
 
+private:
+	BallAndSocketJoint mDOM; // Declare the DOM version.
 };
 
 
 // Defines the properties specific to a six degree of freedom joint 
 // Not all properties yet defined!
-class D6JointImpl: public D6Joint
+class D6JointImpl : public JointImpl
 {
 public:
 	// Declare the constructor.
@@ -1900,18 +2086,20 @@ public:
 		return *this;
 	}
 
+private:
+	D6Joint		mDOM; // Declare the DOM version.
 };
 
 
 // Defines two bodies, by id, that should not collide with each other
-class BodyPairFilterImpl: public BodyPairFilter
+class BodyPairFilterImpl
 {
 public:
 	// Declare and implement the initDOM method
 	void initDOM(void)
 	{
-		BodyPairFilter::bodyA = mBodyA.c_str(); // Assign the current string pointer.
-		BodyPairFilter::bodyB  = mBodyB .c_str(); // Assign the current string pointer.
+		mDOM.bodyA = mBodyA.c_str(); // Assign the current string pointer.
+		mDOM.bodyB  = mBodyB .c_str(); // Assign the current string pointer.
 	}
 
 
@@ -1934,12 +2122,14 @@ public:
 
 	std::string	mBodyA;											// Id of first body
 	std::string	mBodyB ; 										// Id of second body
+private:
+	BodyPairFilter   mDOM; // Declare the DOM version.
 };
 
-typedef std::vector< BodyPairFilter > BodyPairFilterVector; // Forward declare the 'BodyPairFilter' vector
+typedef std::vector< BodyPairFilterImpl > BodyPairFilterVector; // Forward declare the 'BodyPairFilter' vector
 
 // A collection of body pair filters
-class BodyPairFiltersImpl: public BodyPairFilters
+class BodyPairFiltersImpl : public NodeImpl
 {
 public:
 	// Declare the constructor.
@@ -1982,8 +2172,8 @@ public:
 	void initDOM(void)
 	{
 		Node::initDOM();
-		bodyPairsCount = uint32_t(mBodyPairs.size()); // assign the number of items in the array.
-		bodyPairs = bodyPairsCount ? &mBodyPairs[0] : nullptr; // Assign the pointer array
+		mDOM.bodyPairsCount = uint32_t(mBodyPairs.size()); // assign the number of items in the array.
+		mDOM.bodyPairs = mDOM.bodyPairsCount ? &mBodyPairs[0] : nullptr; // Assign the pointer array
 	}
 
 
@@ -2005,10 +2195,12 @@ public:
 	}
 
 	BodyPairFilterVector mBodyPairs; 							// Array of body pair filters
+private:
+	BodyPairFilters mDOM; // Declare the DOM version.
 };
 
 
-class InstanceCollectionImpl: public InstanceCollection
+class InstanceCollectionImpl : public NodeImpl
 {
 public:
 	// Declare the constructor.
@@ -2043,6 +2235,8 @@ public:
 		{
 			Node::operator=(other);
 			mCollection = other.mCollection;
+			mPose = other.mPose;
+			mScale = other.mScale;
 		}
 		return *this;
 	}
@@ -2051,7 +2245,7 @@ public:
 	void initDOM(void)
 	{
 		Node::initDOM();
-		InstanceCollection::collection = mCollection.c_str(); // Assign the current string pointer.
+		mDOM.collection = mCollection.c_str(); // Assign the current string pointer.
 	}
 
 
@@ -2068,17 +2262,23 @@ public:
 		{
 			Node::operator=(std::move(other));
 			mCollection = other.mCollection;
+			mPose = other.mPose;
+			mScale = other.mScale;
 		}
 		return *this;
 	}
 
 	std::string	mCollection; 									// Name of collection to instance
+	Pose 		mPose;  												// Pose to instance collection at
+	Vec3 		mScale;   											// Scale of instance
+private:
+	InstanceCollection mDOM; // Declare the DOM version.
 };
 
-typedef std::vector< Node *> NodeVector; // Forward declare the 'Node' vector for the implementation object pointers
+typedef std::vector< NodeImpl *> NodeVector; // Forward declare the 'Node' vector for the implementation object pointers
 
 // A collection of nodes
-class CollectionImpl: public Collection
+class CollectionImpl : public NodeImpl
 {
 public:
 	// Declare the constructor.
@@ -2127,8 +2327,8 @@ public:
 		Node::initDOM();
 		for (auto &i:mNodes)
 			i->initDOM();
-		nodesCount = uint32_t(mNodes.size()); // assign the number of items in the array.
-		nodes = nodesCount ? &mNodes[0] : nullptr; // Assign the pointer array
+		mDOM.nodesCount = uint32_t(mNodes.size()); // assign the number of items in the array.
+		mDOM.nodes = mDOM.nodesCount ? &mNodes[0] : nullptr; // Assign the pointer array
 	}
 
 
@@ -2151,11 +2351,13 @@ public:
 	}
 
 	NodeVector   mNodes; 										// Array of nodes in this collection
+private:
+	Collection   mDOM; // Declare the DOM version.
 };
 
 
 // A special type of 'collection' which is instantiated on startup
-class SceneImpl: public Scene
+class SceneImpl : public NodeImpl
 {
 public:
 	// Declare the constructor.
@@ -2190,6 +2392,7 @@ public:
 		if (this != &other )
 		{
 			Node::operator=(other);
+			mGravity = other.mGravity;
 			for (auto &i:mNodes) delete i; // Delete all of the object pointers in this array
 			mNodes.clear(); // Clear the current array
 			mNodes.reserve(other.mNodes.size()); // Reserve number of items for the new array
@@ -2204,8 +2407,8 @@ public:
 		Node::initDOM();
 		for (auto &i:mNodes)
 			i->initDOM();
-		nodesCount = uint32_t(mNodes.size()); // assign the number of items in the array.
-		nodes = nodesCount ? &mNodes[0] : nullptr; // Assign the pointer array
+		mDOM.nodesCount = uint32_t(mNodes.size()); // assign the number of items in the array.
+		mDOM.nodes = mDOM.nodesCount ? &mNodes[0] : nullptr; // Assign the pointer array
 	}
 
 
@@ -2221,20 +2424,24 @@ public:
 		if (this != &other )
 		{
 			Node::operator=(std::move(other));
+			mGravity = other.mGravity;
 			mNodes = other.mNodes;
 			other.mNodes.clear(); // Clear the 'other' array now that we have moved it
 		}
 		return *this;
 	}
 
+	Vec3 		mGravity{ 0.0f,-9.8f,0.0f };							// Gravity
 	NodeVector   mNodes; 										// Array of nodes in this collection
+private:
+	Scene  		mDOM; // Declare the DOM version.
 };
 
-typedef std::vector< Collection *> CollectionVector; // Forward declare the 'Collection' vector for the implementation object pointers
-typedef std::vector< Scene *> SceneVector; // Forward declare the 'Scene' vector for the implementation object pointers
+typedef std::vector< CollectionImpl *> CollectionVector; // Forward declare the 'Collection' vector for the implementation object pointers
+typedef std::vector< SceneImpl *> SceneVector; // Forward declare the 'Scene' vector for the implementation object pointers
 
 // The root node container
-class PhysicsDOMImpl: public PhysicsDOM
+class PhysicsDOMImpl: public CloneObject
 {
 public:
 
@@ -2285,12 +2492,12 @@ public:
 	{
 		for (auto &i:mCollections)
 			i->initDOM();
-		collectionsCount = uint32_t(mCollections.size()); // assign the number of items in the array.
-		collections = collectionsCount ? &mCollections[0] : nullptr; // Assign the pointer array
+		mDOM.collectionsCount = uint32_t(mCollections.size()); // assign the number of items in the array.
+		mDOM.collections = mDOM.collectionsCount ? &mCollections[0] : nullptr; // Assign the pointer array
 		for (auto &i:mScenes)
 			i->initDOM();
-		scenesCount = uint32_t(mScenes.size()); // assign the number of items in the array.
-		scenes = scenesCount ? &mScenes[0] : nullptr; // Assign the pointer array
+		mDOM.scenesCount = uint32_t(mScenes.size()); // assign the number of items in the array.
+		mDOM.scenes = mDOM.scenesCount ? &mScenes[0] : nullptr; // Assign the pointer array
 	}
 
 
@@ -2315,6 +2522,8 @@ public:
 
 	CollectionVector mCollections;   							// The array of top level collections
 	SceneVector	mScenes; 										// The array of top level scenes; a scene is instantiated into the physics simulation
+private:
+	PhysicsDOM   mDOM; // Declare the DOM version.
 };
 
 

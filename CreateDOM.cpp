@@ -11,15 +11,26 @@
 #include <algorithm>
 #include <assert.h>
 
-#if 0
-#include "PhysicsDOMImpl.h"
-//#include "DeepCopyImpl.h"
+#if 1
+//#include "PhysicsDOM.h"
+//#include "PhysicsDOMImpl.h"
+#include "DeepCopy.h"
+#include "DeepCopyImpl.h"
 
 void testDeepCopy(void)
 {
+	DEEP_COPY::GeometryInstanceImpl g;
+	DEEP_COPY::SphereGeometryImpl *s = new DEEP_COPY::SphereGeometryImpl;
+	g.mGeometries.push_back(s);
+	g.initDOM();
+	DEEP_COPY::GeometryInstance *dom = g.getDOM();
+	if (dom)
+	{
+		printf("Debug Me");
+	}
 }
 
-#else
+//#else
 
 #pragma warning(disable:4100)
 
@@ -299,6 +310,10 @@ public:
 			STRING_HELPER::stringFormat(scratch, 512, "%sImpl", name.c_str());
 			ret = scratch;
 		}
+		if (strcmp(ret, "VisualBindingImpl") == 0)
+		{
+			printf("debug me");
+		}
 		return ret;
 	}
 
@@ -403,12 +418,22 @@ public:
 					{
 						if (!i.mIsString)
 						{
-							impl.printCode(0, "typedef std::vector< %s *> %sVector; // Forward declare the '%s' vector for the implementation object pointers\r\n", type, temp, temp);
+							impl.printCode(0, "typedef std::vector< %sImpl *> %sVectorImpl; // Forward declare the '%s' vector for the implementation object pointers\r\n", 
+								type, 
+								temp, 
+								temp);
+
+							impl.printCode(0, "typedef std::vector< %s *> %sVectorDOM; // Forward declare the '%s' vector for the implementation object pointers\r\n",
+								type,
+								temp,
+								temp);
+
 						}
 					}
 					else
 					{
-						impl.printCode(0, "typedef std::vector< %s > %sVector; // Forward declare the '%s' vector\r\n", type, temp, temp);
+						impl.printCode(0, "typedef std::vector< %sImpl > %sVectorImpl; // Forward declare the '%s' vector\r\n", type, temp, temp);
+						impl.printCode(0, "typedef std::vector< %s > %sVectorDOM; // Forward declare the '%s' vector\r\n", type, temp, temp);
 					}
 					arrays.push_back(i.mType);
 				}
@@ -432,20 +457,13 @@ public:
 			}
 			cp.printCode(0, "class %s", getClassNameString(mName,isImpl)); 
 			bool firstInherit = true;
-			if (!mInheritsFrom.empty() || isImpl)
+			if (!mInheritsFrom.empty() )
 			{
 				firstInherit = false;
-				if (isImpl)
-				{
-					cp.printCode(0, ": public %s", mName.c_str());
-				}
-				else
-				{
-					cp.printCode(0, " : public %s", mInheritsFrom.c_str());
-				}
+				cp.printCode(0, " : public %s", getClassNameString(mInheritsFrom.c_str(),isImpl));
 			}
 
-			if (mClone && !isImpl )
+			if (mClone && isImpl )
 			{
 				cp.printCode(0, "%s public CloneObject", firstInherit ? ":" : ",");
 			}
@@ -539,7 +557,6 @@ public:
 					cp.printCode(1, "// Declare the constructor.\r\n");
 					cp.printCode(1, "%s()\r\n", getClassNameString(mName, isImpl));
 					cp.printCode(1, "{\r\n");
-					if (!isImpl)
 					{
 						for (auto &i : mItems)
 						{
@@ -547,8 +564,9 @@ public:
 							// Because it was already handled in the initializer
 							if (!i.mInheritsFrom.empty() && !i.mDefaultValue.empty())
 							{
-								cp.printCode(2, "%s::%s = %s;\r\n",
+								cp.printCode(2, "%s%s::%s = %s;\r\n",
 									i.mInheritsFrom.c_str(),
+									isImpl ? "Impl" : "",
 									getMemberName(i.mMember, isImpl),
 									getDefaultValueString(i.mDefaultValue.c_str()));
 							}
@@ -573,26 +591,25 @@ public:
 					hasPointers = true;
 				}
 			}
-
+			if (!haveDefaultConstructor && isImpl)
+			{
+				haveDefaultConstructor = true;
+				cp.printCode(0, "\r\n");
+				cp.printCode(1, "// Declare the constructor.\r\n");
+				cp.printCode(1, "%s() { }\r\n", getClassNameString(mName, isImpl));
+				cp.printCode(0, "\r\n");
+			}
 			if (hasArrayOfPointers || hasPointers)
 			{
-				if (!haveDefaultConstructor)
-				{
-					haveDefaultConstructor = true;
-					cp.printCode(0, "\r\n");
-					cp.printCode(1, "// Declare the constructor.\r\n");
-					cp.printCode(1, "%s() { }\r\n", getClassNameString(mName, isImpl));
-					cp.printCode(0, "\r\n");
-				}
-
 				if (needsDeepCopy)
 				{
-					cp.printCode(0, "\r\n");
-					cp.printCode(1, "// Declare the virtual destructor; cleanup any pointers or arrays of pointers\r\n");
-					cp.printCode(1, "virtual ~%s()\r\n", getClassNameString(mName, isImpl));
-					cp.printCode(1, "{\r\n");
 					if (isImpl)
 					{
+						cp.printCode(0, "\r\n");
+						cp.printCode(1, "// Declare the virtual destructor; cleanup any pointers or arrays of pointers\r\n");
+						cp.printCode(1, "virtual ~%s()\r\n", getClassNameString(mName, isImpl));
+						cp.printCode(1, "{\r\n");
+
 						for (auto &i : mItems)
 						{
 							if (i.mIsArray && i.mIsPointer)
@@ -604,14 +621,14 @@ public:
 								cp.printCode(2, "delete %s; // Delete this object\r\n", getMemberName(i.mMember, isImpl));
 							}
 						}
+						cp.printCode(1, "}\r\n");
+						cp.printCode(0, "\r\n");
 					}
-					cp.printCode(1, "}\r\n");
-					cp.printCode(0, "\r\n");
 				}
 			}
 			else if (!mInheritsFrom.empty())
 			{
-				if (needsDeepCopy)
+				if (needsDeepCopy && isImpl )
 				{
 					cp.printCode(0, "\r\n");
 					cp.printCode(1, "// Declare the virtual destructor.\r\n");
@@ -662,13 +679,13 @@ public:
 
 					if (!mInheritsFrom.empty())
 					{
-						cp.printCode(3, "%s::operator=(other);\r\n", mInheritsFrom.c_str());
+						cp.printCode(3, "%sImpl::operator=(other);\r\n", mInheritsFrom.c_str());
 					}
 
 					for (auto &i : mItems)
 					{
-						if (!i.needsReflection() && isImpl)
-							continue;
+//						if (!i.needsReflection() && isImpl)
+//							continue;
 						if (i.mIsArray && i.mIsPointer)
 						{
 							cp.printCode(3, "for (auto &i:%s) delete i; // Delete all of the object pointers in this array\r\n", getMemberName(i.mMember, isImpl));
@@ -705,15 +722,34 @@ public:
 			}
 			if ( isImpl )
 			{
+				// Get DOM code
+				{
+					cp.printCode(0, "\r\n");
+					cp.printCode(1, "// Declare the helper method to return the DOM version of this class.\r\n");
+					cp.printCode(1, "%s *getDOM(void)\r\n", getClassNameString(mName, false));
+					cp.printCode(1, "{\r\n");
+					cp.printCode(2, " return &mDOM;\r\n");
+					cp.printCode(1, "}\r\n");
+					cp.printCode(0, "\r\n");
+				}
 				// initDOM code
-				// Do the move constructor and assignment operators
 				{
 					cp.printCode(1, "// Declare and implement the initDOM method\r\n");
-					cp.printCode(1, "void initDOM(void)\r\n", getClassNameString(mName, isImpl), getClassNameString(mName, isImpl));
+					cp.printCode(1, "virtual void initDOM(void) override\r\n", getClassNameString(mName, isImpl), getClassNameString(mName, isImpl));
 					cp.printCode(1, "{\r\n");
+
 					if (!mInheritsFrom.empty())
 					{
-						cp.printCode(2, "%s::initDOM();\r\n", mInheritsFrom.c_str());
+						cp.printCode(2, "// Initialize the DOM for the base class.\r\n");
+						cp.printCode(2, "%sImpl::initDOM();\r\n", mInheritsFrom.c_str());
+						cp.printCode(2, "// Copy the elements from the base class DOM to our reflection DOM\r\n");
+						cp.printCode(2, "{\r\n");
+						cp.printCode(3, "%s *dom = static_cast< %s *>(&mDOM); // Get the DOM base class.\r\n",
+							mInheritsFrom.c_str(),
+							mInheritsFrom.c_str());
+						cp.printCode(3, "*dom = *(%sImpl::getDOM()); // Assign the base class DOM components.\r\n",
+							mInheritsFrom.c_str());
+						cp.printCode(2, "}\r\n");
 					}
 
 					for (auto &i : mItems)
@@ -740,21 +776,18 @@ public:
 								cp.printCode(2, "for (auto &i: %s) // For each std::string\r\n", getMemberName(i.mMember, true));
 								cp.printCode(3, "%sImpl.push_back( i.c_str() ); // Add the const char * for the string.\r\n", getMemberName(i.mMember, true));
 
-								cp.printCode(2, "%s::%sCount = uint32_t(%sImpl.size()); // Assign the number of strings\r\n", 
-									getClassNameString(mName,false),
+								cp.printCode(2, "mDOM.%sCount = uint32_t(%sDOM.size()); // Assign the number of strings\r\n", 
 									getMemberName(i.mMember, false), 
 									getMemberName(i.mMember, true));
 
-								cp.printCode(2, "%s::%s = %sCount ? &%sImpl[0] : nullptr; // Assign the pointer array.\r\n",
-									getClassNameString(mName,false),
+								cp.printCode(2, "mDOM.%s = %sCount ? &%sDOM[0] : nullptr; // Assign the pointer array.\r\n",
 									getMemberName(i.mMember, false),
 									getMemberName(i.mMember, false),
 									getMemberName(i.mMember, true));
 							}
 							else
 							{
-								cp.printCode(2, "%s::%s = %s.c_str(); // Assign the current string pointer.\r\n", 
-									getClassNameString(mName,false),
+								cp.printCode(2, "mDOM.%s = %s.c_str(); // Assign the current string pointer.\r\n", 
 									getMemberName(i.mMember, false), 
 									getMemberName(i.mMember, true));
 							}
@@ -762,29 +795,37 @@ public:
 						else if (i.mIsArray && i.mIsPointer)
 						{
 							// If it is an array of pointers...
+							cp.printCode(2, "%sDOM.clear();\r\n", getMemberName(i.mMember, true));
+							cp.printCode(2, "%sDOM.reserve( %s.size() );\r\n",
+								getMemberName(i.mMember, true),
+								getMemberName(i.mMember, true));
 							cp.printCode(2, "for (auto &i:%s)\r\n", getMemberName(i.mMember, true));
+							cp.printCode(2, "{\r\n");
 							cp.printCode(3, "i->initDOM();\r\n");
-							cp.printCode(2, "%sCount = uint32_t(%s.size()); // assign the number of items in the array.\r\n",
+							cp.printCode(3, "%sDOM.push_back( i->getDOM() );\r\n",
+								getMemberName(i.mMember, true));
+							cp.printCode(2, "}\r\n");
+							cp.printCode(2, "mDOM.%sCount = uint32_t(%sDOM.size()); // assign the number of items in the array.\r\n",
 								getMemberName(i.mMember, false),
 								getMemberName(i.mMember, true));
-							cp.printCode(2, "%s = %sCount ? &%s[0] : nullptr; // Assign the pointer array\r\n",
+							cp.printCode(2, "mDOM.%s = mDOM.%sCount ? &%sDOM[0] : nullptr; // Assign the pointer array\r\n",
 								getMemberName(i.mMember, false),
 								getMemberName(i.mMember, false),
 								getMemberName(i.mMember, true));
 						}
 						else if (i.mIsArray)
 						{
-							cp.printCode(2, "%sCount = uint32_t(%s.size()); // assign the number of items in the array.\r\n",
+							cp.printCode(2, "mDOM.%sCount = uint32_t(%sDOM.size()); // assign the number of items in the array.\r\n",
 								getMemberName(i.mMember, false),
 								getMemberName(i.mMember, true));
-							cp.printCode(2, "%s = %sCount ? &%s[0] : nullptr; // Assign the pointer array\r\n",
+							cp.printCode(2, "mDOM.%s = mDOM.%sCount ? &%sDOM[0] : nullptr; // Assign the pointer array\r\n",
 								getMemberName(i.mMember, false),
 								getMemberName(i.mMember, false),
 								getMemberName(i.mMember, true));
 						}
 						else if (i.mIsPointer)
 						{
-							cp.printCode(2, "%s = static_cast< %s *>(%s); // assign the DOM reflection pointer.\r\n",
+							cp.printCode(2, "mDOM.%s = static_cast< %s *>(%s); // assign the DOM reflection pointer.\r\n",
 								getMemberName(i.mMember, false),
 								i.mType.c_str(),
 								getMemberName(i.mMember, true));
@@ -821,13 +862,13 @@ public:
 
 					if (!mInheritsFrom.empty())
 					{
-						cp.printCode(3, "%s::operator=(std::move(other));\r\n", mInheritsFrom.c_str());
+						cp.printCode(3, "%sImpl::operator=(std::move(other));\r\n", mInheritsFrom.c_str());
 					}
 
 					for (auto &i : mItems)
 					{
-						if (!i.needsReflection() && isImpl)
-							continue;
+//						if (!i.needsReflection() && isImpl)
+//							continue;
 						if (i.mIsArray && i.mIsPointer)
 						{
 							cp.printCode(3, "%s = other.%s;\r\n", getMemberName(i.mMember,isImpl), getMemberName(i.mMember,isImpl));
@@ -862,10 +903,10 @@ public:
 
 				bool needsNull = false;
 
-				if (!i.needsReflection() && isImpl)
-				{
-					continue;
-				}
+//				if (!i.needsReflection() && isImpl)
+//				{
+//					continue;
+//				}
 
 				// Output the member variable declaration.
 				if (i.mIsArray)
@@ -879,11 +920,12 @@ public:
 						}
 						else
 						{
+							needsDOMVector = true;
 							char temp[512];
 							strncpy(temp, i.mType.c_str(), 512);
 							temp[0] = upcase(temp[0]);
 							char vectorName[512];
-							STRING_HELPER::stringFormat(vectorName, 512, "%sVector", temp);
+							STRING_HELPER::stringFormat(vectorName, 512, "%sVectorImpl", temp);
 							cp.printCode(1, "%s", vectorName);
 						}
 					}
@@ -953,10 +995,15 @@ public:
 				cp.printCode(16, "// %s\r\n", i.mShortDescription.c_str());
 
 			}
+			if (isImpl)
+			{
+				cp.printCode(0, "private:\r\n");
+				cp.printCode(1, "%s", getClassNameString(mName, false));
+				cp.printCode(4, "mDOM; // Declare the DOM version.\r\n");
+			}
 			if (needsDOMVector)
 			{
-				cp.printCode(0, "// Declare private temporary array(s) to hold array of strings pointers.\r\n");
-				cp.printCode(0, "private:\r\n");
+				cp.printCode(0, "// Declare private temporary array(s) to hold flat DOM version of arrays.\r\n");
 
 				for (auto &i : mItems)
 				{
@@ -980,6 +1027,18 @@ public:
 								cp.printCode(1, "ConstCharVector");
 								cp.printCode(4, "%sImpl; // Scratch array for const char pointers.\r\n",
 									getMemberName(i.mMember, true));
+							}
+							else
+							{
+								char temp[512];
+								strncpy(temp, i.mType.c_str(), 512);
+								temp[0] = upcase(temp[0]);
+								char vectorName[512];
+								STRING_HELPER::stringFormat(vectorName, 512, "%sVectorDOM", temp);
+								cp.printCode(1, "%s", vectorName);
+								cp.printCode(4, "%sDOM; // Scratch array for const char pointers.\r\n",
+									getMemberName(i.mMember, true));
+
 							}
 						}
 					}
@@ -1234,8 +1293,13 @@ public:
 			cp.printCode(0, "{\r\n");
 			cp.printCode(0, "\r\n");
 
-			if (!isImpl)
+			if (isImpl)
 			{
+				cp.printCode(0, "\r\n");
+				cp.printCode(0, "// Forward declare the two types of string vector containers.\r\n");
+				cp.printCode(0, "typedef std::vector< std::string > StringVector;\r\n");
+				cp.printCode(0, "typedef std::vector< const char * > ConstCharVector;\r\n");
+				cp.printCode(0, "\r\n");
 				cp.printCode(0, "// Declare the clone-object class for deep copies\r\n");
 				cp.printCode(0, "// of objects by the implementation classes\r\n");
 				cp.printCode(0, "// Not to be used with the base DOM classes;\r\n");
@@ -1249,14 +1313,6 @@ public:
 				cp.printCode(1, "// Declare the default initDOM method; which is only needed for some implementation objects.\r\n");
 				cp.printCode(1, "virtual void initDOM(void) {  };\r\n");
 				cp.printCode(0, "};\r\n");
-			}
-			else
-			{
-				cp.printCode(0, "\r\n");
-				cp.printCode(0, "// Forward declare the two types of string vector containers.\r\n");
-				cp.printCode(0, "typedef std::vector< std::string > StringVector;\r\n");
-				cp.printCode(0, "typedef std::vector< const char * > ConstCharVector;\r\n");
-				cp.printCode(0, "\r\n");
 			}
 
 		};
@@ -1625,7 +1681,7 @@ public:
 
 CreateDOM *CreateDOM::create(void)
 {
-	//testDeepCopy();
+	testDeepCopy();
 	CreateDOMImpl *in = new CreateDOMImpl;
 	return static_cast<CreateDOM *>(in);
 }
