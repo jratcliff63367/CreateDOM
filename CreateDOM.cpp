@@ -1,3 +1,4 @@
+
 #include "CreateDOM.h"
 #include "StringHelper.h"
 #include <stdio.h>
@@ -11,7 +12,7 @@
 #include <algorithm>
 #include <assert.h>
 
-#if 1
+#if 0
 //#include "PhysicsDOM.h"
 //#include "PhysicsDOMImpl.h"
 #include "DeepCopy.h"
@@ -22,6 +23,12 @@ void testDeepCopy(void)
 	DEEP_COPY::GeometryInstanceImpl g;
 	DEEP_COPY::SphereGeometryImpl *s = new DEEP_COPY::SphereGeometryImpl;
 	g.mGeometries.push_back(s);
+	DEEP_COPY::Vec3 v1(1, 1, 1);
+	DEEP_COPY::Vec3 v2(2, 2, 2);
+	DEEP_COPY::Vec3 v3(3, 3, 3);
+	g.mTestVec3.mPoints.push_back(v1);
+	g.mTestVec3.mPoints.push_back(v2);
+	g.mTestVec3.mPoints.push_back(v3);
 	g.initDOM();
 	DEEP_COPY::GeometryInstance *dom = g.getDOM();
 	if (dom)
@@ -30,7 +37,7 @@ void testDeepCopy(void)
 	}
 }
 
-//#else
+#else
 
 #pragma warning(disable:4100)
 
@@ -161,6 +168,25 @@ static const char *getDefaultValueString(const char *df)
 class DataItem
 {
 public:
+	void memberNeedsReflection(const StringVector &needsReflectionClasses)
+	{
+		mNeedsReflection = false;
+		if (mIsPointer || mIsString)
+		{
+			mNeedsReflection = true;
+		}
+		else
+		{
+			for (auto &i : needsReflectionClasses)
+			{
+				if (i == mType)
+				{
+					mNeedsReflection = true;
+					break;
+				}
+			}
+		}
+	}
 	bool needsReflection(void) const
 	{
 		bool ret = false;
@@ -175,6 +201,7 @@ public:
 	bool			mIsArray{ false }; // true if this data item is an array
 	bool			mIsPointer{ false };
 	bool			mIsString{ false };
+	bool			mNeedsReflection{ false }; // determines where or not this refers to a data type that needs reflection
 	std::string		mMember;	// name of this data item
 	std::string		mType;	// Type of data item
 	std::string		mInheritsFrom;
@@ -310,10 +337,6 @@ public:
 			STRING_HELPER::stringFormat(scratch, 512, "%sImpl", name.c_str());
 			ret = scratch;
 		}
-		if (strcmp(ret, "VisualBindingImpl") == 0)
-		{
-			printf("debug me");
-		}
 		return ret;
 	}
 
@@ -430,17 +453,24 @@ public:
 
 						}
 					}
-					else
+					else if ( !i.mIsString )
 					{
-						impl.printCode(0, "typedef std::vector< %sImpl > %sVectorImpl; // Forward declare the '%s' vector\r\n", type, temp, temp);
-						impl.printCode(0, "typedef std::vector< %s > %sVectorDOM; // Forward declare the '%s' vector\r\n", type, temp, temp);
+						if (i.mNeedsReflection)
+						{
+							impl.printCode(0, "typedef std::vector< %sImpl > %sVectorImpl; // Forward declare the '%s' vector\r\n", type, temp, temp);
+							impl.printCode(0, "typedef std::vector< %s > %sVectorDOM; // Forward declare the '%s' vector\r\n", type, temp, temp);
+						}
+						else
+						{
+							impl.printCode(0, "typedef std::vector< %s > %sVectorImpl; // Forward declare the '%s' vector\r\n", type, temp, temp);
+						}
 					}
 					arrays.push_back(i.mType);
 				}
 			}
 		}
 		bool needsImpl = false;
-		if (hasArrays || hasInheritance || hasPointer || hasStrings || mClone )
+		if (hasArrays || hasInheritance || hasPointer || hasStrings || mClone || mNeedsReflection)
 		{
 			needsImpl = true;
 		}
@@ -463,7 +493,7 @@ public:
 				cp.printCode(0, " : public %s", getClassNameString(mInheritsFrom.c_str(),isImpl));
 			}
 
-			if (mClone && isImpl )
+			if ((mClone || mNeedsReflection) && isImpl )
 			{
 				cp.printCode(0, "%s public CloneObject", firstInherit ? ":" : ",");
 			}
@@ -477,7 +507,7 @@ public:
 		bool needsDeepCopy = mInheritsFrom.empty() ? false : true;
 		if ( !needsDeepCopy )
 		{
-			needsDeepCopy = mClone;
+			needsDeepCopy = mClone | mNeedsReflection;
 			if (!needsDeepCopy)
 			{
 				for (auto &i : mItems)
@@ -754,14 +784,17 @@ public:
 
 					for (auto &i : mItems)
 					{
+						const char *arrayPostFix = i.mNeedsReflection ? "DOM" : "";
 						if (!i.needsReflection() && classNeedsReflection(i.mType, _needsReflection))
 						{
 							cp.printCode(2, "{\r\n");
 							cp.printCode(3, "%sImpl *impl = static_cast< %sImpl *>(&%s); // static cast to the implementation class.\r\n",
 								i.mType.c_str(),
 								i.mType.c_str(),
-								getMemberName(i.mMember, false));
+								getMemberName(i.mMember, true));
 							cp.printCode(3, "impl->initDOM(); // Initialize DOM components of member variable.\r\n");
+							cp.printCode(3, "mDOM.%s = *impl->getDOM(); // Copy the DOM struct values.\r\n",
+								i.mMember.c_str());
 							cp.printCode(2, "}\r\n");
 						}
 						else if (i.mIsString)
@@ -775,15 +808,16 @@ public:
 									getMemberName(i.mMember, true));
 								cp.printCode(2, "for (auto &i: %s) // For each std::string\r\n", getMemberName(i.mMember, true));
 								cp.printCode(3, "%sImpl.push_back( i.c_str() ); // Add the const char * for the string.\r\n", getMemberName(i.mMember, true));
+								cp.printCode(2, "mDOM.%sCount = uint32_t(%s%s.size()); // Assign the number of strings\r\n",
+									getMemberName(i.mMember, false),
+									getMemberName(i.mMember, true),
+									arrayPostFix);
 
-								cp.printCode(2, "mDOM.%sCount = uint32_t(%sDOM.size()); // Assign the number of strings\r\n", 
-									getMemberName(i.mMember, false), 
-									getMemberName(i.mMember, true));
-
-								cp.printCode(2, "mDOM.%s = %sCount ? &%sDOM[0] : nullptr; // Assign the pointer array.\r\n",
+								cp.printCode(2, "mDOM.%s = %sCount ? &%s%s[0] : nullptr; // Assign the pointer array.\r\n",
 									getMemberName(i.mMember, false),
 									getMemberName(i.mMember, false),
-									getMemberName(i.mMember, true));
+									getMemberName(i.mMember, true),
+									arrayPostFix);
 							}
 							else
 							{
@@ -805,23 +839,27 @@ public:
 							cp.printCode(3, "%sDOM.push_back( i->getDOM() );\r\n",
 								getMemberName(i.mMember, true));
 							cp.printCode(2, "}\r\n");
-							cp.printCode(2, "mDOM.%sCount = uint32_t(%sDOM.size()); // assign the number of items in the array.\r\n",
+							cp.printCode(2, "mDOM.%sCount = uint32_t(%s%s.size()); // assign the number of items in the array.\r\n",
 								getMemberName(i.mMember, false),
-								getMemberName(i.mMember, true));
-							cp.printCode(2, "mDOM.%s = mDOM.%sCount ? &%sDOM[0] : nullptr; // Assign the pointer array\r\n",
+								getMemberName(i.mMember, true),
+								arrayPostFix);
+							cp.printCode(2, "mDOM.%s = mDOM.%sCount ? &%s%s[0] : nullptr; // Assign the pointer array\r\n",
 								getMemberName(i.mMember, false),
 								getMemberName(i.mMember, false),
-								getMemberName(i.mMember, true));
+								getMemberName(i.mMember, true),
+								arrayPostFix);
 						}
 						else if (i.mIsArray)
 						{
-							cp.printCode(2, "mDOM.%sCount = uint32_t(%sDOM.size()); // assign the number of items in the array.\r\n",
+							cp.printCode(2, "mDOM.%sCount = uint32_t(%s%s.size()); // assign the number of items in the array.\r\n",
 								getMemberName(i.mMember, false),
-								getMemberName(i.mMember, true));
-							cp.printCode(2, "mDOM.%s = mDOM.%sCount ? &%sDOM[0] : nullptr; // Assign the pointer array\r\n",
+								getMemberName(i.mMember, true),
+								arrayPostFix);
+							cp.printCode(2, "mDOM.%s = mDOM.%sCount ? &%s%s[0] : nullptr; // Assign the pointer array\r\n",
 								getMemberName(i.mMember, false),
 								getMemberName(i.mMember, false),
-								getMemberName(i.mMember, true));
+								getMemberName(i.mMember, true),
+								arrayPostFix);
 						}
 						else if (i.mIsPointer)
 						{
@@ -903,11 +941,6 @@ public:
 
 				bool needsNull = false;
 
-//				if (!i.needsReflection() && isImpl)
-//				{
-//					continue;
-//				}
-
 				// Output the member variable declaration.
 				if (i.mIsArray)
 				{
@@ -964,7 +997,14 @@ public:
 						{
 							needsNull = true;
 						}
-						cp.printCode(1, "%s", getTypeString(i.mType.c_str(), isImpl));
+						if (i.mNeedsReflection && !i.mIsString && isImpl )
+						{
+							cp.printCode(1, "%sImpl", getTypeString(i.mType.c_str(), isImpl));
+						}
+						else
+						{
+							cp.printCode(1, "%s", getTypeString(i.mType.c_str(), isImpl));
+						}
 					}
 				}
 
@@ -1030,15 +1070,17 @@ public:
 							}
 							else
 							{
-								char temp[512];
-								strncpy(temp, i.mType.c_str(), 512);
-								temp[0] = upcase(temp[0]);
-								char vectorName[512];
-								STRING_HELPER::stringFormat(vectorName, 512, "%sVectorDOM", temp);
-								cp.printCode(1, "%s", vectorName);
-								cp.printCode(4, "%sDOM; // Scratch array for const char pointers.\r\n",
-									getMemberName(i.mMember, true));
-
+								if (i.mNeedsReflection)
+								{
+									char temp[512];
+									strncpy(temp, i.mType.c_str(), 512);
+									temp[0] = upcase(temp[0]);
+									char vectorName[512];
+									STRING_HELPER::stringFormat(vectorName, 512, "%sVectorDOM", temp);
+									cp.printCode(1, "%s", vectorName);
+									cp.printCode(4, "%sDOM; // Scratch array for const char pointers.\r\n",
+										getMemberName(i.mMember, true));
+								}
 							}
 						}
 					}
@@ -1186,7 +1228,7 @@ public:
 
 	// If any of our memember variables need reflection, then anyone declaring this object
 	// will also need reflection
-	void computeNeedsReflection(void)
+	void computeNeedsReflection(StringVector &needsReflection)
 	{
 		mNeedsReflection = false;
 		for (auto &i : mItems)
@@ -1196,6 +1238,18 @@ public:
 				mNeedsReflection = true;
 				break;
 			}
+		}
+		if (mNeedsReflection)
+		{
+			needsReflection.push_back(mName);
+		}
+	}
+
+	void computeReflectionMembers(StringVector &needsReflection)
+	{
+		for (auto &i : mItems)
+		{
+			i.memberNeedsReflection(needsReflection);
 		}
 	}
 
@@ -1221,10 +1275,16 @@ public:
 
 	void importComplete(void)
 	{
+		StringVector needsReflection;
 		for (auto &i : mObjects)
 		{
-			i.computeNeedsReflection();
+			i.computeNeedsReflection(needsReflection);
 		}
+		for (auto &i : mObjects)
+		{
+			i.computeReflectionMembers(needsReflection);
+		}
+
 	}
 
 	void savePROTO(CodePrinter &cp)
@@ -1681,7 +1741,7 @@ public:
 
 CreateDOM *CreateDOM::create(void)
 {
-	testDeepCopy();
+//	testDeepCopy();
 	CreateDOMImpl *in = new CreateDOMImpl;
 	return static_cast<CreateDOM *>(in);
 }

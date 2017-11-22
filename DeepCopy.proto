@@ -10,6 +10,22 @@ package CreateDOM;
 // [START messages]
 
 
+// Defines a basic 3d vector type
+message Vec3
+{
+	float x = 1;
+	float y = 2;
+	float z = 3;
+}
+
+
+message TestVec3
+{
+	string name = 1;
+	repeated Vec3 points = 2;
+}
+
+
 enum GeometryType
 {
 	GT_BOX_GEOMETRY = 0; 				// A basic sphere primitive
@@ -49,7 +65,8 @@ message SphereGeometry
 // Defines a single instance of a geometry
 message GeometryInstance
 {
-	repeated Geometry geometries = 1;
+	TestVec3 testVec3 = 1;
+	repeated Geometry geometries = 2;
 }
 
 

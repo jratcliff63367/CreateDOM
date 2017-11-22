@@ -34,11 +34,48 @@ public:
 };
 
 // Defines an optional visual mesh binding to a physics node
-class VisualBindingImpl
+class VisualBindingImpl: public CloneObject
 {
 public:
+
+	// Declare the constructor.
+	VisualBindingImpl() { }
+
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	VisualBindingImpl(const VisualBindingImpl &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual CloneObject* clone() const
+	{
+		return new VisualBindingImpl(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	VisualBindingImpl& operator=(const VisualBindingImpl& other)
+	{
+		if (this != &other )
+		{
+			mVisualName = other.mVisualName;
+			mLocalPose = other.mLocalPose;
+			mLocalScale = other.mLocalScale;
+		}
+		return *this;
+	}
+
+
+	// Declare the helper method to return the DOM version of this class.
+	VisualBinding *getDOM(void)
+	{
+		 return &mDOM;
+	}
+
 	// Declare and implement the initDOM method
-	void initDOM(void)
+	virtual void initDOM(void) override
 	{
 		mDOM.visualName = mVisualName.c_str(); // Assign the current string pointer.
 	}
@@ -71,11 +108,47 @@ private:
 
 
 // Describes a key-value pair for custom properties on a node
-class KeyValuePairImpl
+class KeyValuePairImpl: public CloneObject
 {
 public:
+
+	// Declare the constructor.
+	KeyValuePairImpl() { }
+
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	KeyValuePairImpl(const KeyValuePairImpl &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual CloneObject* clone() const
+	{
+		return new KeyValuePairImpl(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	KeyValuePairImpl& operator=(const KeyValuePairImpl& other)
+	{
+		if (this != &other )
+		{
+			mKey = other.mKey;
+			mValue = other.mValue;
+		}
+		return *this;
+	}
+
+
+	// Declare the helper method to return the DOM version of this class.
+	KeyValuePair *getDOM(void)
+	{
+		 return &mDOM;
+	}
+
 	// Declare and implement the initDOM method
-	void initDOM(void)
+	virtual void initDOM(void) override
 	{
 		mDOM.key = mKey.c_str(); // Assign the current string pointer.
 		mDOM.value = mValue.c_str(); // Assign the current string pointer.
@@ -105,18 +178,55 @@ private:
 	KeyValuePair mDOM; // Declare the DOM version.
 };
 
-typedef std::vector< KeyValuePairImpl > KeyValuePairVector; // Forward declare the 'KeyValuePair' vector
+typedef std::vector< KeyValuePairImpl > KeyValuePairVectorImpl; // Forward declare the 'KeyValuePair' vector
+typedef std::vector< KeyValuePair > KeyValuePairVectorDOM; // Forward declare the 'KeyValuePair' vector
 
 // A collection of key/value pair properties relative to a particular category
-class AdditionalPropertiesImpl
+class AdditionalPropertiesImpl: public CloneObject
 {
 public:
+
+	// Declare the constructor.
+	AdditionalPropertiesImpl() { }
+
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	AdditionalPropertiesImpl(const AdditionalPropertiesImpl &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual CloneObject* clone() const
+	{
+		return new AdditionalPropertiesImpl(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	AdditionalPropertiesImpl& operator=(const AdditionalPropertiesImpl& other)
+	{
+		if (this != &other )
+		{
+			mCategory = other.mCategory;
+			mKeyValuePairs = other.mKeyValuePairs;
+		}
+		return *this;
+	}
+
+
+	// Declare the helper method to return the DOM version of this class.
+	AdditionalProperties *getDOM(void)
+	{
+		 return &mDOM;
+	}
+
 	// Declare and implement the initDOM method
-	void initDOM(void)
+	virtual void initDOM(void) override
 	{
 		mDOM.category = mCategory.c_str(); // Assign the current string pointer.
-		mDOM.keyValuePairsCount = uint32_t(mKeyValuePairs.size()); // assign the number of items in the array.
-		mDOM.keyValuePairs = mDOM.keyValuePairsCount ? &mKeyValuePairs[0] : nullptr; // Assign the pointer array
+		mDOM.keyValuePairsCount = uint32_t(mKeyValuePairsDOM.size()); // assign the number of items in the array.
+		mDOM.keyValuePairs = mDOM.keyValuePairsCount ? &mKeyValuePairsDOM[0] : nullptr; // Assign the pointer array
 	}
 
 
@@ -138,17 +248,24 @@ public:
 	}
 
 	std::string	mCategory;   									// The category this set of key/value pairs is associated with (example 'physx', 'mujoco', etc.
-	KeyValuePairVector mKeyValuePairs;   						// The array of key/value pairs associated with this category
+	KeyValuePairVectorImpl mKeyValuePairs;   					// The array of key/value pairs associated with this category
 private:
 	AdditionalProperties mDOM; // Declare the DOM version.
+// Declare private temporary array(s) to hold flat DOM version of arrays.
+	KeyValuePairVectorDOM mKeyValuePairsDOM; // Scratch array for const char pointers.
 };
 
-typedef std::vector< AdditionalPropertiesImpl > AdditionalPropertiesVector; // Forward declare the 'AdditionalProperties' vector
+typedef std::vector< AdditionalPropertiesImpl > AdditionalPropertiesVectorImpl; // Forward declare the 'AdditionalProperties' vector
+typedef std::vector< AdditionalProperties > AdditionalPropertiesVectorDOM; // Forward declare the 'AdditionalProperties' vector
 
 // Base class that specifies a unique ID and an optional description name field for an object
 class NodeImpl: public CloneObject
 {
 public:
+
+	// Declare the constructor.
+	NodeImpl() { }
+
 
 	// Declare the deep copy constructor; handles copying pointers and pointer arrays
 	NodeImpl(const NodeImpl &other)
@@ -177,17 +294,25 @@ public:
 		return *this;
 	}
 
+
+	// Declare the helper method to return the DOM version of this class.
+	Node *getDOM(void)
+	{
+		 return &mDOM;
+	}
+
 	// Declare and implement the initDOM method
-	void initDOM(void)
+	virtual void initDOM(void) override
 	{
 		mDOM.id = mId.c_str(); // Assign the current string pointer.
 		mDOM.name = mName.c_str(); // Assign the current string pointer.
 		{
-			VisualBindingImpl *impl = static_cast< VisualBindingImpl *>(&visual); // static cast to the implementation class.
+			VisualBindingImpl *impl = static_cast< VisualBindingImpl *>(&mVisual); // static cast to the implementation class.
 			impl->initDOM(); // Initialize DOM components of member variable.
+			mDOM.visual = *impl->getDOM(); // Copy the DOM struct values.
 		}
-		mDOM.additionalPropertiesCount = uint32_t(mAdditionalProperties.size()); // assign the number of items in the array.
-		mDOM.additionalProperties = mDOM.additionalPropertiesCount ? &mAdditionalProperties[0] : nullptr; // Assign the pointer array
+		mDOM.additionalPropertiesCount = uint32_t(mAdditionalPropertiesDOM.size()); // assign the number of items in the array.
+		mDOM.additionalProperties = mDOM.additionalPropertiesCount ? &mAdditionalPropertiesDOM[0] : nullptr; // Assign the pointer array
 	}
 
 
@@ -214,10 +339,12 @@ public:
 	std::string	mId; 											// Unique Id for this object
 	std::string	mName;   										// Optional name for this object
 	NodeType 	mType{ NT_NODE };									// The type of node
-	VisualBinding  mVisual;										// Optional visual bindings for this node; for exaple some physics components have a corresponding named graphics component
-	AdditionalPropertiesVector mAdditionalProperties;  			// An optional set of properties for this node; a set of key-value pairs for each application/engine specific category
+	VisualBindingImpl mVisual;   								// Optional visual bindings for this node; for exaple some physics components have a corresponding named graphics component
+	AdditionalPropertiesVectorImpl mAdditionalProperties;  		// An optional set of properties for this node; a set of key-value pairs for each application/engine specific category
 private:
 	Node 		mDOM; // Declare the DOM version.
+// Declare private temporary array(s) to hold flat DOM version of arrays.
+	AdditionalPropertiesVectorDOM mAdditionalPropertiesDOM; // Scratch array for const char pointers.
 };
 
 
@@ -228,6 +355,7 @@ public:
 	// Declare the constructor.
 	PhysicsMaterialImpl()
 	{
+		NodeImpl::mType = NT_PHYSICS_MATERIAL;
 	}
 
 
@@ -255,7 +383,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Node::operator=(other);
+			NodeImpl::operator=(other);
 			mDisableFriction = other.mDisableFriction;
 			mDisableStrongFriction = other.mDisableStrongFriction;
 			mDynamicFriction = other.mDynamicFriction;
@@ -265,10 +393,23 @@ public:
 		return *this;
 	}
 
-	// Declare and implement the initDOM method
-	void initDOM(void)
+
+	// Declare the helper method to return the DOM version of this class.
+	PhysicsMaterial *getDOM(void)
 	{
-		Node::initDOM();
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		// Initialize the DOM for the base class.
+		NodeImpl::initDOM();
+		// Copy the elements from the base class DOM to our reflection DOM
+		{
+			Node *dom = static_cast< Node *>(&mDOM); // Get the DOM base class.
+			*dom = *(NodeImpl::getDOM()); // Assign the base class DOM components.
+		}
 	}
 
 
@@ -283,7 +424,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Node::operator=(std::move(other));
+			NodeImpl::operator=(std::move(other));
 			mDisableFriction = other.mDisableFriction;
 			mDisableStrongFriction = other.mDisableStrongFriction;
 			mDynamicFriction = other.mDynamicFriction;
@@ -302,15 +443,16 @@ private:
 	PhysicsMaterial mDOM; // Declare the DOM version.
 };
 
-typedef std::vector< Vec3Impl > Vec3Vector; // Forward declare the 'Vec3' vector
+typedef std::vector< Vec3 > Vec3VectorImpl; // Forward declare the 'Vec3' vector
 
 // Describes the data for a convex hull
-class ConvexHullImpl : public NodeImpl
+class ConvexHullImpl : public NodeImpl, public CloneObject
 {
 public:
 	// Declare the constructor.
 	ConvexHullImpl()
 	{
+		NodeImpl::mType = NT_CONVEXHULL;
 	}
 
 
@@ -338,16 +480,29 @@ public:
 	{
 		if (this != &other )
 		{
-			Node::operator=(other);
+			NodeImpl::operator=(other);
 			mPoints = other.mPoints;
 		}
 		return *this;
 	}
 
-	// Declare and implement the initDOM method
-	void initDOM(void)
+
+	// Declare the helper method to return the DOM version of this class.
+	ConvexHull *getDOM(void)
 	{
-		Node::initDOM();
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		// Initialize the DOM for the base class.
+		NodeImpl::initDOM();
+		// Copy the elements from the base class DOM to our reflection DOM
+		{
+			Node *dom = static_cast< Node *>(&mDOM); // Get the DOM base class.
+			*dom = *(NodeImpl::getDOM()); // Assign the base class DOM components.
+		}
 		mDOM.pointsCount = uint32_t(mPoints.size()); // assign the number of items in the array.
 		mDOM.points = mDOM.pointsCount ? &mPoints[0] : nullptr; // Assign the pointer array
 	}
@@ -364,27 +519,29 @@ public:
 	{
 		if (this != &other )
 		{
-			Node::operator=(std::move(other));
+			NodeImpl::operator=(std::move(other));
 			mPoints = other.mPoints;
 		}
 		return *this;
 	}
 
-	Vec3Vector   mPoints;  										// Array of data points describing the convex hull
+	Vec3VectorImpl   mPoints;  									// Array of data points describing the convex hull
 private:
 	ConvexHull   mDOM; // Declare the DOM version.
+// Declare private temporary array(s) to hold flat DOM version of arrays.
 };
 
-typedef std::vector< uint32_tImpl > U32Vector; // Forward declare the 'U32' vector
-typedef std::vector< uint8_tImpl > U8Vector; // Forward declare the 'U8' vector
+typedef std::vector< uint32_t > U32VectorImpl; // Forward declare the 'U32' vector
+typedef std::vector< uint8_t > U8VectorImpl; // Forward declare the 'U8' vector
 
 // Describes the data for a triangle mesh
-class TriangleMeshImpl : public NodeImpl
+class TriangleMeshImpl : public NodeImpl, public CloneObject
 {
 public:
 	// Declare the constructor.
 	TriangleMeshImpl()
 	{
+		NodeImpl::mType = NT_TRIANGLEMESH;
 	}
 
 
@@ -412,7 +569,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Node::operator=(other);
+			NodeImpl::operator=(other);
 			mPoints = other.mPoints;
 			mTriangles = other.mTriangles;
 			mMaterialIndices = other.mMaterialIndices;
@@ -420,10 +577,23 @@ public:
 		return *this;
 	}
 
-	// Declare and implement the initDOM method
-	void initDOM(void)
+
+	// Declare the helper method to return the DOM version of this class.
+	TriangleMesh *getDOM(void)
 	{
-		Node::initDOM();
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		// Initialize the DOM for the base class.
+		NodeImpl::initDOM();
+		// Copy the elements from the base class DOM to our reflection DOM
+		{
+			Node *dom = static_cast< Node *>(&mDOM); // Get the DOM base class.
+			*dom = *(NodeImpl::getDOM()); // Assign the base class DOM components.
+		}
 		mDOM.pointsCount = uint32_t(mPoints.size()); // assign the number of items in the array.
 		mDOM.points = mDOM.pointsCount ? &mPoints[0] : nullptr; // Assign the pointer array
 		mDOM.trianglesCount = uint32_t(mTriangles.size()); // assign the number of items in the array.
@@ -444,7 +614,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Node::operator=(std::move(other));
+			NodeImpl::operator=(std::move(other));
 			mPoints = other.mPoints;
 			mTriangles = other.mTriangles;
 			mMaterialIndices = other.mMaterialIndices;
@@ -452,22 +622,24 @@ public:
 		return *this;
 	}
 
-	Vec3Vector   mPoints;  										// Array of vertices for the triangle mesh
-	U32Vector  	mTriangles;										// Array of triangle indices
-	U8Vector 	mMaterialIndices;									// Optional per-triangle material index
+	Vec3VectorImpl   mPoints;  									// Array of vertices for the triangle mesh
+	U32VectorImpl  mTriangles;   								// Array of triangle indices
+	U8VectorImpl mMaterialIndices;   							// Optional per-triangle material index
 private:
 	TriangleMesh mDOM; // Declare the DOM version.
+// Declare private temporary array(s) to hold flat DOM version of arrays.
 };
 
-typedef std::vector< uint16_tImpl > U16Vector; // Forward declare the 'U16' vector
+typedef std::vector< uint16_t > U16VectorImpl; // Forward declare the 'U16' vector
 
 // The data for a heighfield; as 2d array of 32 bit samples; 16 bits for height, 16 bits for material indices, holes, and other metadata
-class HeightFieldImpl : public NodeImpl
+class HeightFieldImpl : public NodeImpl, public CloneObject
 {
 public:
 	// Declare the constructor.
 	HeightFieldImpl()
 	{
+		NodeImpl::mType = NT_HEIGHTFIELD;
 	}
 
 
@@ -495,7 +667,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Node::operator=(other);
+			NodeImpl::operator=(other);
 			mRowCount = other.mRowCount;
 			mColumnCount = other.mColumnCount;
 			mSamples = other.mSamples;
@@ -504,10 +676,23 @@ public:
 		return *this;
 	}
 
-	// Declare and implement the initDOM method
-	void initDOM(void)
+
+	// Declare the helper method to return the DOM version of this class.
+	HeightField *getDOM(void)
 	{
-		Node::initDOM();
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		// Initialize the DOM for the base class.
+		NodeImpl::initDOM();
+		// Copy the elements from the base class DOM to our reflection DOM
+		{
+			Node *dom = static_cast< Node *>(&mDOM); // Get the DOM base class.
+			*dom = *(NodeImpl::getDOM()); // Assign the base class DOM components.
+		}
 		mDOM.samplesCount = uint32_t(mSamples.size()); // assign the number of items in the array.
 		mDOM.samples = mDOM.samplesCount ? &mSamples[0] : nullptr; // Assign the pointer array
 		mDOM.metaDataCount = uint32_t(mMetaData.size()); // assign the number of items in the array.
@@ -526,7 +711,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Node::operator=(std::move(other));
+			NodeImpl::operator=(std::move(other));
 			mRowCount = other.mRowCount;
 			mColumnCount = other.mColumnCount;
 			mSamples = other.mSamples;
@@ -537,10 +722,11 @@ public:
 
 	uint32_t 	mRowCount{ 0 };  									// Number of sample rows in the height field samples array.
 	uint32_t 	mColumnCount{ 0 }; 								// Number of sample columns in the height field samples array.
-	U16Vector  	mSamples;  										// Heightfield sample data
-	U16Vector  	mMetaData;   									// Optional meta data for each sample; determines per sample material, winding order, and whether or not to treat it as a hole
+	U16VectorImpl  mSamples; 									// Heightfield sample data
+	U16VectorImpl  mMetaData;  									// Optional meta data for each sample; determines per sample material, winding order, and whether or not to treat it as a hole
 private:
 	HeightField	mDOM; // Declare the DOM version.
+// Declare private temporary array(s) to hold flat DOM version of arrays.
 };
 
 
@@ -548,6 +734,10 @@ private:
 class GeometryImpl: public CloneObject
 {
 public:
+
+	// Declare the constructor.
+	GeometryImpl() { }
+
 
 	// Declare the deep copy constructor; handles copying pointers and pointer arrays
 	GeometryImpl(const GeometryImpl &other)
@@ -572,8 +762,15 @@ public:
 		return *this;
 	}
 
+
+	// Declare the helper method to return the DOM version of this class.
+	Geometry *getDOM(void)
+	{
+		 return &mDOM;
+	}
+
 	// Declare and implement the initDOM method
-	void initDOM(void)
+	virtual void initDOM(void) override
 	{
 	}
 
@@ -607,6 +804,7 @@ public:
 	// Declare the constructor.
 	BoxGeometryImpl()
 	{
+		GeometryImpl::mType = GT_BOX_GEOMETRY;
 	}
 
 
@@ -634,16 +832,29 @@ public:
 	{
 		if (this != &other )
 		{
-			Geometry::operator=(other);
+			GeometryImpl::operator=(other);
 			mDimensions = other.mDimensions;
 		}
 		return *this;
 	}
 
-	// Declare and implement the initDOM method
-	void initDOM(void)
+
+	// Declare the helper method to return the DOM version of this class.
+	BoxGeometry *getDOM(void)
 	{
-		Geometry::initDOM();
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		// Initialize the DOM for the base class.
+		GeometryImpl::initDOM();
+		// Copy the elements from the base class DOM to our reflection DOM
+		{
+			Geometry *dom = static_cast< Geometry *>(&mDOM); // Get the DOM base class.
+			*dom = *(GeometryImpl::getDOM()); // Assign the base class DOM components.
+		}
 	}
 
 
@@ -658,7 +869,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Geometry::operator=(std::move(other));
+			GeometryImpl::operator=(std::move(other));
 			mDimensions = other.mDimensions;
 		}
 		return *this;
@@ -677,6 +888,7 @@ public:
 	// Declare the constructor.
 	SphereGeometryImpl()
 	{
+		GeometryImpl::mType = GT_SPHERE_GEOMETRY;
 	}
 
 
@@ -704,16 +916,29 @@ public:
 	{
 		if (this != &other )
 		{
-			Geometry::operator=(other);
+			GeometryImpl::operator=(other);
 			mRadius = other.mRadius;
 		}
 		return *this;
 	}
 
-	// Declare and implement the initDOM method
-	void initDOM(void)
+
+	// Declare the helper method to return the DOM version of this class.
+	SphereGeometry *getDOM(void)
 	{
-		Geometry::initDOM();
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		// Initialize the DOM for the base class.
+		GeometryImpl::initDOM();
+		// Copy the elements from the base class DOM to our reflection DOM
+		{
+			Geometry *dom = static_cast< Geometry *>(&mDOM); // Get the DOM base class.
+			*dom = *(GeometryImpl::getDOM()); // Assign the base class DOM components.
+		}
 	}
 
 
@@ -728,7 +953,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Geometry::operator=(std::move(other));
+			GeometryImpl::operator=(std::move(other));
 			mRadius = other.mRadius;
 		}
 		return *this;
@@ -747,6 +972,7 @@ public:
 	// Declare the constructor.
 	CapsuleGeometryImpl()
 	{
+		GeometryImpl::mType = GT_CAPSULE_GEOMETRY;
 	}
 
 
@@ -774,17 +1000,30 @@ public:
 	{
 		if (this != &other )
 		{
-			Geometry::operator=(other);
+			GeometryImpl::operator=(other);
 			mRadius = other.mRadius;
 			mHeight = other.mHeight;
 		}
 		return *this;
 	}
 
-	// Declare and implement the initDOM method
-	void initDOM(void)
+
+	// Declare the helper method to return the DOM version of this class.
+	CapsuleGeometry *getDOM(void)
 	{
-		Geometry::initDOM();
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		// Initialize the DOM for the base class.
+		GeometryImpl::initDOM();
+		// Copy the elements from the base class DOM to our reflection DOM
+		{
+			Geometry *dom = static_cast< Geometry *>(&mDOM); // Get the DOM base class.
+			*dom = *(GeometryImpl::getDOM()); // Assign the base class DOM components.
+		}
 	}
 
 
@@ -799,7 +1038,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Geometry::operator=(std::move(other));
+			GeometryImpl::operator=(std::move(other));
 			mRadius = other.mRadius;
 			mHeight = other.mHeight;
 		}
@@ -820,6 +1059,7 @@ public:
 	// Declare the constructor.
 	CylinderGeometryImpl()
 	{
+		GeometryImpl::mType = GT_CYLINDER_GEOMETRY;
 	}
 
 
@@ -847,17 +1087,30 @@ public:
 	{
 		if (this != &other )
 		{
-			Geometry::operator=(other);
+			GeometryImpl::operator=(other);
 			mRadius = other.mRadius;
 			mHeight = other.mHeight;
 		}
 		return *this;
 	}
 
-	// Declare and implement the initDOM method
-	void initDOM(void)
+
+	// Declare the helper method to return the DOM version of this class.
+	CylinderGeometry *getDOM(void)
 	{
-		Geometry::initDOM();
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		// Initialize the DOM for the base class.
+		GeometryImpl::initDOM();
+		// Copy the elements from the base class DOM to our reflection DOM
+		{
+			Geometry *dom = static_cast< Geometry *>(&mDOM); // Get the DOM base class.
+			*dom = *(GeometryImpl::getDOM()); // Assign the base class DOM components.
+		}
 	}
 
 
@@ -872,7 +1125,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Geometry::operator=(std::move(other));
+			GeometryImpl::operator=(std::move(other));
 			mRadius = other.mRadius;
 			mHeight = other.mHeight;
 		}
@@ -887,12 +1140,13 @@ private:
 
 
 // Defines a convex mesh geometry
-class ConvexHullGeometryImpl : public GeometryImpl
+class ConvexHullGeometryImpl : public GeometryImpl, public CloneObject
 {
 public:
 	// Declare the constructor.
 	ConvexHullGeometryImpl()
 	{
+		GeometryImpl::mType = GT_CONVEXHULL_GEOMETRY;
 	}
 
 
@@ -920,17 +1174,30 @@ public:
 	{
 		if (this != &other )
 		{
-			Geometry::operator=(other);
+			GeometryImpl::operator=(other);
 			mScale = other.mScale;
 			mConvexMesh = other.mConvexMesh;
 		}
 		return *this;
 	}
 
-	// Declare and implement the initDOM method
-	void initDOM(void)
+
+	// Declare the helper method to return the DOM version of this class.
+	ConvexHullGeometry *getDOM(void)
 	{
-		Geometry::initDOM();
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		// Initialize the DOM for the base class.
+		GeometryImpl::initDOM();
+		// Copy the elements from the base class DOM to our reflection DOM
+		{
+			Geometry *dom = static_cast< Geometry *>(&mDOM); // Get the DOM base class.
+			*dom = *(GeometryImpl::getDOM()); // Assign the base class DOM components.
+		}
 		mDOM.convexMesh = mConvexMesh.c_str(); // Assign the current string pointer.
 	}
 
@@ -946,7 +1213,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Geometry::operator=(std::move(other));
+			GeometryImpl::operator=(std::move(other));
 			mScale = other.mScale;
 			mConvexMesh = other.mConvexMesh;
 		}
@@ -961,12 +1228,13 @@ private:
 
 
 // Defines a triangle mesh geometry
-class TriangleMeshGeometryImpl : public GeometryImpl
+class TriangleMeshGeometryImpl : public GeometryImpl, public CloneObject
 {
 public:
 	// Declare the constructor.
 	TriangleMeshGeometryImpl()
 	{
+		GeometryImpl::mType = GT_TRIANGLEMESH_GEOMETRY;
 	}
 
 
@@ -994,7 +1262,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Geometry::operator=(other);
+			GeometryImpl::operator=(other);
 			mScale = other.mScale;
 			mTriangleMesh = other.mTriangleMesh;
 			mDoubleSided = other.mDoubleSided;
@@ -1002,10 +1270,23 @@ public:
 		return *this;
 	}
 
-	// Declare and implement the initDOM method
-	void initDOM(void)
+
+	// Declare the helper method to return the DOM version of this class.
+	TriangleMeshGeometry *getDOM(void)
 	{
-		Geometry::initDOM();
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		// Initialize the DOM for the base class.
+		GeometryImpl::initDOM();
+		// Copy the elements from the base class DOM to our reflection DOM
+		{
+			Geometry *dom = static_cast< Geometry *>(&mDOM); // Get the DOM base class.
+			*dom = *(GeometryImpl::getDOM()); // Assign the base class DOM components.
+		}
 		mDOM.triangleMesh = mTriangleMesh.c_str(); // Assign the current string pointer.
 	}
 
@@ -1021,7 +1302,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Geometry::operator=(std::move(other));
+			GeometryImpl::operator=(std::move(other));
 			mScale = other.mScale;
 			mTriangleMesh = other.mTriangleMesh;
 			mDoubleSided = other.mDoubleSided;
@@ -1038,12 +1319,13 @@ private:
 
 
 // Defines a heightfield geometry
-class HeightFieldGeometryImpl : public GeometryImpl
+class HeightFieldGeometryImpl : public GeometryImpl, public CloneObject
 {
 public:
 	// Declare the constructor.
 	HeightFieldGeometryImpl()
 	{
+		GeometryImpl::mType = GT_HEIGHTFIELD_GEOMETRY;
 	}
 
 
@@ -1071,7 +1353,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Geometry::operator=(other);
+			GeometryImpl::operator=(other);
 			mHeightField = other.mHeightField;
 			mHeightScale = other.mHeightScale;
 			mRowScale = other.mRowScale;
@@ -1081,10 +1363,23 @@ public:
 		return *this;
 	}
 
-	// Declare and implement the initDOM method
-	void initDOM(void)
+
+	// Declare the helper method to return the DOM version of this class.
+	HeightFieldGeometry *getDOM(void)
 	{
-		Geometry::initDOM();
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		// Initialize the DOM for the base class.
+		GeometryImpl::initDOM();
+		// Copy the elements from the base class DOM to our reflection DOM
+		{
+			Geometry *dom = static_cast< Geometry *>(&mDOM); // Get the DOM base class.
+			*dom = *(GeometryImpl::getDOM()); // Assign the base class DOM components.
+		}
 		mDOM.heightField = mHeightField.c_str(); // Assign the current string pointer.
 	}
 
@@ -1100,7 +1395,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Geometry::operator=(std::move(other));
+			GeometryImpl::operator=(std::move(other));
 			mHeightField = other.mHeightField;
 			mHeightScale = other.mHeightScale;
 			mRowScale = other.mRowScale;
@@ -1127,6 +1422,7 @@ public:
 	// Declare the constructor.
 	PlaneGeometryImpl()
 	{
+		GeometryImpl::mType = GT_PLANE_GEOMETRY;
 	}
 
 
@@ -1154,15 +1450,28 @@ public:
 	{
 		if (this != &other )
 		{
-			Geometry::operator=(other);
+			GeometryImpl::operator=(other);
 		}
 		return *this;
 	}
 
-	// Declare and implement the initDOM method
-	void initDOM(void)
+
+	// Declare the helper method to return the DOM version of this class.
+	PlaneGeometry *getDOM(void)
 	{
-		Geometry::initDOM();
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		// Initialize the DOM for the base class.
+		GeometryImpl::initDOM();
+		// Copy the elements from the base class DOM to our reflection DOM
+		{
+			Geometry *dom = static_cast< Geometry *>(&mDOM); // Get the DOM base class.
+			*dom = *(GeometryImpl::getDOM()); // Assign the base class DOM components.
+		}
 	}
 
 
@@ -1177,7 +1486,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Geometry::operator=(std::move(other));
+			GeometryImpl::operator=(std::move(other));
 		}
 		return *this;
 	}
@@ -1186,7 +1495,6 @@ private:
 	PlaneGeometry  mDOM; // Declare the DOM version.
 };
 
-typedef std::vector< std::stringImpl > StringVector; // Forward declare the 'String' vector
 
 // Defines a single instance of a geometry
 class GeometryInstanceImpl: public CloneObject
@@ -1235,8 +1543,15 @@ public:
 		return *this;
 	}
 
+
+	// Declare the helper method to return the DOM version of this class.
+	GeometryInstance *getDOM(void)
+	{
+		 return &mDOM;
+	}
+
 	// Declare and implement the initDOM method
-	void initDOM(void)
+	virtual void initDOM(void) override
 	{
 		mDOM.geometry = static_cast< Geometry *>(mGeometry); // assign the DOM reflection pointer.
 		if ( mGeometry )
@@ -1247,8 +1562,8 @@ public:
 		mMaterialsImpl.reserve(mMaterials.size()); // Reserve room for string pointers.
 		for (auto &i: mMaterials) // For each std::string
 			mMaterialsImpl.push_back( i.c_str() ); // Add the const char * for the string.
-		mDOM.materialsCount = uint32_t(mMaterialsImpl.size()); // Assign the number of strings
-		mDOM.materials = materialsCount ? &mMaterialsImpl[0] : nullptr; // Assign the pointer array.
+		mDOM.materialsCount = uint32_t(mMaterialsDOM.size()); // Assign the number of strings
+		mDOM.materials = materialsCount ? &mMaterialsDOM[0] : nullptr; // Assign the pointer array.
 		mDOM.collisionFilterSettings = mCollisionFilterSettings.c_str(); // Assign the current string pointer.
 	}
 
@@ -1273,25 +1588,27 @@ public:
 		return *this;
 	}
 
-	Geometry 	*mGeometry{ nullptr }; 							// The geometry associated with this instance
+	GeometryImpl 	*mGeometry{ nullptr }; 							// The geometry associated with this instance
 	StringVector mMaterials; 									// Id of physical material(s) associated with this geometry instance (usually one material; but for heightifields and triangle meshes can be more than one)
 	Pose 		mLocalPose;   										// The local pose for this geometry instance
 	std::string	mCollisionFilterSettings;  						// Describes collision filtering settings; what other types of objects this object will collide with
 private:
 	GeometryInstance mDOM; // Declare the DOM version.
-// Declare private temporary array(s) to hold array of strings pointers.
+// Declare private temporary array(s) to hold flat DOM version of arrays.
 	ConstCharVector mMaterialsImpl; // Scratch array for const char pointers.
 };
 
-typedef std::vector< GeometryInstanceImpl *> GeometryInstanceVector; // Forward declare the 'GeometryInstance' vector for the implementation object pointers
+typedef std::vector< GeometryInstanceImpl *> GeometryInstanceVectorImpl; // Forward declare the 'GeometryInstance' vector for the implementation object pointers
+typedef std::vector< GeometryInstance *> GeometryInstanceVectorDOM; // Forward declare the 'GeometryInstance' vector for the implementation object pointers
 
 // Defines the common properties for a rigid body
-class RigidBodyImpl : public NodeImpl
+class RigidBodyImpl : public NodeImpl, public CloneObject
 {
 public:
 	// Declare the constructor.
 	RigidBodyImpl()
 	{
+		NodeImpl::mType = NT_RIGID_BODY;
 	}
 
 
@@ -1320,7 +1637,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Node::operator=(other);
+			NodeImpl::operator=(other);
 			for (auto &i:mGeometryInstances) delete i; // Delete all of the object pointers in this array
 			mGeometryInstances.clear(); // Clear the current array
 			mGeometryInstances.reserve(other.mGeometryInstances.size()); // Reserve number of items for the new array
@@ -1330,14 +1647,32 @@ public:
 		return *this;
 	}
 
-	// Declare and implement the initDOM method
-	void initDOM(void)
+
+	// Declare the helper method to return the DOM version of this class.
+	RigidBody *getDOM(void)
 	{
-		Node::initDOM();
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		// Initialize the DOM for the base class.
+		NodeImpl::initDOM();
+		// Copy the elements from the base class DOM to our reflection DOM
+		{
+			Node *dom = static_cast< Node *>(&mDOM); // Get the DOM base class.
+			*dom = *(NodeImpl::getDOM()); // Assign the base class DOM components.
+		}
+		mGeometryInstancesDOM.clear();
+		mGeometryInstancesDOM.reserve( mGeometryInstances.size() );
 		for (auto &i:mGeometryInstances)
+		{
 			i->initDOM();
-		mDOM.geometryInstancesCount = uint32_t(mGeometryInstances.size()); // assign the number of items in the array.
-		mDOM.geometryInstances = mDOM.geometryInstancesCount ? &mGeometryInstances[0] : nullptr; // Assign the pointer array
+			mGeometryInstancesDOM.push_back( i->getDOM() );
+		}
+		mDOM.geometryInstancesCount = uint32_t(mGeometryInstancesDOM.size()); // assign the number of items in the array.
+		mDOM.geometryInstances = mDOM.geometryInstancesCount ? &mGeometryInstancesDOM[0] : nullptr; // Assign the pointer array
 	}
 
 
@@ -1352,7 +1687,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Node::operator=(std::move(other));
+			NodeImpl::operator=(std::move(other));
 			mGeometryInstances = other.mGeometryInstances;
 			other.mGeometryInstances.clear(); // Clear the 'other' array now that we have moved it
 			mGlobalPose = other.mGlobalPose;
@@ -1360,10 +1695,12 @@ public:
 		return *this;
 	}
 
-	GeometryInstanceVector mGeometryInstances;   				// The set of geometries to instance with this actor
+	GeometryInstanceVectorImpl mGeometryInstances;   			// The set of geometries to instance with this actor
 	Pose 		mGlobalPose;											// The global pose for this actor
 private:
 	RigidBody  	mDOM; // Declare the DOM version.
+// Declare private temporary array(s) to hold flat DOM version of arrays.
+	GeometryInstanceVectorDOM mGeometryInstancesDOM; // Scratch array for const char pointers.
 };
 
 
@@ -1374,6 +1711,7 @@ public:
 	// Declare the constructor.
 	RigidStaticImpl()
 	{
+		NodeImpl::mType = NT_RIGID_STATIC;
 	}
 
 
@@ -1401,15 +1739,28 @@ public:
 	{
 		if (this != &other )
 		{
-			RigidBody::operator=(other);
+			RigidBodyImpl::operator=(other);
 		}
 		return *this;
 	}
 
-	// Declare and implement the initDOM method
-	void initDOM(void)
+
+	// Declare the helper method to return the DOM version of this class.
+	RigidStatic *getDOM(void)
 	{
-		RigidBody::initDOM();
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		// Initialize the DOM for the base class.
+		RigidBodyImpl::initDOM();
+		// Copy the elements from the base class DOM to our reflection DOM
+		{
+			RigidBody *dom = static_cast< RigidBody *>(&mDOM); // Get the DOM base class.
+			*dom = *(RigidBodyImpl::getDOM()); // Assign the base class DOM components.
+		}
 	}
 
 
@@ -1424,7 +1775,7 @@ public:
 	{
 		if (this != &other )
 		{
-			RigidBody::operator=(std::move(other));
+			RigidBodyImpl::operator=(std::move(other));
 		}
 		return *this;
 	}
@@ -1441,6 +1792,7 @@ public:
 	// Declare the constructor.
 	RigidDynamicImpl()
 	{
+		NodeImpl::mType = NT_RIGID_DYNAMIC;
 	}
 
 
@@ -1468,7 +1820,7 @@ public:
 	{
 		if (this != &other )
 		{
-			RigidBody::operator=(other);
+			RigidBodyImpl::operator=(other);
 			mDisableGravity = other.mDisableGravity;
 			mCenterOfMassLocalPose = other.mCenterOfMassLocalPose;
 			mMass = other.mMass;
@@ -1483,10 +1835,23 @@ public:
 		return *this;
 	}
 
-	// Declare and implement the initDOM method
-	void initDOM(void)
+
+	// Declare the helper method to return the DOM version of this class.
+	RigidDynamic *getDOM(void)
 	{
-		RigidBody::initDOM();
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		// Initialize the DOM for the base class.
+		RigidBodyImpl::initDOM();
+		// Copy the elements from the base class DOM to our reflection DOM
+		{
+			RigidBody *dom = static_cast< RigidBody *>(&mDOM); // Get the DOM base class.
+			*dom = *(RigidBodyImpl::getDOM()); // Assign the base class DOM components.
+		}
 	}
 
 
@@ -1501,7 +1866,7 @@ public:
 	{
 		if (this != &other )
 		{
-			RigidBody::operator=(std::move(other));
+			RigidBodyImpl::operator=(std::move(other));
 			mDisableGravity = other.mDisableGravity;
 			mCenterOfMassLocalPose = other.mCenterOfMassLocalPose;
 			mMass = other.mMass;
@@ -1532,12 +1897,13 @@ private:
 
 
 // Defines the common properties for a joint
-class JointImpl : public NodeImpl
+class JointImpl : public NodeImpl, public CloneObject
 {
 public:
 	// Declare the constructor.
 	JointImpl()
 	{
+		NodeImpl::mType = NT_JOINT;
 	}
 
 
@@ -1565,7 +1931,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Node::operator=(other);
+			NodeImpl::operator=(other);
 			mBody0 = other.mBody0;
 			mBody1 = other.mBody1;
 			mLocalpose0 = other.mLocalpose0;
@@ -1575,10 +1941,23 @@ public:
 		return *this;
 	}
 
-	// Declare and implement the initDOM method
-	void initDOM(void)
+
+	// Declare the helper method to return the DOM version of this class.
+	Joint *getDOM(void)
 	{
-		Node::initDOM();
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		// Initialize the DOM for the base class.
+		NodeImpl::initDOM();
+		// Copy the elements from the base class DOM to our reflection DOM
+		{
+			Node *dom = static_cast< Node *>(&mDOM); // Get the DOM base class.
+			*dom = *(NodeImpl::getDOM()); // Assign the base class DOM components.
+		}
 		mDOM.body0 = mBody0.c_str(); // Assign the current string pointer.
 		mDOM.body1 = mBody1.c_str(); // Assign the current string pointer.
 	}
@@ -1595,7 +1974,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Node::operator=(std::move(other));
+			NodeImpl::operator=(std::move(other));
 			mBody0 = other.mBody0;
 			mBody1 = other.mBody1;
 			mLocalpose0 = other.mLocalpose0;
@@ -1623,6 +2002,7 @@ public:
 	// Declare the constructor.
 	FixedJointImpl()
 	{
+		JointImpl::mType = NT_FIXED_JOINT;
 	}
 
 
@@ -1650,15 +2030,28 @@ public:
 	{
 		if (this != &other )
 		{
-			Joint::operator=(other);
+			JointImpl::operator=(other);
 		}
 		return *this;
 	}
 
-	// Declare and implement the initDOM method
-	void initDOM(void)
+
+	// Declare the helper method to return the DOM version of this class.
+	FixedJoint *getDOM(void)
 	{
-		Joint::initDOM();
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		// Initialize the DOM for the base class.
+		JointImpl::initDOM();
+		// Copy the elements from the base class DOM to our reflection DOM
+		{
+			Joint *dom = static_cast< Joint *>(&mDOM); // Get the DOM base class.
+			*dom = *(JointImpl::getDOM()); // Assign the base class DOM components.
+		}
 	}
 
 
@@ -1673,7 +2066,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Joint::operator=(std::move(other));
+			JointImpl::operator=(std::move(other));
 		}
 		return *this;
 	}
@@ -1691,6 +2084,7 @@ public:
 	// Declare the constructor.
 	SphericalJointImpl()
 	{
+		JointImpl::mType = NT_SPHERICAL_JOINT;
 	}
 
 
@@ -1718,15 +2112,28 @@ public:
 	{
 		if (this != &other )
 		{
-			Joint::operator=(other);
+			JointImpl::operator=(other);
 		}
 		return *this;
 	}
 
-	// Declare and implement the initDOM method
-	void initDOM(void)
+
+	// Declare the helper method to return the DOM version of this class.
+	SphericalJoint *getDOM(void)
 	{
-		Joint::initDOM();
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		// Initialize the DOM for the base class.
+		JointImpl::initDOM();
+		// Copy the elements from the base class DOM to our reflection DOM
+		{
+			Joint *dom = static_cast< Joint *>(&mDOM); // Get the DOM base class.
+			*dom = *(JointImpl::getDOM()); // Assign the base class DOM components.
+		}
 	}
 
 
@@ -1741,7 +2148,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Joint::operator=(std::move(other));
+			JointImpl::operator=(std::move(other));
 		}
 		return *this;
 	}
@@ -1759,6 +2166,7 @@ public:
 	// Declare the constructor.
 	RevoluteJointImpl()
 	{
+		JointImpl::mType = NT_REVOLUTE_JOINT;
 	}
 
 
@@ -1786,15 +2194,28 @@ public:
 	{
 		if (this != &other )
 		{
-			Joint::operator=(other);
+			JointImpl::operator=(other);
 		}
 		return *this;
 	}
 
-	// Declare and implement the initDOM method
-	void initDOM(void)
+
+	// Declare the helper method to return the DOM version of this class.
+	RevoluteJoint *getDOM(void)
 	{
-		Joint::initDOM();
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		// Initialize the DOM for the base class.
+		JointImpl::initDOM();
+		// Copy the elements from the base class DOM to our reflection DOM
+		{
+			Joint *dom = static_cast< Joint *>(&mDOM); // Get the DOM base class.
+			*dom = *(JointImpl::getDOM()); // Assign the base class DOM components.
+		}
 	}
 
 
@@ -1809,7 +2230,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Joint::operator=(std::move(other));
+			JointImpl::operator=(std::move(other));
 		}
 		return *this;
 	}
@@ -1827,6 +2248,7 @@ public:
 	// Declare the constructor.
 	PrismaticJointImpl()
 	{
+		JointImpl::mType = NT_PRISMATIC_JOINT;
 	}
 
 
@@ -1854,15 +2276,28 @@ public:
 	{
 		if (this != &other )
 		{
-			Joint::operator=(other);
+			JointImpl::operator=(other);
 		}
 		return *this;
 	}
 
-	// Declare and implement the initDOM method
-	void initDOM(void)
+
+	// Declare the helper method to return the DOM version of this class.
+	PrismaticJoint *getDOM(void)
 	{
-		Joint::initDOM();
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		// Initialize the DOM for the base class.
+		JointImpl::initDOM();
+		// Copy the elements from the base class DOM to our reflection DOM
+		{
+			Joint *dom = static_cast< Joint *>(&mDOM); // Get the DOM base class.
+			*dom = *(JointImpl::getDOM()); // Assign the base class DOM components.
+		}
 	}
 
 
@@ -1877,7 +2312,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Joint::operator=(std::move(other));
+			JointImpl::operator=(std::move(other));
 		}
 		return *this;
 	}
@@ -1895,6 +2330,7 @@ public:
 	// Declare the constructor.
 	DistanceJointImpl()
 	{
+		JointImpl::mType = NT_DISTANCE_JOINT;
 	}
 
 
@@ -1922,15 +2358,28 @@ public:
 	{
 		if (this != &other )
 		{
-			Joint::operator=(other);
+			JointImpl::operator=(other);
 		}
 		return *this;
 	}
 
-	// Declare and implement the initDOM method
-	void initDOM(void)
+
+	// Declare the helper method to return the DOM version of this class.
+	DistanceJoint *getDOM(void)
 	{
-		Joint::initDOM();
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		// Initialize the DOM for the base class.
+		JointImpl::initDOM();
+		// Copy the elements from the base class DOM to our reflection DOM
+		{
+			Joint *dom = static_cast< Joint *>(&mDOM); // Get the DOM base class.
+			*dom = *(JointImpl::getDOM()); // Assign the base class DOM components.
+		}
 	}
 
 
@@ -1945,7 +2394,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Joint::operator=(std::move(other));
+			JointImpl::operator=(std::move(other));
 		}
 		return *this;
 	}
@@ -1963,6 +2412,7 @@ public:
 	// Declare the constructor.
 	BallAndSocketJointImpl()
 	{
+		JointImpl::mType = NT_BALL_AND_SOCKET_JOINT;
 	}
 
 
@@ -1990,15 +2440,28 @@ public:
 	{
 		if (this != &other )
 		{
-			Joint::operator=(other);
+			JointImpl::operator=(other);
 		}
 		return *this;
 	}
 
-	// Declare and implement the initDOM method
-	void initDOM(void)
+
+	// Declare the helper method to return the DOM version of this class.
+	BallAndSocketJoint *getDOM(void)
 	{
-		Joint::initDOM();
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		// Initialize the DOM for the base class.
+		JointImpl::initDOM();
+		// Copy the elements from the base class DOM to our reflection DOM
+		{
+			Joint *dom = static_cast< Joint *>(&mDOM); // Get the DOM base class.
+			*dom = *(JointImpl::getDOM()); // Assign the base class DOM components.
+		}
 	}
 
 
@@ -2013,7 +2476,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Joint::operator=(std::move(other));
+			JointImpl::operator=(std::move(other));
 		}
 		return *this;
 	}
@@ -2031,6 +2494,7 @@ public:
 	// Declare the constructor.
 	D6JointImpl()
 	{
+		JointImpl::mType = NT_D6_JOINT;
 	}
 
 
@@ -2058,15 +2522,28 @@ public:
 	{
 		if (this != &other )
 		{
-			Joint::operator=(other);
+			JointImpl::operator=(other);
 		}
 		return *this;
 	}
 
-	// Declare and implement the initDOM method
-	void initDOM(void)
+
+	// Declare the helper method to return the DOM version of this class.
+	D6Joint *getDOM(void)
 	{
-		Joint::initDOM();
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		// Initialize the DOM for the base class.
+		JointImpl::initDOM();
+		// Copy the elements from the base class DOM to our reflection DOM
+		{
+			Joint *dom = static_cast< Joint *>(&mDOM); // Get the DOM base class.
+			*dom = *(JointImpl::getDOM()); // Assign the base class DOM components.
+		}
 	}
 
 
@@ -2081,7 +2558,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Joint::operator=(std::move(other));
+			JointImpl::operator=(std::move(other));
 		}
 		return *this;
 	}
@@ -2092,11 +2569,47 @@ private:
 
 
 // Defines two bodies, by id, that should not collide with each other
-class BodyPairFilterImpl
+class BodyPairFilterImpl: public CloneObject
 {
 public:
+
+	// Declare the constructor.
+	BodyPairFilterImpl() { }
+
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	BodyPairFilterImpl(const BodyPairFilterImpl &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual CloneObject* clone() const
+	{
+		return new BodyPairFilterImpl(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	BodyPairFilterImpl& operator=(const BodyPairFilterImpl& other)
+	{
+		if (this != &other )
+		{
+			mBodyA = other.mBodyA;
+			mBodyB  = other.mBodyB ;
+		}
+		return *this;
+	}
+
+
+	// Declare the helper method to return the DOM version of this class.
+	BodyPairFilter *getDOM(void)
+	{
+		 return &mDOM;
+	}
+
 	// Declare and implement the initDOM method
-	void initDOM(void)
+	virtual void initDOM(void) override
 	{
 		mDOM.bodyA = mBodyA.c_str(); // Assign the current string pointer.
 		mDOM.bodyB  = mBodyB .c_str(); // Assign the current string pointer.
@@ -2126,15 +2639,17 @@ private:
 	BodyPairFilter   mDOM; // Declare the DOM version.
 };
 
-typedef std::vector< BodyPairFilterImpl > BodyPairFilterVector; // Forward declare the 'BodyPairFilter' vector
+typedef std::vector< BodyPairFilterImpl > BodyPairFilterVectorImpl; // Forward declare the 'BodyPairFilter' vector
+typedef std::vector< BodyPairFilter > BodyPairFilterVectorDOM; // Forward declare the 'BodyPairFilter' vector
 
 // A collection of body pair filters
-class BodyPairFiltersImpl : public NodeImpl
+class BodyPairFiltersImpl : public NodeImpl, public CloneObject
 {
 public:
 	// Declare the constructor.
 	BodyPairFiltersImpl()
 	{
+		NodeImpl::mType = NT_BODY_PAIR_FILTERS;
 	}
 
 
@@ -2162,18 +2677,31 @@ public:
 	{
 		if (this != &other )
 		{
-			Node::operator=(other);
+			NodeImpl::operator=(other);
 			mBodyPairs = other.mBodyPairs;
 		}
 		return *this;
 	}
 
-	// Declare and implement the initDOM method
-	void initDOM(void)
+
+	// Declare the helper method to return the DOM version of this class.
+	BodyPairFilters *getDOM(void)
 	{
-		Node::initDOM();
-		mDOM.bodyPairsCount = uint32_t(mBodyPairs.size()); // assign the number of items in the array.
-		mDOM.bodyPairs = mDOM.bodyPairsCount ? &mBodyPairs[0] : nullptr; // Assign the pointer array
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		// Initialize the DOM for the base class.
+		NodeImpl::initDOM();
+		// Copy the elements from the base class DOM to our reflection DOM
+		{
+			Node *dom = static_cast< Node *>(&mDOM); // Get the DOM base class.
+			*dom = *(NodeImpl::getDOM()); // Assign the base class DOM components.
+		}
+		mDOM.bodyPairsCount = uint32_t(mBodyPairsDOM.size()); // assign the number of items in the array.
+		mDOM.bodyPairs = mDOM.bodyPairsCount ? &mBodyPairsDOM[0] : nullptr; // Assign the pointer array
 	}
 
 
@@ -2188,24 +2716,27 @@ public:
 	{
 		if (this != &other )
 		{
-			Node::operator=(std::move(other));
+			NodeImpl::operator=(std::move(other));
 			mBodyPairs = other.mBodyPairs;
 		}
 		return *this;
 	}
 
-	BodyPairFilterVector mBodyPairs; 							// Array of body pair filters
+	BodyPairFilterVectorImpl mBodyPairs; 						// Array of body pair filters
 private:
 	BodyPairFilters mDOM; // Declare the DOM version.
+// Declare private temporary array(s) to hold flat DOM version of arrays.
+	BodyPairFilterVectorDOM mBodyPairsDOM; // Scratch array for const char pointers.
 };
 
 
-class InstanceCollectionImpl : public NodeImpl
+class InstanceCollectionImpl : public NodeImpl, public CloneObject
 {
 public:
 	// Declare the constructor.
 	InstanceCollectionImpl()
 	{
+		NodeImpl::mType = NT_INSTANCE_COLLECTION;
 	}
 
 
@@ -2233,7 +2764,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Node::operator=(other);
+			NodeImpl::operator=(other);
 			mCollection = other.mCollection;
 			mPose = other.mPose;
 			mScale = other.mScale;
@@ -2241,10 +2772,23 @@ public:
 		return *this;
 	}
 
-	// Declare and implement the initDOM method
-	void initDOM(void)
+
+	// Declare the helper method to return the DOM version of this class.
+	InstanceCollection *getDOM(void)
 	{
-		Node::initDOM();
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		// Initialize the DOM for the base class.
+		NodeImpl::initDOM();
+		// Copy the elements from the base class DOM to our reflection DOM
+		{
+			Node *dom = static_cast< Node *>(&mDOM); // Get the DOM base class.
+			*dom = *(NodeImpl::getDOM()); // Assign the base class DOM components.
+		}
 		mDOM.collection = mCollection.c_str(); // Assign the current string pointer.
 	}
 
@@ -2260,7 +2804,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Node::operator=(std::move(other));
+			NodeImpl::operator=(std::move(other));
 			mCollection = other.mCollection;
 			mPose = other.mPose;
 			mScale = other.mScale;
@@ -2275,15 +2819,17 @@ private:
 	InstanceCollection mDOM; // Declare the DOM version.
 };
 
-typedef std::vector< NodeImpl *> NodeVector; // Forward declare the 'Node' vector for the implementation object pointers
+typedef std::vector< NodeImpl *> NodeVectorImpl; // Forward declare the 'Node' vector for the implementation object pointers
+typedef std::vector< Node *> NodeVectorDOM; // Forward declare the 'Node' vector for the implementation object pointers
 
 // A collection of nodes
-class CollectionImpl : public NodeImpl
+class CollectionImpl : public NodeImpl, public CloneObject
 {
 public:
 	// Declare the constructor.
 	CollectionImpl()
 	{
+		NodeImpl::mType = NT_COLLECTION;
 	}
 
 
@@ -2312,7 +2858,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Node::operator=(other);
+			NodeImpl::operator=(other);
 			for (auto &i:mNodes) delete i; // Delete all of the object pointers in this array
 			mNodes.clear(); // Clear the current array
 			mNodes.reserve(other.mNodes.size()); // Reserve number of items for the new array
@@ -2321,14 +2867,32 @@ public:
 		return *this;
 	}
 
-	// Declare and implement the initDOM method
-	void initDOM(void)
+
+	// Declare the helper method to return the DOM version of this class.
+	Collection *getDOM(void)
 	{
-		Node::initDOM();
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		// Initialize the DOM for the base class.
+		NodeImpl::initDOM();
+		// Copy the elements from the base class DOM to our reflection DOM
+		{
+			Node *dom = static_cast< Node *>(&mDOM); // Get the DOM base class.
+			*dom = *(NodeImpl::getDOM()); // Assign the base class DOM components.
+		}
+		mNodesDOM.clear();
+		mNodesDOM.reserve( mNodes.size() );
 		for (auto &i:mNodes)
+		{
 			i->initDOM();
-		mDOM.nodesCount = uint32_t(mNodes.size()); // assign the number of items in the array.
-		mDOM.nodes = mDOM.nodesCount ? &mNodes[0] : nullptr; // Assign the pointer array
+			mNodesDOM.push_back( i->getDOM() );
+		}
+		mDOM.nodesCount = uint32_t(mNodesDOM.size()); // assign the number of items in the array.
+		mDOM.nodes = mDOM.nodesCount ? &mNodesDOM[0] : nullptr; // Assign the pointer array
 	}
 
 
@@ -2343,26 +2907,29 @@ public:
 	{
 		if (this != &other )
 		{
-			Node::operator=(std::move(other));
+			NodeImpl::operator=(std::move(other));
 			mNodes = other.mNodes;
 			other.mNodes.clear(); // Clear the 'other' array now that we have moved it
 		}
 		return *this;
 	}
 
-	NodeVector   mNodes; 										// Array of nodes in this collection
+	NodeVectorImpl   mNodes; 									// Array of nodes in this collection
 private:
 	Collection   mDOM; // Declare the DOM version.
+// Declare private temporary array(s) to hold flat DOM version of arrays.
+	NodeVectorDOM  mNodesDOM; // Scratch array for const char pointers.
 };
 
 
 // A special type of 'collection' which is instantiated on startup
-class SceneImpl : public NodeImpl
+class SceneImpl : public NodeImpl, public CloneObject
 {
 public:
 	// Declare the constructor.
 	SceneImpl()
 	{
+		NodeImpl::mType = NT_SCENE;
 	}
 
 
@@ -2391,7 +2958,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Node::operator=(other);
+			NodeImpl::operator=(other);
 			mGravity = other.mGravity;
 			for (auto &i:mNodes) delete i; // Delete all of the object pointers in this array
 			mNodes.clear(); // Clear the current array
@@ -2401,14 +2968,32 @@ public:
 		return *this;
 	}
 
-	// Declare and implement the initDOM method
-	void initDOM(void)
+
+	// Declare the helper method to return the DOM version of this class.
+	Scene *getDOM(void)
 	{
-		Node::initDOM();
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		// Initialize the DOM for the base class.
+		NodeImpl::initDOM();
+		// Copy the elements from the base class DOM to our reflection DOM
+		{
+			Node *dom = static_cast< Node *>(&mDOM); // Get the DOM base class.
+			*dom = *(NodeImpl::getDOM()); // Assign the base class DOM components.
+		}
+		mNodesDOM.clear();
+		mNodesDOM.reserve( mNodes.size() );
 		for (auto &i:mNodes)
+		{
 			i->initDOM();
-		mDOM.nodesCount = uint32_t(mNodes.size()); // assign the number of items in the array.
-		mDOM.nodes = mDOM.nodesCount ? &mNodes[0] : nullptr; // Assign the pointer array
+			mNodesDOM.push_back( i->getDOM() );
+		}
+		mDOM.nodesCount = uint32_t(mNodesDOM.size()); // assign the number of items in the array.
+		mDOM.nodes = mDOM.nodesCount ? &mNodesDOM[0] : nullptr; // Assign the pointer array
 	}
 
 
@@ -2423,7 +3008,7 @@ public:
 	{
 		if (this != &other )
 		{
-			Node::operator=(std::move(other));
+			NodeImpl::operator=(std::move(other));
 			mGravity = other.mGravity;
 			mNodes = other.mNodes;
 			other.mNodes.clear(); // Clear the 'other' array now that we have moved it
@@ -2432,13 +3017,17 @@ public:
 	}
 
 	Vec3 		mGravity{ 0.0f,-9.8f,0.0f };							// Gravity
-	NodeVector   mNodes; 										// Array of nodes in this collection
+	NodeVectorImpl   mNodes; 									// Array of nodes in this collection
 private:
 	Scene  		mDOM; // Declare the DOM version.
+// Declare private temporary array(s) to hold flat DOM version of arrays.
+	NodeVectorDOM  mNodesDOM; // Scratch array for const char pointers.
 };
 
-typedef std::vector< CollectionImpl *> CollectionVector; // Forward declare the 'Collection' vector for the implementation object pointers
-typedef std::vector< SceneImpl *> SceneVector; // Forward declare the 'Scene' vector for the implementation object pointers
+typedef std::vector< CollectionImpl *> CollectionVectorImpl; // Forward declare the 'Collection' vector for the implementation object pointers
+typedef std::vector< Collection *> CollectionVectorDOM; // Forward declare the 'Collection' vector for the implementation object pointers
+typedef std::vector< SceneImpl *> SceneVectorImpl; // Forward declare the 'Scene' vector for the implementation object pointers
+typedef std::vector< Scene *> SceneVectorDOM; // Forward declare the 'Scene' vector for the implementation object pointers
 
 // The root node container
 class PhysicsDOMImpl: public CloneObject
@@ -2487,17 +3076,34 @@ public:
 		return *this;
 	}
 
-	// Declare and implement the initDOM method
-	void initDOM(void)
+
+	// Declare the helper method to return the DOM version of this class.
+	PhysicsDOM *getDOM(void)
 	{
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		mCollectionsDOM.clear();
+		mCollectionsDOM.reserve( mCollections.size() );
 		for (auto &i:mCollections)
+		{
 			i->initDOM();
-		mDOM.collectionsCount = uint32_t(mCollections.size()); // assign the number of items in the array.
-		mDOM.collections = mDOM.collectionsCount ? &mCollections[0] : nullptr; // Assign the pointer array
+			mCollectionsDOM.push_back( i->getDOM() );
+		}
+		mDOM.collectionsCount = uint32_t(mCollectionsDOM.size()); // assign the number of items in the array.
+		mDOM.collections = mDOM.collectionsCount ? &mCollectionsDOM[0] : nullptr; // Assign the pointer array
+		mScenesDOM.clear();
+		mScenesDOM.reserve( mScenes.size() );
 		for (auto &i:mScenes)
+		{
 			i->initDOM();
-		mDOM.scenesCount = uint32_t(mScenes.size()); // assign the number of items in the array.
-		mDOM.scenes = mDOM.scenesCount ? &mScenes[0] : nullptr; // Assign the pointer array
+			mScenesDOM.push_back( i->getDOM() );
+		}
+		mDOM.scenesCount = uint32_t(mScenesDOM.size()); // assign the number of items in the array.
+		mDOM.scenes = mDOM.scenesCount ? &mScenesDOM[0] : nullptr; // Assign the pointer array
 	}
 
 
@@ -2520,10 +3126,13 @@ public:
 		return *this;
 	}
 
-	CollectionVector mCollections;   							// The array of top level collections
-	SceneVector	mScenes; 										// The array of top level scenes; a scene is instantiated into the physics simulation
+	CollectionVectorImpl mCollections;   						// The array of top level collections
+	SceneVectorImpl mScenes; 									// The array of top level scenes; a scene is instantiated into the physics simulation
 private:
 	PhysicsDOM   mDOM; // Declare the DOM version.
+// Declare private temporary array(s) to hold flat DOM version of arrays.
+	CollectionVectorDOM mCollectionsDOM; // Scratch array for const char pointers.
+	SceneVectorDOM   mScenesDOM; // Scratch array for const char pointers.
 };
 
 

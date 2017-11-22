@@ -32,6 +32,80 @@ public:
 	// Declare the default initDOM method; which is only needed for some implementation objects.
 	virtual void initDOM(void) {  };
 };
+typedef std::vector< Vec3 > Vec3VectorImpl; // Forward declare the 'Vec3' vector
+
+class TestVec3Impl: public CloneObject
+{
+public:
+
+	// Declare the constructor.
+	TestVec3Impl() { }
+
+
+	// Declare the deep copy constructor; handles copying pointers and pointer arrays
+	TestVec3Impl(const TestVec3Impl &other)
+	{
+		*this = other;
+	}
+
+
+	// Declare the virtual clone method using a deep copy
+	virtual CloneObject* clone() const
+	{
+		return new TestVec3Impl(*this);
+	}
+
+	// Declare and implement the deep copy assignment operator
+	TestVec3Impl& operator=(const TestVec3Impl& other)
+	{
+		if (this != &other )
+		{
+			mName = other.mName;
+			mPoints = other.mPoints;
+		}
+		return *this;
+	}
+
+
+	// Declare the helper method to return the DOM version of this class.
+	TestVec3 *getDOM(void)
+	{
+		 return &mDOM;
+	}
+
+	// Declare and implement the initDOM method
+	virtual void initDOM(void) override
+	{
+		mDOM.name = mName.c_str(); // Assign the current string pointer.
+		mDOM.pointsCount = uint32_t(mPoints.size()); // assign the number of items in the array.
+		mDOM.points = mDOM.pointsCount ? &mPoints[0] : nullptr; // Assign the pointer array
+	}
+
+
+	// Declare the move constructor; handles copying pointers and pointer arrays
+	TestVec3Impl(TestVec3Impl &&other)
+	{
+		*this = std::move(other);
+	}
+
+	// Declare and implement the move assignment operator
+	TestVec3Impl& operator=(TestVec3Impl&& other)
+	{
+		if (this != &other )
+		{
+			mName = other.mName;
+			mPoints = other.mPoints;
+		}
+		return *this;
+	}
+
+	std::string	mName;   										// 
+	Vec3VectorImpl   mPoints;  									// 
+private:
+	TestVec3 	mDOM; // Declare the DOM version.
+// Declare private temporary array(s) to hold flat DOM version of arrays.
+};
+
 
 // Base class for all geometries
 class GeometryImpl: public CloneObject
@@ -310,6 +384,7 @@ public:
 	{
 		if (this != &other )
 		{
+			mTestVec3 = other.mTestVec3;
 			for (auto &i:mGeometries) delete i; // Delete all of the object pointers in this array
 			mGeometries.clear(); // Clear the current array
 			mGeometries.reserve(other.mGeometries.size()); // Reserve number of items for the new array
@@ -328,6 +403,11 @@ public:
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
+		{
+			TestVec3Impl *impl = static_cast< TestVec3Impl *>(&mTestVec3); // static cast to the implementation class.
+			impl->initDOM(); // Initialize DOM components of member variable.
+			mDOM.testVec3 = *impl->getDOM(); // Copy the DOM struct values.
+		}
 		mGeometriesDOM.clear();
 		mGeometriesDOM.reserve( mGeometries.size() );
 		for (auto &i:mGeometries)
@@ -351,12 +431,14 @@ public:
 	{
 		if (this != &other )
 		{
+			mTestVec3 = other.mTestVec3;
 			mGeometries = other.mGeometries;
 			other.mGeometries.clear(); // Clear the 'other' array now that we have moved it
 		}
 		return *this;
 	}
 
+	TestVec3Impl mTestVec3;										// 
 	GeometryVectorImpl mGeometries;								// The geometry associated with this instance
 private:
 	GeometryInstance mDOM; // Declare the DOM version.

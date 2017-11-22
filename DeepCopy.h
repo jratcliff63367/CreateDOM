@@ -12,6 +12,36 @@ namespace DEEP_COPY
 {
 
 
+// Defines a basic 3d vector type
+class Vec3
+{
+public:
+	// Declare the constructor.
+	Vec3() { }
+
+	// Declare the assignment constructor.
+	Vec3(const float &_x,const float &_y,const float &_z)
+	{
+		x = _x;
+		y = _y;
+		z = _z;
+	}
+
+	float  		x{ 0 }; 											// x axis component of the vector
+	float  		y{ 0 }; 											// y axis component of the vector
+	float  		z{ 0 }; 											// z axis component of the vector
+};
+
+
+class TestVec3
+{
+public:
+	const char * name{ nullptr };  								// 
+	uint32_t 	pointsCount { 0 };
+	Vec3*  		points{ nullptr };									// 
+};
+
+
 enum GeometryType
 {
 	GT_BOX_GEOMETRY, 					// A basic sphere primitive
@@ -61,6 +91,7 @@ public:
 class GeometryInstance
 {
 public:
+	TestVec3 	testVec3;											// 
 	uint32_t 	geometriesCount { 0 };
 	Geometry**   geometries{ nullptr };							// The geometry associated with this instance
 };
