@@ -13,8 +13,10 @@
 #include <assert.h>
 
 #if 0
-//#include "PhysicsDOM.h"
-//#include "PhysicsDOMImpl.h"
+#include "PhysicsDOM.h"
+#include "PhysicsDOMImpl.h"
+
+#if 0
 #include "DeepCopy.h"
 #include "DeepCopyImpl.h"
 
@@ -36,6 +38,7 @@ void testDeepCopy(void)
 		printf("Debug Me");
 	}
 }
+#endif
 
 #else
 
@@ -370,7 +373,11 @@ public:
 		return ret;
 	}
 
-	void saveCPP(CodePrinter &impl,CodePrinter &dom,StringVector &arrays,const StringVector &_needsReflection)
+	void saveCPP(CodePrinter &impl,
+				 CodePrinter &dom,
+				 StringVector &arrays,
+				 const StringVector &_needsReflection,
+				StringVector &cloneObjects)
 	{
 
 
@@ -474,7 +481,7 @@ public:
 		{
 			needsImpl = true;
 		}
-		auto classDefinition = [this](CodePrinter &cp, bool isImpl,bool needsDeepCopy,const StringVector &_needsReflection)
+		auto classDefinition = [this](CodePrinter &cp, bool isImpl,bool needsDeepCopy,const StringVector &_needsReflection,StringVector &cloneObjects)
 		{
 			cp.printCode(0, "\r\n");
 			if (!mShortDescription.empty())
@@ -495,7 +502,24 @@ public:
 
 			if ((mClone || mNeedsReflection) && isImpl )
 			{
-				cp.printCode(0, "%s public CloneObject", firstInherit ? ":" : ",");
+				bool doCloneObject = true;
+				// Don't add this if we inherit from an object which already has clone object!
+				if (!mInheritsFrom.empty())
+				{
+					for (auto &i:cloneObjects)
+					{
+						if (i == mInheritsFrom)
+						{
+							doCloneObject = false;
+							break;
+						}
+					}
+				}
+				if (doCloneObject)
+				{
+					cp.printCode(0, "%s public CloneObject", firstInherit ? ":" : ",");
+					cloneObjects.push_back(mName);
+				}
 			}
 
 			cp.printCode(0, "\r\n");
@@ -529,9 +553,9 @@ public:
 		// If we need an implementation class
 		if (needsImpl)
 		{
-			classDefinition(impl, true, needsDeepCopy,_needsReflection);
+			classDefinition(impl, true, needsDeepCopy,_needsReflection,cloneObjects);
 		}
-		classDefinition(dom, false, needsDeepCopy,_needsReflection);
+		classDefinition(dom, false, needsDeepCopy,_needsReflection,cloneObjects);
 
 		// Implementation of the class body..
 		auto classBody = [this](CodePrinter &cp, bool isImpl, bool needsDeepCopy, const StringVector &_needsReflection)
@@ -714,8 +738,6 @@ public:
 
 					for (auto &i : mItems)
 					{
-//						if (!i.needsReflection() && isImpl)
-//							continue;
 						if (i.mIsArray && i.mIsPointer)
 						{
 							cp.printCode(3, "for (auto &i:%s) delete i; // Delete all of the object pointers in this array\r\n", getMemberName(i.mMember, isImpl));
@@ -801,6 +823,7 @@ public:
 						{
 							if (i.mIsArray)
 							{
+								arrayPostFix = "Impl";
 								cp.printCode(2, "// Initialize the const char * array from the array of std::strings vector %s\r\n",
 									getMemberName(i.mMember, true));
 								cp.printCode(2, "%sImpl.reserve(%s.size()); // Reserve room for string pointers.\r\n",
@@ -813,7 +836,7 @@ public:
 									getMemberName(i.mMember, true),
 									arrayPostFix);
 
-								cp.printCode(2, "mDOM.%s = %sCount ? &%s%s[0] : nullptr; // Assign the pointer array.\r\n",
+								cp.printCode(2, "mDOM.%s = mDOM.%sCount ? &%s%s[0] : nullptr; // Assign the pointer array.\r\n",
 									getMemberName(i.mMember, false),
 									getMemberName(i.mMember, false),
 									getMemberName(i.mMember, true),
@@ -863,14 +886,16 @@ public:
 						}
 						else if (i.mIsPointer)
 						{
-							cp.printCode(2, "mDOM.%s = static_cast< %s *>(%s); // assign the DOM reflection pointer.\r\n",
-								getMemberName(i.mMember, false),
-								i.mType.c_str(),
-								getMemberName(i.mMember, true));
 							cp.printCode(2, "if ( %s )\r\n", getMemberName(i.mMember, true));
 							cp.printCode(2, "{\r\n");
 							cp.printCode(3, "%s->initDOM(); // Initialize any DOM components of this object.\r\n",
 								getMemberName(i.mMember, true));
+
+							cp.printCode(3, "mDOM.%s = %s->getDOM(); // assign the DOM reflection pointer.\r\n",
+								getMemberName(i.mMember, false),
+								getMemberName(i.mMember, true));
+
+
 							cp.printCode(2, "}\r\n");
 
 						}
@@ -905,8 +930,6 @@ public:
 
 					for (auto &i : mItems)
 					{
-//						if (!i.needsReflection() && isImpl)
-//							continue;
 						if (i.mIsArray && i.mIsPointer)
 						{
 							cp.printCode(3, "%s = other.%s;\r\n", getMemberName(i.mMember,isImpl), getMemberName(i.mMember,isImpl));
@@ -989,7 +1012,8 @@ public:
 					if (isImpl && i.mIsPointer && !i.mIsArray)
 					{
 						needsNull = true;
-						cp.printCode(1, "%s", getTypeString(i.mType.c_str(), isImpl));
+						cp.printCode(1, "%s%s", getTypeString(i.mType.c_str(), isImpl),
+							isImpl ? "Impl" : "");
 					}
 					else
 					{
@@ -1379,10 +1403,10 @@ public:
 
 		headerBegin(impl, true);
 		headerBegin(dom, false);
-
+		StringVector cloneObjects;
 		for (auto &i : mObjects)
 		{
-			i.saveCPP(impl,dom,arrays,needsReflection);
+			i.saveCPP(impl,dom,arrays,needsReflection,cloneObjects);
 		}
 
 		auto headerEnd = [this](CodePrinter &cp, bool isImpl)

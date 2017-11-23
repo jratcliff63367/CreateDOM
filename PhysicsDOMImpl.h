@@ -446,7 +446,7 @@ private:
 typedef std::vector< Vec3 > Vec3VectorImpl; // Forward declare the 'Vec3' vector
 
 // Describes the data for a convex hull
-class ConvexHullImpl : public NodeImpl, public CloneObject
+class ConvexHullImpl : public NodeImpl
 {
 public:
 	// Declare the constructor.
@@ -535,7 +535,7 @@ typedef std::vector< uint32_t > U32VectorImpl; // Forward declare the 'U32' vect
 typedef std::vector< uint8_t > U8VectorImpl; // Forward declare the 'U8' vector
 
 // Describes the data for a triangle mesh
-class TriangleMeshImpl : public NodeImpl, public CloneObject
+class TriangleMeshImpl : public NodeImpl
 {
 public:
 	// Declare the constructor.
@@ -633,7 +633,7 @@ private:
 typedef std::vector< uint16_t > U16VectorImpl; // Forward declare the 'U16' vector
 
 // The data for a heighfield; as 2d array of 32 bit samples; 16 bits for height, 16 bits for material indices, holes, and other metadata
-class HeightFieldImpl : public NodeImpl, public CloneObject
+class HeightFieldImpl : public NodeImpl
 {
 public:
 	// Declare the constructor.
@@ -1140,7 +1140,7 @@ private:
 
 
 // Defines a convex mesh geometry
-class ConvexHullGeometryImpl : public GeometryImpl, public CloneObject
+class ConvexHullGeometryImpl : public GeometryImpl
 {
 public:
 	// Declare the constructor.
@@ -1228,7 +1228,7 @@ private:
 
 
 // Defines a triangle mesh geometry
-class TriangleMeshGeometryImpl : public GeometryImpl, public CloneObject
+class TriangleMeshGeometryImpl : public GeometryImpl
 {
 public:
 	// Declare the constructor.
@@ -1319,7 +1319,7 @@ private:
 
 
 // Defines a heightfield geometry
-class HeightFieldGeometryImpl : public GeometryImpl, public CloneObject
+class HeightFieldGeometryImpl : public GeometryImpl
 {
 public:
 	// Declare the constructor.
@@ -1553,17 +1553,17 @@ public:
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
-		mDOM.geometry = static_cast< Geometry *>(mGeometry); // assign the DOM reflection pointer.
 		if ( mGeometry )
 		{
 			mGeometry->initDOM(); // Initialize any DOM components of this object.
+			mDOM.geometry = mGeometry->getDOM(); // assign the DOM reflection pointer.
 		}
 		// Initialize the const char * array from the array of std::strings vector mMaterials
 		mMaterialsImpl.reserve(mMaterials.size()); // Reserve room for string pointers.
 		for (auto &i: mMaterials) // For each std::string
 			mMaterialsImpl.push_back( i.c_str() ); // Add the const char * for the string.
-		mDOM.materialsCount = uint32_t(mMaterialsDOM.size()); // Assign the number of strings
-		mDOM.materials = materialsCount ? &mMaterialsDOM[0] : nullptr; // Assign the pointer array.
+		mDOM.materialsCount = uint32_t(mMaterialsImpl.size()); // Assign the number of strings
+		mDOM.materials = mDOM.materialsCount ? &mMaterialsImpl[0] : nullptr; // Assign the pointer array.
 		mDOM.collisionFilterSettings = mCollisionFilterSettings.c_str(); // Assign the current string pointer.
 	}
 
@@ -1588,7 +1588,7 @@ public:
 		return *this;
 	}
 
-	GeometryImpl 	*mGeometry{ nullptr }; 							// The geometry associated with this instance
+	GeometryImpl *mGeometry{ nullptr };							// The geometry associated with this instance
 	StringVector mMaterials; 									// Id of physical material(s) associated with this geometry instance (usually one material; but for heightifields and triangle meshes can be more than one)
 	Pose 		mLocalPose;   										// The local pose for this geometry instance
 	std::string	mCollisionFilterSettings;  						// Describes collision filtering settings; what other types of objects this object will collide with
@@ -1602,7 +1602,7 @@ typedef std::vector< GeometryInstanceImpl *> GeometryInstanceVectorImpl; // Forw
 typedef std::vector< GeometryInstance *> GeometryInstanceVectorDOM; // Forward declare the 'GeometryInstance' vector for the implementation object pointers
 
 // Defines the common properties for a rigid body
-class RigidBodyImpl : public NodeImpl, public CloneObject
+class RigidBodyImpl : public NodeImpl
 {
 public:
 	// Declare the constructor.
@@ -1897,7 +1897,7 @@ private:
 
 
 // Defines the common properties for a joint
-class JointImpl : public NodeImpl, public CloneObject
+class JointImpl : public NodeImpl
 {
 public:
 	// Declare the constructor.
@@ -2643,7 +2643,7 @@ typedef std::vector< BodyPairFilterImpl > BodyPairFilterVectorImpl; // Forward d
 typedef std::vector< BodyPairFilter > BodyPairFilterVectorDOM; // Forward declare the 'BodyPairFilter' vector
 
 // A collection of body pair filters
-class BodyPairFiltersImpl : public NodeImpl, public CloneObject
+class BodyPairFiltersImpl : public NodeImpl
 {
 public:
 	// Declare the constructor.
@@ -2730,7 +2730,7 @@ private:
 };
 
 
-class InstanceCollectionImpl : public NodeImpl, public CloneObject
+class InstanceCollectionImpl : public NodeImpl
 {
 public:
 	// Declare the constructor.
@@ -2823,7 +2823,7 @@ typedef std::vector< NodeImpl *> NodeVectorImpl; // Forward declare the 'Node' v
 typedef std::vector< Node *> NodeVectorDOM; // Forward declare the 'Node' vector for the implementation object pointers
 
 // A collection of nodes
-class CollectionImpl : public NodeImpl, public CloneObject
+class CollectionImpl : public NodeImpl
 {
 public:
 	// Declare the constructor.
@@ -2923,7 +2923,7 @@ private:
 
 
 // A special type of 'collection' which is instantiated on startup
-class SceneImpl : public NodeImpl, public CloneObject
+class SceneImpl : public NodeImpl
 {
 public:
 	// Declare the constructor.
