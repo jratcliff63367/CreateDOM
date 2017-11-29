@@ -49,6 +49,12 @@ public:
 	}
 
 
+	virtual TestVec3 * getTestVec3(void) // Declare virtual method to return DOM version of base class.
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const
 	{
@@ -123,6 +129,12 @@ public:
 	}
 
 
+	virtual Geometry * getGeometry(void) // Declare virtual method to return DOM version of base class.
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const
 	{
@@ -149,6 +161,7 @@ public:
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
 	}
 
 
@@ -198,6 +211,12 @@ public:
 	}
 
 
+	virtual Geometry * getGeometry(void) // Declare virtual method to return DOM version of base class.
+	{
+		return static_cast< Geometry *>(&mDOM); // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const override
 	{
@@ -234,6 +253,10 @@ public:
 			Geometry *dom = static_cast< Geometry *>(&mDOM); // Get the DOM base class.
 			*dom = *(GeometryImpl::getDOM()); // Assign the base class DOM components.
 		}
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
+		mDOM.width = mWidth; // Simple member variable assignment to the DOM reflection: width
+		mDOM.depth = mDepth; // Simple member variable assignment to the DOM reflection: depth
+		mDOM.height = mHeight; // Simple member variable assignment to the DOM reflection: height
 	}
 
 
@@ -288,6 +311,12 @@ public:
 	}
 
 
+	virtual Geometry * getGeometry(void) // Declare virtual method to return DOM version of base class.
+	{
+		return static_cast< Geometry *>(&mDOM); // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const override
 	{
@@ -322,6 +351,8 @@ public:
 			Geometry *dom = static_cast< Geometry *>(&mDOM); // Get the DOM base class.
 			*dom = *(GeometryImpl::getDOM()); // Assign the base class DOM components.
 		}
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
+		mDOM.radius = mRadius; // Simple member variable assignment to the DOM reflection: radius
 	}
 
 
@@ -373,6 +404,12 @@ public:
 	}
 
 
+	virtual GeometryInstance * getGeometryInstance(void) // Declare virtual method to return DOM version of base class.
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const
 	{
@@ -413,7 +450,7 @@ public:
 		for (auto &i:mGeometries)
 		{
 			i->initDOM();
-			mGeometriesDOM.push_back( i->getDOM() );
+			mGeometriesDOM.push_back( i->getGeometry() );
 		}
 		mDOM.geometriesCount = uint32_t(mGeometriesDOM.size()); // assign the number of items in the array.
 		mDOM.geometries = mDOM.geometriesCount ? &mGeometriesDOM[0] : nullptr; // Assign the pointer array

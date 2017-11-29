@@ -49,6 +49,12 @@ public:
 	}
 
 
+	virtual VisualBinding * getVisualBinding(void) // Declare virtual method to return DOM version of base class.
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const
 	{
@@ -67,19 +73,12 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	VisualBinding *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
 		mDOM.visualName = mVisualName.c_str(); // Assign the current string pointer.
-		mDOM.localPose = mLocalPose;
-		mDOM.localScale = mLocalScale;
+		mDOM.localPose = mLocalPose; // Simple member variable assignment to the DOM reflection: localPose
+		mDOM.localScale = mLocalScale; // Simple member variable assignment to the DOM reflection: localScale
 	}
 
 
@@ -125,6 +124,12 @@ public:
 	}
 
 
+	virtual KeyValuePair * getKeyValuePair(void) // Declare virtual method to return DOM version of base class.
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const
 	{
@@ -140,13 +145,6 @@ public:
 			mValue = other.mValue;
 		}
 		return *this;
-	}
-
-
-	// Declare the helper method to return the DOM version of this class.
-	KeyValuePair *getDOM(void)
-	{
-		 return &mDOM;
 	}
 
 	// Declare and implement the initDOM method
@@ -199,6 +197,12 @@ public:
 	}
 
 
+	virtual AdditionalProperties * getAdditionalProperties(void) // Declare virtual method to return DOM version of base class.
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const
 	{
@@ -214,13 +218,6 @@ public:
 			mKeyValuePairs = other.mKeyValuePairs;
 		}
 		return *this;
-	}
-
-
-	// Declare the helper method to return the DOM version of this class.
-	AdditionalProperties *getDOM(void)
-	{
-		 return &mDOM;
 	}
 
 	// Declare and implement the initDOM method
@@ -276,6 +273,12 @@ public:
 	}
 
 
+	virtual Node * getNode(void) // Declare virtual method to return DOM version of base class.
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const
 	{
@@ -296,23 +299,16 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	Node *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
 		mDOM.id = mId.c_str(); // Assign the current string pointer.
 		mDOM.name = mName.c_str(); // Assign the current string pointer.
-		mDOM.type = mType;
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
 		{
 			VisualBindingImpl *impl = static_cast< VisualBindingImpl *>(&mVisual); // static cast to the implementation class.
 			impl->initDOM(); // Initialize DOM components of member variable.
-			mDOM.visual = *impl->getDOM(); // Copy the DOM struct values.
+			mDOM.visual = *impl->getVisualBinding(); // Copy the DOM struct values.
 		}
 		mDOM.additionalPropertiesCount = uint32_t(mAdditionalPropertiesDOM.size()); // assign the number of items in the array.
 		mDOM.additionalProperties = mDOM.additionalPropertiesCount ? &mAdditionalPropertiesDOM[0] : nullptr; // Assign the pointer array
@@ -375,6 +371,18 @@ public:
 	}
 
 
+	virtual Node * getNode(void) // Declare virtual method to return DOM version of base class.
+	{
+		return static_cast< Node *>(&mDOM); // return the address of the DOM.
+	}
+
+
+	PhysicsMaterial * getPhysicsMaterial(void) // Declare virtual method to return the DOM version
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const override
 	{
@@ -396,13 +404,6 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	PhysicsMaterial *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
@@ -411,14 +412,14 @@ public:
 		// Copy the elements from the base class DOM to our reflection DOM
 		{
 			Node *dom = static_cast< Node *>(&mDOM); // Get the DOM base class.
-			*dom = *(NodeImpl::getDOM()); // Assign the base class DOM components.
+			*dom = *(NodeImpl::getNode()); // Assign the base class DOM components.
 		}
-		mDOM.type = mType;
-		mDOM.disableFriction = mDisableFriction;
-		mDOM.disableStrongFriction = mDisableStrongFriction;
-		mDOM.dynamicFriction = mDynamicFriction;
-		mDOM.staticFriction = mStaticFriction;
-		mDOM.restitution = mRestitution;
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
+		mDOM.disableFriction = mDisableFriction; // Simple member variable assignment to the DOM reflection: disableFriction
+		mDOM.disableStrongFriction = mDisableStrongFriction; // Simple member variable assignment to the DOM reflection: disableStrongFriction
+		mDOM.dynamicFriction = mDynamicFriction; // Simple member variable assignment to the DOM reflection: dynamicFriction
+		mDOM.staticFriction = mStaticFriction; // Simple member variable assignment to the DOM reflection: staticFriction
+		mDOM.restitution = mRestitution; // Simple member variable assignment to the DOM reflection: restitution
 	}
 
 
@@ -478,6 +479,18 @@ public:
 	}
 
 
+	virtual Node * getNode(void) // Declare virtual method to return DOM version of base class.
+	{
+		return static_cast< Node *>(&mDOM); // return the address of the DOM.
+	}
+
+
+	ConvexHull * getConvexHull(void) // Declare virtual method to return the DOM version
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const override
 	{
@@ -495,13 +508,6 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	ConvexHull *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
@@ -510,9 +516,9 @@ public:
 		// Copy the elements from the base class DOM to our reflection DOM
 		{
 			Node *dom = static_cast< Node *>(&mDOM); // Get the DOM base class.
-			*dom = *(NodeImpl::getDOM()); // Assign the base class DOM components.
+			*dom = *(NodeImpl::getNode()); // Assign the base class DOM components.
 		}
-		mDOM.type = mType;
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
 		mDOM.pointsCount = uint32_t(mPoints.size()); // assign the number of items in the array.
 		mDOM.points = mDOM.pointsCount ? &mPoints[0] : nullptr; // Assign the pointer array
 	}
@@ -568,6 +574,18 @@ public:
 	}
 
 
+	virtual Node * getNode(void) // Declare virtual method to return DOM version of base class.
+	{
+		return static_cast< Node *>(&mDOM); // return the address of the DOM.
+	}
+
+
+	TriangleMesh * getTriangleMesh(void) // Declare virtual method to return the DOM version
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const override
 	{
@@ -587,13 +605,6 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	TriangleMesh *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
@@ -602,9 +613,9 @@ public:
 		// Copy the elements from the base class DOM to our reflection DOM
 		{
 			Node *dom = static_cast< Node *>(&mDOM); // Get the DOM base class.
-			*dom = *(NodeImpl::getDOM()); // Assign the base class DOM components.
+			*dom = *(NodeImpl::getNode()); // Assign the base class DOM components.
 		}
-		mDOM.type = mType;
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
 		mDOM.pointsCount = uint32_t(mPoints.size()); // assign the number of items in the array.
 		mDOM.points = mDOM.pointsCount ? &mPoints[0] : nullptr; // Assign the pointer array
 		mDOM.trianglesCount = uint32_t(mTriangles.size()); // assign the number of items in the array.
@@ -667,6 +678,18 @@ public:
 	}
 
 
+	virtual Node * getNode(void) // Declare virtual method to return DOM version of base class.
+	{
+		return static_cast< Node *>(&mDOM); // return the address of the DOM.
+	}
+
+
+	HeightField * getHeightField(void) // Declare virtual method to return the DOM version
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const override
 	{
@@ -687,13 +710,6 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	HeightField *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
@@ -702,11 +718,11 @@ public:
 		// Copy the elements from the base class DOM to our reflection DOM
 		{
 			Node *dom = static_cast< Node *>(&mDOM); // Get the DOM base class.
-			*dom = *(NodeImpl::getDOM()); // Assign the base class DOM components.
+			*dom = *(NodeImpl::getNode()); // Assign the base class DOM components.
 		}
-		mDOM.type = mType;
-		mDOM.rowCount = mRowCount;
-		mDOM.columnCount = mColumnCount;
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
+		mDOM.rowCount = mRowCount; // Simple member variable assignment to the DOM reflection: rowCount
+		mDOM.columnCount = mColumnCount; // Simple member variable assignment to the DOM reflection: columnCount
 		mDOM.samplesCount = uint32_t(mSamples.size()); // assign the number of items in the array.
 		mDOM.samples = mDOM.samplesCount ? &mSamples[0] : nullptr; // Assign the pointer array
 		mDOM.metaDataCount = uint32_t(mMetaData.size()); // assign the number of items in the array.
@@ -760,6 +776,12 @@ public:
 	}
 
 
+	virtual Geometry * getGeometry(void) // Declare virtual method to return DOM version of base class.
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const
 	{
@@ -776,17 +798,10 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	Geometry *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
-		mDOM.type = mType;
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
 	}
 
 
@@ -836,6 +851,18 @@ public:
 	}
 
 
+	virtual Geometry * getGeometry(void) // Declare virtual method to return DOM version of base class.
+	{
+		return static_cast< Geometry *>(&mDOM); // return the address of the DOM.
+	}
+
+
+	BoxGeometry * getBoxGeometry(void) // Declare virtual method to return the DOM version
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const override
 	{
@@ -853,13 +880,6 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	BoxGeometry *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
@@ -868,10 +888,10 @@ public:
 		// Copy the elements from the base class DOM to our reflection DOM
 		{
 			Geometry *dom = static_cast< Geometry *>(&mDOM); // Get the DOM base class.
-			*dom = *(GeometryImpl::getDOM()); // Assign the base class DOM components.
+			*dom = *(GeometryImpl::getGeometry()); // Assign the base class DOM components.
 		}
-		mDOM.type = mType;
-		mDOM.dimensions = mDimensions;
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
+		mDOM.dimensions = mDimensions; // Simple member variable assignment to the DOM reflection: dimensions
 	}
 
 
@@ -922,6 +942,18 @@ public:
 	}
 
 
+	virtual Geometry * getGeometry(void) // Declare virtual method to return DOM version of base class.
+	{
+		return static_cast< Geometry *>(&mDOM); // return the address of the DOM.
+	}
+
+
+	SphereGeometry * getSphereGeometry(void) // Declare virtual method to return the DOM version
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const override
 	{
@@ -939,13 +971,6 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	SphereGeometry *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
@@ -954,10 +979,10 @@ public:
 		// Copy the elements from the base class DOM to our reflection DOM
 		{
 			Geometry *dom = static_cast< Geometry *>(&mDOM); // Get the DOM base class.
-			*dom = *(GeometryImpl::getDOM()); // Assign the base class DOM components.
+			*dom = *(GeometryImpl::getGeometry()); // Assign the base class DOM components.
 		}
-		mDOM.type = mType;
-		mDOM.radius = mRadius;
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
+		mDOM.radius = mRadius; // Simple member variable assignment to the DOM reflection: radius
 	}
 
 
@@ -1008,6 +1033,18 @@ public:
 	}
 
 
+	virtual Geometry * getGeometry(void) // Declare virtual method to return DOM version of base class.
+	{
+		return static_cast< Geometry *>(&mDOM); // return the address of the DOM.
+	}
+
+
+	CapsuleGeometry * getCapsuleGeometry(void) // Declare virtual method to return the DOM version
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const override
 	{
@@ -1026,13 +1063,6 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	CapsuleGeometry *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
@@ -1041,11 +1071,11 @@ public:
 		// Copy the elements from the base class DOM to our reflection DOM
 		{
 			Geometry *dom = static_cast< Geometry *>(&mDOM); // Get the DOM base class.
-			*dom = *(GeometryImpl::getDOM()); // Assign the base class DOM components.
+			*dom = *(GeometryImpl::getGeometry()); // Assign the base class DOM components.
 		}
-		mDOM.type = mType;
-		mDOM.radius = mRadius;
-		mDOM.height = mHeight;
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
+		mDOM.radius = mRadius; // Simple member variable assignment to the DOM reflection: radius
+		mDOM.height = mHeight; // Simple member variable assignment to the DOM reflection: height
 	}
 
 
@@ -1098,6 +1128,18 @@ public:
 	}
 
 
+	virtual Geometry * getGeometry(void) // Declare virtual method to return DOM version of base class.
+	{
+		return static_cast< Geometry *>(&mDOM); // return the address of the DOM.
+	}
+
+
+	CylinderGeometry * getCylinderGeometry(void) // Declare virtual method to return the DOM version
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const override
 	{
@@ -1116,13 +1158,6 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	CylinderGeometry *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
@@ -1131,11 +1166,11 @@ public:
 		// Copy the elements from the base class DOM to our reflection DOM
 		{
 			Geometry *dom = static_cast< Geometry *>(&mDOM); // Get the DOM base class.
-			*dom = *(GeometryImpl::getDOM()); // Assign the base class DOM components.
+			*dom = *(GeometryImpl::getGeometry()); // Assign the base class DOM components.
 		}
-		mDOM.type = mType;
-		mDOM.radius = mRadius;
-		mDOM.height = mHeight;
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
+		mDOM.radius = mRadius; // Simple member variable assignment to the DOM reflection: radius
+		mDOM.height = mHeight; // Simple member variable assignment to the DOM reflection: height
 	}
 
 
@@ -1188,6 +1223,18 @@ public:
 	}
 
 
+	virtual Geometry * getGeometry(void) // Declare virtual method to return DOM version of base class.
+	{
+		return static_cast< Geometry *>(&mDOM); // return the address of the DOM.
+	}
+
+
+	ConvexHullGeometry * getConvexHullGeometry(void) // Declare virtual method to return the DOM version
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const override
 	{
@@ -1206,13 +1253,6 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	ConvexHullGeometry *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
@@ -1221,10 +1261,10 @@ public:
 		// Copy the elements from the base class DOM to our reflection DOM
 		{
 			Geometry *dom = static_cast< Geometry *>(&mDOM); // Get the DOM base class.
-			*dom = *(GeometryImpl::getDOM()); // Assign the base class DOM components.
+			*dom = *(GeometryImpl::getGeometry()); // Assign the base class DOM components.
 		}
-		mDOM.type = mType;
-		mDOM.scale = mScale;
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
+		mDOM.scale = mScale; // Simple member variable assignment to the DOM reflection: scale
 		mDOM.convexMesh = mConvexMesh.c_str(); // Assign the current string pointer.
 	}
 
@@ -1278,6 +1318,18 @@ public:
 	}
 
 
+	virtual Geometry * getGeometry(void) // Declare virtual method to return DOM version of base class.
+	{
+		return static_cast< Geometry *>(&mDOM); // return the address of the DOM.
+	}
+
+
+	TriangleMeshGeometry * getTriangleMeshGeometry(void) // Declare virtual method to return the DOM version
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const override
 	{
@@ -1297,13 +1349,6 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	TriangleMeshGeometry *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
@@ -1312,12 +1357,12 @@ public:
 		// Copy the elements from the base class DOM to our reflection DOM
 		{
 			Geometry *dom = static_cast< Geometry *>(&mDOM); // Get the DOM base class.
-			*dom = *(GeometryImpl::getDOM()); // Assign the base class DOM components.
+			*dom = *(GeometryImpl::getGeometry()); // Assign the base class DOM components.
 		}
-		mDOM.type = mType;
-		mDOM.scale = mScale;
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
+		mDOM.scale = mScale; // Simple member variable assignment to the DOM reflection: scale
 		mDOM.triangleMesh = mTriangleMesh.c_str(); // Assign the current string pointer.
-		mDOM.doubleSided = mDoubleSided;
+		mDOM.doubleSided = mDoubleSided; // Simple member variable assignment to the DOM reflection: doubleSided
 	}
 
 
@@ -1372,6 +1417,18 @@ public:
 	}
 
 
+	virtual Geometry * getGeometry(void) // Declare virtual method to return DOM version of base class.
+	{
+		return static_cast< Geometry *>(&mDOM); // return the address of the DOM.
+	}
+
+
+	HeightFieldGeometry * getHeightFieldGeometry(void) // Declare virtual method to return the DOM version
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const override
 	{
@@ -1393,13 +1450,6 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	HeightFieldGeometry *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
@@ -1408,14 +1458,14 @@ public:
 		// Copy the elements from the base class DOM to our reflection DOM
 		{
 			Geometry *dom = static_cast< Geometry *>(&mDOM); // Get the DOM base class.
-			*dom = *(GeometryImpl::getDOM()); // Assign the base class DOM components.
+			*dom = *(GeometryImpl::getGeometry()); // Assign the base class DOM components.
 		}
-		mDOM.type = mType;
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
 		mDOM.heightField = mHeightField.c_str(); // Assign the current string pointer.
-		mDOM.heightScale = mHeightScale;
-		mDOM.rowScale = mRowScale;
-		mDOM.columnScale = mColumnScale;
-		mDOM.doubleSided = mDoubleSided;
+		mDOM.heightScale = mHeightScale; // Simple member variable assignment to the DOM reflection: heightScale
+		mDOM.rowScale = mRowScale; // Simple member variable assignment to the DOM reflection: rowScale
+		mDOM.columnScale = mColumnScale; // Simple member variable assignment to the DOM reflection: columnScale
+		mDOM.doubleSided = mDoubleSided; // Simple member variable assignment to the DOM reflection: doubleSided
 	}
 
 
@@ -1474,6 +1524,18 @@ public:
 	}
 
 
+	virtual Geometry * getGeometry(void) // Declare virtual method to return DOM version of base class.
+	{
+		return static_cast< Geometry *>(&mDOM); // return the address of the DOM.
+	}
+
+
+	PlaneGeometry * getPlaneGeometry(void) // Declare virtual method to return the DOM version
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const override
 	{
@@ -1490,13 +1552,6 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	PlaneGeometry *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
@@ -1505,9 +1560,9 @@ public:
 		// Copy the elements from the base class DOM to our reflection DOM
 		{
 			Geometry *dom = static_cast< Geometry *>(&mDOM); // Get the DOM base class.
-			*dom = *(GeometryImpl::getDOM()); // Assign the base class DOM components.
+			*dom = *(GeometryImpl::getGeometry()); // Assign the base class DOM components.
 		}
-		mDOM.type = mType;
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
 	}
 
 
@@ -1555,6 +1610,12 @@ public:
 	}
 
 
+	virtual GeometryInstance * getGeometryInstance(void) // Declare virtual method to return DOM version of base class.
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const
 	{
@@ -1579,20 +1640,13 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	GeometryInstance *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
 		if ( mGeometry )
 		{
 			mGeometry->initDOM(); // Initialize any DOM components of this object.
-			mDOM.geometry = mGeometry->getDOM(); // assign the DOM reflection pointer.
+			mDOM.geometry = mGeometry->getGeometry(); // assign the DOM reflection pointer.
 		}
 		// Initialize the const char * array from the array of std::strings vector mMaterials
 		mMaterialsImpl.reserve(mMaterials.size()); // Reserve room for string pointers.
@@ -1600,7 +1654,7 @@ public:
 			mMaterialsImpl.push_back( i.c_str() ); // Add the const char * for the string.
 		mDOM.materialsCount = uint32_t(mMaterialsImpl.size()); // Assign the number of strings
 		mDOM.materials = mDOM.materialsCount ? &mMaterialsImpl[0] : nullptr; // Assign the pointer array.
-		mDOM.localPose = mLocalPose;
+		mDOM.localPose = mLocalPose; // Simple member variable assignment to the DOM reflection: localPose
 		mDOM.collisionFilterSettings = mCollisionFilterSettings.c_str(); // Assign the current string pointer.
 	}
 
@@ -1663,6 +1717,18 @@ public:
 	}
 
 
+	virtual Node * getNode(void) // Declare virtual method to return DOM version of base class.
+	{
+		return static_cast< Node *>(&mDOM); // return the address of the DOM.
+	}
+
+
+	RigidBody * getRigidBody(void) // Declare virtual method to return the DOM version
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const override
 	{
@@ -1684,13 +1750,6 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	RigidBody *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
@@ -1699,19 +1758,19 @@ public:
 		// Copy the elements from the base class DOM to our reflection DOM
 		{
 			Node *dom = static_cast< Node *>(&mDOM); // Get the DOM base class.
-			*dom = *(NodeImpl::getDOM()); // Assign the base class DOM components.
+			*dom = *(NodeImpl::getNode()); // Assign the base class DOM components.
 		}
-		mDOM.type = mType;
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
 		mGeometryInstancesDOM.clear();
 		mGeometryInstancesDOM.reserve( mGeometryInstances.size() );
 		for (auto &i:mGeometryInstances)
 		{
 			i->initDOM();
-			mGeometryInstancesDOM.push_back( i->getDOM() );
+			mGeometryInstancesDOM.push_back( i->getGeometryInstance() );
 		}
 		mDOM.geometryInstancesCount = uint32_t(mGeometryInstancesDOM.size()); // assign the number of items in the array.
 		mDOM.geometryInstances = mDOM.geometryInstancesCount ? &mGeometryInstancesDOM[0] : nullptr; // Assign the pointer array
-		mDOM.globalPose = mGlobalPose;
+		mDOM.globalPose = mGlobalPose; // Simple member variable assignment to the DOM reflection: globalPose
 	}
 
 
@@ -1767,6 +1826,18 @@ public:
 	}
 
 
+	virtual RigidBody * getRigidBody(void) // Declare virtual method to return DOM version of base class.
+	{
+		return static_cast< RigidBody *>(&mDOM); // return the address of the DOM.
+	}
+
+
+	RigidStatic * getRigidStatic(void) // Declare virtual method to return the DOM version
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const override
 	{
@@ -1783,13 +1854,6 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	RigidStatic *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
@@ -1798,9 +1862,9 @@ public:
 		// Copy the elements from the base class DOM to our reflection DOM
 		{
 			RigidBody *dom = static_cast< RigidBody *>(&mDOM); // Get the DOM base class.
-			*dom = *(RigidBodyImpl::getDOM()); // Assign the base class DOM components.
+			*dom = *(RigidBodyImpl::getRigidBody()); // Assign the base class DOM components.
 		}
-		mDOM.type = mType;
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
 	}
 
 
@@ -1849,6 +1913,18 @@ public:
 	}
 
 
+	virtual RigidBody * getRigidBody(void) // Declare virtual method to return DOM version of base class.
+	{
+		return static_cast< RigidBody *>(&mDOM); // return the address of the DOM.
+	}
+
+
+	RigidDynamic * getRigidDynamic(void) // Declare virtual method to return the DOM version
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const override
 	{
@@ -1875,13 +1951,6 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	RigidDynamic *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
@@ -1890,19 +1959,19 @@ public:
 		// Copy the elements from the base class DOM to our reflection DOM
 		{
 			RigidBody *dom = static_cast< RigidBody *>(&mDOM); // Get the DOM base class.
-			*dom = *(RigidBodyImpl::getDOM()); // Assign the base class DOM components.
+			*dom = *(RigidBodyImpl::getRigidBody()); // Assign the base class DOM components.
 		}
-		mDOM.type = mType;
-		mDOM.disableGravity = mDisableGravity;
-		mDOM.centerOfMassLocalPose = mCenterOfMassLocalPose;
-		mDOM.mass = mMass;
-		mDOM.massSpaceInertiaTensor = mMassSpaceInertiaTensor;
-		mDOM.linearVelocity = mLinearVelocity;
-		mDOM.angularVelocity = mAngularVelocity;
-		mDOM.linearDamping = mLinearDamping;
-		mDOM.angularDamping = mAngularDamping;
-		mDOM.maxAngularVelocity = mMaxAngularVelocity;
-		mDOM.kinematic = mKinematic;
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
+		mDOM.disableGravity = mDisableGravity; // Simple member variable assignment to the DOM reflection: disableGravity
+		mDOM.centerOfMassLocalPose = mCenterOfMassLocalPose; // Simple member variable assignment to the DOM reflection: centerOfMassLocalPose
+		mDOM.mass = mMass; // Simple member variable assignment to the DOM reflection: mass
+		mDOM.massSpaceInertiaTensor = mMassSpaceInertiaTensor; // Simple member variable assignment to the DOM reflection: massSpaceInertiaTensor
+		mDOM.linearVelocity = mLinearVelocity; // Simple member variable assignment to the DOM reflection: linearVelocity
+		mDOM.angularVelocity = mAngularVelocity; // Simple member variable assignment to the DOM reflection: angularVelocity
+		mDOM.linearDamping = mLinearDamping; // Simple member variable assignment to the DOM reflection: linearDamping
+		mDOM.angularDamping = mAngularDamping; // Simple member variable assignment to the DOM reflection: angularDamping
+		mDOM.maxAngularVelocity = mMaxAngularVelocity; // Simple member variable assignment to the DOM reflection: maxAngularVelocity
+		mDOM.kinematic = mKinematic; // Simple member variable assignment to the DOM reflection: kinematic
 	}
 
 
@@ -1971,6 +2040,18 @@ public:
 	}
 
 
+	virtual Node * getNode(void) // Declare virtual method to return DOM version of base class.
+	{
+		return static_cast< Node *>(&mDOM); // return the address of the DOM.
+	}
+
+
+	Joint * getJoint(void) // Declare virtual method to return the DOM version
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const override
 	{
@@ -1992,13 +2073,6 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	Joint *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
@@ -2007,14 +2081,14 @@ public:
 		// Copy the elements from the base class DOM to our reflection DOM
 		{
 			Node *dom = static_cast< Node *>(&mDOM); // Get the DOM base class.
-			*dom = *(NodeImpl::getDOM()); // Assign the base class DOM components.
+			*dom = *(NodeImpl::getNode()); // Assign the base class DOM components.
 		}
-		mDOM.type = mType;
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
 		mDOM.body0 = mBody0.c_str(); // Assign the current string pointer.
 		mDOM.body1 = mBody1.c_str(); // Assign the current string pointer.
-		mDOM.localpose0 = mLocalpose0;
-		mDOM.localpose1 = mLocalpose1;
-		mDOM.collisionEnabled = mCollisionEnabled;
+		mDOM.localpose0 = mLocalpose0; // Simple member variable assignment to the DOM reflection: localpose0
+		mDOM.localpose1 = mLocalpose1; // Simple member variable assignment to the DOM reflection: localpose1
+		mDOM.collisionEnabled = mCollisionEnabled; // Simple member variable assignment to the DOM reflection: collisionEnabled
 	}
 
 
@@ -2074,6 +2148,18 @@ public:
 	}
 
 
+	virtual Joint * getJoint(void) // Declare virtual method to return DOM version of base class.
+	{
+		return static_cast< Joint *>(&mDOM); // return the address of the DOM.
+	}
+
+
+	FixedJoint * getFixedJoint(void) // Declare virtual method to return the DOM version
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const override
 	{
@@ -2090,13 +2176,6 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	FixedJoint *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
@@ -2105,9 +2184,9 @@ public:
 		// Copy the elements from the base class DOM to our reflection DOM
 		{
 			Joint *dom = static_cast< Joint *>(&mDOM); // Get the DOM base class.
-			*dom = *(JointImpl::getDOM()); // Assign the base class DOM components.
+			*dom = *(JointImpl::getJoint()); // Assign the base class DOM components.
 		}
-		mDOM.type = mType;
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
 	}
 
 
@@ -2157,6 +2236,18 @@ public:
 	}
 
 
+	virtual Joint * getJoint(void) // Declare virtual method to return DOM version of base class.
+	{
+		return static_cast< Joint *>(&mDOM); // return the address of the DOM.
+	}
+
+
+	SphericalJoint * getSphericalJoint(void) // Declare virtual method to return the DOM version
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const override
 	{
@@ -2173,13 +2264,6 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	SphericalJoint *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
@@ -2188,9 +2272,9 @@ public:
 		// Copy the elements from the base class DOM to our reflection DOM
 		{
 			Joint *dom = static_cast< Joint *>(&mDOM); // Get the DOM base class.
-			*dom = *(JointImpl::getDOM()); // Assign the base class DOM components.
+			*dom = *(JointImpl::getJoint()); // Assign the base class DOM components.
 		}
-		mDOM.type = mType;
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
 	}
 
 
@@ -2240,6 +2324,18 @@ public:
 	}
 
 
+	virtual Joint * getJoint(void) // Declare virtual method to return DOM version of base class.
+	{
+		return static_cast< Joint *>(&mDOM); // return the address of the DOM.
+	}
+
+
+	RevoluteJoint * getRevoluteJoint(void) // Declare virtual method to return the DOM version
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const override
 	{
@@ -2256,13 +2352,6 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	RevoluteJoint *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
@@ -2271,9 +2360,9 @@ public:
 		// Copy the elements from the base class DOM to our reflection DOM
 		{
 			Joint *dom = static_cast< Joint *>(&mDOM); // Get the DOM base class.
-			*dom = *(JointImpl::getDOM()); // Assign the base class DOM components.
+			*dom = *(JointImpl::getJoint()); // Assign the base class DOM components.
 		}
-		mDOM.type = mType;
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
 	}
 
 
@@ -2323,6 +2412,18 @@ public:
 	}
 
 
+	virtual Joint * getJoint(void) // Declare virtual method to return DOM version of base class.
+	{
+		return static_cast< Joint *>(&mDOM); // return the address of the DOM.
+	}
+
+
+	PrismaticJoint * getPrismaticJoint(void) // Declare virtual method to return the DOM version
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const override
 	{
@@ -2339,13 +2440,6 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	PrismaticJoint *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
@@ -2354,9 +2448,9 @@ public:
 		// Copy the elements from the base class DOM to our reflection DOM
 		{
 			Joint *dom = static_cast< Joint *>(&mDOM); // Get the DOM base class.
-			*dom = *(JointImpl::getDOM()); // Assign the base class DOM components.
+			*dom = *(JointImpl::getJoint()); // Assign the base class DOM components.
 		}
-		mDOM.type = mType;
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
 	}
 
 
@@ -2406,6 +2500,18 @@ public:
 	}
 
 
+	virtual Joint * getJoint(void) // Declare virtual method to return DOM version of base class.
+	{
+		return static_cast< Joint *>(&mDOM); // return the address of the DOM.
+	}
+
+
+	DistanceJoint * getDistanceJoint(void) // Declare virtual method to return the DOM version
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const override
 	{
@@ -2422,13 +2528,6 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	DistanceJoint *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
@@ -2437,9 +2536,9 @@ public:
 		// Copy the elements from the base class DOM to our reflection DOM
 		{
 			Joint *dom = static_cast< Joint *>(&mDOM); // Get the DOM base class.
-			*dom = *(JointImpl::getDOM()); // Assign the base class DOM components.
+			*dom = *(JointImpl::getJoint()); // Assign the base class DOM components.
 		}
-		mDOM.type = mType;
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
 	}
 
 
@@ -2489,6 +2588,18 @@ public:
 	}
 
 
+	virtual Joint * getJoint(void) // Declare virtual method to return DOM version of base class.
+	{
+		return static_cast< Joint *>(&mDOM); // return the address of the DOM.
+	}
+
+
+	BallAndSocketJoint * getBallAndSocketJoint(void) // Declare virtual method to return the DOM version
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const override
 	{
@@ -2505,13 +2616,6 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	BallAndSocketJoint *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
@@ -2520,9 +2624,9 @@ public:
 		// Copy the elements from the base class DOM to our reflection DOM
 		{
 			Joint *dom = static_cast< Joint *>(&mDOM); // Get the DOM base class.
-			*dom = *(JointImpl::getDOM()); // Assign the base class DOM components.
+			*dom = *(JointImpl::getJoint()); // Assign the base class DOM components.
 		}
-		mDOM.type = mType;
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
 	}
 
 
@@ -2572,6 +2676,18 @@ public:
 	}
 
 
+	virtual Joint * getJoint(void) // Declare virtual method to return DOM version of base class.
+	{
+		return static_cast< Joint *>(&mDOM); // return the address of the DOM.
+	}
+
+
+	D6Joint * getD6Joint(void) // Declare virtual method to return the DOM version
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const override
 	{
@@ -2588,13 +2704,6 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	D6Joint *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
@@ -2603,9 +2712,9 @@ public:
 		// Copy the elements from the base class DOM to our reflection DOM
 		{
 			Joint *dom = static_cast< Joint *>(&mDOM); // Get the DOM base class.
-			*dom = *(JointImpl::getDOM()); // Assign the base class DOM components.
+			*dom = *(JointImpl::getJoint()); // Assign the base class DOM components.
 		}
-		mDOM.type = mType;
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
 	}
 
 
@@ -2646,6 +2755,12 @@ public:
 	}
 
 
+	virtual BodyPairFilter * getBodyPairFilter(void) // Declare virtual method to return DOM version of base class.
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const
 	{
@@ -2661,13 +2776,6 @@ public:
 			mBodyB  = other.mBodyB ;
 		}
 		return *this;
-	}
-
-
-	// Declare the helper method to return the DOM version of this class.
-	BodyPairFilter *getDOM(void)
-	{
-		 return &mDOM;
 	}
 
 	// Declare and implement the initDOM method
@@ -2728,6 +2836,18 @@ public:
 	}
 
 
+	virtual Node * getNode(void) // Declare virtual method to return DOM version of base class.
+	{
+		return static_cast< Node *>(&mDOM); // return the address of the DOM.
+	}
+
+
+	BodyPairFilters * getBodyPairFilters(void) // Declare virtual method to return the DOM version
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const override
 	{
@@ -2745,13 +2865,6 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	BodyPairFilters *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
@@ -2760,9 +2873,9 @@ public:
 		// Copy the elements from the base class DOM to our reflection DOM
 		{
 			Node *dom = static_cast< Node *>(&mDOM); // Get the DOM base class.
-			*dom = *(NodeImpl::getDOM()); // Assign the base class DOM components.
+			*dom = *(NodeImpl::getNode()); // Assign the base class DOM components.
 		}
-		mDOM.type = mType;
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
 		mDOM.bodyPairsCount = uint32_t(mBodyPairsDOM.size()); // assign the number of items in the array.
 		mDOM.bodyPairs = mDOM.bodyPairsCount ? &mBodyPairsDOM[0] : nullptr; // Assign the pointer array
 	}
@@ -2816,6 +2929,18 @@ public:
 	}
 
 
+	virtual Node * getNode(void) // Declare virtual method to return DOM version of base class.
+	{
+		return static_cast< Node *>(&mDOM); // return the address of the DOM.
+	}
+
+
+	InstanceCollection * getInstanceCollection(void) // Declare virtual method to return the DOM version
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const override
 	{
@@ -2835,13 +2960,6 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	InstanceCollection *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
@@ -2850,12 +2968,12 @@ public:
 		// Copy the elements from the base class DOM to our reflection DOM
 		{
 			Node *dom = static_cast< Node *>(&mDOM); // Get the DOM base class.
-			*dom = *(NodeImpl::getDOM()); // Assign the base class DOM components.
+			*dom = *(NodeImpl::getNode()); // Assign the base class DOM components.
 		}
-		mDOM.type = mType;
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
 		mDOM.collection = mCollection.c_str(); // Assign the current string pointer.
-		mDOM.pose = mPose;
-		mDOM.scale = mScale;
+		mDOM.pose = mPose; // Simple member variable assignment to the DOM reflection: pose
+		mDOM.scale = mScale; // Simple member variable assignment to the DOM reflection: scale
 	}
 
 
@@ -2913,6 +3031,18 @@ public:
 	}
 
 
+	virtual Node * getNode(void) // Declare virtual method to return DOM version of base class.
+	{
+		return static_cast< Node *>(&mDOM); // return the address of the DOM.
+	}
+
+
+	Collection * getCollection(void) // Declare virtual method to return the DOM version
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const override
 	{
@@ -2933,13 +3063,6 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	Collection *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
@@ -2948,15 +3071,15 @@ public:
 		// Copy the elements from the base class DOM to our reflection DOM
 		{
 			Node *dom = static_cast< Node *>(&mDOM); // Get the DOM base class.
-			*dom = *(NodeImpl::getDOM()); // Assign the base class DOM components.
+			*dom = *(NodeImpl::getNode()); // Assign the base class DOM components.
 		}
-		mDOM.type = mType;
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
 		mNodesDOM.clear();
 		mNodesDOM.reserve( mNodes.size() );
 		for (auto &i:mNodes)
 		{
 			i->initDOM();
-			mNodesDOM.push_back( i->getDOM() );
+			mNodesDOM.push_back( i->getNode() );
 		}
 		mDOM.nodesCount = uint32_t(mNodesDOM.size()); // assign the number of items in the array.
 		mDOM.nodes = mDOM.nodesCount ? &mNodesDOM[0] : nullptr; // Assign the pointer array
@@ -3014,6 +3137,18 @@ public:
 	}
 
 
+	virtual Node * getNode(void) // Declare virtual method to return DOM version of base class.
+	{
+		return static_cast< Node *>(&mDOM); // return the address of the DOM.
+	}
+
+
+	Scene * getScene(void) // Declare virtual method to return the DOM version
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const override
 	{
@@ -3035,13 +3170,6 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	Scene *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
@@ -3050,16 +3178,16 @@ public:
 		// Copy the elements from the base class DOM to our reflection DOM
 		{
 			Node *dom = static_cast< Node *>(&mDOM); // Get the DOM base class.
-			*dom = *(NodeImpl::getDOM()); // Assign the base class DOM components.
+			*dom = *(NodeImpl::getNode()); // Assign the base class DOM components.
 		}
-		mDOM.type = mType;
-		mDOM.gravity = mGravity;
+		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
+		mDOM.gravity = mGravity; // Simple member variable assignment to the DOM reflection: gravity
 		mNodesDOM.clear();
 		mNodesDOM.reserve( mNodes.size() );
 		for (auto &i:mNodes)
 		{
 			i->initDOM();
-			mNodesDOM.push_back( i->getDOM() );
+			mNodesDOM.push_back( i->getNode() );
 		}
 		mDOM.nodesCount = uint32_t(mNodesDOM.size()); // assign the number of items in the array.
 		mDOM.nodes = mDOM.nodesCount ? &mNodesDOM[0] : nullptr; // Assign the pointer array
@@ -3122,6 +3250,12 @@ public:
 	}
 
 
+	virtual PhysicsDOM * getPhysicsDOM(void) // Declare virtual method to return DOM version of base class.
+	{
+		return &mDOM; // return the address of the DOM.
+	}
+
+
 	// Declare the virtual clone method using a deep copy
 	virtual CloneObject* clone() const
 	{
@@ -3145,13 +3279,6 @@ public:
 		return *this;
 	}
 
-
-	// Declare the helper method to return the DOM version of this class.
-	PhysicsDOM *getDOM(void)
-	{
-		 return &mDOM;
-	}
-
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
@@ -3160,7 +3287,7 @@ public:
 		for (auto &i:mCollections)
 		{
 			i->initDOM();
-			mCollectionsDOM.push_back( i->getDOM() );
+			mCollectionsDOM.push_back( i->getCollection() );
 		}
 		mDOM.collectionsCount = uint32_t(mCollectionsDOM.size()); // assign the number of items in the array.
 		mDOM.collections = mDOM.collectionsCount ? &mCollectionsDOM[0] : nullptr; // Assign the pointer array
@@ -3169,7 +3296,7 @@ public:
 		for (auto &i:mScenes)
 		{
 			i->initDOM();
-			mScenesDOM.push_back( i->getDOM() );
+			mScenesDOM.push_back( i->getScene() );
 		}
 		mDOM.scenesCount = uint32_t(mScenesDOM.size()); // assign the number of items in the array.
 		mDOM.scenes = mDOM.scenesCount ? &mScenesDOM[0] : nullptr; // Assign the pointer array

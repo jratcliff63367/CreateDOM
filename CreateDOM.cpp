@@ -13,10 +13,10 @@
 #include <assert.h>
 
 #if 0
-#include "PhysicsDOM.h"
-#include "PhysicsDOMImpl.h"
+//#include "PhysicsDOM.h"
+//#include "PhysicsDOMImpl.h"
 
-#if 0
+#if 1
 #include "DeepCopy.h"
 #include "DeepCopyImpl.h"
 
@@ -32,7 +32,7 @@ void testDeepCopy(void)
 	g.mTestVec3.mPoints.push_back(v2);
 	g.mTestVec3.mPoints.push_back(v3);
 	g.initDOM();
-	DEEP_COPY::GeometryInstance *dom = g.getDOM();
+	DEEP_COPY::GeometryInstance *dom = g.getGeometryInstance();
 	if (dom)
 	{
 		printf("Debug Me");
@@ -706,6 +706,32 @@ public:
 					cp.printCode(1, "}\r\n");
 					cp.printCode(0, "\r\n");
 
+					if (mInheritsFrom.empty())
+					{
+						cp.printCode(0, "\r\n");
+						cp.printCode(1, "virtual %s * get%s(void) // Declare virtual method to return DOM version of base class.\r\n", mName.c_str(), mName.c_str());
+						cp.printCode(1, "{\r\n");
+						cp.printCode(2, "return &mDOM; // return the address of the DOM.\r\n");
+						cp.printCode(1, "}\r\n");
+						cp.printCode(0, "\r\n");
+					}
+					else
+					{
+						cp.printCode(0, "\r\n");
+						cp.printCode(1, "virtual %s * get%s(void) // Declare virtual method to return DOM version of base class.\r\n", mInheritsFrom.c_str(), mInheritsFrom.c_str());
+						cp.printCode(1, "{\r\n");
+						cp.printCode(2, "return static_cast< %s *>(&mDOM); // return the address of the DOM.\r\n", mInheritsFrom.c_str());
+						cp.printCode(1, "}\r\n");
+						cp.printCode(0, "\r\n");
+
+						cp.printCode(0, "\r\n");
+						cp.printCode(1, "%s * get%s(void) // Declare virtual method to return the DOM version\r\n", mName.c_str(), mName.c_str());
+						cp.printCode(1, "{\r\n");
+						cp.printCode(2, "return &mDOM; // return the address of the DOM.\r\n");
+						cp.printCode(1, "}\r\n");
+						cp.printCode(0, "\r\n");
+					}
+
 					// **********************************************
 					// Start of the clone code
 					// **********************************************
@@ -774,6 +800,7 @@ public:
 			}
 			if ( isImpl )
 			{
+#if 0
 				// Get DOM code
 				{
 					cp.printCode(0, "\r\n");
@@ -784,6 +811,7 @@ public:
 					cp.printCode(1, "}\r\n");
 					cp.printCode(0, "\r\n");
 				}
+#endif
 				// initDOM code
 				{
 					cp.printCode(1, "// Declare and implement the initDOM method\r\n");
@@ -799,7 +827,8 @@ public:
 						cp.printCode(3, "%s *dom = static_cast< %s *>(&mDOM); // Get the DOM base class.\r\n",
 							mInheritsFrom.c_str(),
 							mInheritsFrom.c_str());
-						cp.printCode(3, "*dom = *(%sImpl::getDOM()); // Assign the base class DOM components.\r\n",
+						cp.printCode(3, "*dom = *(%sImpl::get%s()); // Assign the base class DOM components.\r\n",
+							mInheritsFrom.c_str(),
 							mInheritsFrom.c_str());
 						cp.printCode(2, "}\r\n");
 					}
@@ -818,8 +847,9 @@ public:
 								i.mType.c_str(),
 								getMemberName(i.mMember, true));
 							cp.printCode(3, "impl->initDOM(); // Initialize DOM components of member variable.\r\n");
-							cp.printCode(3, "mDOM.%s = *impl->getDOM(); // Copy the DOM struct values.\r\n",
-								i.mMember.c_str());
+							cp.printCode(3, "mDOM.%s = *impl->get%s(); // Copy the DOM struct values.\r\n",
+								i.mMember.c_str(),
+								i.mType.c_str());
 							cp.printCode(2, "}\r\n");
 						}
 						else if (i.mIsString)
@@ -862,8 +892,9 @@ public:
 							cp.printCode(2, "for (auto &i:%s)\r\n", getMemberName(i.mMember, true));
 							cp.printCode(2, "{\r\n");
 							cp.printCode(3, "i->initDOM();\r\n");
-							cp.printCode(3, "%sDOM.push_back( i->getDOM() );\r\n",
-								getMemberName(i.mMember, true));
+							cp.printCode(3, "%sDOM.push_back( i->get%s() );\r\n",
+								getMemberName(i.mMember, true),
+								i.mType.c_str());
 							cp.printCode(2, "}\r\n");
 							cp.printCode(2, "mDOM.%sCount = uint32_t(%s%s.size()); // assign the number of items in the array.\r\n",
 								getMemberName(i.mMember, false),
@@ -894,13 +925,12 @@ public:
 							cp.printCode(3, "%s->initDOM(); // Initialize any DOM components of this object.\r\n",
 								getMemberName(i.mMember, true));
 
-							cp.printCode(3, "mDOM.%s = %s->getDOM(); // assign the DOM reflection pointer.\r\n",
+							cp.printCode(3, "mDOM.%s = %s->get%s(); // assign the DOM reflection pointer.\r\n",
 								getMemberName(i.mMember, false),
-								getMemberName(i.mMember, true));
-
+								getMemberName(i.mMember, true),
+								i.mType.c_str());
 
 							cp.printCode(2, "}\r\n");
-
 						}
 						else
 						{

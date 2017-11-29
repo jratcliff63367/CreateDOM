@@ -39,7 +39,7 @@ public:
 		s->mNodes.push_back(ic);
 
 		dom.initDOM();
-		PHYSICS_DOM::PhysicsDOM *pdom = dom.getDOM();
+		PHYSICS_DOM::PhysicsDOM *pdom = dom.getPhysicsDOM();
 		if (pdom)
 		{
 			printf("Created DOM.\r\n");
