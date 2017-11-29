@@ -69,7 +69,7 @@ enum NodeType
 	NT_JOINT = 10;   					// Base class for a joint
 	NT_FIXED_JOINT = 11; 				// A fixed joint
 	NT_SPHERICAL_JOINT = 12; 			// A spherical joint
-	NT_REVOLUTE_JOINT = 13;				// A revolute joint
+	NT_HINGE_JOINT = 13; 				// A hinge joint
 	NT_PRISMATIC_JOINT = 14; 			// A prismatic joint
 	NT_DISTANCE_JOINT = 15;				// A distance joint
 	NT_BALL_AND_SOCKET_JOINT = 16;   	// A ball and socket joint
@@ -329,7 +329,7 @@ message Joint
 	{
 		FixedJoint fixedJoint = 6;
 		SphericalJoint sphericalJoint = 7;
-		RevoluteJoint revoluteJoint = 8;
+		HingeJoint hingeJoint = 8;
 		PrismaticJoint prismaticJoint = 9;
 		DistanceJoint distanceJoint = 10;
 		BallAndSocketJoint ballAndSocketJoint = 11;
@@ -350,13 +350,17 @@ message FixedJoint
 // Not all properties yet defined!
 message SphericalJoint
 {
+	float limitY = 1;
+	float limitZ = 2;
 }
 
 
 // Defines the properties specific to a revolute joint 
 // Not all properties yet defined!
-message RevoluteJoint
+message HingeJoint
 {
+	float limtLow = 1;
+	float limitHigh = 2;
 }
 
 
@@ -364,6 +368,8 @@ message RevoluteJoint
 // Not all properties yet defined!
 message PrismaticJoint
 {
+	float limitLow = 1;
+	float limitHigh = 2;
 }
 
 
@@ -371,6 +377,8 @@ message PrismaticJoint
 // Not all properties yet defined!
 message DistanceJoint
 {
+	float distanceLow = 1;
+	float distanceHigh = 2;
 }
 
 
@@ -378,6 +386,10 @@ message DistanceJoint
 // Not all properties yet defined!
 message BallAndSocketJoint
 {
+	float limitXLow = 1;
+	float limitXHigh = 2;
+	float limitY = 3;
+	float limitZ = 4;
 }
 
 

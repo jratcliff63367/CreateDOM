@@ -41,7 +41,7 @@ NodeType,,Enum,,,,,,Defines the type of node we are dealing with,
 ,NT_JOINT,,,,,,,Base class for a joint,
 ,NT_FIXED_JOINT,,,,,,,A fixed joint,
 ,NT_SPHERICAL_JOINT,,,,,,,A spherical joint,
-,NT_REVOLUTE_JOINT,,,,,,,A revolute joint,
+,NT_HINGE_JOINT,,,,,,,A hinge joint,
 ,NT_PRISMATIC_JOINT,,,,,,,A prismatic joint,
 ,NT_DISTANCE_JOINT,,,,,,,A distance joint,
 ,NT_BALL_AND_SOCKET_JOINT,,,,,,,A ball and socket joint,
@@ -194,18 +194,30 @@ FixedJoint,,Class,Joint,,,,,Defines the properties specific to a fixed joint ,No
 ,,,,,,,,,
 SphericalJoint,,Class,Joint,,,,,Defines the properties specific to a spherical joint ,Not all properties yet defined!
 ,type,NodeType,Joint,,NT_SPHERICAL_JOINT,,,,
+,limitY,float,,,0,,,The limit angle (in radians) for the y rotation axis,
+,limitZ,float,,,0,,,The limit angle (in radians) for the z rotation axis,
 ,,,,,,,,,
-RevoluteJoint,,Class,Joint,,,,,Defines the properties specific to a revolute joint ,Not all properties yet defined!
-,type,NodeType,Joint,,NT_REVOLUTE_JOINT,,,,
+HingeJoint,,Class,Joint,,,,,Defines the properties specific to a revolute joint ,Not all properties yet defined!
+,type,NodeType,Joint,,NT_HINGE_JOINT,,,,
+,limtLow,float,,,0,,,The lower limit of the hinge joint in radians,
+,limitHigh,float,,,0,,,The upper limit of the hinge joint in radians,
 ,,,,,,,,,
 PrismaticJoint,,Class,Joint,,,,,Defines the properties specific to a prismatic joint ,Not all properties yet defined!
 ,type,NodeType,Joint,,NT_PRISMATIC_JOINT,,,,
+,limitLow,float,,,0,,,The lower linear limit distance,
+,limitHigh,float,,,,,,The upper linear limit distance,
 ,,,,,,,,,
 DistanceJoint,,Class,Joint,,,,,Defines the properties specific to a distance joint ,Not all properties yet defined!
 ,type,NodeType,Joint,,NT_DISTANCE_JOINT,,,,
+,distanceLow,float,,,0,0,FLT_MAX,The minimum distance allowed between the two bodies,
+,distanceHigh,float,,,0,0,FLT_MAX,The maximum distance allowed between the two bodies,
 ,,,,,,,,,
 BallAndSocketJoint,,Class,Joint,,,,,Defines the properties specific to a ball and socket joint ,Not all properties yet defined!
 ,type,NodeType,Joint,,NT_BALL_AND_SOCKET_JOINT,,,,
+,limitXLow,float,,,0,,,"The lower angle limit, in radians, for the X rotation axis",
+,limitXHigh,float,,,0,,,"The upper angle limit, in radians, for the X rotation axis",
+,limitY,float,,,0,,,The limit angle (in radians) for the y rotation axis,
+,limitZ,float,,,0,,,The limit angle (in radians) for the z rotation axis,
 ,,,,,,,,,
 D6Joint,,Class,Joint,,,,,Defines the properties specific to a six degree of freedom joint ,Not all properties yet defined!
 ,type,NodeType,Joint,,NT_D6_JOINT,,,,
