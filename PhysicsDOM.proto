@@ -10,6 +10,11 @@ package CreateDOM;
 // [START messages]
 
 
+message ExportXML
+{
+}
+
+
 // Defines a basic 3d vector type
 message Vec3
 {

@@ -1,7 +1,7 @@
 URL,https://docs.google.com/spreadsheets/d/118I5kdu2XT-6wfCG044937xfEKDyX2oNg04G8Wqi6o0/edit?usp=sharing,,,,,,,Below is the link to the auto-generated C++ code from this data-definition file,
 Filename,PhysicsDOM,Define the name of this DOM; which will control the filenames generated for the C++ source and JSON schema,,,,,,https://github.com/jratcliff63367/CreateDOM/blob/master/PhysicsDOM.h,
 Namespace,PHYSICS_DOM,Define the C++ namespace for this DOM,,,,,,,
-,,,,,,,,,
+ExportXML,PhysicsDOMExportXML,If this is present; then auto-generate the C++ code to export a DOM as an XML file,,,,,,,
 ,,,,,,,,,
 ObjectName,DataItemName,Type,Inherits From,Engine Specific,DefaultValue,MinValue,MaxValue,ShortDescription,DetailedDescription
 ,,,,,,,,,

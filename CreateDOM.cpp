@@ -803,7 +803,10 @@ public:
 							mInheritsFrom.c_str());
 						cp.printCode(2, "}\r\n");
 					}
-
+					if (strcmp(mName.c_str(), "Node") == 0)
+					{
+						printf("debug me");
+					}
 					for (auto &i : mItems)
 					{
 						const char *arrayPostFix = i.mNeedsReflection ? "DOM" : "";
@@ -898,6 +901,13 @@ public:
 
 							cp.printCode(2, "}\r\n");
 
+						}
+						else
+						{
+							cp.printCode(2, "mDOM.%s = %s; // Simple member variable assignment to the DOM reflection: %s\r\n",
+								getMemberName(i.mMember, false),
+								getMemberName(i.mMember, true),
+								getMemberName(i.mMember, false));
 						}
 					}
 					cp.printCode(1, "}\r\n");

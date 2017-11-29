@@ -78,6 +78,8 @@ public:
 	virtual void initDOM(void) override
 	{
 		mDOM.visualName = mVisualName.c_str(); // Assign the current string pointer.
+		mDOM.localPose = mLocalPose;
+		mDOM.localScale = mLocalScale;
 	}
 
 
@@ -306,6 +308,7 @@ public:
 	{
 		mDOM.id = mId.c_str(); // Assign the current string pointer.
 		mDOM.name = mName.c_str(); // Assign the current string pointer.
+		mDOM.type = mType;
 		{
 			VisualBindingImpl *impl = static_cast< VisualBindingImpl *>(&mVisual); // static cast to the implementation class.
 			impl->initDOM(); // Initialize DOM components of member variable.
@@ -410,6 +413,12 @@ public:
 			Node *dom = static_cast< Node *>(&mDOM); // Get the DOM base class.
 			*dom = *(NodeImpl::getDOM()); // Assign the base class DOM components.
 		}
+		mDOM.type = mType;
+		mDOM.disableFriction = mDisableFriction;
+		mDOM.disableStrongFriction = mDisableStrongFriction;
+		mDOM.dynamicFriction = mDynamicFriction;
+		mDOM.staticFriction = mStaticFriction;
+		mDOM.restitution = mRestitution;
 	}
 
 
@@ -503,6 +512,7 @@ public:
 			Node *dom = static_cast< Node *>(&mDOM); // Get the DOM base class.
 			*dom = *(NodeImpl::getDOM()); // Assign the base class DOM components.
 		}
+		mDOM.type = mType;
 		mDOM.pointsCount = uint32_t(mPoints.size()); // assign the number of items in the array.
 		mDOM.points = mDOM.pointsCount ? &mPoints[0] : nullptr; // Assign the pointer array
 	}
@@ -594,6 +604,7 @@ public:
 			Node *dom = static_cast< Node *>(&mDOM); // Get the DOM base class.
 			*dom = *(NodeImpl::getDOM()); // Assign the base class DOM components.
 		}
+		mDOM.type = mType;
 		mDOM.pointsCount = uint32_t(mPoints.size()); // assign the number of items in the array.
 		mDOM.points = mDOM.pointsCount ? &mPoints[0] : nullptr; // Assign the pointer array
 		mDOM.trianglesCount = uint32_t(mTriangles.size()); // assign the number of items in the array.
@@ -693,6 +704,9 @@ public:
 			Node *dom = static_cast< Node *>(&mDOM); // Get the DOM base class.
 			*dom = *(NodeImpl::getDOM()); // Assign the base class DOM components.
 		}
+		mDOM.type = mType;
+		mDOM.rowCount = mRowCount;
+		mDOM.columnCount = mColumnCount;
 		mDOM.samplesCount = uint32_t(mSamples.size()); // assign the number of items in the array.
 		mDOM.samples = mDOM.samplesCount ? &mSamples[0] : nullptr; // Assign the pointer array
 		mDOM.metaDataCount = uint32_t(mMetaData.size()); // assign the number of items in the array.
@@ -772,6 +786,7 @@ public:
 	// Declare and implement the initDOM method
 	virtual void initDOM(void) override
 	{
+		mDOM.type = mType;
 	}
 
 
@@ -855,6 +870,8 @@ public:
 			Geometry *dom = static_cast< Geometry *>(&mDOM); // Get the DOM base class.
 			*dom = *(GeometryImpl::getDOM()); // Assign the base class DOM components.
 		}
+		mDOM.type = mType;
+		mDOM.dimensions = mDimensions;
 	}
 
 
@@ -939,6 +956,8 @@ public:
 			Geometry *dom = static_cast< Geometry *>(&mDOM); // Get the DOM base class.
 			*dom = *(GeometryImpl::getDOM()); // Assign the base class DOM components.
 		}
+		mDOM.type = mType;
+		mDOM.radius = mRadius;
 	}
 
 
@@ -1024,6 +1043,9 @@ public:
 			Geometry *dom = static_cast< Geometry *>(&mDOM); // Get the DOM base class.
 			*dom = *(GeometryImpl::getDOM()); // Assign the base class DOM components.
 		}
+		mDOM.type = mType;
+		mDOM.radius = mRadius;
+		mDOM.height = mHeight;
 	}
 
 
@@ -1111,6 +1133,9 @@ public:
 			Geometry *dom = static_cast< Geometry *>(&mDOM); // Get the DOM base class.
 			*dom = *(GeometryImpl::getDOM()); // Assign the base class DOM components.
 		}
+		mDOM.type = mType;
+		mDOM.radius = mRadius;
+		mDOM.height = mHeight;
 	}
 
 
@@ -1198,6 +1223,8 @@ public:
 			Geometry *dom = static_cast< Geometry *>(&mDOM); // Get the DOM base class.
 			*dom = *(GeometryImpl::getDOM()); // Assign the base class DOM components.
 		}
+		mDOM.type = mType;
+		mDOM.scale = mScale;
 		mDOM.convexMesh = mConvexMesh.c_str(); // Assign the current string pointer.
 	}
 
@@ -1287,7 +1314,10 @@ public:
 			Geometry *dom = static_cast< Geometry *>(&mDOM); // Get the DOM base class.
 			*dom = *(GeometryImpl::getDOM()); // Assign the base class DOM components.
 		}
+		mDOM.type = mType;
+		mDOM.scale = mScale;
 		mDOM.triangleMesh = mTriangleMesh.c_str(); // Assign the current string pointer.
+		mDOM.doubleSided = mDoubleSided;
 	}
 
 
@@ -1380,7 +1410,12 @@ public:
 			Geometry *dom = static_cast< Geometry *>(&mDOM); // Get the DOM base class.
 			*dom = *(GeometryImpl::getDOM()); // Assign the base class DOM components.
 		}
+		mDOM.type = mType;
 		mDOM.heightField = mHeightField.c_str(); // Assign the current string pointer.
+		mDOM.heightScale = mHeightScale;
+		mDOM.rowScale = mRowScale;
+		mDOM.columnScale = mColumnScale;
+		mDOM.doubleSided = mDoubleSided;
 	}
 
 
@@ -1472,6 +1507,7 @@ public:
 			Geometry *dom = static_cast< Geometry *>(&mDOM); // Get the DOM base class.
 			*dom = *(GeometryImpl::getDOM()); // Assign the base class DOM components.
 		}
+		mDOM.type = mType;
 	}
 
 
@@ -1564,6 +1600,7 @@ public:
 			mMaterialsImpl.push_back( i.c_str() ); // Add the const char * for the string.
 		mDOM.materialsCount = uint32_t(mMaterialsImpl.size()); // Assign the number of strings
 		mDOM.materials = mDOM.materialsCount ? &mMaterialsImpl[0] : nullptr; // Assign the pointer array.
+		mDOM.localPose = mLocalPose;
 		mDOM.collisionFilterSettings = mCollisionFilterSettings.c_str(); // Assign the current string pointer.
 	}
 
@@ -1664,6 +1701,7 @@ public:
 			Node *dom = static_cast< Node *>(&mDOM); // Get the DOM base class.
 			*dom = *(NodeImpl::getDOM()); // Assign the base class DOM components.
 		}
+		mDOM.type = mType;
 		mGeometryInstancesDOM.clear();
 		mGeometryInstancesDOM.reserve( mGeometryInstances.size() );
 		for (auto &i:mGeometryInstances)
@@ -1673,6 +1711,7 @@ public:
 		}
 		mDOM.geometryInstancesCount = uint32_t(mGeometryInstancesDOM.size()); // assign the number of items in the array.
 		mDOM.geometryInstances = mDOM.geometryInstancesCount ? &mGeometryInstancesDOM[0] : nullptr; // Assign the pointer array
+		mDOM.globalPose = mGlobalPose;
 	}
 
 
@@ -1761,6 +1800,7 @@ public:
 			RigidBody *dom = static_cast< RigidBody *>(&mDOM); // Get the DOM base class.
 			*dom = *(RigidBodyImpl::getDOM()); // Assign the base class DOM components.
 		}
+		mDOM.type = mType;
 	}
 
 
@@ -1852,6 +1892,17 @@ public:
 			RigidBody *dom = static_cast< RigidBody *>(&mDOM); // Get the DOM base class.
 			*dom = *(RigidBodyImpl::getDOM()); // Assign the base class DOM components.
 		}
+		mDOM.type = mType;
+		mDOM.disableGravity = mDisableGravity;
+		mDOM.centerOfMassLocalPose = mCenterOfMassLocalPose;
+		mDOM.mass = mMass;
+		mDOM.massSpaceInertiaTensor = mMassSpaceInertiaTensor;
+		mDOM.linearVelocity = mLinearVelocity;
+		mDOM.angularVelocity = mAngularVelocity;
+		mDOM.linearDamping = mLinearDamping;
+		mDOM.angularDamping = mAngularDamping;
+		mDOM.maxAngularVelocity = mMaxAngularVelocity;
+		mDOM.kinematic = mKinematic;
 	}
 
 
@@ -1958,8 +2009,12 @@ public:
 			Node *dom = static_cast< Node *>(&mDOM); // Get the DOM base class.
 			*dom = *(NodeImpl::getDOM()); // Assign the base class DOM components.
 		}
+		mDOM.type = mType;
 		mDOM.body0 = mBody0.c_str(); // Assign the current string pointer.
 		mDOM.body1 = mBody1.c_str(); // Assign the current string pointer.
+		mDOM.localpose0 = mLocalpose0;
+		mDOM.localpose1 = mLocalpose1;
+		mDOM.collisionEnabled = mCollisionEnabled;
 	}
 
 
@@ -2052,6 +2107,7 @@ public:
 			Joint *dom = static_cast< Joint *>(&mDOM); // Get the DOM base class.
 			*dom = *(JointImpl::getDOM()); // Assign the base class DOM components.
 		}
+		mDOM.type = mType;
 	}
 
 
@@ -2134,6 +2190,7 @@ public:
 			Joint *dom = static_cast< Joint *>(&mDOM); // Get the DOM base class.
 			*dom = *(JointImpl::getDOM()); // Assign the base class DOM components.
 		}
+		mDOM.type = mType;
 	}
 
 
@@ -2216,6 +2273,7 @@ public:
 			Joint *dom = static_cast< Joint *>(&mDOM); // Get the DOM base class.
 			*dom = *(JointImpl::getDOM()); // Assign the base class DOM components.
 		}
+		mDOM.type = mType;
 	}
 
 
@@ -2298,6 +2356,7 @@ public:
 			Joint *dom = static_cast< Joint *>(&mDOM); // Get the DOM base class.
 			*dom = *(JointImpl::getDOM()); // Assign the base class DOM components.
 		}
+		mDOM.type = mType;
 	}
 
 
@@ -2380,6 +2439,7 @@ public:
 			Joint *dom = static_cast< Joint *>(&mDOM); // Get the DOM base class.
 			*dom = *(JointImpl::getDOM()); // Assign the base class DOM components.
 		}
+		mDOM.type = mType;
 	}
 
 
@@ -2462,6 +2522,7 @@ public:
 			Joint *dom = static_cast< Joint *>(&mDOM); // Get the DOM base class.
 			*dom = *(JointImpl::getDOM()); // Assign the base class DOM components.
 		}
+		mDOM.type = mType;
 	}
 
 
@@ -2544,6 +2605,7 @@ public:
 			Joint *dom = static_cast< Joint *>(&mDOM); // Get the DOM base class.
 			*dom = *(JointImpl::getDOM()); // Assign the base class DOM components.
 		}
+		mDOM.type = mType;
 	}
 
 
@@ -2700,6 +2762,7 @@ public:
 			Node *dom = static_cast< Node *>(&mDOM); // Get the DOM base class.
 			*dom = *(NodeImpl::getDOM()); // Assign the base class DOM components.
 		}
+		mDOM.type = mType;
 		mDOM.bodyPairsCount = uint32_t(mBodyPairsDOM.size()); // assign the number of items in the array.
 		mDOM.bodyPairs = mDOM.bodyPairsCount ? &mBodyPairsDOM[0] : nullptr; // Assign the pointer array
 	}
@@ -2789,7 +2852,10 @@ public:
 			Node *dom = static_cast< Node *>(&mDOM); // Get the DOM base class.
 			*dom = *(NodeImpl::getDOM()); // Assign the base class DOM components.
 		}
+		mDOM.type = mType;
 		mDOM.collection = mCollection.c_str(); // Assign the current string pointer.
+		mDOM.pose = mPose;
+		mDOM.scale = mScale;
 	}
 
 
@@ -2884,6 +2950,7 @@ public:
 			Node *dom = static_cast< Node *>(&mDOM); // Get the DOM base class.
 			*dom = *(NodeImpl::getDOM()); // Assign the base class DOM components.
 		}
+		mDOM.type = mType;
 		mNodesDOM.clear();
 		mNodesDOM.reserve( mNodes.size() );
 		for (auto &i:mNodes)
@@ -2985,6 +3052,8 @@ public:
 			Node *dom = static_cast< Node *>(&mDOM); // Get the DOM base class.
 			*dom = *(NodeImpl::getDOM()); // Assign the base class DOM components.
 		}
+		mDOM.type = mType;
+		mDOM.gravity = mGravity;
 		mNodesDOM.clear();
 		mNodesDOM.reserve( mNodes.size() );
 		for (auto &i:mNodes)
