@@ -1,0 +1,5 @@
+<PhysicsDOM>
+  <Scene>
+    <gravity>0 -9.8 0</gravity>
+  </Scene>
+</PhysicsDOM>
