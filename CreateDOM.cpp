@@ -697,16 +697,27 @@ public:
 						cp.printCode(0, "\r\n");
 						cp.printCode(1, "virtual %s * get%s(void) // Declare virtual method to return DOM version of base class.\r\n", mInheritsFrom.c_str(), mInheritsFrom.c_str());
 						cp.printCode(1, "{\r\n");
-						cp.printCode(2, "return static_cast< %s *>(&mDOM); // return the address of the DOM.\r\n", mInheritsFrom.c_str());
+						cp.printCode(2, "return &mDOM; // return the address of the DOM.\r\n", mInheritsFrom.c_str());
 						cp.printCode(1, "}\r\n");
 						cp.printCode(0, "\r\n");
 
 						cp.printCode(0, "\r\n");
-						cp.printCode(1, "%s * get%s(void) // Declare virtual method to return the DOM version\r\n", mName.c_str(), mName.c_str());
+						cp.printCode(1, "virtual %s * get%s(void) // Declare virtual method to return the DOM version\r\n", mName.c_str(), mName.c_str());
 						cp.printCode(1, "{\r\n");
 						cp.printCode(2, "return &mDOM; // return the address of the DOM.\r\n");
 						cp.printCode(1, "}\r\n");
 						cp.printCode(0, "\r\n");
+
+						if (!mMultipleInherticance.empty())
+						{
+							cp.printCode(0, "\r\n");
+							cp.printCode(1, "virtual %s * get%s(void) // Declare virtual method to return the DOM version based on multiple inheritance\r\n", mMultipleInherticance.c_str(), mMultipleInherticance.c_str());
+							cp.printCode(1, "{\r\n");
+							cp.printCode(2, "return &mDOM; // return the address of the DOM.\r\n");
+							cp.printCode(1, "}\r\n");
+							cp.printCode(0, "\r\n");
+						}
+
 					}
 
 					// **********************************************
@@ -1302,6 +1313,7 @@ public:
 	std::string		mName;
 	std::string		mType;
 	std::string		mInheritsFrom;
+	std::string		mMultipleInherticance;
 	std::string		mEngineSpecific;
 	std::string		mDefaultValue;
 	std::string		mShortDescription;
@@ -1329,6 +1341,23 @@ public:
 		for (auto &i : mObjects)
 		{
 			i.computeReflectionMembers(needsReflection);
+		}
+		// compute multiple inheritance requirements...
+		for (auto &i : mObjects)
+		{
+			if (!i.mInheritsFrom.empty())
+			{
+				for (auto &j : mObjects)
+				{
+					if (i.mInheritsFrom == j.mName)
+					{
+						if (!j.mInheritsFrom.empty())
+						{
+							i.mMultipleInherticance = j.mInheritsFrom;
+						}
+					}
+				}
+			}
 		}
 
 	}
