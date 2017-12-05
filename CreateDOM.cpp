@@ -896,6 +896,24 @@ public:
 						}
 						else if (i.mIsArray)
 						{
+
+							// If the array needs a deep copy..
+							if (i.mNeedsReflection )
+							{
+								cp.printCode(2, "%sDOM.clear();\r\n", getMemberName(i.mMember, true));
+								cp.printCode(2, "%sDOM.reserve( %s.size() );\r\n",
+									getMemberName(i.mMember, true),
+									getMemberName(i.mMember, true));
+								cp.printCode(2, "for (auto &i:%s)\r\n", getMemberName(i.mMember, true));
+								cp.printCode(2, "{\r\n");
+								cp.printCode(3, "i.initDOM();\r\n");
+								cp.printCode(3, "%sDOM.push_back( *(i.get%s()) );\r\n",
+									getMemberName(i.mMember, true),
+									i.mType.c_str());
+								cp.printCode(2, "}\r\n");
+							}
+
+
 							cp.printCode(2, "mDOM.%sCount = uint32_t(%s%s.size()); // assign the number of items in the array.\r\n",
 								getMemberName(i.mMember, false),
 								getMemberName(i.mMember, true),

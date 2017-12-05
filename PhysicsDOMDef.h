@@ -224,6 +224,13 @@ public:
 	virtual void initDOM(void) override
 	{
 		mDOM.category = mCategory.c_str(); // Assign the current string pointer.
+		mKeyValuePairsDOM.clear();
+		mKeyValuePairsDOM.reserve( mKeyValuePairs.size() );
+		for (auto &i:mKeyValuePairs)
+		{
+			i.initDOM();
+			mKeyValuePairsDOM.push_back( *(i.getKeyValuePair()) );
+		}
 		mDOM.keyValuePairsCount = uint32_t(mKeyValuePairsDOM.size()); // assign the number of items in the array.
 		mDOM.keyValuePairs = mDOM.keyValuePairsCount ? &mKeyValuePairsDOM[0] : nullptr; // Assign the pointer array
 	}
@@ -309,6 +316,13 @@ public:
 			VisualBindingDef *impl = static_cast< VisualBindingDef *>(&mVisual); // static cast to the implementation class.
 			impl->initDOM(); // Initialize DOM components of member variable.
 			mDOM.visual = *impl->getVisualBinding(); // Copy the DOM struct values.
+		}
+		mAdditionalPropertiesDOM.clear();
+		mAdditionalPropertiesDOM.reserve( mAdditionalProperties.size() );
+		for (auto &i:mAdditionalProperties)
+		{
+			i.initDOM();
+			mAdditionalPropertiesDOM.push_back( *(i.getAdditionalProperties()) );
 		}
 		mDOM.additionalPropertiesCount = uint32_t(mAdditionalPropertiesDOM.size()); // assign the number of items in the array.
 		mDOM.additionalProperties = mDOM.additionalPropertiesCount ? &mAdditionalPropertiesDOM[0] : nullptr; // Assign the pointer array
@@ -2978,6 +2992,13 @@ public:
 			*dom = *(NodeDef::getNode()); // Assign the base class DOM components.
 		}
 		mDOM.type = mType; // Simple member variable assignment to the DOM reflection: type
+		mBodyPairsDOM.clear();
+		mBodyPairsDOM.reserve( mBodyPairs.size() );
+		for (auto &i:mBodyPairs)
+		{
+			i.initDOM();
+			mBodyPairsDOM.push_back( *(i.getBodyPairFilter()) );
+		}
 		mDOM.bodyPairsCount = uint32_t(mBodyPairsDOM.size()); // assign the number of items in the array.
 		mDOM.bodyPairs = mDOM.bodyPairsCount ? &mBodyPairsDOM[0] : nullptr; // Assign the pointer array
 	}
