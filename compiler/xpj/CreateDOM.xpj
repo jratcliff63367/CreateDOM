@@ -17,7 +17,7 @@
       	*.cc
       	*.h
       </Files>
-      <Files name="GoogleProtobuf" root="../../google/protobuf" type="header">
+      <Files name="GoogleProtobuf" root="../../protobuf/include/google/protobuf" type="header">
       	*.cc
       	*.h
       	io/*.cc
@@ -41,6 +41,7 @@
 
         <SearchPaths type="header">
          ../../
+         ../../protobuf/include
         </SearchPaths>
 
         <SearchPaths type="library">
