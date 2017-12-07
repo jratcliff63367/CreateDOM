@@ -35,6 +35,9 @@ namespace CreateDOM {
 class AdditionalProperties;
 class AdditionalPropertiesDefaultTypeInternal;
 extern AdditionalPropertiesDefaultTypeInternal _AdditionalProperties_default_instance_;
+class BallAndSocketJoint;
+class BallAndSocketJointDefaultTypeInternal;
+extern BallAndSocketJointDefaultTypeInternal _BallAndSocketJoint_default_instance_;
 class BodyPairFilter;
 class BodyPairFilterDefaultTypeInternal;
 extern BodyPairFilterDefaultTypeInternal _BodyPairFilter_default_instance_;
@@ -62,12 +65,30 @@ extern ConvexHullGeometryDefaultTypeInternal _ConvexHullGeometry_default_instanc
 class CylinderGeometry;
 class CylinderGeometryDefaultTypeInternal;
 extern CylinderGeometryDefaultTypeInternal _CylinderGeometry_default_instance_;
+class D6Joint;
+class D6JointDefaultTypeInternal;
+extern D6JointDefaultTypeInternal _D6Joint_default_instance_;
+class DistanceJoint;
+class DistanceJointDefaultTypeInternal;
+extern DistanceJointDefaultTypeInternal _DistanceJoint_default_instance_;
+class FixedJoint;
+class FixedJointDefaultTypeInternal;
+extern FixedJointDefaultTypeInternal _FixedJoint_default_instance_;
 class Geometry;
 class GeometryDefaultTypeInternal;
 extern GeometryDefaultTypeInternal _Geometry_default_instance_;
 class GeometryInstance;
 class GeometryInstanceDefaultTypeInternal;
 extern GeometryInstanceDefaultTypeInternal _GeometryInstance_default_instance_;
+class HeightField;
+class HeightFieldDefaultTypeInternal;
+extern HeightFieldDefaultTypeInternal _HeightField_default_instance_;
+class HeightFieldGeometry;
+class HeightFieldGeometryDefaultTypeInternal;
+extern HeightFieldGeometryDefaultTypeInternal _HeightFieldGeometry_default_instance_;
+class HingeJoint;
+class HingeJointDefaultTypeInternal;
+extern HingeJointDefaultTypeInternal _HingeJoint_default_instance_;
 class InstanceCollection;
 class InstanceCollectionDefaultTypeInternal;
 extern InstanceCollectionDefaultTypeInternal _InstanceCollection_default_instance_;
@@ -98,6 +119,9 @@ extern PlaneGeometryDefaultTypeInternal _PlaneGeometry_default_instance_;
 class Pose;
 class PoseDefaultTypeInternal;
 extern PoseDefaultTypeInternal _Pose_default_instance_;
+class PrismaticJoint;
+class PrismaticJointDefaultTypeInternal;
+extern PrismaticJointDefaultTypeInternal _PrismaticJoint_default_instance_;
 class Quat;
 class QuatDefaultTypeInternal;
 extern QuatDefaultTypeInternal _Quat_default_instance_;
@@ -116,6 +140,9 @@ extern SceneDefaultTypeInternal _Scene_default_instance_;
 class SphereGeometry;
 class SphereGeometryDefaultTypeInternal;
 extern SphereGeometryDefaultTypeInternal _SphereGeometry_default_instance_;
+class SphericalJoint;
+class SphericalJointDefaultTypeInternal;
+extern SphericalJointDefaultTypeInternal _SphericalJoint_default_instance_;
 class TriangleMesh;
 class TriangleMeshDefaultTypeInternal;
 extern TriangleMeshDefaultTypeInternal _TriangleMesh_default_instance_;
@@ -159,9 +186,16 @@ enum NodeType {
   NT_RIGID_DYNAMIC = 8,
   NT_BODY_PAIR_FILTERS = 9,
   NT_JOINT = 10,
-  NT_INSTANCE_COLLECTION = 11,
-  NT_COLLECTION = 12,
-  NT_SCENE = 13,
+  NT_FIXED_JOINT = 11,
+  NT_SPHERICAL_JOINT = 12,
+  NT_HINGE_JOINT = 13,
+  NT_PRISMATIC_JOINT = 14,
+  NT_DISTANCE_JOINT = 15,
+  NT_BALL_AND_SOCKET_JOINT = 16,
+  NT_D6_JOINT = 17,
+  NT_INSTANCE_COLLECTION = 18,
+  NT_COLLECTION = 19,
+  NT_SCENE = 20,
   NodeType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   NodeType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
@@ -188,12 +222,13 @@ enum GeometryType {
   GT_CYLINDER_GEOMETRY = 4,
   GT_CONVEXHULL_GEOMETRY = 5,
   GT_TRIANGLEMESH_GEOMETRY = 6,
+  GT_HEIGHTFIELD_GEOMETRY = 7,
   GeometryType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   GeometryType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool GeometryType_IsValid(int value);
 const GeometryType GeometryType_MIN = GT_BOX_GEOMETRY;
-const GeometryType GeometryType_MAX = GT_TRIANGLEMESH_GEOMETRY;
+const GeometryType GeometryType_MAX = GT_HEIGHTFIELD_GEOMETRY;
 const int GeometryType_ARRAYSIZE = GeometryType_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* GeometryType_descriptor();
@@ -1160,11 +1195,13 @@ class Node : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
     kPhysicsMaterial = 6,
     kConvexHull = 7,
     kTriangleMesh = 8,
-    kRigidBody = 9,
-    kJoint = 10,
-    kBodyPairFilters = 11,
-    kInstanceCollection = 12,
-    kCollection = 13,
+    kHeightField = 9,
+    kRigidBody = 10,
+    kJoint = 11,
+    kBodyPairFilters = 12,
+    kInstanceCollection = 13,
+    kCollection = 14,
+    kScene = 15,
     SUBTYPE_NOT_SET = 0,
   };
 
@@ -1302,50 +1339,68 @@ class Node : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::CreateDOM::TriangleMesh* release_trianglemesh();
   void set_allocated_trianglemesh(::CreateDOM::TriangleMesh* trianglemesh);
 
-  // .CreateDOM.RigidBody rigidBody = 9;
+  // .CreateDOM.HeightField heightField = 9;
+  bool has_heightfield() const;
+  void clear_heightfield();
+  static const int kHeightFieldFieldNumber = 9;
+  const ::CreateDOM::HeightField& heightfield() const;
+  ::CreateDOM::HeightField* mutable_heightfield();
+  ::CreateDOM::HeightField* release_heightfield();
+  void set_allocated_heightfield(::CreateDOM::HeightField* heightfield);
+
+  // .CreateDOM.RigidBody rigidBody = 10;
   bool has_rigidbody() const;
   void clear_rigidbody();
-  static const int kRigidBodyFieldNumber = 9;
+  static const int kRigidBodyFieldNumber = 10;
   const ::CreateDOM::RigidBody& rigidbody() const;
   ::CreateDOM::RigidBody* mutable_rigidbody();
   ::CreateDOM::RigidBody* release_rigidbody();
   void set_allocated_rigidbody(::CreateDOM::RigidBody* rigidbody);
 
-  // .CreateDOM.Joint joint = 10;
+  // .CreateDOM.Joint joint = 11;
   bool has_joint() const;
   void clear_joint();
-  static const int kJointFieldNumber = 10;
+  static const int kJointFieldNumber = 11;
   const ::CreateDOM::Joint& joint() const;
   ::CreateDOM::Joint* mutable_joint();
   ::CreateDOM::Joint* release_joint();
   void set_allocated_joint(::CreateDOM::Joint* joint);
 
-  // .CreateDOM.BodyPairFilters bodyPairFilters = 11;
+  // .CreateDOM.BodyPairFilters bodyPairFilters = 12;
   bool has_bodypairfilters() const;
   void clear_bodypairfilters();
-  static const int kBodyPairFiltersFieldNumber = 11;
+  static const int kBodyPairFiltersFieldNumber = 12;
   const ::CreateDOM::BodyPairFilters& bodypairfilters() const;
   ::CreateDOM::BodyPairFilters* mutable_bodypairfilters();
   ::CreateDOM::BodyPairFilters* release_bodypairfilters();
   void set_allocated_bodypairfilters(::CreateDOM::BodyPairFilters* bodypairfilters);
 
-  // .CreateDOM.InstanceCollection instanceCollection = 12;
+  // .CreateDOM.InstanceCollection instanceCollection = 13;
   bool has_instancecollection() const;
   void clear_instancecollection();
-  static const int kInstanceCollectionFieldNumber = 12;
+  static const int kInstanceCollectionFieldNumber = 13;
   const ::CreateDOM::InstanceCollection& instancecollection() const;
   ::CreateDOM::InstanceCollection* mutable_instancecollection();
   ::CreateDOM::InstanceCollection* release_instancecollection();
   void set_allocated_instancecollection(::CreateDOM::InstanceCollection* instancecollection);
 
-  // .CreateDOM.Collection collection = 13;
+  // .CreateDOM.Collection collection = 14;
   bool has_collection() const;
   void clear_collection();
-  static const int kCollectionFieldNumber = 13;
+  static const int kCollectionFieldNumber = 14;
   const ::CreateDOM::Collection& collection() const;
   ::CreateDOM::Collection* mutable_collection();
   ::CreateDOM::Collection* release_collection();
   void set_allocated_collection(::CreateDOM::Collection* collection);
+
+  // .CreateDOM.Scene scene = 15;
+  bool has_scene() const;
+  void clear_scene();
+  static const int kSceneFieldNumber = 15;
+  const ::CreateDOM::Scene& scene() const;
+  ::CreateDOM::Scene* mutable_scene();
+  ::CreateDOM::Scene* release_scene();
+  void set_allocated_scene(::CreateDOM::Scene* scene);
 
   SubtypeCase subtype_case() const;
   // @@protoc_insertion_point(class_scope:CreateDOM.Node)
@@ -1353,11 +1408,13 @@ class Node : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   void set_has_physicsmaterial();
   void set_has_convexhull();
   void set_has_trianglemesh();
+  void set_has_heightfield();
   void set_has_rigidbody();
   void set_has_joint();
   void set_has_bodypairfilters();
   void set_has_instancecollection();
   void set_has_collection();
+  void set_has_scene();
 
   inline bool has_subtype() const;
   void clear_subtype();
@@ -1374,11 +1431,13 @@ class Node : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
     ::CreateDOM::PhysicsMaterial* physicsmaterial_;
     ::CreateDOM::ConvexHull* convexhull_;
     ::CreateDOM::TriangleMesh* trianglemesh_;
+    ::CreateDOM::HeightField* heightfield_;
     ::CreateDOM::RigidBody* rigidbody_;
     ::CreateDOM::Joint* joint_;
     ::CreateDOM::BodyPairFilters* bodypairfilters_;
     ::CreateDOM::InstanceCollection* instancecollection_;
     ::CreateDOM::Collection* collection_;
+    ::CreateDOM::Scene* scene_;
   } subtype_;
   mutable int _cached_size_;
   ::google::protobuf::uint32 _oneof_case_[1];
@@ -1830,6 +1889,18 @@ class TriangleMesh : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
       mutable_triangles();
 
+  // repeated uint32 materialIndices = 3;
+  int materialindices_size() const;
+  void clear_materialindices();
+  static const int kMaterialIndicesFieldNumber = 3;
+  ::google::protobuf::uint32 materialindices(int index) const;
+  void set_materialindices(int index, ::google::protobuf::uint32 value);
+  void add_materialindices(::google::protobuf::uint32 value);
+  const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+      materialindices() const;
+  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+      mutable_materialindices();
+
   // @@protoc_insertion_point(class_scope:CreateDOM.TriangleMesh)
  private:
 
@@ -1837,6 +1908,140 @@ class TriangleMesh : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::google::protobuf::RepeatedPtrField< ::CreateDOM::Vec3 > points_;
   ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > triangles_;
   mutable int _triangles_cached_byte_size_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > materialindices_;
+  mutable int _materialindices_cached_byte_size_;
+  mutable int _cached_size_;
+  friend struct protobuf_PhysicsDOM_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class HeightField : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CreateDOM.HeightField) */ {
+ public:
+  HeightField();
+  virtual ~HeightField();
+
+  HeightField(const HeightField& from);
+
+  inline HeightField& operator=(const HeightField& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  HeightField(HeightField&& from) noexcept
+    : HeightField() {
+    *this = ::std::move(from);
+  }
+
+  inline HeightField& operator=(HeightField&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const HeightField& default_instance();
+
+  static inline const HeightField* internal_default_instance() {
+    return reinterpret_cast<const HeightField*>(
+               &_HeightField_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    13;
+
+  void Swap(HeightField* other);
+  friend void swap(HeightField& a, HeightField& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline HeightField* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  HeightField* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const HeightField& from);
+  void MergeFrom(const HeightField& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(HeightField* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated uint32 samples = 3;
+  int samples_size() const;
+  void clear_samples();
+  static const int kSamplesFieldNumber = 3;
+  ::google::protobuf::uint32 samples(int index) const;
+  void set_samples(int index, ::google::protobuf::uint32 value);
+  void add_samples(::google::protobuf::uint32 value);
+  const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+      samples() const;
+  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+      mutable_samples();
+
+  // repeated uint32 metaData = 4;
+  int metadata_size() const;
+  void clear_metadata();
+  static const int kMetaDataFieldNumber = 4;
+  ::google::protobuf::uint32 metadata(int index) const;
+  void set_metadata(int index, ::google::protobuf::uint32 value);
+  void add_metadata(::google::protobuf::uint32 value);
+  const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+      metadata() const;
+  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+      mutable_metadata();
+
+  // uint32 rowCount = 1;
+  void clear_rowcount();
+  static const int kRowCountFieldNumber = 1;
+  ::google::protobuf::uint32 rowcount() const;
+  void set_rowcount(::google::protobuf::uint32 value);
+
+  // uint32 columnCount = 2;
+  void clear_columncount();
+  static const int kColumnCountFieldNumber = 2;
+  ::google::protobuf::uint32 columncount() const;
+  void set_columncount(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:CreateDOM.HeightField)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > samples_;
+  mutable int _samples_cached_byte_size_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > metadata_;
+  mutable int _metadata_cached_byte_size_;
+  ::google::protobuf::uint32 rowcount_;
+  ::google::protobuf::uint32 columncount_;
   mutable int _cached_size_;
   friend struct protobuf_PhysicsDOM_2eproto::TableStruct;
 };
@@ -1878,7 +2083,8 @@ class Geometry : public ::google::protobuf::Message /* @@protoc_insertion_point(
     kCylinderGeometry = 5,
     kConvexHullGeometry = 6,
     kTriangleMeshGeometry = 7,
-    kPlaneGeometry = 8,
+    kHeightFieldGeometry = 8,
+    kPlaneGeometry = 9,
     SUBTYPE_NOT_SET = 0,
   };
 
@@ -1887,7 +2093,7 @@ class Geometry : public ::google::protobuf::Message /* @@protoc_insertion_point(
                &_Geometry_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    13;
+    14;
 
   void Swap(Geometry* other);
   friend void swap(Geometry& a, Geometry& b) {
@@ -1994,10 +2200,19 @@ class Geometry : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::CreateDOM::TriangleMeshGeometry* release_trianglemeshgeometry();
   void set_allocated_trianglemeshgeometry(::CreateDOM::TriangleMeshGeometry* trianglemeshgeometry);
 
-  // .CreateDOM.PlaneGeometry planeGeometry = 8;
+  // .CreateDOM.HeightFieldGeometry heightFieldGeometry = 8;
+  bool has_heightfieldgeometry() const;
+  void clear_heightfieldgeometry();
+  static const int kHeightFieldGeometryFieldNumber = 8;
+  const ::CreateDOM::HeightFieldGeometry& heightfieldgeometry() const;
+  ::CreateDOM::HeightFieldGeometry* mutable_heightfieldgeometry();
+  ::CreateDOM::HeightFieldGeometry* release_heightfieldgeometry();
+  void set_allocated_heightfieldgeometry(::CreateDOM::HeightFieldGeometry* heightfieldgeometry);
+
+  // .CreateDOM.PlaneGeometry planeGeometry = 9;
   bool has_planegeometry() const;
   void clear_planegeometry();
-  static const int kPlaneGeometryFieldNumber = 8;
+  static const int kPlaneGeometryFieldNumber = 9;
   const ::CreateDOM::PlaneGeometry& planegeometry() const;
   ::CreateDOM::PlaneGeometry* mutable_planegeometry();
   ::CreateDOM::PlaneGeometry* release_planegeometry();
@@ -2012,6 +2227,7 @@ class Geometry : public ::google::protobuf::Message /* @@protoc_insertion_point(
   void set_has_cylindergeometry();
   void set_has_convexhullgeometry();
   void set_has_trianglemeshgeometry();
+  void set_has_heightfieldgeometry();
   void set_has_planegeometry();
 
   inline bool has_subtype() const;
@@ -2028,6 +2244,7 @@ class Geometry : public ::google::protobuf::Message /* @@protoc_insertion_point(
     ::CreateDOM::CylinderGeometry* cylindergeometry_;
     ::CreateDOM::ConvexHullGeometry* convexhullgeometry_;
     ::CreateDOM::TriangleMeshGeometry* trianglemeshgeometry_;
+    ::CreateDOM::HeightFieldGeometry* heightfieldgeometry_;
     ::CreateDOM::PlaneGeometry* planegeometry_;
   } subtype_;
   mutable int _cached_size_;
@@ -2071,7 +2288,7 @@ class BoxGeometry : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_BoxGeometry_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    14;
+    15;
 
   void Swap(BoxGeometry* other);
   friend void swap(BoxGeometry& a, BoxGeometry& b) {
@@ -2171,7 +2388,7 @@ class SphereGeometry : public ::google::protobuf::Message /* @@protoc_insertion_
                &_SphereGeometry_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    15;
+    16;
 
   void Swap(SphereGeometry* other);
   friend void swap(SphereGeometry& a, SphereGeometry& b) {
@@ -2268,7 +2485,7 @@ class CapsuleGeometry : public ::google::protobuf::Message /* @@protoc_insertion
                &_CapsuleGeometry_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    16;
+    17;
 
   void Swap(CapsuleGeometry* other);
   friend void swap(CapsuleGeometry& a, CapsuleGeometry& b) {
@@ -2372,7 +2589,7 @@ class CylinderGeometry : public ::google::protobuf::Message /* @@protoc_insertio
                &_CylinderGeometry_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    17;
+    18;
 
   void Swap(CylinderGeometry* other);
   friend void swap(CylinderGeometry& a, CylinderGeometry& b) {
@@ -2476,7 +2693,7 @@ class ConvexHullGeometry : public ::google::protobuf::Message /* @@protoc_insert
                &_ConvexHullGeometry_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    18;
+    19;
 
   void Swap(ConvexHullGeometry* other);
   friend void swap(ConvexHullGeometry& a, ConvexHullGeometry& b) {
@@ -2591,7 +2808,7 @@ class TriangleMeshGeometry : public ::google::protobuf::Message /* @@protoc_inse
                &_TriangleMeshGeometry_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    19;
+    20;
 
   void Swap(TriangleMeshGeometry* other);
   friend void swap(TriangleMeshGeometry& a, TriangleMeshGeometry& b) {
@@ -2679,6 +2896,139 @@ class TriangleMeshGeometry : public ::google::protobuf::Message /* @@protoc_inse
 };
 // -------------------------------------------------------------------
 
+class HeightFieldGeometry : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CreateDOM.HeightFieldGeometry) */ {
+ public:
+  HeightFieldGeometry();
+  virtual ~HeightFieldGeometry();
+
+  HeightFieldGeometry(const HeightFieldGeometry& from);
+
+  inline HeightFieldGeometry& operator=(const HeightFieldGeometry& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  HeightFieldGeometry(HeightFieldGeometry&& from) noexcept
+    : HeightFieldGeometry() {
+    *this = ::std::move(from);
+  }
+
+  inline HeightFieldGeometry& operator=(HeightFieldGeometry&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const HeightFieldGeometry& default_instance();
+
+  static inline const HeightFieldGeometry* internal_default_instance() {
+    return reinterpret_cast<const HeightFieldGeometry*>(
+               &_HeightFieldGeometry_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    21;
+
+  void Swap(HeightFieldGeometry* other);
+  friend void swap(HeightFieldGeometry& a, HeightFieldGeometry& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline HeightFieldGeometry* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  HeightFieldGeometry* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const HeightFieldGeometry& from);
+  void MergeFrom(const HeightFieldGeometry& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(HeightFieldGeometry* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string heightField = 1;
+  void clear_heightfield();
+  static const int kHeightFieldFieldNumber = 1;
+  const ::std::string& heightfield() const;
+  void set_heightfield(const ::std::string& value);
+  #if LANG_CXX11
+  void set_heightfield(::std::string&& value);
+  #endif
+  void set_heightfield(const char* value);
+  void set_heightfield(const char* value, size_t size);
+  ::std::string* mutable_heightfield();
+  ::std::string* release_heightfield();
+  void set_allocated_heightfield(::std::string* heightfield);
+
+  // float heightScale = 2;
+  void clear_heightscale();
+  static const int kHeightScaleFieldNumber = 2;
+  float heightscale() const;
+  void set_heightscale(float value);
+
+  // float rowScale = 3;
+  void clear_rowscale();
+  static const int kRowScaleFieldNumber = 3;
+  float rowscale() const;
+  void set_rowscale(float value);
+
+  // float columnScale = 4;
+  void clear_columnscale();
+  static const int kColumnScaleFieldNumber = 4;
+  float columnscale() const;
+  void set_columnscale(float value);
+
+  // bool doubleSided = 5;
+  void clear_doublesided();
+  static const int kDoubleSidedFieldNumber = 5;
+  bool doublesided() const;
+  void set_doublesided(bool value);
+
+  // @@protoc_insertion_point(class_scope:CreateDOM.HeightFieldGeometry)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr heightfield_;
+  float heightscale_;
+  float rowscale_;
+  float columnscale_;
+  bool doublesided_;
+  mutable int _cached_size_;
+  friend struct protobuf_PhysicsDOM_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class PlaneGeometry : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CreateDOM.PlaneGeometry) */ {
  public:
   PlaneGeometry();
@@ -2713,7 +3063,7 @@ class PlaneGeometry : public ::google::protobuf::Message /* @@protoc_insertion_p
                &_PlaneGeometry_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    20;
+    22;
 
   void Swap(PlaneGeometry* other);
   friend void swap(PlaneGeometry& a, PlaneGeometry& b) {
@@ -2803,7 +3153,7 @@ class GeometryInstance : public ::google::protobuf::Message /* @@protoc_insertio
                &_GeometryInstance_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    21;
+    23;
 
   void Swap(GeometryInstance* other);
   friend void swap(GeometryInstance& a, GeometryInstance& b) {
@@ -2850,19 +3200,27 @@ class GeometryInstance : public ::google::protobuf::Message /* @@protoc_insertio
 
   // accessors -------------------------------------------------------
 
-  // string material = 2;
-  void clear_material();
-  static const int kMaterialFieldNumber = 2;
-  const ::std::string& material() const;
-  void set_material(const ::std::string& value);
+  // repeated string materials = 2;
+  int materials_size() const;
+  void clear_materials();
+  static const int kMaterialsFieldNumber = 2;
+  const ::std::string& materials(int index) const;
+  ::std::string* mutable_materials(int index);
+  void set_materials(int index, const ::std::string& value);
   #if LANG_CXX11
-  void set_material(::std::string&& value);
+  void set_materials(int index, ::std::string&& value);
   #endif
-  void set_material(const char* value);
-  void set_material(const char* value, size_t size);
-  ::std::string* mutable_material();
-  ::std::string* release_material();
-  void set_allocated_material(::std::string* material);
+  void set_materials(int index, const char* value);
+  void set_materials(int index, const char* value, size_t size);
+  ::std::string* add_materials();
+  void add_materials(const ::std::string& value);
+  #if LANG_CXX11
+  void add_materials(::std::string&& value);
+  #endif
+  void add_materials(const char* value);
+  void add_materials(const char* value, size_t size);
+  const ::google::protobuf::RepeatedPtrField< ::std::string>& materials() const;
+  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_materials();
 
   // string collisionFilterSettings = 4;
   void clear_collisionfiltersettings();
@@ -2900,7 +3258,7 @@ class GeometryInstance : public ::google::protobuf::Message /* @@protoc_insertio
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr material_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> materials_;
   ::google::protobuf::internal::ArenaStringPtr collisionfiltersettings_;
   ::CreateDOM::Geometry* geometry_;
   ::CreateDOM::Pose* localpose_;
@@ -2949,7 +3307,7 @@ class RigidBody : public ::google::protobuf::Message /* @@protoc_insertion_point
                &_RigidBody_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    22;
+    24;
 
   void Swap(RigidBody* other);
   friend void swap(RigidBody& a, RigidBody& b) {
@@ -3094,7 +3452,7 @@ class RigidStatic : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_RigidStatic_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    23;
+    25;
 
   void Swap(RigidStatic* other);
   friend void swap(RigidStatic& a, RigidStatic& b) {
@@ -3184,7 +3542,7 @@ class RigidDynamic : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_RigidDynamic_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    24;
+    26;
 
   void Swap(RigidDynamic* other);
   friend void swap(RigidDynamic& a, RigidDynamic& b) {
@@ -3351,12 +3709,23 @@ class Joint : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   static const ::google::protobuf::Descriptor* descriptor();
   static const Joint& default_instance();
 
+  enum SubtypeCase {
+    kFixedJoint = 6,
+    kSphericalJoint = 7,
+    kHingeJoint = 8,
+    kPrismaticJoint = 9,
+    kDistanceJoint = 10,
+    kBallAndSocketJoint = 11,
+    kD6Joint = 12,
+    SUBTYPE_NOT_SET = 0,
+  };
+
   static inline const Joint* internal_default_instance() {
     return reinterpret_cast<const Joint*>(
                &_Joint_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    25;
+    27;
 
   void Swap(Joint* other);
   friend void swap(Joint& a, Joint& b) {
@@ -3455,8 +3824,83 @@ class Joint : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   bool collisionenabled() const;
   void set_collisionenabled(bool value);
 
+  // .CreateDOM.FixedJoint fixedJoint = 6;
+  bool has_fixedjoint() const;
+  void clear_fixedjoint();
+  static const int kFixedJointFieldNumber = 6;
+  const ::CreateDOM::FixedJoint& fixedjoint() const;
+  ::CreateDOM::FixedJoint* mutable_fixedjoint();
+  ::CreateDOM::FixedJoint* release_fixedjoint();
+  void set_allocated_fixedjoint(::CreateDOM::FixedJoint* fixedjoint);
+
+  // .CreateDOM.SphericalJoint sphericalJoint = 7;
+  bool has_sphericaljoint() const;
+  void clear_sphericaljoint();
+  static const int kSphericalJointFieldNumber = 7;
+  const ::CreateDOM::SphericalJoint& sphericaljoint() const;
+  ::CreateDOM::SphericalJoint* mutable_sphericaljoint();
+  ::CreateDOM::SphericalJoint* release_sphericaljoint();
+  void set_allocated_sphericaljoint(::CreateDOM::SphericalJoint* sphericaljoint);
+
+  // .CreateDOM.HingeJoint hingeJoint = 8;
+  bool has_hingejoint() const;
+  void clear_hingejoint();
+  static const int kHingeJointFieldNumber = 8;
+  const ::CreateDOM::HingeJoint& hingejoint() const;
+  ::CreateDOM::HingeJoint* mutable_hingejoint();
+  ::CreateDOM::HingeJoint* release_hingejoint();
+  void set_allocated_hingejoint(::CreateDOM::HingeJoint* hingejoint);
+
+  // .CreateDOM.PrismaticJoint prismaticJoint = 9;
+  bool has_prismaticjoint() const;
+  void clear_prismaticjoint();
+  static const int kPrismaticJointFieldNumber = 9;
+  const ::CreateDOM::PrismaticJoint& prismaticjoint() const;
+  ::CreateDOM::PrismaticJoint* mutable_prismaticjoint();
+  ::CreateDOM::PrismaticJoint* release_prismaticjoint();
+  void set_allocated_prismaticjoint(::CreateDOM::PrismaticJoint* prismaticjoint);
+
+  // .CreateDOM.DistanceJoint distanceJoint = 10;
+  bool has_distancejoint() const;
+  void clear_distancejoint();
+  static const int kDistanceJointFieldNumber = 10;
+  const ::CreateDOM::DistanceJoint& distancejoint() const;
+  ::CreateDOM::DistanceJoint* mutable_distancejoint();
+  ::CreateDOM::DistanceJoint* release_distancejoint();
+  void set_allocated_distancejoint(::CreateDOM::DistanceJoint* distancejoint);
+
+  // .CreateDOM.BallAndSocketJoint ballAndSocketJoint = 11;
+  bool has_ballandsocketjoint() const;
+  void clear_ballandsocketjoint();
+  static const int kBallAndSocketJointFieldNumber = 11;
+  const ::CreateDOM::BallAndSocketJoint& ballandsocketjoint() const;
+  ::CreateDOM::BallAndSocketJoint* mutable_ballandsocketjoint();
+  ::CreateDOM::BallAndSocketJoint* release_ballandsocketjoint();
+  void set_allocated_ballandsocketjoint(::CreateDOM::BallAndSocketJoint* ballandsocketjoint);
+
+  // .CreateDOM.D6Joint d6Joint = 12;
+  bool has_d6joint() const;
+  void clear_d6joint();
+  static const int kD6JointFieldNumber = 12;
+  const ::CreateDOM::D6Joint& d6joint() const;
+  ::CreateDOM::D6Joint* mutable_d6joint();
+  ::CreateDOM::D6Joint* release_d6joint();
+  void set_allocated_d6joint(::CreateDOM::D6Joint* d6joint);
+
+  SubtypeCase subtype_case() const;
   // @@protoc_insertion_point(class_scope:CreateDOM.Joint)
  private:
+  void set_has_fixedjoint();
+  void set_has_sphericaljoint();
+  void set_has_hingejoint();
+  void set_has_prismaticjoint();
+  void set_has_distancejoint();
+  void set_has_ballandsocketjoint();
+  void set_has_d6joint();
+
+  inline bool has_subtype() const;
+  void clear_subtype();
+  inline void clear_has_subtype();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr body0_;
@@ -3464,6 +3908,732 @@ class Joint : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   ::CreateDOM::Pose* localpose0_;
   ::CreateDOM::Pose* localpose1_;
   bool collisionenabled_;
+  union SubtypeUnion {
+    SubtypeUnion() {}
+    ::CreateDOM::FixedJoint* fixedjoint_;
+    ::CreateDOM::SphericalJoint* sphericaljoint_;
+    ::CreateDOM::HingeJoint* hingejoint_;
+    ::CreateDOM::PrismaticJoint* prismaticjoint_;
+    ::CreateDOM::DistanceJoint* distancejoint_;
+    ::CreateDOM::BallAndSocketJoint* ballandsocketjoint_;
+    ::CreateDOM::D6Joint* d6joint_;
+  } subtype_;
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _oneof_case_[1];
+
+  friend struct protobuf_PhysicsDOM_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class FixedJoint : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CreateDOM.FixedJoint) */ {
+ public:
+  FixedJoint();
+  virtual ~FixedJoint();
+
+  FixedJoint(const FixedJoint& from);
+
+  inline FixedJoint& operator=(const FixedJoint& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  FixedJoint(FixedJoint&& from) noexcept
+    : FixedJoint() {
+    *this = ::std::move(from);
+  }
+
+  inline FixedJoint& operator=(FixedJoint&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const FixedJoint& default_instance();
+
+  static inline const FixedJoint* internal_default_instance() {
+    return reinterpret_cast<const FixedJoint*>(
+               &_FixedJoint_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    28;
+
+  void Swap(FixedJoint* other);
+  friend void swap(FixedJoint& a, FixedJoint& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline FixedJoint* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  FixedJoint* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const FixedJoint& from);
+  void MergeFrom(const FixedJoint& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(FixedJoint* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:CreateDOM.FixedJoint)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  mutable int _cached_size_;
+  friend struct protobuf_PhysicsDOM_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class SphericalJoint : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CreateDOM.SphericalJoint) */ {
+ public:
+  SphericalJoint();
+  virtual ~SphericalJoint();
+
+  SphericalJoint(const SphericalJoint& from);
+
+  inline SphericalJoint& operator=(const SphericalJoint& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  SphericalJoint(SphericalJoint&& from) noexcept
+    : SphericalJoint() {
+    *this = ::std::move(from);
+  }
+
+  inline SphericalJoint& operator=(SphericalJoint&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const SphericalJoint& default_instance();
+
+  static inline const SphericalJoint* internal_default_instance() {
+    return reinterpret_cast<const SphericalJoint*>(
+               &_SphericalJoint_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    29;
+
+  void Swap(SphericalJoint* other);
+  friend void swap(SphericalJoint& a, SphericalJoint& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SphericalJoint* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  SphericalJoint* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const SphericalJoint& from);
+  void MergeFrom(const SphericalJoint& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(SphericalJoint* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // float limitY = 1;
+  void clear_limity();
+  static const int kLimitYFieldNumber = 1;
+  float limity() const;
+  void set_limity(float value);
+
+  // float limitZ = 2;
+  void clear_limitz();
+  static const int kLimitZFieldNumber = 2;
+  float limitz() const;
+  void set_limitz(float value);
+
+  // @@protoc_insertion_point(class_scope:CreateDOM.SphericalJoint)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  float limity_;
+  float limitz_;
+  mutable int _cached_size_;
+  friend struct protobuf_PhysicsDOM_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class HingeJoint : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CreateDOM.HingeJoint) */ {
+ public:
+  HingeJoint();
+  virtual ~HingeJoint();
+
+  HingeJoint(const HingeJoint& from);
+
+  inline HingeJoint& operator=(const HingeJoint& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  HingeJoint(HingeJoint&& from) noexcept
+    : HingeJoint() {
+    *this = ::std::move(from);
+  }
+
+  inline HingeJoint& operator=(HingeJoint&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const HingeJoint& default_instance();
+
+  static inline const HingeJoint* internal_default_instance() {
+    return reinterpret_cast<const HingeJoint*>(
+               &_HingeJoint_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    30;
+
+  void Swap(HingeJoint* other);
+  friend void swap(HingeJoint& a, HingeJoint& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline HingeJoint* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  HingeJoint* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const HingeJoint& from);
+  void MergeFrom(const HingeJoint& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(HingeJoint* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // float limtLow = 1;
+  void clear_limtlow();
+  static const int kLimtLowFieldNumber = 1;
+  float limtlow() const;
+  void set_limtlow(float value);
+
+  // float limitHigh = 2;
+  void clear_limithigh();
+  static const int kLimitHighFieldNumber = 2;
+  float limithigh() const;
+  void set_limithigh(float value);
+
+  // @@protoc_insertion_point(class_scope:CreateDOM.HingeJoint)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  float limtlow_;
+  float limithigh_;
+  mutable int _cached_size_;
+  friend struct protobuf_PhysicsDOM_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class PrismaticJoint : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CreateDOM.PrismaticJoint) */ {
+ public:
+  PrismaticJoint();
+  virtual ~PrismaticJoint();
+
+  PrismaticJoint(const PrismaticJoint& from);
+
+  inline PrismaticJoint& operator=(const PrismaticJoint& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  PrismaticJoint(PrismaticJoint&& from) noexcept
+    : PrismaticJoint() {
+    *this = ::std::move(from);
+  }
+
+  inline PrismaticJoint& operator=(PrismaticJoint&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const PrismaticJoint& default_instance();
+
+  static inline const PrismaticJoint* internal_default_instance() {
+    return reinterpret_cast<const PrismaticJoint*>(
+               &_PrismaticJoint_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    31;
+
+  void Swap(PrismaticJoint* other);
+  friend void swap(PrismaticJoint& a, PrismaticJoint& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline PrismaticJoint* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  PrismaticJoint* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const PrismaticJoint& from);
+  void MergeFrom(const PrismaticJoint& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(PrismaticJoint* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // float limitLow = 1;
+  void clear_limitlow();
+  static const int kLimitLowFieldNumber = 1;
+  float limitlow() const;
+  void set_limitlow(float value);
+
+  // float limitHigh = 2;
+  void clear_limithigh();
+  static const int kLimitHighFieldNumber = 2;
+  float limithigh() const;
+  void set_limithigh(float value);
+
+  // @@protoc_insertion_point(class_scope:CreateDOM.PrismaticJoint)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  float limitlow_;
+  float limithigh_;
+  mutable int _cached_size_;
+  friend struct protobuf_PhysicsDOM_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class DistanceJoint : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CreateDOM.DistanceJoint) */ {
+ public:
+  DistanceJoint();
+  virtual ~DistanceJoint();
+
+  DistanceJoint(const DistanceJoint& from);
+
+  inline DistanceJoint& operator=(const DistanceJoint& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  DistanceJoint(DistanceJoint&& from) noexcept
+    : DistanceJoint() {
+    *this = ::std::move(from);
+  }
+
+  inline DistanceJoint& operator=(DistanceJoint&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const DistanceJoint& default_instance();
+
+  static inline const DistanceJoint* internal_default_instance() {
+    return reinterpret_cast<const DistanceJoint*>(
+               &_DistanceJoint_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    32;
+
+  void Swap(DistanceJoint* other);
+  friend void swap(DistanceJoint& a, DistanceJoint& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline DistanceJoint* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  DistanceJoint* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const DistanceJoint& from);
+  void MergeFrom(const DistanceJoint& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(DistanceJoint* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // float distanceLow = 1;
+  void clear_distancelow();
+  static const int kDistanceLowFieldNumber = 1;
+  float distancelow() const;
+  void set_distancelow(float value);
+
+  // float distanceHigh = 2;
+  void clear_distancehigh();
+  static const int kDistanceHighFieldNumber = 2;
+  float distancehigh() const;
+  void set_distancehigh(float value);
+
+  // @@protoc_insertion_point(class_scope:CreateDOM.DistanceJoint)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  float distancelow_;
+  float distancehigh_;
+  mutable int _cached_size_;
+  friend struct protobuf_PhysicsDOM_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class BallAndSocketJoint : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CreateDOM.BallAndSocketJoint) */ {
+ public:
+  BallAndSocketJoint();
+  virtual ~BallAndSocketJoint();
+
+  BallAndSocketJoint(const BallAndSocketJoint& from);
+
+  inline BallAndSocketJoint& operator=(const BallAndSocketJoint& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  BallAndSocketJoint(BallAndSocketJoint&& from) noexcept
+    : BallAndSocketJoint() {
+    *this = ::std::move(from);
+  }
+
+  inline BallAndSocketJoint& operator=(BallAndSocketJoint&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const BallAndSocketJoint& default_instance();
+
+  static inline const BallAndSocketJoint* internal_default_instance() {
+    return reinterpret_cast<const BallAndSocketJoint*>(
+               &_BallAndSocketJoint_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    33;
+
+  void Swap(BallAndSocketJoint* other);
+  friend void swap(BallAndSocketJoint& a, BallAndSocketJoint& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline BallAndSocketJoint* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  BallAndSocketJoint* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const BallAndSocketJoint& from);
+  void MergeFrom(const BallAndSocketJoint& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(BallAndSocketJoint* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // float limitXLow = 1;
+  void clear_limitxlow();
+  static const int kLimitXLowFieldNumber = 1;
+  float limitxlow() const;
+  void set_limitxlow(float value);
+
+  // float limitXHigh = 2;
+  void clear_limitxhigh();
+  static const int kLimitXHighFieldNumber = 2;
+  float limitxhigh() const;
+  void set_limitxhigh(float value);
+
+  // float limitY = 3;
+  void clear_limity();
+  static const int kLimitYFieldNumber = 3;
+  float limity() const;
+  void set_limity(float value);
+
+  // float limitZ = 4;
+  void clear_limitz();
+  static const int kLimitZFieldNumber = 4;
+  float limitz() const;
+  void set_limitz(float value);
+
+  // @@protoc_insertion_point(class_scope:CreateDOM.BallAndSocketJoint)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  float limitxlow_;
+  float limitxhigh_;
+  float limity_;
+  float limitz_;
+  mutable int _cached_size_;
+  friend struct protobuf_PhysicsDOM_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class D6Joint : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:CreateDOM.D6Joint) */ {
+ public:
+  D6Joint();
+  virtual ~D6Joint();
+
+  D6Joint(const D6Joint& from);
+
+  inline D6Joint& operator=(const D6Joint& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  D6Joint(D6Joint&& from) noexcept
+    : D6Joint() {
+    *this = ::std::move(from);
+  }
+
+  inline D6Joint& operator=(D6Joint&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const D6Joint& default_instance();
+
+  static inline const D6Joint* internal_default_instance() {
+    return reinterpret_cast<const D6Joint*>(
+               &_D6Joint_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    34;
+
+  void Swap(D6Joint* other);
+  friend void swap(D6Joint& a, D6Joint& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline D6Joint* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  D6Joint* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const D6Joint& from);
+  void MergeFrom(const D6Joint& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(D6Joint* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:CreateDOM.D6Joint)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   mutable int _cached_size_;
   friend struct protobuf_PhysicsDOM_2eproto::TableStruct;
 };
@@ -3503,7 +4673,7 @@ class BodyPairFilter : public ::google::protobuf::Message /* @@protoc_insertion_
                &_BodyPairFilter_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    26;
+    35;
 
   void Swap(BodyPairFilter* other);
   friend void swap(BodyPairFilter& a, BodyPairFilter& b) {
@@ -3623,7 +4793,7 @@ class BodyPairFilters : public ::google::protobuf::Message /* @@protoc_insertion
                &_BodyPairFilters_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    27;
+    36;
 
   void Swap(BodyPairFilters* other);
   friend void swap(BodyPairFilters& a, BodyPairFilters& b) {
@@ -3726,7 +4896,7 @@ class InstanceCollection : public ::google::protobuf::Message /* @@protoc_insert
                &_InstanceCollection_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    28;
+    37;
 
   void Swap(InstanceCollection* other);
   friend void swap(InstanceCollection& a, InstanceCollection& b) {
@@ -3846,17 +5016,12 @@ class Collection : public ::google::protobuf::Message /* @@protoc_insertion_poin
   static const ::google::protobuf::Descriptor* descriptor();
   static const Collection& default_instance();
 
-  enum SubtypeCase {
-    kScene = 2,
-    SUBTYPE_NOT_SET = 0,
-  };
-
   static inline const Collection* internal_default_instance() {
     return reinterpret_cast<const Collection*>(
                &_Collection_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    29;
+    38;
 
   void Swap(Collection* other);
   friend void swap(Collection& a, Collection& b) {
@@ -3915,33 +5080,12 @@ class Collection : public ::google::protobuf::Message /* @@protoc_insertion_poin
   const ::google::protobuf::RepeatedPtrField< ::CreateDOM::Node >&
       nodes() const;
 
-  // .CreateDOM.Scene scene = 2;
-  bool has_scene() const;
-  void clear_scene();
-  static const int kSceneFieldNumber = 2;
-  const ::CreateDOM::Scene& scene() const;
-  ::CreateDOM::Scene* mutable_scene();
-  ::CreateDOM::Scene* release_scene();
-  void set_allocated_scene(::CreateDOM::Scene* scene);
-
-  SubtypeCase subtype_case() const;
   // @@protoc_insertion_point(class_scope:CreateDOM.Collection)
  private:
-  void set_has_scene();
-
-  inline bool has_subtype() const;
-  void clear_subtype();
-  inline void clear_has_subtype();
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedPtrField< ::CreateDOM::Node > nodes_;
-  union SubtypeUnion {
-    SubtypeUnion() {}
-    ::CreateDOM::Scene* scene_;
-  } subtype_;
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _oneof_case_[1];
-
   friend struct protobuf_PhysicsDOM_2eproto::TableStruct;
 };
 // -------------------------------------------------------------------
@@ -3980,7 +5124,7 @@ class Scene : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
                &_Scene_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    30;
+    39;
 
   void Swap(Scene* other);
   friend void swap(Scene& a, Scene& b) {
@@ -4027,6 +5171,18 @@ class Scene : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
 
   // accessors -------------------------------------------------------
 
+  // repeated .CreateDOM.Node nodes = 2;
+  int nodes_size() const;
+  void clear_nodes();
+  static const int kNodesFieldNumber = 2;
+  const ::CreateDOM::Node& nodes(int index) const;
+  ::CreateDOM::Node* mutable_nodes(int index);
+  ::CreateDOM::Node* add_nodes();
+  ::google::protobuf::RepeatedPtrField< ::CreateDOM::Node >*
+      mutable_nodes();
+  const ::google::protobuf::RepeatedPtrField< ::CreateDOM::Node >&
+      nodes() const;
+
   // .CreateDOM.Vec3 gravity = 1;
   bool has_gravity() const;
   void clear_gravity();
@@ -4040,6 +5196,7 @@ class Scene : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::CreateDOM::Node > nodes_;
   ::CreateDOM::Vec3* gravity_;
   mutable int _cached_size_;
   friend struct protobuf_PhysicsDOM_2eproto::TableStruct;
@@ -4080,7 +5237,7 @@ class PhysicsDOM : public ::google::protobuf::Message /* @@protoc_insertion_poin
                &_PhysicsDOM_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    31;
+    40;
 
   void Swap(PhysicsDOM* other);
   friend void swap(PhysicsDOM& a, PhysicsDOM& b) {
@@ -4127,36 +5284,36 @@ class PhysicsDOM : public ::google::protobuf::Message /* @@protoc_insertion_poin
 
   // accessors -------------------------------------------------------
 
-  // repeated .CreateDOM.Collection collections = 1;
+  // repeated .CreateDOM.Node collections = 1;
   int collections_size() const;
   void clear_collections();
   static const int kCollectionsFieldNumber = 1;
-  const ::CreateDOM::Collection& collections(int index) const;
-  ::CreateDOM::Collection* mutable_collections(int index);
-  ::CreateDOM::Collection* add_collections();
-  ::google::protobuf::RepeatedPtrField< ::CreateDOM::Collection >*
+  const ::CreateDOM::Node& collections(int index) const;
+  ::CreateDOM::Node* mutable_collections(int index);
+  ::CreateDOM::Node* add_collections();
+  ::google::protobuf::RepeatedPtrField< ::CreateDOM::Node >*
       mutable_collections();
-  const ::google::protobuf::RepeatedPtrField< ::CreateDOM::Collection >&
+  const ::google::protobuf::RepeatedPtrField< ::CreateDOM::Node >&
       collections() const;
 
-  // repeated .CreateDOM.Scene scenes = 2;
+  // repeated .CreateDOM.Node scenes = 2;
   int scenes_size() const;
   void clear_scenes();
   static const int kScenesFieldNumber = 2;
-  const ::CreateDOM::Scene& scenes(int index) const;
-  ::CreateDOM::Scene* mutable_scenes(int index);
-  ::CreateDOM::Scene* add_scenes();
-  ::google::protobuf::RepeatedPtrField< ::CreateDOM::Scene >*
+  const ::CreateDOM::Node& scenes(int index) const;
+  ::CreateDOM::Node* mutable_scenes(int index);
+  ::CreateDOM::Node* add_scenes();
+  ::google::protobuf::RepeatedPtrField< ::CreateDOM::Node >*
       mutable_scenes();
-  const ::google::protobuf::RepeatedPtrField< ::CreateDOM::Scene >&
+  const ::google::protobuf::RepeatedPtrField< ::CreateDOM::Node >&
       scenes() const;
 
   // @@protoc_insertion_point(class_scope:CreateDOM.PhysicsDOM)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::CreateDOM::Collection > collections_;
-  ::google::protobuf::RepeatedPtrField< ::CreateDOM::Scene > scenes_;
+  ::google::protobuf::RepeatedPtrField< ::CreateDOM::Node > collections_;
+  ::google::protobuf::RepeatedPtrField< ::CreateDOM::Node > scenes_;
   mutable int _cached_size_;
   friend struct protobuf_PhysicsDOM_2eproto::TableStruct;
 };
@@ -5172,7 +6329,55 @@ inline void Node::set_allocated_trianglemesh(::CreateDOM::TriangleMesh* triangle
   // @@protoc_insertion_point(field_set_allocated:CreateDOM.Node.triangleMesh)
 }
 
-// .CreateDOM.RigidBody rigidBody = 9;
+// .CreateDOM.HeightField heightField = 9;
+inline bool Node::has_heightfield() const {
+  return subtype_case() == kHeightField;
+}
+inline void Node::set_has_heightfield() {
+  _oneof_case_[0] = kHeightField;
+}
+inline void Node::clear_heightfield() {
+  if (has_heightfield()) {
+    delete subtype_.heightfield_;
+    clear_has_subtype();
+  }
+}
+inline  const ::CreateDOM::HeightField& Node::heightfield() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.Node.heightField)
+  return has_heightfield()
+      ? *subtype_.heightfield_
+      : ::CreateDOM::HeightField::default_instance();
+}
+inline ::CreateDOM::HeightField* Node::mutable_heightfield() {
+  if (!has_heightfield()) {
+    clear_subtype();
+    set_has_heightfield();
+    subtype_.heightfield_ = new ::CreateDOM::HeightField;
+  }
+  // @@protoc_insertion_point(field_mutable:CreateDOM.Node.heightField)
+  return subtype_.heightfield_;
+}
+inline ::CreateDOM::HeightField* Node::release_heightfield() {
+  // @@protoc_insertion_point(field_release:CreateDOM.Node.heightField)
+  if (has_heightfield()) {
+    clear_has_subtype();
+    ::CreateDOM::HeightField* temp = subtype_.heightfield_;
+    subtype_.heightfield_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+inline void Node::set_allocated_heightfield(::CreateDOM::HeightField* heightfield) {
+  clear_subtype();
+  if (heightfield) {
+    set_has_heightfield();
+    subtype_.heightfield_ = heightfield;
+  }
+  // @@protoc_insertion_point(field_set_allocated:CreateDOM.Node.heightField)
+}
+
+// .CreateDOM.RigidBody rigidBody = 10;
 inline bool Node::has_rigidbody() const {
   return subtype_case() == kRigidBody;
 }
@@ -5220,7 +6425,7 @@ inline void Node::set_allocated_rigidbody(::CreateDOM::RigidBody* rigidbody) {
   // @@protoc_insertion_point(field_set_allocated:CreateDOM.Node.rigidBody)
 }
 
-// .CreateDOM.Joint joint = 10;
+// .CreateDOM.Joint joint = 11;
 inline bool Node::has_joint() const {
   return subtype_case() == kJoint;
 }
@@ -5268,7 +6473,7 @@ inline void Node::set_allocated_joint(::CreateDOM::Joint* joint) {
   // @@protoc_insertion_point(field_set_allocated:CreateDOM.Node.joint)
 }
 
-// .CreateDOM.BodyPairFilters bodyPairFilters = 11;
+// .CreateDOM.BodyPairFilters bodyPairFilters = 12;
 inline bool Node::has_bodypairfilters() const {
   return subtype_case() == kBodyPairFilters;
 }
@@ -5316,7 +6521,7 @@ inline void Node::set_allocated_bodypairfilters(::CreateDOM::BodyPairFilters* bo
   // @@protoc_insertion_point(field_set_allocated:CreateDOM.Node.bodyPairFilters)
 }
 
-// .CreateDOM.InstanceCollection instanceCollection = 12;
+// .CreateDOM.InstanceCollection instanceCollection = 13;
 inline bool Node::has_instancecollection() const {
   return subtype_case() == kInstanceCollection;
 }
@@ -5364,7 +6569,7 @@ inline void Node::set_allocated_instancecollection(::CreateDOM::InstanceCollecti
   // @@protoc_insertion_point(field_set_allocated:CreateDOM.Node.instanceCollection)
 }
 
-// .CreateDOM.Collection collection = 13;
+// .CreateDOM.Collection collection = 14;
 inline bool Node::has_collection() const {
   return subtype_case() == kCollection;
 }
@@ -5410,6 +6615,54 @@ inline void Node::set_allocated_collection(::CreateDOM::Collection* collection) 
     subtype_.collection_ = collection;
   }
   // @@protoc_insertion_point(field_set_allocated:CreateDOM.Node.collection)
+}
+
+// .CreateDOM.Scene scene = 15;
+inline bool Node::has_scene() const {
+  return subtype_case() == kScene;
+}
+inline void Node::set_has_scene() {
+  _oneof_case_[0] = kScene;
+}
+inline void Node::clear_scene() {
+  if (has_scene()) {
+    delete subtype_.scene_;
+    clear_has_subtype();
+  }
+}
+inline  const ::CreateDOM::Scene& Node::scene() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.Node.scene)
+  return has_scene()
+      ? *subtype_.scene_
+      : ::CreateDOM::Scene::default_instance();
+}
+inline ::CreateDOM::Scene* Node::mutable_scene() {
+  if (!has_scene()) {
+    clear_subtype();
+    set_has_scene();
+    subtype_.scene_ = new ::CreateDOM::Scene;
+  }
+  // @@protoc_insertion_point(field_mutable:CreateDOM.Node.scene)
+  return subtype_.scene_;
+}
+inline ::CreateDOM::Scene* Node::release_scene() {
+  // @@protoc_insertion_point(field_release:CreateDOM.Node.scene)
+  if (has_scene()) {
+    clear_has_subtype();
+    ::CreateDOM::Scene* temp = subtype_.scene_;
+    subtype_.scene_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+inline void Node::set_allocated_scene(::CreateDOM::Scene* scene) {
+  clear_subtype();
+  if (scene) {
+    set_has_scene();
+    subtype_.scene_ = scene;
+  }
+  // @@protoc_insertion_point(field_set_allocated:CreateDOM.Node.scene)
 }
 
 inline bool Node::has_subtype() const {
@@ -5675,6 +6928,128 @@ inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
 TriangleMesh::mutable_triangles() {
   // @@protoc_insertion_point(field_mutable_list:CreateDOM.TriangleMesh.triangles)
   return &triangles_;
+}
+
+// repeated uint32 materialIndices = 3;
+inline int TriangleMesh::materialindices_size() const {
+  return materialindices_.size();
+}
+inline void TriangleMesh::clear_materialindices() {
+  materialindices_.Clear();
+}
+inline ::google::protobuf::uint32 TriangleMesh::materialindices(int index) const {
+  // @@protoc_insertion_point(field_get:CreateDOM.TriangleMesh.materialIndices)
+  return materialindices_.Get(index);
+}
+inline void TriangleMesh::set_materialindices(int index, ::google::protobuf::uint32 value) {
+  materialindices_.Set(index, value);
+  // @@protoc_insertion_point(field_set:CreateDOM.TriangleMesh.materialIndices)
+}
+inline void TriangleMesh::add_materialindices(::google::protobuf::uint32 value) {
+  materialindices_.Add(value);
+  // @@protoc_insertion_point(field_add:CreateDOM.TriangleMesh.materialIndices)
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+TriangleMesh::materialindices() const {
+  // @@protoc_insertion_point(field_list:CreateDOM.TriangleMesh.materialIndices)
+  return materialindices_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+TriangleMesh::mutable_materialindices() {
+  // @@protoc_insertion_point(field_mutable_list:CreateDOM.TriangleMesh.materialIndices)
+  return &materialindices_;
+}
+
+// -------------------------------------------------------------------
+
+// HeightField
+
+// uint32 rowCount = 1;
+inline void HeightField::clear_rowcount() {
+  rowcount_ = 0u;
+}
+inline ::google::protobuf::uint32 HeightField::rowcount() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.HeightField.rowCount)
+  return rowcount_;
+}
+inline void HeightField::set_rowcount(::google::protobuf::uint32 value) {
+  
+  rowcount_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.HeightField.rowCount)
+}
+
+// uint32 columnCount = 2;
+inline void HeightField::clear_columncount() {
+  columncount_ = 0u;
+}
+inline ::google::protobuf::uint32 HeightField::columncount() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.HeightField.columnCount)
+  return columncount_;
+}
+inline void HeightField::set_columncount(::google::protobuf::uint32 value) {
+  
+  columncount_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.HeightField.columnCount)
+}
+
+// repeated uint32 samples = 3;
+inline int HeightField::samples_size() const {
+  return samples_.size();
+}
+inline void HeightField::clear_samples() {
+  samples_.Clear();
+}
+inline ::google::protobuf::uint32 HeightField::samples(int index) const {
+  // @@protoc_insertion_point(field_get:CreateDOM.HeightField.samples)
+  return samples_.Get(index);
+}
+inline void HeightField::set_samples(int index, ::google::protobuf::uint32 value) {
+  samples_.Set(index, value);
+  // @@protoc_insertion_point(field_set:CreateDOM.HeightField.samples)
+}
+inline void HeightField::add_samples(::google::protobuf::uint32 value) {
+  samples_.Add(value);
+  // @@protoc_insertion_point(field_add:CreateDOM.HeightField.samples)
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+HeightField::samples() const {
+  // @@protoc_insertion_point(field_list:CreateDOM.HeightField.samples)
+  return samples_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+HeightField::mutable_samples() {
+  // @@protoc_insertion_point(field_mutable_list:CreateDOM.HeightField.samples)
+  return &samples_;
+}
+
+// repeated uint32 metaData = 4;
+inline int HeightField::metadata_size() const {
+  return metadata_.size();
+}
+inline void HeightField::clear_metadata() {
+  metadata_.Clear();
+}
+inline ::google::protobuf::uint32 HeightField::metadata(int index) const {
+  // @@protoc_insertion_point(field_get:CreateDOM.HeightField.metaData)
+  return metadata_.Get(index);
+}
+inline void HeightField::set_metadata(int index, ::google::protobuf::uint32 value) {
+  metadata_.Set(index, value);
+  // @@protoc_insertion_point(field_set:CreateDOM.HeightField.metaData)
+}
+inline void HeightField::add_metadata(::google::protobuf::uint32 value) {
+  metadata_.Add(value);
+  // @@protoc_insertion_point(field_add:CreateDOM.HeightField.metaData)
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+HeightField::metadata() const {
+  // @@protoc_insertion_point(field_list:CreateDOM.HeightField.metaData)
+  return metadata_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+HeightField::mutable_metadata() {
+  // @@protoc_insertion_point(field_mutable_list:CreateDOM.HeightField.metaData)
+  return &metadata_;
 }
 
 // -------------------------------------------------------------------
@@ -5983,7 +7358,55 @@ inline void Geometry::set_allocated_trianglemeshgeometry(::CreateDOM::TriangleMe
   // @@protoc_insertion_point(field_set_allocated:CreateDOM.Geometry.triangleMeshGeometry)
 }
 
-// .CreateDOM.PlaneGeometry planeGeometry = 8;
+// .CreateDOM.HeightFieldGeometry heightFieldGeometry = 8;
+inline bool Geometry::has_heightfieldgeometry() const {
+  return subtype_case() == kHeightFieldGeometry;
+}
+inline void Geometry::set_has_heightfieldgeometry() {
+  _oneof_case_[0] = kHeightFieldGeometry;
+}
+inline void Geometry::clear_heightfieldgeometry() {
+  if (has_heightfieldgeometry()) {
+    delete subtype_.heightfieldgeometry_;
+    clear_has_subtype();
+  }
+}
+inline  const ::CreateDOM::HeightFieldGeometry& Geometry::heightfieldgeometry() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.Geometry.heightFieldGeometry)
+  return has_heightfieldgeometry()
+      ? *subtype_.heightfieldgeometry_
+      : ::CreateDOM::HeightFieldGeometry::default_instance();
+}
+inline ::CreateDOM::HeightFieldGeometry* Geometry::mutable_heightfieldgeometry() {
+  if (!has_heightfieldgeometry()) {
+    clear_subtype();
+    set_has_heightfieldgeometry();
+    subtype_.heightfieldgeometry_ = new ::CreateDOM::HeightFieldGeometry;
+  }
+  // @@protoc_insertion_point(field_mutable:CreateDOM.Geometry.heightFieldGeometry)
+  return subtype_.heightfieldgeometry_;
+}
+inline ::CreateDOM::HeightFieldGeometry* Geometry::release_heightfieldgeometry() {
+  // @@protoc_insertion_point(field_release:CreateDOM.Geometry.heightFieldGeometry)
+  if (has_heightfieldgeometry()) {
+    clear_has_subtype();
+    ::CreateDOM::HeightFieldGeometry* temp = subtype_.heightfieldgeometry_;
+    subtype_.heightfieldgeometry_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+inline void Geometry::set_allocated_heightfieldgeometry(::CreateDOM::HeightFieldGeometry* heightfieldgeometry) {
+  clear_subtype();
+  if (heightfieldgeometry) {
+    set_has_heightfieldgeometry();
+    subtype_.heightfieldgeometry_ = heightfieldgeometry;
+  }
+  // @@protoc_insertion_point(field_set_allocated:CreateDOM.Geometry.heightFieldGeometry)
+}
+
+// .CreateDOM.PlaneGeometry planeGeometry = 9;
 inline bool Geometry::has_planegeometry() const {
   return subtype_case() == kPlaneGeometry;
 }
@@ -6376,6 +7799,119 @@ inline void TriangleMeshGeometry::set_doublesided(bool value) {
 
 // -------------------------------------------------------------------
 
+// HeightFieldGeometry
+
+// string heightField = 1;
+inline void HeightFieldGeometry::clear_heightfield() {
+  heightfield_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& HeightFieldGeometry::heightfield() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.HeightFieldGeometry.heightField)
+  return heightfield_.GetNoArena();
+}
+inline void HeightFieldGeometry::set_heightfield(const ::std::string& value) {
+  
+  heightfield_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CreateDOM.HeightFieldGeometry.heightField)
+}
+#if LANG_CXX11
+inline void HeightFieldGeometry::set_heightfield(::std::string&& value) {
+  
+  heightfield_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CreateDOM.HeightFieldGeometry.heightField)
+}
+#endif
+inline void HeightFieldGeometry::set_heightfield(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  heightfield_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CreateDOM.HeightFieldGeometry.heightField)
+}
+inline void HeightFieldGeometry::set_heightfield(const char* value, size_t size) {
+  
+  heightfield_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CreateDOM.HeightFieldGeometry.heightField)
+}
+inline ::std::string* HeightFieldGeometry::mutable_heightfield() {
+  
+  // @@protoc_insertion_point(field_mutable:CreateDOM.HeightFieldGeometry.heightField)
+  return heightfield_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* HeightFieldGeometry::release_heightfield() {
+  // @@protoc_insertion_point(field_release:CreateDOM.HeightFieldGeometry.heightField)
+  
+  return heightfield_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void HeightFieldGeometry::set_allocated_heightfield(::std::string* heightfield) {
+  if (heightfield != NULL) {
+    
+  } else {
+    
+  }
+  heightfield_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), heightfield);
+  // @@protoc_insertion_point(field_set_allocated:CreateDOM.HeightFieldGeometry.heightField)
+}
+
+// float heightScale = 2;
+inline void HeightFieldGeometry::clear_heightscale() {
+  heightscale_ = 0;
+}
+inline float HeightFieldGeometry::heightscale() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.HeightFieldGeometry.heightScale)
+  return heightscale_;
+}
+inline void HeightFieldGeometry::set_heightscale(float value) {
+  
+  heightscale_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.HeightFieldGeometry.heightScale)
+}
+
+// float rowScale = 3;
+inline void HeightFieldGeometry::clear_rowscale() {
+  rowscale_ = 0;
+}
+inline float HeightFieldGeometry::rowscale() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.HeightFieldGeometry.rowScale)
+  return rowscale_;
+}
+inline void HeightFieldGeometry::set_rowscale(float value) {
+  
+  rowscale_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.HeightFieldGeometry.rowScale)
+}
+
+// float columnScale = 4;
+inline void HeightFieldGeometry::clear_columnscale() {
+  columnscale_ = 0;
+}
+inline float HeightFieldGeometry::columnscale() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.HeightFieldGeometry.columnScale)
+  return columnscale_;
+}
+inline void HeightFieldGeometry::set_columnscale(float value) {
+  
+  columnscale_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.HeightFieldGeometry.columnScale)
+}
+
+// bool doubleSided = 5;
+inline void HeightFieldGeometry::clear_doublesided() {
+  doublesided_ = false;
+}
+inline bool HeightFieldGeometry::doublesided() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.HeightFieldGeometry.doubleSided)
+  return doublesided_;
+}
+inline void HeightFieldGeometry::set_doublesided(bool value) {
+  
+  doublesided_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.HeightFieldGeometry.doubleSided)
+}
+
+// -------------------------------------------------------------------
+
 // PlaneGeometry
 
 // -------------------------------------------------------------------
@@ -6422,57 +7958,73 @@ inline void GeometryInstance::set_allocated_geometry(::CreateDOM::Geometry* geom
   // @@protoc_insertion_point(field_set_allocated:CreateDOM.GeometryInstance.geometry)
 }
 
-// string material = 2;
-inline void GeometryInstance::clear_material() {
-  material_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// repeated string materials = 2;
+inline int GeometryInstance::materials_size() const {
+  return materials_.size();
 }
-inline const ::std::string& GeometryInstance::material() const {
-  // @@protoc_insertion_point(field_get:CreateDOM.GeometryInstance.material)
-  return material_.GetNoArena();
+inline void GeometryInstance::clear_materials() {
+  materials_.Clear();
 }
-inline void GeometryInstance::set_material(const ::std::string& value) {
-  
-  material_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:CreateDOM.GeometryInstance.material)
+inline const ::std::string& GeometryInstance::materials(int index) const {
+  // @@protoc_insertion_point(field_get:CreateDOM.GeometryInstance.materials)
+  return materials_.Get(index);
+}
+inline ::std::string* GeometryInstance::mutable_materials(int index) {
+  // @@protoc_insertion_point(field_mutable:CreateDOM.GeometryInstance.materials)
+  return materials_.Mutable(index);
+}
+inline void GeometryInstance::set_materials(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:CreateDOM.GeometryInstance.materials)
+  materials_.Mutable(index)->assign(value);
 }
 #if LANG_CXX11
-inline void GeometryInstance::set_material(::std::string&& value) {
-  
-  material_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:CreateDOM.GeometryInstance.material)
+inline void GeometryInstance::set_materials(int index, ::std::string&& value) {
+  // @@protoc_insertion_point(field_set:CreateDOM.GeometryInstance.materials)
+  materials_.Mutable(index)->assign(std::move(value));
 }
 #endif
-inline void GeometryInstance::set_material(const char* value) {
+inline void GeometryInstance::set_materials(int index, const char* value) {
   GOOGLE_DCHECK(value != NULL);
-  
-  material_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:CreateDOM.GeometryInstance.material)
+  materials_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:CreateDOM.GeometryInstance.materials)
 }
-inline void GeometryInstance::set_material(const char* value, size_t size) {
-  
-  material_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:CreateDOM.GeometryInstance.material)
+inline void GeometryInstance::set_materials(int index, const char* value, size_t size) {
+  materials_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:CreateDOM.GeometryInstance.materials)
 }
-inline ::std::string* GeometryInstance::mutable_material() {
-  
-  // @@protoc_insertion_point(field_mutable:CreateDOM.GeometryInstance.material)
-  return material_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+inline ::std::string* GeometryInstance::add_materials() {
+  // @@protoc_insertion_point(field_add_mutable:CreateDOM.GeometryInstance.materials)
+  return materials_.Add();
 }
-inline ::std::string* GeometryInstance::release_material() {
-  // @@protoc_insertion_point(field_release:CreateDOM.GeometryInstance.material)
-  
-  return material_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+inline void GeometryInstance::add_materials(const ::std::string& value) {
+  materials_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:CreateDOM.GeometryInstance.materials)
 }
-inline void GeometryInstance::set_allocated_material(::std::string* material) {
-  if (material != NULL) {
-    
-  } else {
-    
-  }
-  material_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), material);
-  // @@protoc_insertion_point(field_set_allocated:CreateDOM.GeometryInstance.material)
+#if LANG_CXX11
+inline void GeometryInstance::add_materials(::std::string&& value) {
+  materials_.Add(std::move(value));
+  // @@protoc_insertion_point(field_add:CreateDOM.GeometryInstance.materials)
+}
+#endif
+inline void GeometryInstance::add_materials(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  materials_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:CreateDOM.GeometryInstance.materials)
+}
+inline void GeometryInstance::add_materials(const char* value, size_t size) {
+  materials_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:CreateDOM.GeometryInstance.materials)
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+GeometryInstance::materials() const {
+  // @@protoc_insertion_point(field_list:CreateDOM.GeometryInstance.materials)
+  return materials_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+GeometryInstance::mutable_materials() {
+  // @@protoc_insertion_point(field_mutable_list:CreateDOM.GeometryInstance.materials)
+  return &materials_;
 }
 
 // .CreateDOM.Pose localPose = 3;
@@ -7203,6 +8755,547 @@ inline void Joint::set_collisionenabled(bool value) {
   // @@protoc_insertion_point(field_set:CreateDOM.Joint.collisionEnabled)
 }
 
+// .CreateDOM.FixedJoint fixedJoint = 6;
+inline bool Joint::has_fixedjoint() const {
+  return subtype_case() == kFixedJoint;
+}
+inline void Joint::set_has_fixedjoint() {
+  _oneof_case_[0] = kFixedJoint;
+}
+inline void Joint::clear_fixedjoint() {
+  if (has_fixedjoint()) {
+    delete subtype_.fixedjoint_;
+    clear_has_subtype();
+  }
+}
+inline  const ::CreateDOM::FixedJoint& Joint::fixedjoint() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.Joint.fixedJoint)
+  return has_fixedjoint()
+      ? *subtype_.fixedjoint_
+      : ::CreateDOM::FixedJoint::default_instance();
+}
+inline ::CreateDOM::FixedJoint* Joint::mutable_fixedjoint() {
+  if (!has_fixedjoint()) {
+    clear_subtype();
+    set_has_fixedjoint();
+    subtype_.fixedjoint_ = new ::CreateDOM::FixedJoint;
+  }
+  // @@protoc_insertion_point(field_mutable:CreateDOM.Joint.fixedJoint)
+  return subtype_.fixedjoint_;
+}
+inline ::CreateDOM::FixedJoint* Joint::release_fixedjoint() {
+  // @@protoc_insertion_point(field_release:CreateDOM.Joint.fixedJoint)
+  if (has_fixedjoint()) {
+    clear_has_subtype();
+    ::CreateDOM::FixedJoint* temp = subtype_.fixedjoint_;
+    subtype_.fixedjoint_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+inline void Joint::set_allocated_fixedjoint(::CreateDOM::FixedJoint* fixedjoint) {
+  clear_subtype();
+  if (fixedjoint) {
+    set_has_fixedjoint();
+    subtype_.fixedjoint_ = fixedjoint;
+  }
+  // @@protoc_insertion_point(field_set_allocated:CreateDOM.Joint.fixedJoint)
+}
+
+// .CreateDOM.SphericalJoint sphericalJoint = 7;
+inline bool Joint::has_sphericaljoint() const {
+  return subtype_case() == kSphericalJoint;
+}
+inline void Joint::set_has_sphericaljoint() {
+  _oneof_case_[0] = kSphericalJoint;
+}
+inline void Joint::clear_sphericaljoint() {
+  if (has_sphericaljoint()) {
+    delete subtype_.sphericaljoint_;
+    clear_has_subtype();
+  }
+}
+inline  const ::CreateDOM::SphericalJoint& Joint::sphericaljoint() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.Joint.sphericalJoint)
+  return has_sphericaljoint()
+      ? *subtype_.sphericaljoint_
+      : ::CreateDOM::SphericalJoint::default_instance();
+}
+inline ::CreateDOM::SphericalJoint* Joint::mutable_sphericaljoint() {
+  if (!has_sphericaljoint()) {
+    clear_subtype();
+    set_has_sphericaljoint();
+    subtype_.sphericaljoint_ = new ::CreateDOM::SphericalJoint;
+  }
+  // @@protoc_insertion_point(field_mutable:CreateDOM.Joint.sphericalJoint)
+  return subtype_.sphericaljoint_;
+}
+inline ::CreateDOM::SphericalJoint* Joint::release_sphericaljoint() {
+  // @@protoc_insertion_point(field_release:CreateDOM.Joint.sphericalJoint)
+  if (has_sphericaljoint()) {
+    clear_has_subtype();
+    ::CreateDOM::SphericalJoint* temp = subtype_.sphericaljoint_;
+    subtype_.sphericaljoint_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+inline void Joint::set_allocated_sphericaljoint(::CreateDOM::SphericalJoint* sphericaljoint) {
+  clear_subtype();
+  if (sphericaljoint) {
+    set_has_sphericaljoint();
+    subtype_.sphericaljoint_ = sphericaljoint;
+  }
+  // @@protoc_insertion_point(field_set_allocated:CreateDOM.Joint.sphericalJoint)
+}
+
+// .CreateDOM.HingeJoint hingeJoint = 8;
+inline bool Joint::has_hingejoint() const {
+  return subtype_case() == kHingeJoint;
+}
+inline void Joint::set_has_hingejoint() {
+  _oneof_case_[0] = kHingeJoint;
+}
+inline void Joint::clear_hingejoint() {
+  if (has_hingejoint()) {
+    delete subtype_.hingejoint_;
+    clear_has_subtype();
+  }
+}
+inline  const ::CreateDOM::HingeJoint& Joint::hingejoint() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.Joint.hingeJoint)
+  return has_hingejoint()
+      ? *subtype_.hingejoint_
+      : ::CreateDOM::HingeJoint::default_instance();
+}
+inline ::CreateDOM::HingeJoint* Joint::mutable_hingejoint() {
+  if (!has_hingejoint()) {
+    clear_subtype();
+    set_has_hingejoint();
+    subtype_.hingejoint_ = new ::CreateDOM::HingeJoint;
+  }
+  // @@protoc_insertion_point(field_mutable:CreateDOM.Joint.hingeJoint)
+  return subtype_.hingejoint_;
+}
+inline ::CreateDOM::HingeJoint* Joint::release_hingejoint() {
+  // @@protoc_insertion_point(field_release:CreateDOM.Joint.hingeJoint)
+  if (has_hingejoint()) {
+    clear_has_subtype();
+    ::CreateDOM::HingeJoint* temp = subtype_.hingejoint_;
+    subtype_.hingejoint_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+inline void Joint::set_allocated_hingejoint(::CreateDOM::HingeJoint* hingejoint) {
+  clear_subtype();
+  if (hingejoint) {
+    set_has_hingejoint();
+    subtype_.hingejoint_ = hingejoint;
+  }
+  // @@protoc_insertion_point(field_set_allocated:CreateDOM.Joint.hingeJoint)
+}
+
+// .CreateDOM.PrismaticJoint prismaticJoint = 9;
+inline bool Joint::has_prismaticjoint() const {
+  return subtype_case() == kPrismaticJoint;
+}
+inline void Joint::set_has_prismaticjoint() {
+  _oneof_case_[0] = kPrismaticJoint;
+}
+inline void Joint::clear_prismaticjoint() {
+  if (has_prismaticjoint()) {
+    delete subtype_.prismaticjoint_;
+    clear_has_subtype();
+  }
+}
+inline  const ::CreateDOM::PrismaticJoint& Joint::prismaticjoint() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.Joint.prismaticJoint)
+  return has_prismaticjoint()
+      ? *subtype_.prismaticjoint_
+      : ::CreateDOM::PrismaticJoint::default_instance();
+}
+inline ::CreateDOM::PrismaticJoint* Joint::mutable_prismaticjoint() {
+  if (!has_prismaticjoint()) {
+    clear_subtype();
+    set_has_prismaticjoint();
+    subtype_.prismaticjoint_ = new ::CreateDOM::PrismaticJoint;
+  }
+  // @@protoc_insertion_point(field_mutable:CreateDOM.Joint.prismaticJoint)
+  return subtype_.prismaticjoint_;
+}
+inline ::CreateDOM::PrismaticJoint* Joint::release_prismaticjoint() {
+  // @@protoc_insertion_point(field_release:CreateDOM.Joint.prismaticJoint)
+  if (has_prismaticjoint()) {
+    clear_has_subtype();
+    ::CreateDOM::PrismaticJoint* temp = subtype_.prismaticjoint_;
+    subtype_.prismaticjoint_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+inline void Joint::set_allocated_prismaticjoint(::CreateDOM::PrismaticJoint* prismaticjoint) {
+  clear_subtype();
+  if (prismaticjoint) {
+    set_has_prismaticjoint();
+    subtype_.prismaticjoint_ = prismaticjoint;
+  }
+  // @@protoc_insertion_point(field_set_allocated:CreateDOM.Joint.prismaticJoint)
+}
+
+// .CreateDOM.DistanceJoint distanceJoint = 10;
+inline bool Joint::has_distancejoint() const {
+  return subtype_case() == kDistanceJoint;
+}
+inline void Joint::set_has_distancejoint() {
+  _oneof_case_[0] = kDistanceJoint;
+}
+inline void Joint::clear_distancejoint() {
+  if (has_distancejoint()) {
+    delete subtype_.distancejoint_;
+    clear_has_subtype();
+  }
+}
+inline  const ::CreateDOM::DistanceJoint& Joint::distancejoint() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.Joint.distanceJoint)
+  return has_distancejoint()
+      ? *subtype_.distancejoint_
+      : ::CreateDOM::DistanceJoint::default_instance();
+}
+inline ::CreateDOM::DistanceJoint* Joint::mutable_distancejoint() {
+  if (!has_distancejoint()) {
+    clear_subtype();
+    set_has_distancejoint();
+    subtype_.distancejoint_ = new ::CreateDOM::DistanceJoint;
+  }
+  // @@protoc_insertion_point(field_mutable:CreateDOM.Joint.distanceJoint)
+  return subtype_.distancejoint_;
+}
+inline ::CreateDOM::DistanceJoint* Joint::release_distancejoint() {
+  // @@protoc_insertion_point(field_release:CreateDOM.Joint.distanceJoint)
+  if (has_distancejoint()) {
+    clear_has_subtype();
+    ::CreateDOM::DistanceJoint* temp = subtype_.distancejoint_;
+    subtype_.distancejoint_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+inline void Joint::set_allocated_distancejoint(::CreateDOM::DistanceJoint* distancejoint) {
+  clear_subtype();
+  if (distancejoint) {
+    set_has_distancejoint();
+    subtype_.distancejoint_ = distancejoint;
+  }
+  // @@protoc_insertion_point(field_set_allocated:CreateDOM.Joint.distanceJoint)
+}
+
+// .CreateDOM.BallAndSocketJoint ballAndSocketJoint = 11;
+inline bool Joint::has_ballandsocketjoint() const {
+  return subtype_case() == kBallAndSocketJoint;
+}
+inline void Joint::set_has_ballandsocketjoint() {
+  _oneof_case_[0] = kBallAndSocketJoint;
+}
+inline void Joint::clear_ballandsocketjoint() {
+  if (has_ballandsocketjoint()) {
+    delete subtype_.ballandsocketjoint_;
+    clear_has_subtype();
+  }
+}
+inline  const ::CreateDOM::BallAndSocketJoint& Joint::ballandsocketjoint() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.Joint.ballAndSocketJoint)
+  return has_ballandsocketjoint()
+      ? *subtype_.ballandsocketjoint_
+      : ::CreateDOM::BallAndSocketJoint::default_instance();
+}
+inline ::CreateDOM::BallAndSocketJoint* Joint::mutable_ballandsocketjoint() {
+  if (!has_ballandsocketjoint()) {
+    clear_subtype();
+    set_has_ballandsocketjoint();
+    subtype_.ballandsocketjoint_ = new ::CreateDOM::BallAndSocketJoint;
+  }
+  // @@protoc_insertion_point(field_mutable:CreateDOM.Joint.ballAndSocketJoint)
+  return subtype_.ballandsocketjoint_;
+}
+inline ::CreateDOM::BallAndSocketJoint* Joint::release_ballandsocketjoint() {
+  // @@protoc_insertion_point(field_release:CreateDOM.Joint.ballAndSocketJoint)
+  if (has_ballandsocketjoint()) {
+    clear_has_subtype();
+    ::CreateDOM::BallAndSocketJoint* temp = subtype_.ballandsocketjoint_;
+    subtype_.ballandsocketjoint_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+inline void Joint::set_allocated_ballandsocketjoint(::CreateDOM::BallAndSocketJoint* ballandsocketjoint) {
+  clear_subtype();
+  if (ballandsocketjoint) {
+    set_has_ballandsocketjoint();
+    subtype_.ballandsocketjoint_ = ballandsocketjoint;
+  }
+  // @@protoc_insertion_point(field_set_allocated:CreateDOM.Joint.ballAndSocketJoint)
+}
+
+// .CreateDOM.D6Joint d6Joint = 12;
+inline bool Joint::has_d6joint() const {
+  return subtype_case() == kD6Joint;
+}
+inline void Joint::set_has_d6joint() {
+  _oneof_case_[0] = kD6Joint;
+}
+inline void Joint::clear_d6joint() {
+  if (has_d6joint()) {
+    delete subtype_.d6joint_;
+    clear_has_subtype();
+  }
+}
+inline  const ::CreateDOM::D6Joint& Joint::d6joint() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.Joint.d6Joint)
+  return has_d6joint()
+      ? *subtype_.d6joint_
+      : ::CreateDOM::D6Joint::default_instance();
+}
+inline ::CreateDOM::D6Joint* Joint::mutable_d6joint() {
+  if (!has_d6joint()) {
+    clear_subtype();
+    set_has_d6joint();
+    subtype_.d6joint_ = new ::CreateDOM::D6Joint;
+  }
+  // @@protoc_insertion_point(field_mutable:CreateDOM.Joint.d6Joint)
+  return subtype_.d6joint_;
+}
+inline ::CreateDOM::D6Joint* Joint::release_d6joint() {
+  // @@protoc_insertion_point(field_release:CreateDOM.Joint.d6Joint)
+  if (has_d6joint()) {
+    clear_has_subtype();
+    ::CreateDOM::D6Joint* temp = subtype_.d6joint_;
+    subtype_.d6joint_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+inline void Joint::set_allocated_d6joint(::CreateDOM::D6Joint* d6joint) {
+  clear_subtype();
+  if (d6joint) {
+    set_has_d6joint();
+    subtype_.d6joint_ = d6joint;
+  }
+  // @@protoc_insertion_point(field_set_allocated:CreateDOM.Joint.d6Joint)
+}
+
+inline bool Joint::has_subtype() const {
+  return subtype_case() != SUBTYPE_NOT_SET;
+}
+inline void Joint::clear_has_subtype() {
+  _oneof_case_[0] = SUBTYPE_NOT_SET;
+}
+inline Joint::SubtypeCase Joint::subtype_case() const {
+  return Joint::SubtypeCase(_oneof_case_[0]);
+}
+// -------------------------------------------------------------------
+
+// FixedJoint
+
+// -------------------------------------------------------------------
+
+// SphericalJoint
+
+// float limitY = 1;
+inline void SphericalJoint::clear_limity() {
+  limity_ = 0;
+}
+inline float SphericalJoint::limity() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.SphericalJoint.limitY)
+  return limity_;
+}
+inline void SphericalJoint::set_limity(float value) {
+  
+  limity_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.SphericalJoint.limitY)
+}
+
+// float limitZ = 2;
+inline void SphericalJoint::clear_limitz() {
+  limitz_ = 0;
+}
+inline float SphericalJoint::limitz() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.SphericalJoint.limitZ)
+  return limitz_;
+}
+inline void SphericalJoint::set_limitz(float value) {
+  
+  limitz_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.SphericalJoint.limitZ)
+}
+
+// -------------------------------------------------------------------
+
+// HingeJoint
+
+// float limtLow = 1;
+inline void HingeJoint::clear_limtlow() {
+  limtlow_ = 0;
+}
+inline float HingeJoint::limtlow() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.HingeJoint.limtLow)
+  return limtlow_;
+}
+inline void HingeJoint::set_limtlow(float value) {
+  
+  limtlow_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.HingeJoint.limtLow)
+}
+
+// float limitHigh = 2;
+inline void HingeJoint::clear_limithigh() {
+  limithigh_ = 0;
+}
+inline float HingeJoint::limithigh() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.HingeJoint.limitHigh)
+  return limithigh_;
+}
+inline void HingeJoint::set_limithigh(float value) {
+  
+  limithigh_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.HingeJoint.limitHigh)
+}
+
+// -------------------------------------------------------------------
+
+// PrismaticJoint
+
+// float limitLow = 1;
+inline void PrismaticJoint::clear_limitlow() {
+  limitlow_ = 0;
+}
+inline float PrismaticJoint::limitlow() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.PrismaticJoint.limitLow)
+  return limitlow_;
+}
+inline void PrismaticJoint::set_limitlow(float value) {
+  
+  limitlow_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.PrismaticJoint.limitLow)
+}
+
+// float limitHigh = 2;
+inline void PrismaticJoint::clear_limithigh() {
+  limithigh_ = 0;
+}
+inline float PrismaticJoint::limithigh() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.PrismaticJoint.limitHigh)
+  return limithigh_;
+}
+inline void PrismaticJoint::set_limithigh(float value) {
+  
+  limithigh_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.PrismaticJoint.limitHigh)
+}
+
+// -------------------------------------------------------------------
+
+// DistanceJoint
+
+// float distanceLow = 1;
+inline void DistanceJoint::clear_distancelow() {
+  distancelow_ = 0;
+}
+inline float DistanceJoint::distancelow() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.DistanceJoint.distanceLow)
+  return distancelow_;
+}
+inline void DistanceJoint::set_distancelow(float value) {
+  
+  distancelow_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.DistanceJoint.distanceLow)
+}
+
+// float distanceHigh = 2;
+inline void DistanceJoint::clear_distancehigh() {
+  distancehigh_ = 0;
+}
+inline float DistanceJoint::distancehigh() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.DistanceJoint.distanceHigh)
+  return distancehigh_;
+}
+inline void DistanceJoint::set_distancehigh(float value) {
+  
+  distancehigh_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.DistanceJoint.distanceHigh)
+}
+
+// -------------------------------------------------------------------
+
+// BallAndSocketJoint
+
+// float limitXLow = 1;
+inline void BallAndSocketJoint::clear_limitxlow() {
+  limitxlow_ = 0;
+}
+inline float BallAndSocketJoint::limitxlow() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.BallAndSocketJoint.limitXLow)
+  return limitxlow_;
+}
+inline void BallAndSocketJoint::set_limitxlow(float value) {
+  
+  limitxlow_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.BallAndSocketJoint.limitXLow)
+}
+
+// float limitXHigh = 2;
+inline void BallAndSocketJoint::clear_limitxhigh() {
+  limitxhigh_ = 0;
+}
+inline float BallAndSocketJoint::limitxhigh() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.BallAndSocketJoint.limitXHigh)
+  return limitxhigh_;
+}
+inline void BallAndSocketJoint::set_limitxhigh(float value) {
+  
+  limitxhigh_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.BallAndSocketJoint.limitXHigh)
+}
+
+// float limitY = 3;
+inline void BallAndSocketJoint::clear_limity() {
+  limity_ = 0;
+}
+inline float BallAndSocketJoint::limity() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.BallAndSocketJoint.limitY)
+  return limity_;
+}
+inline void BallAndSocketJoint::set_limity(float value) {
+  
+  limity_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.BallAndSocketJoint.limitY)
+}
+
+// float limitZ = 4;
+inline void BallAndSocketJoint::clear_limitz() {
+  limitz_ = 0;
+}
+inline float BallAndSocketJoint::limitz() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.BallAndSocketJoint.limitZ)
+  return limitz_;
+}
+inline void BallAndSocketJoint::set_limitz(float value) {
+  
+  limitz_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.BallAndSocketJoint.limitZ)
+}
+
+// -------------------------------------------------------------------
+
+// D6Joint
+
 // -------------------------------------------------------------------
 
 // BodyPairFilter
@@ -7518,63 +9611,6 @@ Collection::nodes() const {
   return nodes_;
 }
 
-// .CreateDOM.Scene scene = 2;
-inline bool Collection::has_scene() const {
-  return subtype_case() == kScene;
-}
-inline void Collection::set_has_scene() {
-  _oneof_case_[0] = kScene;
-}
-inline void Collection::clear_scene() {
-  if (has_scene()) {
-    delete subtype_.scene_;
-    clear_has_subtype();
-  }
-}
-inline  const ::CreateDOM::Scene& Collection::scene() const {
-  // @@protoc_insertion_point(field_get:CreateDOM.Collection.scene)
-  return has_scene()
-      ? *subtype_.scene_
-      : ::CreateDOM::Scene::default_instance();
-}
-inline ::CreateDOM::Scene* Collection::mutable_scene() {
-  if (!has_scene()) {
-    clear_subtype();
-    set_has_scene();
-    subtype_.scene_ = new ::CreateDOM::Scene;
-  }
-  // @@protoc_insertion_point(field_mutable:CreateDOM.Collection.scene)
-  return subtype_.scene_;
-}
-inline ::CreateDOM::Scene* Collection::release_scene() {
-  // @@protoc_insertion_point(field_release:CreateDOM.Collection.scene)
-  if (has_scene()) {
-    clear_has_subtype();
-    ::CreateDOM::Scene* temp = subtype_.scene_;
-    subtype_.scene_ = NULL;
-    return temp;
-  } else {
-    return NULL;
-  }
-}
-inline void Collection::set_allocated_scene(::CreateDOM::Scene* scene) {
-  clear_subtype();
-  if (scene) {
-    set_has_scene();
-    subtype_.scene_ = scene;
-  }
-  // @@protoc_insertion_point(field_set_allocated:CreateDOM.Collection.scene)
-}
-
-inline bool Collection::has_subtype() const {
-  return subtype_case() != SUBTYPE_NOT_SET;
-}
-inline void Collection::clear_has_subtype() {
-  _oneof_case_[0] = SUBTYPE_NOT_SET;
-}
-inline Collection::SubtypeCase Collection::subtype_case() const {
-  return Collection::SubtypeCase(_oneof_case_[0]);
-}
 // -------------------------------------------------------------------
 
 // Scene
@@ -7619,65 +9655,95 @@ inline void Scene::set_allocated_gravity(::CreateDOM::Vec3* gravity) {
   // @@protoc_insertion_point(field_set_allocated:CreateDOM.Scene.gravity)
 }
 
+// repeated .CreateDOM.Node nodes = 2;
+inline int Scene::nodes_size() const {
+  return nodes_.size();
+}
+inline void Scene::clear_nodes() {
+  nodes_.Clear();
+}
+inline const ::CreateDOM::Node& Scene::nodes(int index) const {
+  // @@protoc_insertion_point(field_get:CreateDOM.Scene.nodes)
+  return nodes_.Get(index);
+}
+inline ::CreateDOM::Node* Scene::mutable_nodes(int index) {
+  // @@protoc_insertion_point(field_mutable:CreateDOM.Scene.nodes)
+  return nodes_.Mutable(index);
+}
+inline ::CreateDOM::Node* Scene::add_nodes() {
+  // @@protoc_insertion_point(field_add:CreateDOM.Scene.nodes)
+  return nodes_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::CreateDOM::Node >*
+Scene::mutable_nodes() {
+  // @@protoc_insertion_point(field_mutable_list:CreateDOM.Scene.nodes)
+  return &nodes_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::CreateDOM::Node >&
+Scene::nodes() const {
+  // @@protoc_insertion_point(field_list:CreateDOM.Scene.nodes)
+  return nodes_;
+}
+
 // -------------------------------------------------------------------
 
 // PhysicsDOM
 
-// repeated .CreateDOM.Collection collections = 1;
+// repeated .CreateDOM.Node collections = 1;
 inline int PhysicsDOM::collections_size() const {
   return collections_.size();
 }
 inline void PhysicsDOM::clear_collections() {
   collections_.Clear();
 }
-inline const ::CreateDOM::Collection& PhysicsDOM::collections(int index) const {
+inline const ::CreateDOM::Node& PhysicsDOM::collections(int index) const {
   // @@protoc_insertion_point(field_get:CreateDOM.PhysicsDOM.collections)
   return collections_.Get(index);
 }
-inline ::CreateDOM::Collection* PhysicsDOM::mutable_collections(int index) {
+inline ::CreateDOM::Node* PhysicsDOM::mutable_collections(int index) {
   // @@protoc_insertion_point(field_mutable:CreateDOM.PhysicsDOM.collections)
   return collections_.Mutable(index);
 }
-inline ::CreateDOM::Collection* PhysicsDOM::add_collections() {
+inline ::CreateDOM::Node* PhysicsDOM::add_collections() {
   // @@protoc_insertion_point(field_add:CreateDOM.PhysicsDOM.collections)
   return collections_.Add();
 }
-inline ::google::protobuf::RepeatedPtrField< ::CreateDOM::Collection >*
+inline ::google::protobuf::RepeatedPtrField< ::CreateDOM::Node >*
 PhysicsDOM::mutable_collections() {
   // @@protoc_insertion_point(field_mutable_list:CreateDOM.PhysicsDOM.collections)
   return &collections_;
 }
-inline const ::google::protobuf::RepeatedPtrField< ::CreateDOM::Collection >&
+inline const ::google::protobuf::RepeatedPtrField< ::CreateDOM::Node >&
 PhysicsDOM::collections() const {
   // @@protoc_insertion_point(field_list:CreateDOM.PhysicsDOM.collections)
   return collections_;
 }
 
-// repeated .CreateDOM.Scene scenes = 2;
+// repeated .CreateDOM.Node scenes = 2;
 inline int PhysicsDOM::scenes_size() const {
   return scenes_.size();
 }
 inline void PhysicsDOM::clear_scenes() {
   scenes_.Clear();
 }
-inline const ::CreateDOM::Scene& PhysicsDOM::scenes(int index) const {
+inline const ::CreateDOM::Node& PhysicsDOM::scenes(int index) const {
   // @@protoc_insertion_point(field_get:CreateDOM.PhysicsDOM.scenes)
   return scenes_.Get(index);
 }
-inline ::CreateDOM::Scene* PhysicsDOM::mutable_scenes(int index) {
+inline ::CreateDOM::Node* PhysicsDOM::mutable_scenes(int index) {
   // @@protoc_insertion_point(field_mutable:CreateDOM.PhysicsDOM.scenes)
   return scenes_.Mutable(index);
 }
-inline ::CreateDOM::Scene* PhysicsDOM::add_scenes() {
+inline ::CreateDOM::Node* PhysicsDOM::add_scenes() {
   // @@protoc_insertion_point(field_add:CreateDOM.PhysicsDOM.scenes)
   return scenes_.Add();
 }
-inline ::google::protobuf::RepeatedPtrField< ::CreateDOM::Scene >*
+inline ::google::protobuf::RepeatedPtrField< ::CreateDOM::Node >*
 PhysicsDOM::mutable_scenes() {
   // @@protoc_insertion_point(field_mutable_list:CreateDOM.PhysicsDOM.scenes)
   return &scenes_;
 }
-inline const ::google::protobuf::RepeatedPtrField< ::CreateDOM::Scene >&
+inline const ::google::protobuf::RepeatedPtrField< ::CreateDOM::Node >&
 PhysicsDOM::scenes() const {
   // @@protoc_insertion_point(field_list:CreateDOM.PhysicsDOM.scenes)
   return scenes_;
@@ -7687,6 +9753,24 @@ PhysicsDOM::scenes() const {
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

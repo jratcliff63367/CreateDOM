@@ -65,11 +65,13 @@ public:
   const ::CreateDOM::PhysicsMaterial* physicsmaterial_;
   const ::CreateDOM::ConvexHull* convexhull_;
   const ::CreateDOM::TriangleMesh* trianglemesh_;
+  const ::CreateDOM::HeightField* heightfield_;
   const ::CreateDOM::RigidBody* rigidbody_;
   const ::CreateDOM::Joint* joint_;
   const ::CreateDOM::BodyPairFilters* bodypairfilters_;
   const ::CreateDOM::InstanceCollection* instancecollection_;
   const ::CreateDOM::Collection* collection_;
+  const ::CreateDOM::Scene* scene_;
 } _Node_default_instance_;
 class MeshScaleDefaultTypeInternal {
 public:
@@ -91,6 +93,11 @@ public:
  ::google::protobuf::internal::ExplicitlyConstructed<TriangleMesh>
      _instance;
 } _TriangleMesh_default_instance_;
+class HeightFieldDefaultTypeInternal {
+public:
+ ::google::protobuf::internal::ExplicitlyConstructed<HeightField>
+     _instance;
+} _HeightField_default_instance_;
 class GeometryDefaultTypeInternal {
 public:
  ::google::protobuf::internal::ExplicitlyConstructed<Geometry>
@@ -101,6 +108,7 @@ public:
   const ::CreateDOM::CylinderGeometry* cylindergeometry_;
   const ::CreateDOM::ConvexHullGeometry* convexhullgeometry_;
   const ::CreateDOM::TriangleMeshGeometry* trianglemeshgeometry_;
+  const ::CreateDOM::HeightFieldGeometry* heightfieldgeometry_;
   const ::CreateDOM::PlaneGeometry* planegeometry_;
 } _Geometry_default_instance_;
 class BoxGeometryDefaultTypeInternal {
@@ -133,6 +141,11 @@ public:
  ::google::protobuf::internal::ExplicitlyConstructed<TriangleMeshGeometry>
      _instance;
 } _TriangleMeshGeometry_default_instance_;
+class HeightFieldGeometryDefaultTypeInternal {
+public:
+ ::google::protobuf::internal::ExplicitlyConstructed<HeightFieldGeometry>
+     _instance;
+} _HeightFieldGeometry_default_instance_;
 class PlaneGeometryDefaultTypeInternal {
 public:
  ::google::protobuf::internal::ExplicitlyConstructed<PlaneGeometry>
@@ -164,7 +177,49 @@ class JointDefaultTypeInternal {
 public:
  ::google::protobuf::internal::ExplicitlyConstructed<Joint>
      _instance;
+  const ::CreateDOM::FixedJoint* fixedjoint_;
+  const ::CreateDOM::SphericalJoint* sphericaljoint_;
+  const ::CreateDOM::HingeJoint* hingejoint_;
+  const ::CreateDOM::PrismaticJoint* prismaticjoint_;
+  const ::CreateDOM::DistanceJoint* distancejoint_;
+  const ::CreateDOM::BallAndSocketJoint* ballandsocketjoint_;
+  const ::CreateDOM::D6Joint* d6joint_;
 } _Joint_default_instance_;
+class FixedJointDefaultTypeInternal {
+public:
+ ::google::protobuf::internal::ExplicitlyConstructed<FixedJoint>
+     _instance;
+} _FixedJoint_default_instance_;
+class SphericalJointDefaultTypeInternal {
+public:
+ ::google::protobuf::internal::ExplicitlyConstructed<SphericalJoint>
+     _instance;
+} _SphericalJoint_default_instance_;
+class HingeJointDefaultTypeInternal {
+public:
+ ::google::protobuf::internal::ExplicitlyConstructed<HingeJoint>
+     _instance;
+} _HingeJoint_default_instance_;
+class PrismaticJointDefaultTypeInternal {
+public:
+ ::google::protobuf::internal::ExplicitlyConstructed<PrismaticJoint>
+     _instance;
+} _PrismaticJoint_default_instance_;
+class DistanceJointDefaultTypeInternal {
+public:
+ ::google::protobuf::internal::ExplicitlyConstructed<DistanceJoint>
+     _instance;
+} _DistanceJoint_default_instance_;
+class BallAndSocketJointDefaultTypeInternal {
+public:
+ ::google::protobuf::internal::ExplicitlyConstructed<BallAndSocketJoint>
+     _instance;
+} _BallAndSocketJoint_default_instance_;
+class D6JointDefaultTypeInternal {
+public:
+ ::google::protobuf::internal::ExplicitlyConstructed<D6Joint>
+     _instance;
+} _D6Joint_default_instance_;
 class BodyPairFilterDefaultTypeInternal {
 public:
  ::google::protobuf::internal::ExplicitlyConstructed<BodyPairFilter>
@@ -184,7 +239,6 @@ class CollectionDefaultTypeInternal {
 public:
  ::google::protobuf::internal::ExplicitlyConstructed<Collection>
      _instance;
-  const ::CreateDOM::Scene* scene_;
 } _Collection_default_instance_;
 class SceneDefaultTypeInternal {
 public:
@@ -202,7 +256,7 @@ namespace protobuf_PhysicsDOM_2eproto {
 
 namespace {
 
-::google::protobuf::Metadata file_level_metadata[32];
+::google::protobuf::Metadata file_level_metadata[41];
 const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[2];
 
 }  // namespace
@@ -218,6 +272,15 @@ PROTOBUF_CONSTEXPR_VAR ::google::protobuf::internal::AuxillaryParseTableField
 };
 PROTOBUF_CONSTEXPR_VAR ::google::protobuf::internal::ParseTable const
     TableStruct::schema[] GOOGLE_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
+  { NULL, NULL, 0, -1, -1, -1, -1, NULL, false },
+  { NULL, NULL, 0, -1, -1, -1, -1, NULL, false },
+  { NULL, NULL, 0, -1, -1, -1, -1, NULL, false },
+  { NULL, NULL, 0, -1, -1, -1, -1, NULL, false },
+  { NULL, NULL, 0, -1, -1, -1, -1, NULL, false },
+  { NULL, NULL, 0, -1, -1, -1, -1, NULL, false },
+  { NULL, NULL, 0, -1, -1, -1, -1, NULL, false },
+  { NULL, NULL, 0, -1, -1, -1, -1, NULL, false },
+  { NULL, NULL, 0, -1, -1, -1, -1, NULL, false },
   { NULL, NULL, 0, -1, -1, -1, -1, NULL, false },
   { NULL, NULL, 0, -1, -1, -1, -1, NULL, false },
   { NULL, NULL, 0, -1, -1, -1, -1, NULL, false },
@@ -326,11 +389,13 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_ATTRIBUTE_SECTION
   offsetof(NodeDefaultTypeInternal, physicsmaterial_),
   offsetof(NodeDefaultTypeInternal, convexhull_),
   offsetof(NodeDefaultTypeInternal, trianglemesh_),
+  offsetof(NodeDefaultTypeInternal, heightfield_),
   offsetof(NodeDefaultTypeInternal, rigidbody_),
   offsetof(NodeDefaultTypeInternal, joint_),
   offsetof(NodeDefaultTypeInternal, bodypairfilters_),
   offsetof(NodeDefaultTypeInternal, instancecollection_),
   offsetof(NodeDefaultTypeInternal, collection_),
+  offsetof(NodeDefaultTypeInternal, scene_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Node, subtype_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MeshScale, _internal_metadata_),
@@ -362,6 +427,16 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_ATTRIBUTE_SECTION
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriangleMesh, points_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriangleMesh, triangles_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriangleMesh, materialindices_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(HeightField, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(HeightField, rowcount_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(HeightField, columncount_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(HeightField, samples_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(HeightField, metadata_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Geometry, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -374,6 +449,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_ATTRIBUTE_SECTION
   offsetof(GeometryDefaultTypeInternal, cylindergeometry_),
   offsetof(GeometryDefaultTypeInternal, convexhullgeometry_),
   offsetof(GeometryDefaultTypeInternal, trianglemeshgeometry_),
+  offsetof(GeometryDefaultTypeInternal, heightfieldgeometry_),
   offsetof(GeometryDefaultTypeInternal, planegeometry_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Geometry, subtype_),
   ~0u,  // no _has_bits_
@@ -418,6 +494,16 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_ATTRIBUTE_SECTION
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriangleMeshGeometry, trianglemesh_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriangleMeshGeometry, doublesided_),
   ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(HeightFieldGeometry, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(HeightFieldGeometry, heightfield_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(HeightFieldGeometry, heightscale_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(HeightFieldGeometry, rowscale_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(HeightFieldGeometry, columnscale_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(HeightFieldGeometry, doublesided_),
+  ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlaneGeometry, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
@@ -428,7 +514,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_ATTRIBUTE_SECTION
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GeometryInstance, geometry_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GeometryInstance, material_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GeometryInstance, materials_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GeometryInstance, localpose_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GeometryInstance, collisionfiltersettings_),
   ~0u,  // no _has_bits_
@@ -464,13 +550,68 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_ATTRIBUTE_SECTION
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Joint, _internal_metadata_),
   ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Joint, _oneof_case_[0]),
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Joint, body0_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Joint, body1_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Joint, localpose0_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Joint, localpose1_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Joint, collisionenabled_),
+  offsetof(JointDefaultTypeInternal, fixedjoint_),
+  offsetof(JointDefaultTypeInternal, sphericaljoint_),
+  offsetof(JointDefaultTypeInternal, hingejoint_),
+  offsetof(JointDefaultTypeInternal, prismaticjoint_),
+  offsetof(JointDefaultTypeInternal, distancejoint_),
+  offsetof(JointDefaultTypeInternal, ballandsocketjoint_),
+  offsetof(JointDefaultTypeInternal, d6joint_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Joint, subtype_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FixedJoint, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SphericalJoint, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SphericalJoint, limity_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SphericalJoint, limitz_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(HingeJoint, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(HingeJoint, limtlow_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(HingeJoint, limithigh_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PrismaticJoint, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PrismaticJoint, limitlow_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PrismaticJoint, limithigh_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DistanceJoint, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DistanceJoint, distancelow_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(DistanceJoint, distancehigh_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BallAndSocketJoint, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BallAndSocketJoint, limitxlow_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BallAndSocketJoint, limitxhigh_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BallAndSocketJoint, limity_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BallAndSocketJoint, limitz_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(D6Joint, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BodyPairFilter, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -495,17 +636,16 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_ATTRIBUTE_SECTION
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Collection, _internal_metadata_),
   ~0u,  // no _extensions_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Collection, _oneof_case_[0]),
+  ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Collection, nodes_),
-  offsetof(CollectionDefaultTypeInternal, scene_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Collection, subtype_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Scene, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Scene, gravity_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Scene, nodes_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PhysicsDOM, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -524,29 +664,38 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_ATTR
   { 46, -1, sizeof(KeyValuePair)},
   { 53, -1, sizeof(AdditionalProperties)},
   { 60, -1, sizeof(Node)},
-  { 79, -1, sizeof(MeshScale)},
-  { 86, -1, sizeof(PhysicsMaterial)},
-  { 96, -1, sizeof(ConvexHull)},
-  { 102, -1, sizeof(TriangleMesh)},
-  { 109, -1, sizeof(Geometry)},
-  { 123, -1, sizeof(BoxGeometry)},
-  { 129, -1, sizeof(SphereGeometry)},
-  { 135, -1, sizeof(CapsuleGeometry)},
-  { 142, -1, sizeof(CylinderGeometry)},
-  { 149, -1, sizeof(ConvexHullGeometry)},
-  { 156, -1, sizeof(TriangleMeshGeometry)},
-  { 164, -1, sizeof(PlaneGeometry)},
-  { 169, -1, sizeof(GeometryInstance)},
-  { 178, -1, sizeof(RigidBody)},
-  { 188, -1, sizeof(RigidStatic)},
-  { 193, -1, sizeof(RigidDynamic)},
-  { 208, -1, sizeof(Joint)},
-  { 218, -1, sizeof(BodyPairFilter)},
-  { 225, -1, sizeof(BodyPairFilters)},
-  { 231, -1, sizeof(InstanceCollection)},
-  { 239, -1, sizeof(Collection)},
-  { 247, -1, sizeof(Scene)},
-  { 253, -1, sizeof(PhysicsDOM)},
+  { 81, -1, sizeof(MeshScale)},
+  { 88, -1, sizeof(PhysicsMaterial)},
+  { 98, -1, sizeof(ConvexHull)},
+  { 104, -1, sizeof(TriangleMesh)},
+  { 112, -1, sizeof(HeightField)},
+  { 121, -1, sizeof(Geometry)},
+  { 136, -1, sizeof(BoxGeometry)},
+  { 142, -1, sizeof(SphereGeometry)},
+  { 148, -1, sizeof(CapsuleGeometry)},
+  { 155, -1, sizeof(CylinderGeometry)},
+  { 162, -1, sizeof(ConvexHullGeometry)},
+  { 169, -1, sizeof(TriangleMeshGeometry)},
+  { 177, -1, sizeof(HeightFieldGeometry)},
+  { 187, -1, sizeof(PlaneGeometry)},
+  { 192, -1, sizeof(GeometryInstance)},
+  { 201, -1, sizeof(RigidBody)},
+  { 211, -1, sizeof(RigidStatic)},
+  { 216, -1, sizeof(RigidDynamic)},
+  { 231, -1, sizeof(Joint)},
+  { 249, -1, sizeof(FixedJoint)},
+  { 254, -1, sizeof(SphericalJoint)},
+  { 261, -1, sizeof(HingeJoint)},
+  { 268, -1, sizeof(PrismaticJoint)},
+  { 275, -1, sizeof(DistanceJoint)},
+  { 282, -1, sizeof(BallAndSocketJoint)},
+  { 291, -1, sizeof(D6Joint)},
+  { 296, -1, sizeof(BodyPairFilter)},
+  { 303, -1, sizeof(BodyPairFilters)},
+  { 309, -1, sizeof(InstanceCollection)},
+  { 317, -1, sizeof(Collection)},
+  { 323, -1, sizeof(Scene)},
+  { 330, -1, sizeof(PhysicsDOM)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -563,6 +712,7 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&_PhysicsMaterial_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_ConvexHull_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_TriangleMesh_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_HeightField_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_Geometry_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_BoxGeometry_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_SphereGeometry_default_instance_),
@@ -570,12 +720,20 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&_CylinderGeometry_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_ConvexHullGeometry_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_TriangleMeshGeometry_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_HeightFieldGeometry_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_PlaneGeometry_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_GeometryInstance_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_RigidBody_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_RigidStatic_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_RigidDynamic_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_Joint_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_FixedJoint_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_SphericalJoint_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_HingeJoint_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_PrismaticJoint_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_DistanceJoint_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_BallAndSocketJoint_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&_D6Joint_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_BodyPairFilter_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_BodyPairFilters_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&_InstanceCollection_default_instance_),
@@ -602,7 +760,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 32);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 41);
 }
 
 }  // namespace
@@ -636,7 +794,9 @@ void TableStruct::InitDefaultsImpl() {
   ::google::protobuf::internal::OnShutdownDestroyMessage(
       &_ConvexHull_default_instance_);_TriangleMesh_default_instance_._instance.DefaultConstruct();
   ::google::protobuf::internal::OnShutdownDestroyMessage(
-      &_TriangleMesh_default_instance_);_Geometry_default_instance_._instance.DefaultConstruct();
+      &_TriangleMesh_default_instance_);_HeightField_default_instance_._instance.DefaultConstruct();
+  ::google::protobuf::internal::OnShutdownDestroyMessage(
+      &_HeightField_default_instance_);_Geometry_default_instance_._instance.DefaultConstruct();
   ::google::protobuf::internal::OnShutdownDestroyMessage(
       &_Geometry_default_instance_);_BoxGeometry_default_instance_._instance.DefaultConstruct();
   ::google::protobuf::internal::OnShutdownDestroyMessage(
@@ -650,7 +810,9 @@ void TableStruct::InitDefaultsImpl() {
   ::google::protobuf::internal::OnShutdownDestroyMessage(
       &_ConvexHullGeometry_default_instance_);_TriangleMeshGeometry_default_instance_._instance.DefaultConstruct();
   ::google::protobuf::internal::OnShutdownDestroyMessage(
-      &_TriangleMeshGeometry_default_instance_);_PlaneGeometry_default_instance_._instance.DefaultConstruct();
+      &_TriangleMeshGeometry_default_instance_);_HeightFieldGeometry_default_instance_._instance.DefaultConstruct();
+  ::google::protobuf::internal::OnShutdownDestroyMessage(
+      &_HeightFieldGeometry_default_instance_);_PlaneGeometry_default_instance_._instance.DefaultConstruct();
   ::google::protobuf::internal::OnShutdownDestroyMessage(
       &_PlaneGeometry_default_instance_);_GeometryInstance_default_instance_._instance.DefaultConstruct();
   ::google::protobuf::internal::OnShutdownDestroyMessage(
@@ -662,7 +824,21 @@ void TableStruct::InitDefaultsImpl() {
   ::google::protobuf::internal::OnShutdownDestroyMessage(
       &_RigidDynamic_default_instance_);_Joint_default_instance_._instance.DefaultConstruct();
   ::google::protobuf::internal::OnShutdownDestroyMessage(
-      &_Joint_default_instance_);_BodyPairFilter_default_instance_._instance.DefaultConstruct();
+      &_Joint_default_instance_);_FixedJoint_default_instance_._instance.DefaultConstruct();
+  ::google::protobuf::internal::OnShutdownDestroyMessage(
+      &_FixedJoint_default_instance_);_SphericalJoint_default_instance_._instance.DefaultConstruct();
+  ::google::protobuf::internal::OnShutdownDestroyMessage(
+      &_SphericalJoint_default_instance_);_HingeJoint_default_instance_._instance.DefaultConstruct();
+  ::google::protobuf::internal::OnShutdownDestroyMessage(
+      &_HingeJoint_default_instance_);_PrismaticJoint_default_instance_._instance.DefaultConstruct();
+  ::google::protobuf::internal::OnShutdownDestroyMessage(
+      &_PrismaticJoint_default_instance_);_DistanceJoint_default_instance_._instance.DefaultConstruct();
+  ::google::protobuf::internal::OnShutdownDestroyMessage(
+      &_DistanceJoint_default_instance_);_BallAndSocketJoint_default_instance_._instance.DefaultConstruct();
+  ::google::protobuf::internal::OnShutdownDestroyMessage(
+      &_BallAndSocketJoint_default_instance_);_D6Joint_default_instance_._instance.DefaultConstruct();
+  ::google::protobuf::internal::OnShutdownDestroyMessage(
+      &_D6Joint_default_instance_);_BodyPairFilter_default_instance_._instance.DefaultConstruct();
   ::google::protobuf::internal::OnShutdownDestroyMessage(
       &_BodyPairFilter_default_instance_);_BodyPairFilters_default_instance_._instance.DefaultConstruct();
   ::google::protobuf::internal::OnShutdownDestroyMessage(
@@ -696,6 +872,8 @@ void TableStruct::InitDefaultsImpl() {
       ::CreateDOM::ConvexHull::internal_default_instance());
   _Node_default_instance_.trianglemesh_ = const_cast< ::CreateDOM::TriangleMesh*>(
       ::CreateDOM::TriangleMesh::internal_default_instance());
+  _Node_default_instance_.heightfield_ = const_cast< ::CreateDOM::HeightField*>(
+      ::CreateDOM::HeightField::internal_default_instance());
   _Node_default_instance_.rigidbody_ = const_cast< ::CreateDOM::RigidBody*>(
       ::CreateDOM::RigidBody::internal_default_instance());
   _Node_default_instance_.joint_ = const_cast< ::CreateDOM::Joint*>(
@@ -706,6 +884,8 @@ void TableStruct::InitDefaultsImpl() {
       ::CreateDOM::InstanceCollection::internal_default_instance());
   _Node_default_instance_.collection_ = const_cast< ::CreateDOM::Collection*>(
       ::CreateDOM::Collection::internal_default_instance());
+  _Node_default_instance_.scene_ = const_cast< ::CreateDOM::Scene*>(
+      ::CreateDOM::Scene::internal_default_instance());
   _MeshScale_default_instance_._instance.get_mutable()->scale_ = const_cast< ::CreateDOM::Vec3*>(
       ::CreateDOM::Vec3::internal_default_instance());
   _MeshScale_default_instance_._instance.get_mutable()->rotation_ = const_cast< ::CreateDOM::Quat*>(
@@ -722,6 +902,8 @@ void TableStruct::InitDefaultsImpl() {
       ::CreateDOM::ConvexHullGeometry::internal_default_instance());
   _Geometry_default_instance_.trianglemeshgeometry_ = const_cast< ::CreateDOM::TriangleMeshGeometry*>(
       ::CreateDOM::TriangleMeshGeometry::internal_default_instance());
+  _Geometry_default_instance_.heightfieldgeometry_ = const_cast< ::CreateDOM::HeightFieldGeometry*>(
+      ::CreateDOM::HeightFieldGeometry::internal_default_instance());
   _Geometry_default_instance_.planegeometry_ = const_cast< ::CreateDOM::PlaneGeometry*>(
       ::CreateDOM::PlaneGeometry::internal_default_instance());
   _BoxGeometry_default_instance_._instance.get_mutable()->dimensions_ = const_cast< ::CreateDOM::Vec3*>(
@@ -752,12 +934,24 @@ void TableStruct::InitDefaultsImpl() {
       ::CreateDOM::Pose::internal_default_instance());
   _Joint_default_instance_._instance.get_mutable()->localpose1_ = const_cast< ::CreateDOM::Pose*>(
       ::CreateDOM::Pose::internal_default_instance());
+  _Joint_default_instance_.fixedjoint_ = const_cast< ::CreateDOM::FixedJoint*>(
+      ::CreateDOM::FixedJoint::internal_default_instance());
+  _Joint_default_instance_.sphericaljoint_ = const_cast< ::CreateDOM::SphericalJoint*>(
+      ::CreateDOM::SphericalJoint::internal_default_instance());
+  _Joint_default_instance_.hingejoint_ = const_cast< ::CreateDOM::HingeJoint*>(
+      ::CreateDOM::HingeJoint::internal_default_instance());
+  _Joint_default_instance_.prismaticjoint_ = const_cast< ::CreateDOM::PrismaticJoint*>(
+      ::CreateDOM::PrismaticJoint::internal_default_instance());
+  _Joint_default_instance_.distancejoint_ = const_cast< ::CreateDOM::DistanceJoint*>(
+      ::CreateDOM::DistanceJoint::internal_default_instance());
+  _Joint_default_instance_.ballandsocketjoint_ = const_cast< ::CreateDOM::BallAndSocketJoint*>(
+      ::CreateDOM::BallAndSocketJoint::internal_default_instance());
+  _Joint_default_instance_.d6joint_ = const_cast< ::CreateDOM::D6Joint*>(
+      ::CreateDOM::D6Joint::internal_default_instance());
   _InstanceCollection_default_instance_._instance.get_mutable()->pose_ = const_cast< ::CreateDOM::Pose*>(
       ::CreateDOM::Pose::internal_default_instance());
   _InstanceCollection_default_instance_._instance.get_mutable()->scale_ = const_cast< ::CreateDOM::Vec3*>(
       ::CreateDOM::Vec3::internal_default_instance());
-  _Collection_default_instance_.scene_ = const_cast< ::CreateDOM::Scene*>(
-      ::CreateDOM::Scene::internal_default_instance());
   _Scene_default_instance_._instance.get_mutable()->gravity_ = const_cast< ::CreateDOM::Vec3*>(
       ::CreateDOM::Vec3::internal_default_instance());
 }
@@ -783,7 +977,7 @@ void AddDescriptorsImpl() {
       "2\017.CreateDOM.Vec3\"*\n\014KeyValuePair\022\013\n\003key"
       "\030\001 \001(\t\022\r\n\005value\030\002 \001(\t\"X\n\024AdditionalPrope"
       "rties\022\020\n\010category\030\001 \001(\t\022.\n\rkeyValuePairs"
-      "\030\002 \003(\0132\027.CreateDOM.KeyValuePair\"\273\004\n\004Node"
+      "\030\002 \003(\0132\027.CreateDOM.KeyValuePair\"\215\005\n\004Node"
       "\022\n\n\002id\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022!\n\004type\030\003 \001(\016"
       "2\023.CreateDOM.NodeType\022(\n\006visual\030\004 \001(\0132\030."
       "CreateDOM.VisualBinding\022=\n\024additionalPro"
@@ -791,91 +985,122 @@ void AddDescriptorsImpl() {
       "erties\0225\n\017physicsMaterial\030\006 \001(\0132\032.Create"
       "DOM.PhysicsMaterialH\000\022+\n\nconvexHull\030\007 \001("
       "\0132\025.CreateDOM.ConvexHullH\000\022/\n\014triangleMe"
-      "sh\030\010 \001(\0132\027.CreateDOM.TriangleMeshH\000\022)\n\tr"
-      "igidBody\030\t \001(\0132\024.CreateDOM.RigidBodyH\000\022!"
-      "\n\005joint\030\n \001(\0132\020.CreateDOM.JointH\000\0225\n\017bod"
-      "yPairFilters\030\013 \001(\0132\032.CreateDOM.BodyPairF"
-      "iltersH\000\022;\n\022instanceCollection\030\014 \001(\0132\035.C"
-      "reateDOM.InstanceCollectionH\000\022+\n\ncollect"
-      "ion\030\r \001(\0132\025.CreateDOM.CollectionH\000B\t\n\007su"
-      "btype\"N\n\tMeshScale\022\036\n\005scale\030\001 \001(\0132\017.Crea"
-      "teDOM.Vec3\022!\n\010rotation\030\002 \001(\0132\017.CreateDOM"
-      ".Quat\"\217\001\n\017PhysicsMaterial\022\027\n\017disableFric"
-      "tion\030\001 \001(\010\022\035\n\025disableStrongFriction\030\002 \001("
-      "\010\022\027\n\017dynamicFriction\030\003 \001(\002\022\026\n\016staticFric"
-      "tion\030\004 \001(\002\022\023\n\013restitution\030\005 \001(\002\"-\n\nConve"
-      "xHull\022\037\n\006points\030\001 \003(\0132\017.CreateDOM.Vec3\"B"
-      "\n\014TriangleMesh\022\037\n\006points\030\001 \003(\0132\017.CreateD"
-      "OM.Vec3\022\021\n\ttriangles\030\002 \003(\r\"\301\003\n\010Geometry\022"
-      "%\n\004type\030\001 \001(\0162\027.CreateDOM.GeometryType\022-"
-      "\n\013boxGeometry\030\002 \001(\0132\026.CreateDOM.BoxGeome"
-      "tryH\000\0223\n\016sphereGeometry\030\003 \001(\0132\031.CreateDO"
-      "M.SphereGeometryH\000\0225\n\017capsuleGeometry\030\004 "
-      "\001(\0132\032.CreateDOM.CapsuleGeometryH\000\0227\n\020cyl"
-      "inderGeometry\030\005 \001(\0132\033.CreateDOM.Cylinder"
-      "GeometryH\000\022;\n\022convexHullGeometry\030\006 \001(\0132\035"
-      ".CreateDOM.ConvexHullGeometryH\000\022\?\n\024trian"
-      "gleMeshGeometry\030\007 \001(\0132\037.CreateDOM.Triang"
-      "leMeshGeometryH\000\0221\n\rplaneGeometry\030\010 \001(\0132"
-      "\030.CreateDOM.PlaneGeometryH\000B\t\n\007subtype\"2"
-      "\n\013BoxGeometry\022#\n\ndimensions\030\001 \001(\0132\017.Crea"
-      "teDOM.Vec3\" \n\016SphereGeometry\022\016\n\006radius\030\001"
-      " \001(\002\"1\n\017CapsuleGeometry\022\016\n\006radius\030\001 \001(\002\022"
-      "\016\n\006height\030\002 \001(\002\"2\n\020CylinderGeometry\022\016\n\006r"
-      "adius\030\001 \001(\002\022\016\n\006height\030\002 \001(\002\"M\n\022ConvexHul"
-      "lGeometry\022#\n\005scale\030\001 \001(\0132\024.CreateDOM.Mes"
-      "hScale\022\022\n\nconvexMesh\030\002 \001(\t\"f\n\024TriangleMe"
-      "shGeometry\022#\n\005scale\030\001 \001(\0132\024.CreateDOM.Me"
-      "shScale\022\024\n\014triangleMesh\030\002 \001(\t\022\023\n\013doubleS"
-      "ided\030\003 \001(\010\"\017\n\rPlaneGeometry\"\220\001\n\020Geometry"
-      "Instance\022%\n\010geometry\030\001 \001(\0132\023.CreateDOM.G"
-      "eometry\022\020\n\010material\030\002 \001(\t\022\"\n\tlocalPose\030\003"
-      " \001(\0132\017.CreateDOM.Pose\022\037\n\027collisionFilter"
-      "Settings\030\004 \001(\t\"\323\001\n\tRigidBody\0226\n\021geometry"
-      "Instances\030\001 \003(\0132\033.CreateDOM.GeometryInst"
-      "ance\022#\n\nglobalPose\030\002 \001(\0132\017.CreateDOM.Pos"
-      "e\022-\n\013rigidStatic\030\003 \001(\0132\026.CreateDOM.Rigid"
-      "StaticH\000\022/\n\014rigidDynamic\030\004 \001(\0132\027.CreateD"
-      "OM.RigidDynamicH\000B\t\n\007subtype\"\r\n\013RigidSta"
-      "tic\"\306\002\n\014RigidDynamic\022\026\n\016disableGravity\030\001"
-      " \001(\010\022.\n\025centerOfMassLocalPose\030\002 \001(\0132\017.Cr"
-      "eateDOM.Pose\022\014\n\004mass\030\003 \001(\002\022/\n\026massSpaceI"
-      "nertiaTensor\030\004 \001(\0132\017.CreateDOM.Vec3\022\'\n\016l"
-      "inearVelocity\030\005 \001(\0132\017.CreateDOM.Vec3\022(\n\017"
-      "angularVelocity\030\006 \001(\0132\017.CreateDOM.Vec3\022\025"
-      "\n\rlinearDamping\030\007 \001(\002\022\026\n\016angularDamping\030"
-      "\010 \001(\002\022\032\n\022maxAngularVelocity\030\t \001(\002\022\021\n\tkin"
-      "ematic\030\n \001(\010\"\211\001\n\005Joint\022\r\n\005body0\030\001 \001(\t\022\r\n"
-      "\005body1\030\002 \001(\t\022#\n\nlocalpose0\030\003 \001(\0132\017.Creat"
-      "eDOM.Pose\022#\n\nlocalpose1\030\004 \001(\0132\017.CreateDO"
-      "M.Pose\022\030\n\020collisionEnabled\030\005 \001(\010\".\n\016Body"
-      "PairFilter\022\r\n\005bodyA\030\001 \001(\t\022\r\n\005bodyB\030\002 \001(\t"
-      "\"\?\n\017BodyPairFilters\022,\n\tbodyPairs\030\001 \003(\0132\031"
-      ".CreateDOM.BodyPairFilter\"g\n\022InstanceCol"
-      "lection\022\022\n\ncollection\030\001 \001(\t\022\035\n\004pose\030\002 \001("
-      "\0132\017.CreateDOM.Pose\022\036\n\005scale\030\003 \001(\0132\017.Crea"
-      "teDOM.Vec3\"Z\n\nCollection\022\036\n\005nodes\030\001 \003(\0132"
-      "\017.CreateDOM.Node\022!\n\005scene\030\002 \001(\0132\020.Create"
-      "DOM.SceneH\000B\t\n\007subtype\")\n\005Scene\022 \n\007gravi"
-      "ty\030\001 \001(\0132\017.CreateDOM.Vec3\"Z\n\nPhysicsDOM\022"
-      "*\n\013collections\030\001 \003(\0132\025.CreateDOM.Collect"
-      "ion\022 \n\006scenes\030\002 \003(\0132\020.CreateDOM.Scene*\251\002"
-      "\n\010NodeType\022\013\n\007NT_NODE\020\000\022\027\n\023NT_PHYSICS_MA"
-      "TERIAL\020\001\022\030\n\024NT_GEOMETRY_INSTANCE\020\002\022\023\n\017NT"
-      "_TRIANGLEMESH\020\003\022\021\n\rNT_CONVEXHULL\020\004\022\022\n\016NT"
-      "_HEIGHTFIELD\020\005\022\021\n\rNT_RIGID_BODY\020\006\022\023\n\017NT_"
-      "RIGID_STATIC\020\007\022\024\n\020NT_RIGID_DYNAMIC\020\010\022\030\n\024"
-      "NT_BODY_PAIR_FILTERS\020\t\022\014\n\010NT_JOINT\020\n\022\032\n\026"
-      "NT_INSTANCE_COLLECTION\020\013\022\021\n\rNT_COLLECTIO"
-      "N\020\014\022\014\n\010NT_SCENE\020\r*\277\001\n\014GeometryType\022\023\n\017GT"
-      "_BOX_GEOMETRY\020\000\022\026\n\022GT_SPHERE_GEOMETRY\020\001\022"
-      "\027\n\023GT_CAPSULE_GEOMETRY\020\002\022\025\n\021GT_PLANE_GEO"
-      "METRY\020\003\022\030\n\024GT_CYLINDER_GEOMETRY\020\004\022\032\n\026GT_"
-      "CONVEXHULL_GEOMETRY\020\005\022\034\n\030GT_TRIANGLEMESH"
-      "_GEOMETRY\020\006b\006proto3"
+      "sh\030\010 \001(\0132\027.CreateDOM.TriangleMeshH\000\022-\n\013h"
+      "eightField\030\t \001(\0132\026.CreateDOM.HeightField"
+      "H\000\022)\n\trigidBody\030\n \001(\0132\024.CreateDOM.RigidB"
+      "odyH\000\022!\n\005joint\030\013 \001(\0132\020.CreateDOM.JointH\000"
+      "\0225\n\017bodyPairFilters\030\014 \001(\0132\032.CreateDOM.Bo"
+      "dyPairFiltersH\000\022;\n\022instanceCollection\030\r "
+      "\001(\0132\035.CreateDOM.InstanceCollectionH\000\022+\n\n"
+      "collection\030\016 \001(\0132\025.CreateDOM.CollectionH"
+      "\000\022!\n\005scene\030\017 \001(\0132\020.CreateDOM.SceneH\000B\t\n\007"
+      "subtype\"N\n\tMeshScale\022\036\n\005scale\030\001 \001(\0132\017.Cr"
+      "eateDOM.Vec3\022!\n\010rotation\030\002 \001(\0132\017.CreateD"
+      "OM.Quat\"\217\001\n\017PhysicsMaterial\022\027\n\017disableFr"
+      "iction\030\001 \001(\010\022\035\n\025disableStrongFriction\030\002 "
+      "\001(\010\022\027\n\017dynamicFriction\030\003 \001(\002\022\026\n\016staticFr"
+      "iction\030\004 \001(\002\022\023\n\013restitution\030\005 \001(\002\"-\n\nCon"
+      "vexHull\022\037\n\006points\030\001 \003(\0132\017.CreateDOM.Vec3"
+      "\"[\n\014TriangleMesh\022\037\n\006points\030\001 \003(\0132\017.Creat"
+      "eDOM.Vec3\022\021\n\ttriangles\030\002 \003(\r\022\027\n\017material"
+      "Indices\030\003 \003(\r\"W\n\013HeightField\022\020\n\010rowCount"
+      "\030\001 \001(\r\022\023\n\013columnCount\030\002 \001(\r\022\017\n\007samples\030\003"
+      " \003(\r\022\020\n\010metaData\030\004 \003(\r\"\200\004\n\010Geometry\022%\n\004t"
+      "ype\030\001 \001(\0162\027.CreateDOM.GeometryType\022-\n\013bo"
+      "xGeometry\030\002 \001(\0132\026.CreateDOM.BoxGeometryH"
+      "\000\0223\n\016sphereGeometry\030\003 \001(\0132\031.CreateDOM.Sp"
+      "hereGeometryH\000\0225\n\017capsuleGeometry\030\004 \001(\0132"
+      "\032.CreateDOM.CapsuleGeometryH\000\0227\n\020cylinde"
+      "rGeometry\030\005 \001(\0132\033.CreateDOM.CylinderGeom"
+      "etryH\000\022;\n\022convexHullGeometry\030\006 \001(\0132\035.Cre"
+      "ateDOM.ConvexHullGeometryH\000\022\?\n\024triangleM"
+      "eshGeometry\030\007 \001(\0132\037.CreateDOM.TriangleMe"
+      "shGeometryH\000\022=\n\023heightFieldGeometry\030\010 \001("
+      "\0132\036.CreateDOM.HeightFieldGeometryH\000\0221\n\rp"
+      "laneGeometry\030\t \001(\0132\030.CreateDOM.PlaneGeom"
+      "etryH\000B\t\n\007subtype\"2\n\013BoxGeometry\022#\n\ndime"
+      "nsions\030\001 \001(\0132\017.CreateDOM.Vec3\" \n\016SphereG"
+      "eometry\022\016\n\006radius\030\001 \001(\002\"1\n\017CapsuleGeomet"
+      "ry\022\016\n\006radius\030\001 \001(\002\022\016\n\006height\030\002 \001(\002\"2\n\020Cy"
+      "linderGeometry\022\016\n\006radius\030\001 \001(\002\022\016\n\006height"
+      "\030\002 \001(\002\"M\n\022ConvexHullGeometry\022#\n\005scale\030\001 "
+      "\001(\0132\024.CreateDOM.MeshScale\022\022\n\nconvexMesh\030"
+      "\002 \001(\t\"f\n\024TriangleMeshGeometry\022#\n\005scale\030\001"
+      " \001(\0132\024.CreateDOM.MeshScale\022\024\n\014triangleMe"
+      "sh\030\002 \001(\t\022\023\n\013doubleSided\030\003 \001(\010\"{\n\023HeightF"
+      "ieldGeometry\022\023\n\013heightField\030\001 \001(\t\022\023\n\013hei"
+      "ghtScale\030\002 \001(\002\022\020\n\010rowScale\030\003 \001(\002\022\023\n\013colu"
+      "mnScale\030\004 \001(\002\022\023\n\013doubleSided\030\005 \001(\010\"\017\n\rPl"
+      "aneGeometry\"\221\001\n\020GeometryInstance\022%\n\010geom"
+      "etry\030\001 \001(\0132\023.CreateDOM.Geometry\022\021\n\tmater"
+      "ials\030\002 \003(\t\022\"\n\tlocalPose\030\003 \001(\0132\017.CreateDO"
+      "M.Pose\022\037\n\027collisionFilterSettings\030\004 \001(\t\""
+      "\323\001\n\tRigidBody\0226\n\021geometryInstances\030\001 \003(\013"
+      "2\033.CreateDOM.GeometryInstance\022#\n\nglobalP"
+      "ose\030\002 \001(\0132\017.CreateDOM.Pose\022-\n\013rigidStati"
+      "c\030\003 \001(\0132\026.CreateDOM.RigidStaticH\000\022/\n\014rig"
+      "idDynamic\030\004 \001(\0132\027.CreateDOM.RigidDynamic"
+      "H\000B\t\n\007subtype\"\r\n\013RigidStatic\"\306\002\n\014RigidDy"
+      "namic\022\026\n\016disableGravity\030\001 \001(\010\022.\n\025centerO"
+      "fMassLocalPose\030\002 \001(\0132\017.CreateDOM.Pose\022\014\n"
+      "\004mass\030\003 \001(\002\022/\n\026massSpaceInertiaTensor\030\004 "
+      "\001(\0132\017.CreateDOM.Vec3\022\'\n\016linearVelocity\030\005"
+      " \001(\0132\017.CreateDOM.Vec3\022(\n\017angularVelocity"
+      "\030\006 \001(\0132\017.CreateDOM.Vec3\022\025\n\rlinearDamping"
+      "\030\007 \001(\002\022\026\n\016angularDamping\030\010 \001(\002\022\032\n\022maxAng"
+      "ularVelocity\030\t \001(\002\022\021\n\tkinematic\030\n \001(\010\"\357\003"
+      "\n\005Joint\022\r\n\005body0\030\001 \001(\t\022\r\n\005body1\030\002 \001(\t\022#\n"
+      "\nlocalpose0\030\003 \001(\0132\017.CreateDOM.Pose\022#\n\nlo"
+      "calpose1\030\004 \001(\0132\017.CreateDOM.Pose\022\030\n\020colli"
+      "sionEnabled\030\005 \001(\010\022+\n\nfixedJoint\030\006 \001(\0132\025."
+      "CreateDOM.FixedJointH\000\0223\n\016sphericalJoint"
+      "\030\007 \001(\0132\031.CreateDOM.SphericalJointH\000\022+\n\nh"
+      "ingeJoint\030\010 \001(\0132\025.CreateDOM.HingeJointH\000"
+      "\0223\n\016prismaticJoint\030\t \001(\0132\031.CreateDOM.Pri"
+      "smaticJointH\000\0221\n\rdistanceJoint\030\n \001(\0132\030.C"
+      "reateDOM.DistanceJointH\000\022;\n\022ballAndSocke"
+      "tJoint\030\013 \001(\0132\035.CreateDOM.BallAndSocketJo"
+      "intH\000\022%\n\007d6Joint\030\014 \001(\0132\022.CreateDOM.D6Joi"
+      "ntH\000B\t\n\007subtype\"\014\n\nFixedJoint\"0\n\016Spheric"
+      "alJoint\022\016\n\006limitY\030\001 \001(\002\022\016\n\006limitZ\030\002 \001(\002\""
+      "0\n\nHingeJoint\022\017\n\007limtLow\030\001 \001(\002\022\021\n\tlimitH"
+      "igh\030\002 \001(\002\"5\n\016PrismaticJoint\022\020\n\010limitLow\030"
+      "\001 \001(\002\022\021\n\tlimitHigh\030\002 \001(\002\":\n\rDistanceJoin"
+      "t\022\023\n\013distanceLow\030\001 \001(\002\022\024\n\014distanceHigh\030\002"
+      " \001(\002\"[\n\022BallAndSocketJoint\022\021\n\tlimitXLow\030"
+      "\001 \001(\002\022\022\n\nlimitXHigh\030\002 \001(\002\022\016\n\006limitY\030\003 \001("
+      "\002\022\016\n\006limitZ\030\004 \001(\002\"\t\n\007D6Joint\".\n\016BodyPair"
+      "Filter\022\r\n\005bodyA\030\001 \001(\t\022\r\n\005bodyB\030\002 \001(\t\"\?\n\017"
+      "BodyPairFilters\022,\n\tbodyPairs\030\001 \003(\0132\031.Cre"
+      "ateDOM.BodyPairFilter\"g\n\022InstanceCollect"
+      "ion\022\022\n\ncollection\030\001 \001(\t\022\035\n\004pose\030\002 \001(\0132\017."
+      "CreateDOM.Pose\022\036\n\005scale\030\003 \001(\0132\017.CreateDO"
+      "M.Vec3\",\n\nCollection\022\036\n\005nodes\030\001 \003(\0132\017.Cr"
+      "eateDOM.Node\"I\n\005Scene\022 \n\007gravity\030\001 \001(\0132\017"
+      ".CreateDOM.Vec3\022\036\n\005nodes\030\002 \003(\0132\017.CreateD"
+      "OM.Node\"S\n\nPhysicsDOM\022$\n\013collections\030\001 \003"
+      "(\0132\017.CreateDOM.Node\022\037\n\006scenes\030\002 \003(\0132\017.Cr"
+      "eateDOM.Node*\307\003\n\010NodeType\022\013\n\007NT_NODE\020\000\022\027"
+      "\n\023NT_PHYSICS_MATERIAL\020\001\022\030\n\024NT_GEOMETRY_I"
+      "NSTANCE\020\002\022\023\n\017NT_TRIANGLEMESH\020\003\022\021\n\rNT_CON"
+      "VEXHULL\020\004\022\022\n\016NT_HEIGHTFIELD\020\005\022\021\n\rNT_RIGI"
+      "D_BODY\020\006\022\023\n\017NT_RIGID_STATIC\020\007\022\024\n\020NT_RIGI"
+      "D_DYNAMIC\020\010\022\030\n\024NT_BODY_PAIR_FILTERS\020\t\022\014\n"
+      "\010NT_JOINT\020\n\022\022\n\016NT_FIXED_JOINT\020\013\022\026\n\022NT_SP"
+      "HERICAL_JOINT\020\014\022\022\n\016NT_HINGE_JOINT\020\r\022\026\n\022N"
+      "T_PRISMATIC_JOINT\020\016\022\025\n\021NT_DISTANCE_JOINT"
+      "\020\017\022\034\n\030NT_BALL_AND_SOCKET_JOINT\020\020\022\017\n\013NT_D"
+      "6_JOINT\020\021\022\032\n\026NT_INSTANCE_COLLECTION\020\022\022\021\n"
+      "\rNT_COLLECTION\020\023\022\014\n\010NT_SCENE\020\024*\334\001\n\014Geome"
+      "tryType\022\023\n\017GT_BOX_GEOMETRY\020\000\022\026\n\022GT_SPHER"
+      "E_GEOMETRY\020\001\022\027\n\023GT_CAPSULE_GEOMETRY\020\002\022\025\n"
+      "\021GT_PLANE_GEOMETRY\020\003\022\030\n\024GT_CYLINDER_GEOM"
+      "ETRY\020\004\022\032\n\026GT_CONVEXHULL_GEOMETRY\020\005\022\034\n\030GT"
+      "_TRIANGLEMESH_GEOMETRY\020\006\022\033\n\027GT_HEIGHTFIE"
+      "LD_GEOMETRY\020\007b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 4099);
+      descriptor, 5341);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "PhysicsDOM.proto", &protobuf_RegisterTypes);
 }
@@ -914,6 +1139,13 @@ bool NodeType_IsValid(int value) {
     case 11:
     case 12:
     case 13:
+    case 14:
+    case 15:
+    case 16:
+    case 17:
+    case 18:
+    case 19:
+    case 20:
       return true;
     default:
       return false;
@@ -933,6 +1165,7 @@ bool GeometryType_IsValid(int value) {
     case 4:
     case 5:
     case 6:
+    case 7:
       return true;
     default:
       return false;
@@ -4097,11 +4330,13 @@ const int Node::kAdditionalPropertiesFieldNumber;
 const int Node::kPhysicsMaterialFieldNumber;
 const int Node::kConvexHullFieldNumber;
 const int Node::kTriangleMeshFieldNumber;
+const int Node::kHeightFieldFieldNumber;
 const int Node::kRigidBodyFieldNumber;
 const int Node::kJointFieldNumber;
 const int Node::kBodyPairFiltersFieldNumber;
 const int Node::kInstanceCollectionFieldNumber;
 const int Node::kCollectionFieldNumber;
+const int Node::kSceneFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 Node::Node()
@@ -4146,6 +4381,10 @@ Node::Node(const Node& from)
       mutable_trianglemesh()->::CreateDOM::TriangleMesh::MergeFrom(from.trianglemesh());
       break;
     }
+    case kHeightField: {
+      mutable_heightfield()->::CreateDOM::HeightField::MergeFrom(from.heightfield());
+      break;
+    }
     case kRigidBody: {
       mutable_rigidbody()->::CreateDOM::RigidBody::MergeFrom(from.rigidbody());
       break;
@@ -4164,6 +4403,10 @@ Node::Node(const Node& from)
     }
     case kCollection: {
       mutable_collection()->::CreateDOM::Collection::MergeFrom(from.collection());
+      break;
+    }
+    case kScene: {
+      mutable_scene()->::CreateDOM::Scene::MergeFrom(from.scene());
       break;
     }
     case SUBTYPE_NOT_SET: {
@@ -4235,6 +4478,10 @@ void Node::clear_subtype() {
       delete subtype_.trianglemesh_;
       break;
     }
+    case kHeightField: {
+      delete subtype_.heightfield_;
+      break;
+    }
     case kRigidBody: {
       delete subtype_.rigidbody_;
       break;
@@ -4253,6 +4500,10 @@ void Node::clear_subtype() {
     }
     case kCollection: {
       delete subtype_.collection_;
+      break;
+    }
+    case kScene: {
+      delete subtype_.scene_;
       break;
     }
     case SUBTYPE_NOT_SET: {
@@ -4398,10 +4649,22 @@ bool Node::MergePartialFromCodedStream(
         break;
       }
 
-      // .CreateDOM.RigidBody rigidBody = 9;
+      // .CreateDOM.HeightField heightField = 9;
       case 9: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(74u /* 74 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_heightfield()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .CreateDOM.RigidBody rigidBody = 10;
+      case 10: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(82u /* 82 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_rigidbody()));
         } else {
@@ -4410,10 +4673,10 @@ bool Node::MergePartialFromCodedStream(
         break;
       }
 
-      // .CreateDOM.Joint joint = 10;
-      case 10: {
+      // .CreateDOM.Joint joint = 11;
+      case 11: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(82u /* 82 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(90u /* 90 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_joint()));
         } else {
@@ -4422,10 +4685,10 @@ bool Node::MergePartialFromCodedStream(
         break;
       }
 
-      // .CreateDOM.BodyPairFilters bodyPairFilters = 11;
-      case 11: {
+      // .CreateDOM.BodyPairFilters bodyPairFilters = 12;
+      case 12: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(90u /* 90 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(98u /* 98 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_bodypairfilters()));
         } else {
@@ -4434,10 +4697,10 @@ bool Node::MergePartialFromCodedStream(
         break;
       }
 
-      // .CreateDOM.InstanceCollection instanceCollection = 12;
-      case 12: {
+      // .CreateDOM.InstanceCollection instanceCollection = 13;
+      case 13: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(98u /* 98 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(106u /* 106 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_instancecollection()));
         } else {
@@ -4446,12 +4709,24 @@ bool Node::MergePartialFromCodedStream(
         break;
       }
 
-      // .CreateDOM.Collection collection = 13;
-      case 13: {
+      // .CreateDOM.Collection collection = 14;
+      case 14: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(106u /* 106 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(114u /* 114 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_collection()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .CreateDOM.Scene scene = 15;
+      case 15: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(122u /* 122 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_scene()));
         } else {
           goto handle_unusual;
         }
@@ -4541,34 +4816,46 @@ void Node::SerializeWithCachedSizes(
       8, *subtype_.trianglemesh_, output);
   }
 
-  // .CreateDOM.RigidBody rigidBody = 9;
+  // .CreateDOM.HeightField heightField = 9;
+  if (has_heightfield()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      9, *subtype_.heightfield_, output);
+  }
+
+  // .CreateDOM.RigidBody rigidBody = 10;
   if (has_rigidbody()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      9, *subtype_.rigidbody_, output);
+      10, *subtype_.rigidbody_, output);
   }
 
-  // .CreateDOM.Joint joint = 10;
+  // .CreateDOM.Joint joint = 11;
   if (has_joint()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      10, *subtype_.joint_, output);
+      11, *subtype_.joint_, output);
   }
 
-  // .CreateDOM.BodyPairFilters bodyPairFilters = 11;
+  // .CreateDOM.BodyPairFilters bodyPairFilters = 12;
   if (has_bodypairfilters()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      11, *subtype_.bodypairfilters_, output);
+      12, *subtype_.bodypairfilters_, output);
   }
 
-  // .CreateDOM.InstanceCollection instanceCollection = 12;
+  // .CreateDOM.InstanceCollection instanceCollection = 13;
   if (has_instancecollection()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      12, *subtype_.instancecollection_, output);
+      13, *subtype_.instancecollection_, output);
   }
 
-  // .CreateDOM.Collection collection = 13;
+  // .CreateDOM.Collection collection = 14;
   if (has_collection()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      13, *subtype_.collection_, output);
+      14, *subtype_.collection_, output);
+  }
+
+  // .CreateDOM.Scene scene = 15;
+  if (has_scene()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      15, *subtype_.scene_, output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -4649,39 +4936,53 @@ void Node::SerializeWithCachedSizes(
         8, *subtype_.trianglemesh_, deterministic, target);
   }
 
-  // .CreateDOM.RigidBody rigidBody = 9;
+  // .CreateDOM.HeightField heightField = 9;
+  if (has_heightfield()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        9, *subtype_.heightfield_, deterministic, target);
+  }
+
+  // .CreateDOM.RigidBody rigidBody = 10;
   if (has_rigidbody()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        9, *subtype_.rigidbody_, deterministic, target);
+        10, *subtype_.rigidbody_, deterministic, target);
   }
 
-  // .CreateDOM.Joint joint = 10;
+  // .CreateDOM.Joint joint = 11;
   if (has_joint()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        10, *subtype_.joint_, deterministic, target);
+        11, *subtype_.joint_, deterministic, target);
   }
 
-  // .CreateDOM.BodyPairFilters bodyPairFilters = 11;
+  // .CreateDOM.BodyPairFilters bodyPairFilters = 12;
   if (has_bodypairfilters()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        11, *subtype_.bodypairfilters_, deterministic, target);
+        12, *subtype_.bodypairfilters_, deterministic, target);
   }
 
-  // .CreateDOM.InstanceCollection instanceCollection = 12;
+  // .CreateDOM.InstanceCollection instanceCollection = 13;
   if (has_instancecollection()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        12, *subtype_.instancecollection_, deterministic, target);
+        13, *subtype_.instancecollection_, deterministic, target);
   }
 
-  // .CreateDOM.Collection collection = 13;
+  // .CreateDOM.Collection collection = 14;
   if (has_collection()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        13, *subtype_.collection_, deterministic, target);
+        14, *subtype_.collection_, deterministic, target);
+  }
+
+  // .CreateDOM.Scene scene = 15;
+  if (has_scene()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        15, *subtype_.scene_, deterministic, target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -4761,39 +5062,53 @@ size_t Node::ByteSizeLong() const {
           *subtype_.trianglemesh_);
       break;
     }
-    // .CreateDOM.RigidBody rigidBody = 9;
+    // .CreateDOM.HeightField heightField = 9;
+    case kHeightField: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          *subtype_.heightfield_);
+      break;
+    }
+    // .CreateDOM.RigidBody rigidBody = 10;
     case kRigidBody: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           *subtype_.rigidbody_);
       break;
     }
-    // .CreateDOM.Joint joint = 10;
+    // .CreateDOM.Joint joint = 11;
     case kJoint: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           *subtype_.joint_);
       break;
     }
-    // .CreateDOM.BodyPairFilters bodyPairFilters = 11;
+    // .CreateDOM.BodyPairFilters bodyPairFilters = 12;
     case kBodyPairFilters: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           *subtype_.bodypairfilters_);
       break;
     }
-    // .CreateDOM.InstanceCollection instanceCollection = 12;
+    // .CreateDOM.InstanceCollection instanceCollection = 13;
     case kInstanceCollection: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           *subtype_.instancecollection_);
       break;
     }
-    // .CreateDOM.Collection collection = 13;
+    // .CreateDOM.Collection collection = 14;
     case kCollection: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           *subtype_.collection_);
+      break;
+    }
+    // .CreateDOM.Scene scene = 15;
+    case kScene: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          *subtype_.scene_);
       break;
     }
     case SUBTYPE_NOT_SET: {
@@ -4857,6 +5172,10 @@ void Node::MergeFrom(const Node& from) {
       mutable_trianglemesh()->::CreateDOM::TriangleMesh::MergeFrom(from.trianglemesh());
       break;
     }
+    case kHeightField: {
+      mutable_heightfield()->::CreateDOM::HeightField::MergeFrom(from.heightfield());
+      break;
+    }
     case kRigidBody: {
       mutable_rigidbody()->::CreateDOM::RigidBody::MergeFrom(from.rigidbody());
       break;
@@ -4875,6 +5194,10 @@ void Node::MergeFrom(const Node& from) {
     }
     case kCollection: {
       mutable_collection()->::CreateDOM::Collection::MergeFrom(from.collection());
+      break;
+    }
+    case kScene: {
+      mutable_scene()->::CreateDOM::Scene::MergeFrom(from.scene());
       break;
     }
     case SUBTYPE_NOT_SET: {
@@ -5260,7 +5583,55 @@ void Node::set_allocated_trianglemesh(::CreateDOM::TriangleMesh* trianglemesh) {
   // @@protoc_insertion_point(field_set_allocated:CreateDOM.Node.triangleMesh)
 }
 
-// .CreateDOM.RigidBody rigidBody = 9;
+// .CreateDOM.HeightField heightField = 9;
+bool Node::has_heightfield() const {
+  return subtype_case() == kHeightField;
+}
+void Node::set_has_heightfield() {
+  _oneof_case_[0] = kHeightField;
+}
+void Node::clear_heightfield() {
+  if (has_heightfield()) {
+    delete subtype_.heightfield_;
+    clear_has_subtype();
+  }
+}
+ const ::CreateDOM::HeightField& Node::heightfield() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.Node.heightField)
+  return has_heightfield()
+      ? *subtype_.heightfield_
+      : ::CreateDOM::HeightField::default_instance();
+}
+::CreateDOM::HeightField* Node::mutable_heightfield() {
+  if (!has_heightfield()) {
+    clear_subtype();
+    set_has_heightfield();
+    subtype_.heightfield_ = new ::CreateDOM::HeightField;
+  }
+  // @@protoc_insertion_point(field_mutable:CreateDOM.Node.heightField)
+  return subtype_.heightfield_;
+}
+::CreateDOM::HeightField* Node::release_heightfield() {
+  // @@protoc_insertion_point(field_release:CreateDOM.Node.heightField)
+  if (has_heightfield()) {
+    clear_has_subtype();
+    ::CreateDOM::HeightField* temp = subtype_.heightfield_;
+    subtype_.heightfield_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+void Node::set_allocated_heightfield(::CreateDOM::HeightField* heightfield) {
+  clear_subtype();
+  if (heightfield) {
+    set_has_heightfield();
+    subtype_.heightfield_ = heightfield;
+  }
+  // @@protoc_insertion_point(field_set_allocated:CreateDOM.Node.heightField)
+}
+
+// .CreateDOM.RigidBody rigidBody = 10;
 bool Node::has_rigidbody() const {
   return subtype_case() == kRigidBody;
 }
@@ -5308,7 +5679,7 @@ void Node::set_allocated_rigidbody(::CreateDOM::RigidBody* rigidbody) {
   // @@protoc_insertion_point(field_set_allocated:CreateDOM.Node.rigidBody)
 }
 
-// .CreateDOM.Joint joint = 10;
+// .CreateDOM.Joint joint = 11;
 bool Node::has_joint() const {
   return subtype_case() == kJoint;
 }
@@ -5356,7 +5727,7 @@ void Node::set_allocated_joint(::CreateDOM::Joint* joint) {
   // @@protoc_insertion_point(field_set_allocated:CreateDOM.Node.joint)
 }
 
-// .CreateDOM.BodyPairFilters bodyPairFilters = 11;
+// .CreateDOM.BodyPairFilters bodyPairFilters = 12;
 bool Node::has_bodypairfilters() const {
   return subtype_case() == kBodyPairFilters;
 }
@@ -5404,7 +5775,7 @@ void Node::set_allocated_bodypairfilters(::CreateDOM::BodyPairFilters* bodypairf
   // @@protoc_insertion_point(field_set_allocated:CreateDOM.Node.bodyPairFilters)
 }
 
-// .CreateDOM.InstanceCollection instanceCollection = 12;
+// .CreateDOM.InstanceCollection instanceCollection = 13;
 bool Node::has_instancecollection() const {
   return subtype_case() == kInstanceCollection;
 }
@@ -5452,7 +5823,7 @@ void Node::set_allocated_instancecollection(::CreateDOM::InstanceCollection* ins
   // @@protoc_insertion_point(field_set_allocated:CreateDOM.Node.instanceCollection)
 }
 
-// .CreateDOM.Collection collection = 13;
+// .CreateDOM.Collection collection = 14;
 bool Node::has_collection() const {
   return subtype_case() == kCollection;
 }
@@ -5498,6 +5869,54 @@ void Node::set_allocated_collection(::CreateDOM::Collection* collection) {
     subtype_.collection_ = collection;
   }
   // @@protoc_insertion_point(field_set_allocated:CreateDOM.Node.collection)
+}
+
+// .CreateDOM.Scene scene = 15;
+bool Node::has_scene() const {
+  return subtype_case() == kScene;
+}
+void Node::set_has_scene() {
+  _oneof_case_[0] = kScene;
+}
+void Node::clear_scene() {
+  if (has_scene()) {
+    delete subtype_.scene_;
+    clear_has_subtype();
+  }
+}
+ const ::CreateDOM::Scene& Node::scene() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.Node.scene)
+  return has_scene()
+      ? *subtype_.scene_
+      : ::CreateDOM::Scene::default_instance();
+}
+::CreateDOM::Scene* Node::mutable_scene() {
+  if (!has_scene()) {
+    clear_subtype();
+    set_has_scene();
+    subtype_.scene_ = new ::CreateDOM::Scene;
+  }
+  // @@protoc_insertion_point(field_mutable:CreateDOM.Node.scene)
+  return subtype_.scene_;
+}
+::CreateDOM::Scene* Node::release_scene() {
+  // @@protoc_insertion_point(field_release:CreateDOM.Node.scene)
+  if (has_scene()) {
+    clear_has_subtype();
+    ::CreateDOM::Scene* temp = subtype_.scene_;
+    subtype_.scene_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+void Node::set_allocated_scene(::CreateDOM::Scene* scene) {
+  clear_subtype();
+  if (scene) {
+    set_has_scene();
+    subtype_.scene_ = scene;
+  }
+  // @@protoc_insertion_point(field_set_allocated:CreateDOM.Node.scene)
 }
 
 bool Node::has_subtype() const {
@@ -6618,6 +7037,7 @@ ConvexHull::points() const {
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int TriangleMesh::kPointsFieldNumber;
 const int TriangleMesh::kTrianglesFieldNumber;
+const int TriangleMesh::kMaterialIndicesFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 TriangleMesh::TriangleMesh()
@@ -6633,6 +7053,7 @@ TriangleMesh::TriangleMesh(const TriangleMesh& from)
       _internal_metadata_(NULL),
       points_(from.points_),
       triangles_(from.triangles_),
+      materialindices_(from.materialindices_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:CreateDOM.TriangleMesh)
@@ -6681,6 +7102,7 @@ void TriangleMesh::Clear() {
 
   points_.Clear();
   triangles_.Clear();
+  materialindices_.Clear();
   _internal_metadata_.Clear();
 }
 
@@ -6719,6 +7141,25 @@ bool TriangleMesh::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  1, 18u, input, this->mutable_triangles())));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // repeated uint32 materialIndices = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, this->mutable_materialindices())));
+        } else if (
+            static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 1, 26u, input, this->mutable_materialindices())));
         } else {
           goto handle_unusual;
         }
@@ -6769,6 +7210,17 @@ void TriangleMesh::SerializeWithCachedSizes(
       this->triangles(i), output);
   }
 
+  // repeated uint32 materialIndices = 3;
+  if (this->materialindices_size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteTag(3, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
+    output->WriteVarint32(static_cast< ::google::protobuf::uint32>(
+        _materialindices_cached_byte_size_));
+  }
+  for (int i = 0, n = this->materialindices_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32NoTag(
+      this->materialindices(i), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -6802,6 +7254,19 @@ void TriangleMesh::SerializeWithCachedSizes(
             _triangles_cached_byte_size_), target);
     target = ::google::protobuf::internal::WireFormatLite::
       WriteUInt32NoTagToArray(this->triangles_, target);
+  }
+
+  // repeated uint32 materialIndices = 3;
+  if (this->materialindices_size() > 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
+      3,
+      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
+      target);
+    target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
+        static_cast< ::google::protobuf::uint32>(
+            _materialindices_cached_byte_size_), target);
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteUInt32NoTagToArray(this->materialindices_, target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -6848,6 +7313,22 @@ size_t TriangleMesh::ByteSizeLong() const {
     total_size += data_size;
   }
 
+  // repeated uint32 materialIndices = 3;
+  {
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      UInt32Size(this->materialindices_);
+    if (data_size > 0) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+            static_cast< ::google::protobuf::int32>(data_size));
+    }
+    int cached_size = ::google::protobuf::internal::ToCachedSize(data_size);
+    GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+    _materialindices_cached_byte_size_ = cached_size;
+    GOOGLE_SAFE_CONCURRENT_WRITES_END();
+    total_size += data_size;
+  }
+
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -6879,6 +7360,7 @@ void TriangleMesh::MergeFrom(const TriangleMesh& from) {
 
   points_.MergeFrom(from.points_);
   triangles_.MergeFrom(from.triangles_);
+  materialindices_.MergeFrom(from.materialindices_);
 }
 
 void TriangleMesh::CopyFrom(const ::google::protobuf::Message& from) {
@@ -6907,6 +7389,7 @@ void TriangleMesh::InternalSwap(TriangleMesh* other) {
   using std::swap;
   points_.InternalSwap(&other->points_);
   triangles_.InternalSwap(&other->triangles_);
+  materialindices_.InternalSwap(&other->materialindices_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
@@ -6979,6 +7462,534 @@ TriangleMesh::mutable_triangles() {
   return &triangles_;
 }
 
+// repeated uint32 materialIndices = 3;
+int TriangleMesh::materialindices_size() const {
+  return materialindices_.size();
+}
+void TriangleMesh::clear_materialindices() {
+  materialindices_.Clear();
+}
+::google::protobuf::uint32 TriangleMesh::materialindices(int index) const {
+  // @@protoc_insertion_point(field_get:CreateDOM.TriangleMesh.materialIndices)
+  return materialindices_.Get(index);
+}
+void TriangleMesh::set_materialindices(int index, ::google::protobuf::uint32 value) {
+  materialindices_.Set(index, value);
+  // @@protoc_insertion_point(field_set:CreateDOM.TriangleMesh.materialIndices)
+}
+void TriangleMesh::add_materialindices(::google::protobuf::uint32 value) {
+  materialindices_.Add(value);
+  // @@protoc_insertion_point(field_add:CreateDOM.TriangleMesh.materialIndices)
+}
+const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+TriangleMesh::materialindices() const {
+  // @@protoc_insertion_point(field_list:CreateDOM.TriangleMesh.materialIndices)
+  return materialindices_;
+}
+::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+TriangleMesh::mutable_materialindices() {
+  // @@protoc_insertion_point(field_mutable_list:CreateDOM.TriangleMesh.materialIndices)
+  return &materialindices_;
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int HeightField::kRowCountFieldNumber;
+const int HeightField::kColumnCountFieldNumber;
+const int HeightField::kSamplesFieldNumber;
+const int HeightField::kMetaDataFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+HeightField::HeightField()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_PhysicsDOM_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:CreateDOM.HeightField)
+}
+HeightField::HeightField(const HeightField& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      samples_(from.samples_),
+      metadata_(from.metadata_),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::memcpy(&rowcount_, &from.rowcount_,
+    static_cast<size_t>(reinterpret_cast<char*>(&columncount_) -
+    reinterpret_cast<char*>(&rowcount_)) + sizeof(columncount_));
+  // @@protoc_insertion_point(copy_constructor:CreateDOM.HeightField)
+}
+
+void HeightField::SharedCtor() {
+  ::memset(&rowcount_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&columncount_) -
+      reinterpret_cast<char*>(&rowcount_)) + sizeof(columncount_));
+  _cached_size_ = 0;
+}
+
+HeightField::~HeightField() {
+  // @@protoc_insertion_point(destructor:CreateDOM.HeightField)
+  SharedDtor();
+}
+
+void HeightField::SharedDtor() {
+}
+
+void HeightField::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* HeightField::descriptor() {
+  protobuf_PhysicsDOM_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_PhysicsDOM_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const HeightField& HeightField::default_instance() {
+  protobuf_PhysicsDOM_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+HeightField* HeightField::New(::google::protobuf::Arena* arena) const {
+  HeightField* n = new HeightField;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void HeightField::Clear() {
+// @@protoc_insertion_point(message_clear_start:CreateDOM.HeightField)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  samples_.Clear();
+  metadata_.Clear();
+  ::memset(&rowcount_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&columncount_) -
+      reinterpret_cast<char*>(&rowcount_)) + sizeof(columncount_));
+  _internal_metadata_.Clear();
+}
+
+bool HeightField::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:CreateDOM.HeightField)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // uint32 rowCount = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &rowcount_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // uint32 columnCount = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &columncount_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // repeated uint32 samples = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, this->mutable_samples())));
+        } else if (
+            static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 1, 26u, input, this->mutable_samples())));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // repeated uint32 metaData = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, this->mutable_metadata())));
+        } else if (
+            static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(32u /* 32 & 0xFF */)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 1, 34u, input, this->mutable_metadata())));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:CreateDOM.HeightField)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:CreateDOM.HeightField)
+  return false;
+#undef DO_
+}
+
+void HeightField::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:CreateDOM.HeightField)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // uint32 rowCount = 1;
+  if (this->rowcount() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->rowcount(), output);
+  }
+
+  // uint32 columnCount = 2;
+  if (this->columncount() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->columncount(), output);
+  }
+
+  // repeated uint32 samples = 3;
+  if (this->samples_size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteTag(3, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
+    output->WriteVarint32(static_cast< ::google::protobuf::uint32>(
+        _samples_cached_byte_size_));
+  }
+  for (int i = 0, n = this->samples_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32NoTag(
+      this->samples(i), output);
+  }
+
+  // repeated uint32 metaData = 4;
+  if (this->metadata_size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteTag(4, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
+    output->WriteVarint32(static_cast< ::google::protobuf::uint32>(
+        _metadata_cached_byte_size_));
+  }
+  for (int i = 0, n = this->metadata_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32NoTag(
+      this->metadata(i), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:CreateDOM.HeightField)
+}
+
+::google::protobuf::uint8* HeightField::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:CreateDOM.HeightField)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // uint32 rowCount = 1;
+  if (this->rowcount() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->rowcount(), target);
+  }
+
+  // uint32 columnCount = 2;
+  if (this->columncount() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->columncount(), target);
+  }
+
+  // repeated uint32 samples = 3;
+  if (this->samples_size() > 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
+      3,
+      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
+      target);
+    target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
+        static_cast< ::google::protobuf::uint32>(
+            _samples_cached_byte_size_), target);
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteUInt32NoTagToArray(this->samples_, target);
+  }
+
+  // repeated uint32 metaData = 4;
+  if (this->metadata_size() > 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
+      4,
+      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
+      target);
+    target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
+        static_cast< ::google::protobuf::uint32>(
+            _metadata_cached_byte_size_), target);
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteUInt32NoTagToArray(this->metadata_, target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:CreateDOM.HeightField)
+  return target;
+}
+
+size_t HeightField::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:CreateDOM.HeightField)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // repeated uint32 samples = 3;
+  {
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      UInt32Size(this->samples_);
+    if (data_size > 0) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+            static_cast< ::google::protobuf::int32>(data_size));
+    }
+    int cached_size = ::google::protobuf::internal::ToCachedSize(data_size);
+    GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+    _samples_cached_byte_size_ = cached_size;
+    GOOGLE_SAFE_CONCURRENT_WRITES_END();
+    total_size += data_size;
+  }
+
+  // repeated uint32 metaData = 4;
+  {
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      UInt32Size(this->metadata_);
+    if (data_size > 0) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+            static_cast< ::google::protobuf::int32>(data_size));
+    }
+    int cached_size = ::google::protobuf::internal::ToCachedSize(data_size);
+    GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+    _metadata_cached_byte_size_ = cached_size;
+    GOOGLE_SAFE_CONCURRENT_WRITES_END();
+    total_size += data_size;
+  }
+
+  // uint32 rowCount = 1;
+  if (this->rowcount() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->rowcount());
+  }
+
+  // uint32 columnCount = 2;
+  if (this->columncount() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->columncount());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void HeightField::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:CreateDOM.HeightField)
+  GOOGLE_DCHECK_NE(&from, this);
+  const HeightField* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const HeightField>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:CreateDOM.HeightField)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:CreateDOM.HeightField)
+    MergeFrom(*source);
+  }
+}
+
+void HeightField::MergeFrom(const HeightField& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:CreateDOM.HeightField)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  samples_.MergeFrom(from.samples_);
+  metadata_.MergeFrom(from.metadata_);
+  if (from.rowcount() != 0) {
+    set_rowcount(from.rowcount());
+  }
+  if (from.columncount() != 0) {
+    set_columncount(from.columncount());
+  }
+}
+
+void HeightField::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:CreateDOM.HeightField)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void HeightField::CopyFrom(const HeightField& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:CreateDOM.HeightField)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool HeightField::IsInitialized() const {
+  return true;
+}
+
+void HeightField::Swap(HeightField* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void HeightField::InternalSwap(HeightField* other) {
+  using std::swap;
+  samples_.InternalSwap(&other->samples_);
+  metadata_.InternalSwap(&other->metadata_);
+  swap(rowcount_, other->rowcount_);
+  swap(columncount_, other->columncount_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata HeightField::GetMetadata() const {
+  protobuf_PhysicsDOM_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_PhysicsDOM_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// HeightField
+
+// uint32 rowCount = 1;
+void HeightField::clear_rowcount() {
+  rowcount_ = 0u;
+}
+::google::protobuf::uint32 HeightField::rowcount() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.HeightField.rowCount)
+  return rowcount_;
+}
+void HeightField::set_rowcount(::google::protobuf::uint32 value) {
+  
+  rowcount_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.HeightField.rowCount)
+}
+
+// uint32 columnCount = 2;
+void HeightField::clear_columncount() {
+  columncount_ = 0u;
+}
+::google::protobuf::uint32 HeightField::columncount() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.HeightField.columnCount)
+  return columncount_;
+}
+void HeightField::set_columncount(::google::protobuf::uint32 value) {
+  
+  columncount_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.HeightField.columnCount)
+}
+
+// repeated uint32 samples = 3;
+int HeightField::samples_size() const {
+  return samples_.size();
+}
+void HeightField::clear_samples() {
+  samples_.Clear();
+}
+::google::protobuf::uint32 HeightField::samples(int index) const {
+  // @@protoc_insertion_point(field_get:CreateDOM.HeightField.samples)
+  return samples_.Get(index);
+}
+void HeightField::set_samples(int index, ::google::protobuf::uint32 value) {
+  samples_.Set(index, value);
+  // @@protoc_insertion_point(field_set:CreateDOM.HeightField.samples)
+}
+void HeightField::add_samples(::google::protobuf::uint32 value) {
+  samples_.Add(value);
+  // @@protoc_insertion_point(field_add:CreateDOM.HeightField.samples)
+}
+const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+HeightField::samples() const {
+  // @@protoc_insertion_point(field_list:CreateDOM.HeightField.samples)
+  return samples_;
+}
+::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+HeightField::mutable_samples() {
+  // @@protoc_insertion_point(field_mutable_list:CreateDOM.HeightField.samples)
+  return &samples_;
+}
+
+// repeated uint32 metaData = 4;
+int HeightField::metadata_size() const {
+  return metadata_.size();
+}
+void HeightField::clear_metadata() {
+  metadata_.Clear();
+}
+::google::protobuf::uint32 HeightField::metadata(int index) const {
+  // @@protoc_insertion_point(field_get:CreateDOM.HeightField.metaData)
+  return metadata_.Get(index);
+}
+void HeightField::set_metadata(int index, ::google::protobuf::uint32 value) {
+  metadata_.Set(index, value);
+  // @@protoc_insertion_point(field_set:CreateDOM.HeightField.metaData)
+}
+void HeightField::add_metadata(::google::protobuf::uint32 value) {
+  metadata_.Add(value);
+  // @@protoc_insertion_point(field_add:CreateDOM.HeightField.metaData)
+}
+const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+HeightField::metadata() const {
+  // @@protoc_insertion_point(field_list:CreateDOM.HeightField.metaData)
+  return metadata_;
+}
+::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+HeightField::mutable_metadata() {
+  // @@protoc_insertion_point(field_mutable_list:CreateDOM.HeightField.metaData)
+  return &metadata_;
+}
+
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
 
 // ===================================================================
@@ -6991,6 +8002,7 @@ const int Geometry::kCapsuleGeometryFieldNumber;
 const int Geometry::kCylinderGeometryFieldNumber;
 const int Geometry::kConvexHullGeometryFieldNumber;
 const int Geometry::kTriangleMeshGeometryFieldNumber;
+const int Geometry::kHeightFieldGeometryFieldNumber;
 const int Geometry::kPlaneGeometryFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
@@ -7032,6 +8044,10 @@ Geometry::Geometry(const Geometry& from)
     }
     case kTriangleMeshGeometry: {
       mutable_trianglemeshgeometry()->::CreateDOM::TriangleMeshGeometry::MergeFrom(from.trianglemeshgeometry());
+      break;
+    }
+    case kHeightFieldGeometry: {
+      mutable_heightfieldgeometry()->::CreateDOM::HeightFieldGeometry::MergeFrom(from.heightfieldgeometry());
       break;
     }
     case kPlaneGeometry: {
@@ -7110,6 +8126,10 @@ void Geometry::clear_subtype() {
     }
     case kTriangleMeshGeometry: {
       delete subtype_.trianglemeshgeometry_;
+      break;
+    }
+    case kHeightFieldGeometry: {
+      delete subtype_.heightfieldgeometry_;
       break;
     }
     case kPlaneGeometry: {
@@ -7232,10 +8252,22 @@ bool Geometry::MergePartialFromCodedStream(
         break;
       }
 
-      // .CreateDOM.PlaneGeometry planeGeometry = 8;
+      // .CreateDOM.HeightFieldGeometry heightFieldGeometry = 8;
       case 8: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(66u /* 66 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_heightfieldgeometry()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .CreateDOM.PlaneGeometry planeGeometry = 9;
+      case 9: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(74u /* 74 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_planegeometry()));
         } else {
@@ -7312,10 +8344,16 @@ void Geometry::SerializeWithCachedSizes(
       7, *subtype_.trianglemeshgeometry_, output);
   }
 
-  // .CreateDOM.PlaneGeometry planeGeometry = 8;
+  // .CreateDOM.HeightFieldGeometry heightFieldGeometry = 8;
+  if (has_heightfieldgeometry()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      8, *subtype_.heightfieldgeometry_, output);
+  }
+
+  // .CreateDOM.PlaneGeometry planeGeometry = 9;
   if (has_planegeometry()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      8, *subtype_.planegeometry_, output);
+      9, *subtype_.planegeometry_, output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -7380,11 +8418,18 @@ void Geometry::SerializeWithCachedSizes(
         7, *subtype_.trianglemeshgeometry_, deterministic, target);
   }
 
-  // .CreateDOM.PlaneGeometry planeGeometry = 8;
+  // .CreateDOM.HeightFieldGeometry heightFieldGeometry = 8;
+  if (has_heightfieldgeometry()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        8, *subtype_.heightfieldgeometry_, deterministic, target);
+  }
+
+  // .CreateDOM.PlaneGeometry planeGeometry = 9;
   if (has_planegeometry()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
-        8, *subtype_.planegeometry_, deterministic, target);
+        9, *subtype_.planegeometry_, deterministic, target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -7453,7 +8498,14 @@ size_t Geometry::ByteSizeLong() const {
           *subtype_.trianglemeshgeometry_);
       break;
     }
-    // .CreateDOM.PlaneGeometry planeGeometry = 8;
+    // .CreateDOM.HeightFieldGeometry heightFieldGeometry = 8;
+    case kHeightFieldGeometry: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          *subtype_.heightfieldgeometry_);
+      break;
+    }
+    // .CreateDOM.PlaneGeometry planeGeometry = 9;
     case kPlaneGeometry: {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -7519,6 +8571,10 @@ void Geometry::MergeFrom(const Geometry& from) {
     }
     case kTriangleMeshGeometry: {
       mutable_trianglemeshgeometry()->::CreateDOM::TriangleMeshGeometry::MergeFrom(from.trianglemeshgeometry());
+      break;
+    }
+    case kHeightFieldGeometry: {
+      mutable_heightfieldgeometry()->::CreateDOM::HeightFieldGeometry::MergeFrom(from.heightfieldgeometry());
       break;
     }
     case kPlaneGeometry: {
@@ -7872,7 +8928,55 @@ void Geometry::set_allocated_trianglemeshgeometry(::CreateDOM::TriangleMeshGeome
   // @@protoc_insertion_point(field_set_allocated:CreateDOM.Geometry.triangleMeshGeometry)
 }
 
-// .CreateDOM.PlaneGeometry planeGeometry = 8;
+// .CreateDOM.HeightFieldGeometry heightFieldGeometry = 8;
+bool Geometry::has_heightfieldgeometry() const {
+  return subtype_case() == kHeightFieldGeometry;
+}
+void Geometry::set_has_heightfieldgeometry() {
+  _oneof_case_[0] = kHeightFieldGeometry;
+}
+void Geometry::clear_heightfieldgeometry() {
+  if (has_heightfieldgeometry()) {
+    delete subtype_.heightfieldgeometry_;
+    clear_has_subtype();
+  }
+}
+ const ::CreateDOM::HeightFieldGeometry& Geometry::heightfieldgeometry() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.Geometry.heightFieldGeometry)
+  return has_heightfieldgeometry()
+      ? *subtype_.heightfieldgeometry_
+      : ::CreateDOM::HeightFieldGeometry::default_instance();
+}
+::CreateDOM::HeightFieldGeometry* Geometry::mutable_heightfieldgeometry() {
+  if (!has_heightfieldgeometry()) {
+    clear_subtype();
+    set_has_heightfieldgeometry();
+    subtype_.heightfieldgeometry_ = new ::CreateDOM::HeightFieldGeometry;
+  }
+  // @@protoc_insertion_point(field_mutable:CreateDOM.Geometry.heightFieldGeometry)
+  return subtype_.heightfieldgeometry_;
+}
+::CreateDOM::HeightFieldGeometry* Geometry::release_heightfieldgeometry() {
+  // @@protoc_insertion_point(field_release:CreateDOM.Geometry.heightFieldGeometry)
+  if (has_heightfieldgeometry()) {
+    clear_has_subtype();
+    ::CreateDOM::HeightFieldGeometry* temp = subtype_.heightfieldgeometry_;
+    subtype_.heightfieldgeometry_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+void Geometry::set_allocated_heightfieldgeometry(::CreateDOM::HeightFieldGeometry* heightfieldgeometry) {
+  clear_subtype();
+  if (heightfieldgeometry) {
+    set_has_heightfieldgeometry();
+    subtype_.heightfieldgeometry_ = heightfieldgeometry;
+  }
+  // @@protoc_insertion_point(field_set_allocated:CreateDOM.Geometry.heightFieldGeometry)
+}
+
+// .CreateDOM.PlaneGeometry planeGeometry = 9;
 bool Geometry::has_planegeometry() const {
   return subtype_case() == kPlaneGeometry;
 }
@@ -9937,6 +11041,518 @@ void TriangleMeshGeometry::set_doublesided(bool value) {
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int HeightFieldGeometry::kHeightFieldFieldNumber;
+const int HeightFieldGeometry::kHeightScaleFieldNumber;
+const int HeightFieldGeometry::kRowScaleFieldNumber;
+const int HeightFieldGeometry::kColumnScaleFieldNumber;
+const int HeightFieldGeometry::kDoubleSidedFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+HeightFieldGeometry::HeightFieldGeometry()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_PhysicsDOM_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:CreateDOM.HeightFieldGeometry)
+}
+HeightFieldGeometry::HeightFieldGeometry(const HeightFieldGeometry& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  heightfield_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.heightfield().size() > 0) {
+    heightfield_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.heightfield_);
+  }
+  ::memcpy(&heightscale_, &from.heightscale_,
+    static_cast<size_t>(reinterpret_cast<char*>(&doublesided_) -
+    reinterpret_cast<char*>(&heightscale_)) + sizeof(doublesided_));
+  // @@protoc_insertion_point(copy_constructor:CreateDOM.HeightFieldGeometry)
+}
+
+void HeightFieldGeometry::SharedCtor() {
+  heightfield_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::memset(&heightscale_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&doublesided_) -
+      reinterpret_cast<char*>(&heightscale_)) + sizeof(doublesided_));
+  _cached_size_ = 0;
+}
+
+HeightFieldGeometry::~HeightFieldGeometry() {
+  // @@protoc_insertion_point(destructor:CreateDOM.HeightFieldGeometry)
+  SharedDtor();
+}
+
+void HeightFieldGeometry::SharedDtor() {
+  heightfield_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void HeightFieldGeometry::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* HeightFieldGeometry::descriptor() {
+  protobuf_PhysicsDOM_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_PhysicsDOM_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const HeightFieldGeometry& HeightFieldGeometry::default_instance() {
+  protobuf_PhysicsDOM_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+HeightFieldGeometry* HeightFieldGeometry::New(::google::protobuf::Arena* arena) const {
+  HeightFieldGeometry* n = new HeightFieldGeometry;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void HeightFieldGeometry::Clear() {
+// @@protoc_insertion_point(message_clear_start:CreateDOM.HeightFieldGeometry)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  heightfield_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::memset(&heightscale_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&doublesided_) -
+      reinterpret_cast<char*>(&heightscale_)) + sizeof(doublesided_));
+  _internal_metadata_.Clear();
+}
+
+bool HeightFieldGeometry::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:CreateDOM.HeightFieldGeometry)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // string heightField = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_heightfield()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->heightfield().data(), static_cast<int>(this->heightfield().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "CreateDOM.HeightFieldGeometry.heightField"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // float heightScale = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(21u /* 21 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &heightscale_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // float rowScale = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(29u /* 29 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &rowscale_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // float columnScale = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(37u /* 37 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &columnscale_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // bool doubleSided = 5;
+      case 5: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(40u /* 40 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &doublesided_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:CreateDOM.HeightFieldGeometry)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:CreateDOM.HeightFieldGeometry)
+  return false;
+#undef DO_
+}
+
+void HeightFieldGeometry::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:CreateDOM.HeightFieldGeometry)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string heightField = 1;
+  if (this->heightfield().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->heightfield().data(), static_cast<int>(this->heightfield().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CreateDOM.HeightFieldGeometry.heightField");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->heightfield(), output);
+  }
+
+  // float heightScale = 2;
+  if (this->heightscale() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(2, this->heightscale(), output);
+  }
+
+  // float rowScale = 3;
+  if (this->rowscale() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(3, this->rowscale(), output);
+  }
+
+  // float columnScale = 4;
+  if (this->columnscale() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(4, this->columnscale(), output);
+  }
+
+  // bool doubleSided = 5;
+  if (this->doublesided() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(5, this->doublesided(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:CreateDOM.HeightFieldGeometry)
+}
+
+::google::protobuf::uint8* HeightFieldGeometry::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:CreateDOM.HeightFieldGeometry)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string heightField = 1;
+  if (this->heightfield().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->heightfield().data(), static_cast<int>(this->heightfield().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "CreateDOM.HeightFieldGeometry.heightField");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->heightfield(), target);
+  }
+
+  // float heightScale = 2;
+  if (this->heightscale() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(2, this->heightscale(), target);
+  }
+
+  // float rowScale = 3;
+  if (this->rowscale() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(3, this->rowscale(), target);
+  }
+
+  // float columnScale = 4;
+  if (this->columnscale() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(4, this->columnscale(), target);
+  }
+
+  // bool doubleSided = 5;
+  if (this->doublesided() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(5, this->doublesided(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:CreateDOM.HeightFieldGeometry)
+  return target;
+}
+
+size_t HeightFieldGeometry::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:CreateDOM.HeightFieldGeometry)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // string heightField = 1;
+  if (this->heightfield().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->heightfield());
+  }
+
+  // float heightScale = 2;
+  if (this->heightscale() != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float rowScale = 3;
+  if (this->rowscale() != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float columnScale = 4;
+  if (this->columnscale() != 0) {
+    total_size += 1 + 4;
+  }
+
+  // bool doubleSided = 5;
+  if (this->doublesided() != 0) {
+    total_size += 1 + 1;
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void HeightFieldGeometry::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:CreateDOM.HeightFieldGeometry)
+  GOOGLE_DCHECK_NE(&from, this);
+  const HeightFieldGeometry* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const HeightFieldGeometry>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:CreateDOM.HeightFieldGeometry)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:CreateDOM.HeightFieldGeometry)
+    MergeFrom(*source);
+  }
+}
+
+void HeightFieldGeometry::MergeFrom(const HeightFieldGeometry& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:CreateDOM.HeightFieldGeometry)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.heightfield().size() > 0) {
+
+    heightfield_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.heightfield_);
+  }
+  if (from.heightscale() != 0) {
+    set_heightscale(from.heightscale());
+  }
+  if (from.rowscale() != 0) {
+    set_rowscale(from.rowscale());
+  }
+  if (from.columnscale() != 0) {
+    set_columnscale(from.columnscale());
+  }
+  if (from.doublesided() != 0) {
+    set_doublesided(from.doublesided());
+  }
+}
+
+void HeightFieldGeometry::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:CreateDOM.HeightFieldGeometry)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void HeightFieldGeometry::CopyFrom(const HeightFieldGeometry& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:CreateDOM.HeightFieldGeometry)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool HeightFieldGeometry::IsInitialized() const {
+  return true;
+}
+
+void HeightFieldGeometry::Swap(HeightFieldGeometry* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void HeightFieldGeometry::InternalSwap(HeightFieldGeometry* other) {
+  using std::swap;
+  heightfield_.Swap(&other->heightfield_);
+  swap(heightscale_, other->heightscale_);
+  swap(rowscale_, other->rowscale_);
+  swap(columnscale_, other->columnscale_);
+  swap(doublesided_, other->doublesided_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata HeightFieldGeometry::GetMetadata() const {
+  protobuf_PhysicsDOM_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_PhysicsDOM_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// HeightFieldGeometry
+
+// string heightField = 1;
+void HeightFieldGeometry::clear_heightfield() {
+  heightfield_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& HeightFieldGeometry::heightfield() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.HeightFieldGeometry.heightField)
+  return heightfield_.GetNoArena();
+}
+void HeightFieldGeometry::set_heightfield(const ::std::string& value) {
+  
+  heightfield_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:CreateDOM.HeightFieldGeometry.heightField)
+}
+#if LANG_CXX11
+void HeightFieldGeometry::set_heightfield(::std::string&& value) {
+  
+  heightfield_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:CreateDOM.HeightFieldGeometry.heightField)
+}
+#endif
+void HeightFieldGeometry::set_heightfield(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  heightfield_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:CreateDOM.HeightFieldGeometry.heightField)
+}
+void HeightFieldGeometry::set_heightfield(const char* value, size_t size) {
+  
+  heightfield_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:CreateDOM.HeightFieldGeometry.heightField)
+}
+::std::string* HeightFieldGeometry::mutable_heightfield() {
+  
+  // @@protoc_insertion_point(field_mutable:CreateDOM.HeightFieldGeometry.heightField)
+  return heightfield_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* HeightFieldGeometry::release_heightfield() {
+  // @@protoc_insertion_point(field_release:CreateDOM.HeightFieldGeometry.heightField)
+  
+  return heightfield_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void HeightFieldGeometry::set_allocated_heightfield(::std::string* heightfield) {
+  if (heightfield != NULL) {
+    
+  } else {
+    
+  }
+  heightfield_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), heightfield);
+  // @@protoc_insertion_point(field_set_allocated:CreateDOM.HeightFieldGeometry.heightField)
+}
+
+// float heightScale = 2;
+void HeightFieldGeometry::clear_heightscale() {
+  heightscale_ = 0;
+}
+float HeightFieldGeometry::heightscale() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.HeightFieldGeometry.heightScale)
+  return heightscale_;
+}
+void HeightFieldGeometry::set_heightscale(float value) {
+  
+  heightscale_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.HeightFieldGeometry.heightScale)
+}
+
+// float rowScale = 3;
+void HeightFieldGeometry::clear_rowscale() {
+  rowscale_ = 0;
+}
+float HeightFieldGeometry::rowscale() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.HeightFieldGeometry.rowScale)
+  return rowscale_;
+}
+void HeightFieldGeometry::set_rowscale(float value) {
+  
+  rowscale_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.HeightFieldGeometry.rowScale)
+}
+
+// float columnScale = 4;
+void HeightFieldGeometry::clear_columnscale() {
+  columnscale_ = 0;
+}
+float HeightFieldGeometry::columnscale() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.HeightFieldGeometry.columnScale)
+  return columnscale_;
+}
+void HeightFieldGeometry::set_columnscale(float value) {
+  
+  columnscale_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.HeightFieldGeometry.columnScale)
+}
+
+// bool doubleSided = 5;
+void HeightFieldGeometry::clear_doublesided() {
+  doublesided_ = false;
+}
+bool HeightFieldGeometry::doublesided() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.HeightFieldGeometry.doubleSided)
+  return doublesided_;
+}
+void HeightFieldGeometry::set_doublesided(bool value) {
+  
+  doublesided_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.HeightFieldGeometry.doubleSided)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 PlaneGeometry::PlaneGeometry()
@@ -10134,7 +11750,7 @@ void PlaneGeometry::InternalSwap(PlaneGeometry* other) {
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int GeometryInstance::kGeometryFieldNumber;
-const int GeometryInstance::kMaterialFieldNumber;
+const int GeometryInstance::kMaterialsFieldNumber;
 const int GeometryInstance::kLocalPoseFieldNumber;
 const int GeometryInstance::kCollisionFilterSettingsFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
@@ -10150,12 +11766,9 @@ GeometryInstance::GeometryInstance()
 GeometryInstance::GeometryInstance(const GeometryInstance& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
+      materials_(from.materials_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  material_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.material().size() > 0) {
-    material_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.material_);
-  }
   collisionfiltersettings_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (from.collisionfiltersettings().size() > 0) {
     collisionfiltersettings_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.collisionfiltersettings_);
@@ -10174,7 +11787,6 @@ GeometryInstance::GeometryInstance(const GeometryInstance& from)
 }
 
 void GeometryInstance::SharedCtor() {
-  material_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   collisionfiltersettings_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&geometry_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&localpose_) -
@@ -10188,7 +11800,6 @@ GeometryInstance::~GeometryInstance() {
 }
 
 void GeometryInstance::SharedDtor() {
-  material_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   collisionfiltersettings_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != internal_default_instance()) delete geometry_;
   if (this != internal_default_instance()) delete localpose_;
@@ -10223,7 +11834,7 @@ void GeometryInstance::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  material_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  materials_.Clear();
   collisionfiltersettings_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (GetArenaNoVirtual() == NULL && geometry_ != NULL) {
     delete geometry_;
@@ -10258,16 +11869,17 @@ bool GeometryInstance::MergePartialFromCodedStream(
         break;
       }
 
-      // string material = 2;
+      // repeated string materials = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_material()));
+                input, this->add_materials()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->material().data(), static_cast<int>(this->material().length()),
+            this->materials(this->materials_size() - 1).data(),
+            static_cast<int>(this->materials(this->materials_size() - 1).length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "CreateDOM.GeometryInstance.material"));
+            "CreateDOM.GeometryInstance.materials"));
         } else {
           goto handle_unusual;
         }
@@ -10334,14 +11946,14 @@ void GeometryInstance::SerializeWithCachedSizes(
       1, *this->geometry_, output);
   }
 
-  // string material = 2;
-  if (this->material().size() > 0) {
+  // repeated string materials = 2;
+  for (int i = 0, n = this->materials_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->material().data(), static_cast<int>(this->material().length()),
+      this->materials(i).data(), static_cast<int>(this->materials(i).length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "CreateDOM.GeometryInstance.material");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      2, this->material(), output);
+      "CreateDOM.GeometryInstance.materials");
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      2, this->materials(i), output);
   }
 
   // .CreateDOM.Pose localPose = 3;
@@ -10381,15 +11993,14 @@ void GeometryInstance::SerializeWithCachedSizes(
         1, *this->geometry_, deterministic, target);
   }
 
-  // string material = 2;
-  if (this->material().size() > 0) {
+  // repeated string materials = 2;
+  for (int i = 0, n = this->materials_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->material().data(), static_cast<int>(this->material().length()),
+      this->materials(i).data(), static_cast<int>(this->materials(i).length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "CreateDOM.GeometryInstance.material");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->material(), target);
+      "CreateDOM.GeometryInstance.materials");
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteStringToArray(2, this->materials(i), target);
   }
 
   // .CreateDOM.Pose localPose = 3;
@@ -10427,11 +12038,12 @@ size_t GeometryInstance::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // string material = 2;
-  if (this->material().size() > 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->material());
+  // repeated string materials = 2;
+  total_size += 1 *
+      ::google::protobuf::internal::FromIntSize(this->materials_size());
+  for (int i = 0, n = this->materials_size(); i < n; i++) {
+    total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
+      this->materials(i));
   }
 
   // string collisionFilterSettings = 4;
@@ -10484,10 +12096,7 @@ void GeometryInstance::MergeFrom(const GeometryInstance& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.material().size() > 0) {
-
-    material_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.material_);
-  }
+  materials_.MergeFrom(from.materials_);
   if (from.collisionfiltersettings().size() > 0) {
 
     collisionfiltersettings_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.collisionfiltersettings_);
@@ -10524,7 +12133,7 @@ void GeometryInstance::Swap(GeometryInstance* other) {
 }
 void GeometryInstance::InternalSwap(GeometryInstance* other) {
   using std::swap;
-  material_.Swap(&other->material_);
+  materials_.InternalSwap(&other->materials_);
   collisionfiltersettings_.Swap(&other->collisionfiltersettings_);
   swap(geometry_, other->geometry_);
   swap(localpose_, other->localpose_);
@@ -10580,57 +12189,73 @@ void GeometryInstance::set_allocated_geometry(::CreateDOM::Geometry* geometry) {
   // @@protoc_insertion_point(field_set_allocated:CreateDOM.GeometryInstance.geometry)
 }
 
-// string material = 2;
-void GeometryInstance::clear_material() {
-  material_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// repeated string materials = 2;
+int GeometryInstance::materials_size() const {
+  return materials_.size();
 }
-const ::std::string& GeometryInstance::material() const {
-  // @@protoc_insertion_point(field_get:CreateDOM.GeometryInstance.material)
-  return material_.GetNoArena();
+void GeometryInstance::clear_materials() {
+  materials_.Clear();
 }
-void GeometryInstance::set_material(const ::std::string& value) {
-  
-  material_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:CreateDOM.GeometryInstance.material)
+const ::std::string& GeometryInstance::materials(int index) const {
+  // @@protoc_insertion_point(field_get:CreateDOM.GeometryInstance.materials)
+  return materials_.Get(index);
+}
+::std::string* GeometryInstance::mutable_materials(int index) {
+  // @@protoc_insertion_point(field_mutable:CreateDOM.GeometryInstance.materials)
+  return materials_.Mutable(index);
+}
+void GeometryInstance::set_materials(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:CreateDOM.GeometryInstance.materials)
+  materials_.Mutable(index)->assign(value);
 }
 #if LANG_CXX11
-void GeometryInstance::set_material(::std::string&& value) {
-  
-  material_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:CreateDOM.GeometryInstance.material)
+void GeometryInstance::set_materials(int index, ::std::string&& value) {
+  // @@protoc_insertion_point(field_set:CreateDOM.GeometryInstance.materials)
+  materials_.Mutable(index)->assign(std::move(value));
 }
 #endif
-void GeometryInstance::set_material(const char* value) {
+void GeometryInstance::set_materials(int index, const char* value) {
   GOOGLE_DCHECK(value != NULL);
-  
-  material_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:CreateDOM.GeometryInstance.material)
+  materials_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:CreateDOM.GeometryInstance.materials)
 }
-void GeometryInstance::set_material(const char* value, size_t size) {
-  
-  material_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:CreateDOM.GeometryInstance.material)
+void GeometryInstance::set_materials(int index, const char* value, size_t size) {
+  materials_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:CreateDOM.GeometryInstance.materials)
 }
-::std::string* GeometryInstance::mutable_material() {
-  
-  // @@protoc_insertion_point(field_mutable:CreateDOM.GeometryInstance.material)
-  return material_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+::std::string* GeometryInstance::add_materials() {
+  // @@protoc_insertion_point(field_add_mutable:CreateDOM.GeometryInstance.materials)
+  return materials_.Add();
 }
-::std::string* GeometryInstance::release_material() {
-  // @@protoc_insertion_point(field_release:CreateDOM.GeometryInstance.material)
-  
-  return material_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+void GeometryInstance::add_materials(const ::std::string& value) {
+  materials_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:CreateDOM.GeometryInstance.materials)
 }
-void GeometryInstance::set_allocated_material(::std::string* material) {
-  if (material != NULL) {
-    
-  } else {
-    
-  }
-  material_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), material);
-  // @@protoc_insertion_point(field_set_allocated:CreateDOM.GeometryInstance.material)
+#if LANG_CXX11
+void GeometryInstance::add_materials(::std::string&& value) {
+  materials_.Add(std::move(value));
+  // @@protoc_insertion_point(field_add:CreateDOM.GeometryInstance.materials)
+}
+#endif
+void GeometryInstance::add_materials(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  materials_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:CreateDOM.GeometryInstance.materials)
+}
+void GeometryInstance::add_materials(const char* value, size_t size) {
+  materials_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:CreateDOM.GeometryInstance.materials)
+}
+const ::google::protobuf::RepeatedPtrField< ::std::string>&
+GeometryInstance::materials() const {
+  // @@protoc_insertion_point(field_list:CreateDOM.GeometryInstance.materials)
+  return materials_;
+}
+::google::protobuf::RepeatedPtrField< ::std::string>*
+GeometryInstance::mutable_materials() {
+  // @@protoc_insertion_point(field_mutable_list:CreateDOM.GeometryInstance.materials)
+  return &materials_;
 }
 
 // .CreateDOM.Pose localPose = 3;
@@ -12369,6 +13994,13 @@ const int Joint::kBody1FieldNumber;
 const int Joint::kLocalpose0FieldNumber;
 const int Joint::kLocalpose1FieldNumber;
 const int Joint::kCollisionEnabledFieldNumber;
+const int Joint::kFixedJointFieldNumber;
+const int Joint::kSphericalJointFieldNumber;
+const int Joint::kHingeJointFieldNumber;
+const int Joint::kPrismaticJointFieldNumber;
+const int Joint::kDistanceJointFieldNumber;
+const int Joint::kBallAndSocketJointFieldNumber;
+const int Joint::kD6JointFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 Joint::Joint()
@@ -12403,6 +14035,40 @@ Joint::Joint(const Joint& from)
     localpose1_ = NULL;
   }
   collisionenabled_ = from.collisionenabled_;
+  clear_has_subtype();
+  switch (from.subtype_case()) {
+    case kFixedJoint: {
+      mutable_fixedjoint()->::CreateDOM::FixedJoint::MergeFrom(from.fixedjoint());
+      break;
+    }
+    case kSphericalJoint: {
+      mutable_sphericaljoint()->::CreateDOM::SphericalJoint::MergeFrom(from.sphericaljoint());
+      break;
+    }
+    case kHingeJoint: {
+      mutable_hingejoint()->::CreateDOM::HingeJoint::MergeFrom(from.hingejoint());
+      break;
+    }
+    case kPrismaticJoint: {
+      mutable_prismaticjoint()->::CreateDOM::PrismaticJoint::MergeFrom(from.prismaticjoint());
+      break;
+    }
+    case kDistanceJoint: {
+      mutable_distancejoint()->::CreateDOM::DistanceJoint::MergeFrom(from.distancejoint());
+      break;
+    }
+    case kBallAndSocketJoint: {
+      mutable_ballandsocketjoint()->::CreateDOM::BallAndSocketJoint::MergeFrom(from.ballandsocketjoint());
+      break;
+    }
+    case kD6Joint: {
+      mutable_d6joint()->::CreateDOM::D6Joint::MergeFrom(from.d6joint());
+      break;
+    }
+    case SUBTYPE_NOT_SET: {
+      break;
+    }
+  }
   // @@protoc_insertion_point(copy_constructor:CreateDOM.Joint)
 }
 
@@ -12412,6 +14078,7 @@ void Joint::SharedCtor() {
   ::memset(&localpose0_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&collisionenabled_) -
       reinterpret_cast<char*>(&localpose0_)) + sizeof(collisionenabled_));
+  clear_has_subtype();
   _cached_size_ = 0;
 }
 
@@ -12425,6 +14092,9 @@ void Joint::SharedDtor() {
   body1_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (this != internal_default_instance()) delete localpose0_;
   if (this != internal_default_instance()) delete localpose1_;
+  if (has_subtype()) {
+    clear_subtype();
+  }
 }
 
 void Joint::SetCachedSize(int size) const {
@@ -12450,6 +14120,45 @@ Joint* Joint::New(::google::protobuf::Arena* arena) const {
   return n;
 }
 
+void Joint::clear_subtype() {
+// @@protoc_insertion_point(one_of_clear_start:CreateDOM.Joint)
+  switch (subtype_case()) {
+    case kFixedJoint: {
+      delete subtype_.fixedjoint_;
+      break;
+    }
+    case kSphericalJoint: {
+      delete subtype_.sphericaljoint_;
+      break;
+    }
+    case kHingeJoint: {
+      delete subtype_.hingejoint_;
+      break;
+    }
+    case kPrismaticJoint: {
+      delete subtype_.prismaticjoint_;
+      break;
+    }
+    case kDistanceJoint: {
+      delete subtype_.distancejoint_;
+      break;
+    }
+    case kBallAndSocketJoint: {
+      delete subtype_.ballandsocketjoint_;
+      break;
+    }
+    case kD6Joint: {
+      delete subtype_.d6joint_;
+      break;
+    }
+    case SUBTYPE_NOT_SET: {
+      break;
+    }
+  }
+  _oneof_case_[0] = SUBTYPE_NOT_SET;
+}
+
+
 void Joint::Clear() {
 // @@protoc_insertion_point(message_clear_start:CreateDOM.Joint)
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -12467,6 +14176,7 @@ void Joint::Clear() {
   }
   localpose1_ = NULL;
   collisionenabled_ = false;
+  clear_subtype();
   _internal_metadata_.Clear();
 }
 
@@ -12550,6 +14260,90 @@ bool Joint::MergePartialFromCodedStream(
         break;
       }
 
+      // .CreateDOM.FixedJoint fixedJoint = 6;
+      case 6: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(50u /* 50 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_fixedjoint()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .CreateDOM.SphericalJoint sphericalJoint = 7;
+      case 7: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(58u /* 58 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_sphericaljoint()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .CreateDOM.HingeJoint hingeJoint = 8;
+      case 8: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(66u /* 66 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_hingejoint()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .CreateDOM.PrismaticJoint prismaticJoint = 9;
+      case 9: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(74u /* 74 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_prismaticjoint()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .CreateDOM.DistanceJoint distanceJoint = 10;
+      case 10: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(82u /* 82 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_distancejoint()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .CreateDOM.BallAndSocketJoint ballAndSocketJoint = 11;
+      case 11: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(90u /* 90 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_ballandsocketjoint()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // .CreateDOM.D6Joint d6Joint = 12;
+      case 12: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(98u /* 98 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_d6joint()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -12613,6 +14407,48 @@ void Joint::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteBool(5, this->collisionenabled(), output);
   }
 
+  // .CreateDOM.FixedJoint fixedJoint = 6;
+  if (has_fixedjoint()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      6, *subtype_.fixedjoint_, output);
+  }
+
+  // .CreateDOM.SphericalJoint sphericalJoint = 7;
+  if (has_sphericaljoint()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      7, *subtype_.sphericaljoint_, output);
+  }
+
+  // .CreateDOM.HingeJoint hingeJoint = 8;
+  if (has_hingejoint()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      8, *subtype_.hingejoint_, output);
+  }
+
+  // .CreateDOM.PrismaticJoint prismaticJoint = 9;
+  if (has_prismaticjoint()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      9, *subtype_.prismaticjoint_, output);
+  }
+
+  // .CreateDOM.DistanceJoint distanceJoint = 10;
+  if (has_distancejoint()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      10, *subtype_.distancejoint_, output);
+  }
+
+  // .CreateDOM.BallAndSocketJoint ballAndSocketJoint = 11;
+  if (has_ballandsocketjoint()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      11, *subtype_.ballandsocketjoint_, output);
+  }
+
+  // .CreateDOM.D6Joint d6Joint = 12;
+  if (has_d6joint()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      12, *subtype_.d6joint_, output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -12668,6 +14504,55 @@ void Joint::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(5, this->collisionenabled(), target);
   }
 
+  // .CreateDOM.FixedJoint fixedJoint = 6;
+  if (has_fixedjoint()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        6, *subtype_.fixedjoint_, deterministic, target);
+  }
+
+  // .CreateDOM.SphericalJoint sphericalJoint = 7;
+  if (has_sphericaljoint()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        7, *subtype_.sphericaljoint_, deterministic, target);
+  }
+
+  // .CreateDOM.HingeJoint hingeJoint = 8;
+  if (has_hingejoint()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        8, *subtype_.hingejoint_, deterministic, target);
+  }
+
+  // .CreateDOM.PrismaticJoint prismaticJoint = 9;
+  if (has_prismaticjoint()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        9, *subtype_.prismaticjoint_, deterministic, target);
+  }
+
+  // .CreateDOM.DistanceJoint distanceJoint = 10;
+  if (has_distancejoint()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        10, *subtype_.distancejoint_, deterministic, target);
+  }
+
+  // .CreateDOM.BallAndSocketJoint ballAndSocketJoint = 11;
+  if (has_ballandsocketjoint()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        11, *subtype_.ballandsocketjoint_, deterministic, target);
+  }
+
+  // .CreateDOM.D6Joint d6Joint = 12;
+  if (has_d6joint()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        12, *subtype_.d6joint_, deterministic, target);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
@@ -12718,6 +14603,60 @@ size_t Joint::ByteSizeLong() const {
     total_size += 1 + 1;
   }
 
+  switch (subtype_case()) {
+    // .CreateDOM.FixedJoint fixedJoint = 6;
+    case kFixedJoint: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          *subtype_.fixedjoint_);
+      break;
+    }
+    // .CreateDOM.SphericalJoint sphericalJoint = 7;
+    case kSphericalJoint: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          *subtype_.sphericaljoint_);
+      break;
+    }
+    // .CreateDOM.HingeJoint hingeJoint = 8;
+    case kHingeJoint: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          *subtype_.hingejoint_);
+      break;
+    }
+    // .CreateDOM.PrismaticJoint prismaticJoint = 9;
+    case kPrismaticJoint: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          *subtype_.prismaticjoint_);
+      break;
+    }
+    // .CreateDOM.DistanceJoint distanceJoint = 10;
+    case kDistanceJoint: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          *subtype_.distancejoint_);
+      break;
+    }
+    // .CreateDOM.BallAndSocketJoint ballAndSocketJoint = 11;
+    case kBallAndSocketJoint: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          *subtype_.ballandsocketjoint_);
+      break;
+    }
+    // .CreateDOM.D6Joint d6Joint = 12;
+    case kD6Joint: {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          *subtype_.d6joint_);
+      break;
+    }
+    case SUBTYPE_NOT_SET: {
+      break;
+    }
+  }
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -12764,6 +14703,39 @@ void Joint::MergeFrom(const Joint& from) {
   if (from.collisionenabled() != 0) {
     set_collisionenabled(from.collisionenabled());
   }
+  switch (from.subtype_case()) {
+    case kFixedJoint: {
+      mutable_fixedjoint()->::CreateDOM::FixedJoint::MergeFrom(from.fixedjoint());
+      break;
+    }
+    case kSphericalJoint: {
+      mutable_sphericaljoint()->::CreateDOM::SphericalJoint::MergeFrom(from.sphericaljoint());
+      break;
+    }
+    case kHingeJoint: {
+      mutable_hingejoint()->::CreateDOM::HingeJoint::MergeFrom(from.hingejoint());
+      break;
+    }
+    case kPrismaticJoint: {
+      mutable_prismaticjoint()->::CreateDOM::PrismaticJoint::MergeFrom(from.prismaticjoint());
+      break;
+    }
+    case kDistanceJoint: {
+      mutable_distancejoint()->::CreateDOM::DistanceJoint::MergeFrom(from.distancejoint());
+      break;
+    }
+    case kBallAndSocketJoint: {
+      mutable_ballandsocketjoint()->::CreateDOM::BallAndSocketJoint::MergeFrom(from.ballandsocketjoint());
+      break;
+    }
+    case kD6Joint: {
+      mutable_d6joint()->::CreateDOM::D6Joint::MergeFrom(from.d6joint());
+      break;
+    }
+    case SUBTYPE_NOT_SET: {
+      break;
+    }
+  }
 }
 
 void Joint::CopyFrom(const ::google::protobuf::Message& from) {
@@ -12795,6 +14767,8 @@ void Joint::InternalSwap(Joint* other) {
   swap(localpose0_, other->localpose0_);
   swap(localpose1_, other->localpose1_);
   swap(collisionenabled_, other->collisionenabled_);
+  swap(subtype_, other->subtype_);
+  swap(_oneof_case_[0], other->_oneof_case_[0]);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
@@ -13006,6 +14980,2369 @@ void Joint::set_collisionenabled(bool value) {
   collisionenabled_ = value;
   // @@protoc_insertion_point(field_set:CreateDOM.Joint.collisionEnabled)
 }
+
+// .CreateDOM.FixedJoint fixedJoint = 6;
+bool Joint::has_fixedjoint() const {
+  return subtype_case() == kFixedJoint;
+}
+void Joint::set_has_fixedjoint() {
+  _oneof_case_[0] = kFixedJoint;
+}
+void Joint::clear_fixedjoint() {
+  if (has_fixedjoint()) {
+    delete subtype_.fixedjoint_;
+    clear_has_subtype();
+  }
+}
+ const ::CreateDOM::FixedJoint& Joint::fixedjoint() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.Joint.fixedJoint)
+  return has_fixedjoint()
+      ? *subtype_.fixedjoint_
+      : ::CreateDOM::FixedJoint::default_instance();
+}
+::CreateDOM::FixedJoint* Joint::mutable_fixedjoint() {
+  if (!has_fixedjoint()) {
+    clear_subtype();
+    set_has_fixedjoint();
+    subtype_.fixedjoint_ = new ::CreateDOM::FixedJoint;
+  }
+  // @@protoc_insertion_point(field_mutable:CreateDOM.Joint.fixedJoint)
+  return subtype_.fixedjoint_;
+}
+::CreateDOM::FixedJoint* Joint::release_fixedjoint() {
+  // @@protoc_insertion_point(field_release:CreateDOM.Joint.fixedJoint)
+  if (has_fixedjoint()) {
+    clear_has_subtype();
+    ::CreateDOM::FixedJoint* temp = subtype_.fixedjoint_;
+    subtype_.fixedjoint_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+void Joint::set_allocated_fixedjoint(::CreateDOM::FixedJoint* fixedjoint) {
+  clear_subtype();
+  if (fixedjoint) {
+    set_has_fixedjoint();
+    subtype_.fixedjoint_ = fixedjoint;
+  }
+  // @@protoc_insertion_point(field_set_allocated:CreateDOM.Joint.fixedJoint)
+}
+
+// .CreateDOM.SphericalJoint sphericalJoint = 7;
+bool Joint::has_sphericaljoint() const {
+  return subtype_case() == kSphericalJoint;
+}
+void Joint::set_has_sphericaljoint() {
+  _oneof_case_[0] = kSphericalJoint;
+}
+void Joint::clear_sphericaljoint() {
+  if (has_sphericaljoint()) {
+    delete subtype_.sphericaljoint_;
+    clear_has_subtype();
+  }
+}
+ const ::CreateDOM::SphericalJoint& Joint::sphericaljoint() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.Joint.sphericalJoint)
+  return has_sphericaljoint()
+      ? *subtype_.sphericaljoint_
+      : ::CreateDOM::SphericalJoint::default_instance();
+}
+::CreateDOM::SphericalJoint* Joint::mutable_sphericaljoint() {
+  if (!has_sphericaljoint()) {
+    clear_subtype();
+    set_has_sphericaljoint();
+    subtype_.sphericaljoint_ = new ::CreateDOM::SphericalJoint;
+  }
+  // @@protoc_insertion_point(field_mutable:CreateDOM.Joint.sphericalJoint)
+  return subtype_.sphericaljoint_;
+}
+::CreateDOM::SphericalJoint* Joint::release_sphericaljoint() {
+  // @@protoc_insertion_point(field_release:CreateDOM.Joint.sphericalJoint)
+  if (has_sphericaljoint()) {
+    clear_has_subtype();
+    ::CreateDOM::SphericalJoint* temp = subtype_.sphericaljoint_;
+    subtype_.sphericaljoint_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+void Joint::set_allocated_sphericaljoint(::CreateDOM::SphericalJoint* sphericaljoint) {
+  clear_subtype();
+  if (sphericaljoint) {
+    set_has_sphericaljoint();
+    subtype_.sphericaljoint_ = sphericaljoint;
+  }
+  // @@protoc_insertion_point(field_set_allocated:CreateDOM.Joint.sphericalJoint)
+}
+
+// .CreateDOM.HingeJoint hingeJoint = 8;
+bool Joint::has_hingejoint() const {
+  return subtype_case() == kHingeJoint;
+}
+void Joint::set_has_hingejoint() {
+  _oneof_case_[0] = kHingeJoint;
+}
+void Joint::clear_hingejoint() {
+  if (has_hingejoint()) {
+    delete subtype_.hingejoint_;
+    clear_has_subtype();
+  }
+}
+ const ::CreateDOM::HingeJoint& Joint::hingejoint() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.Joint.hingeJoint)
+  return has_hingejoint()
+      ? *subtype_.hingejoint_
+      : ::CreateDOM::HingeJoint::default_instance();
+}
+::CreateDOM::HingeJoint* Joint::mutable_hingejoint() {
+  if (!has_hingejoint()) {
+    clear_subtype();
+    set_has_hingejoint();
+    subtype_.hingejoint_ = new ::CreateDOM::HingeJoint;
+  }
+  // @@protoc_insertion_point(field_mutable:CreateDOM.Joint.hingeJoint)
+  return subtype_.hingejoint_;
+}
+::CreateDOM::HingeJoint* Joint::release_hingejoint() {
+  // @@protoc_insertion_point(field_release:CreateDOM.Joint.hingeJoint)
+  if (has_hingejoint()) {
+    clear_has_subtype();
+    ::CreateDOM::HingeJoint* temp = subtype_.hingejoint_;
+    subtype_.hingejoint_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+void Joint::set_allocated_hingejoint(::CreateDOM::HingeJoint* hingejoint) {
+  clear_subtype();
+  if (hingejoint) {
+    set_has_hingejoint();
+    subtype_.hingejoint_ = hingejoint;
+  }
+  // @@protoc_insertion_point(field_set_allocated:CreateDOM.Joint.hingeJoint)
+}
+
+// .CreateDOM.PrismaticJoint prismaticJoint = 9;
+bool Joint::has_prismaticjoint() const {
+  return subtype_case() == kPrismaticJoint;
+}
+void Joint::set_has_prismaticjoint() {
+  _oneof_case_[0] = kPrismaticJoint;
+}
+void Joint::clear_prismaticjoint() {
+  if (has_prismaticjoint()) {
+    delete subtype_.prismaticjoint_;
+    clear_has_subtype();
+  }
+}
+ const ::CreateDOM::PrismaticJoint& Joint::prismaticjoint() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.Joint.prismaticJoint)
+  return has_prismaticjoint()
+      ? *subtype_.prismaticjoint_
+      : ::CreateDOM::PrismaticJoint::default_instance();
+}
+::CreateDOM::PrismaticJoint* Joint::mutable_prismaticjoint() {
+  if (!has_prismaticjoint()) {
+    clear_subtype();
+    set_has_prismaticjoint();
+    subtype_.prismaticjoint_ = new ::CreateDOM::PrismaticJoint;
+  }
+  // @@protoc_insertion_point(field_mutable:CreateDOM.Joint.prismaticJoint)
+  return subtype_.prismaticjoint_;
+}
+::CreateDOM::PrismaticJoint* Joint::release_prismaticjoint() {
+  // @@protoc_insertion_point(field_release:CreateDOM.Joint.prismaticJoint)
+  if (has_prismaticjoint()) {
+    clear_has_subtype();
+    ::CreateDOM::PrismaticJoint* temp = subtype_.prismaticjoint_;
+    subtype_.prismaticjoint_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+void Joint::set_allocated_prismaticjoint(::CreateDOM::PrismaticJoint* prismaticjoint) {
+  clear_subtype();
+  if (prismaticjoint) {
+    set_has_prismaticjoint();
+    subtype_.prismaticjoint_ = prismaticjoint;
+  }
+  // @@protoc_insertion_point(field_set_allocated:CreateDOM.Joint.prismaticJoint)
+}
+
+// .CreateDOM.DistanceJoint distanceJoint = 10;
+bool Joint::has_distancejoint() const {
+  return subtype_case() == kDistanceJoint;
+}
+void Joint::set_has_distancejoint() {
+  _oneof_case_[0] = kDistanceJoint;
+}
+void Joint::clear_distancejoint() {
+  if (has_distancejoint()) {
+    delete subtype_.distancejoint_;
+    clear_has_subtype();
+  }
+}
+ const ::CreateDOM::DistanceJoint& Joint::distancejoint() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.Joint.distanceJoint)
+  return has_distancejoint()
+      ? *subtype_.distancejoint_
+      : ::CreateDOM::DistanceJoint::default_instance();
+}
+::CreateDOM::DistanceJoint* Joint::mutable_distancejoint() {
+  if (!has_distancejoint()) {
+    clear_subtype();
+    set_has_distancejoint();
+    subtype_.distancejoint_ = new ::CreateDOM::DistanceJoint;
+  }
+  // @@protoc_insertion_point(field_mutable:CreateDOM.Joint.distanceJoint)
+  return subtype_.distancejoint_;
+}
+::CreateDOM::DistanceJoint* Joint::release_distancejoint() {
+  // @@protoc_insertion_point(field_release:CreateDOM.Joint.distanceJoint)
+  if (has_distancejoint()) {
+    clear_has_subtype();
+    ::CreateDOM::DistanceJoint* temp = subtype_.distancejoint_;
+    subtype_.distancejoint_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+void Joint::set_allocated_distancejoint(::CreateDOM::DistanceJoint* distancejoint) {
+  clear_subtype();
+  if (distancejoint) {
+    set_has_distancejoint();
+    subtype_.distancejoint_ = distancejoint;
+  }
+  // @@protoc_insertion_point(field_set_allocated:CreateDOM.Joint.distanceJoint)
+}
+
+// .CreateDOM.BallAndSocketJoint ballAndSocketJoint = 11;
+bool Joint::has_ballandsocketjoint() const {
+  return subtype_case() == kBallAndSocketJoint;
+}
+void Joint::set_has_ballandsocketjoint() {
+  _oneof_case_[0] = kBallAndSocketJoint;
+}
+void Joint::clear_ballandsocketjoint() {
+  if (has_ballandsocketjoint()) {
+    delete subtype_.ballandsocketjoint_;
+    clear_has_subtype();
+  }
+}
+ const ::CreateDOM::BallAndSocketJoint& Joint::ballandsocketjoint() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.Joint.ballAndSocketJoint)
+  return has_ballandsocketjoint()
+      ? *subtype_.ballandsocketjoint_
+      : ::CreateDOM::BallAndSocketJoint::default_instance();
+}
+::CreateDOM::BallAndSocketJoint* Joint::mutable_ballandsocketjoint() {
+  if (!has_ballandsocketjoint()) {
+    clear_subtype();
+    set_has_ballandsocketjoint();
+    subtype_.ballandsocketjoint_ = new ::CreateDOM::BallAndSocketJoint;
+  }
+  // @@protoc_insertion_point(field_mutable:CreateDOM.Joint.ballAndSocketJoint)
+  return subtype_.ballandsocketjoint_;
+}
+::CreateDOM::BallAndSocketJoint* Joint::release_ballandsocketjoint() {
+  // @@protoc_insertion_point(field_release:CreateDOM.Joint.ballAndSocketJoint)
+  if (has_ballandsocketjoint()) {
+    clear_has_subtype();
+    ::CreateDOM::BallAndSocketJoint* temp = subtype_.ballandsocketjoint_;
+    subtype_.ballandsocketjoint_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+void Joint::set_allocated_ballandsocketjoint(::CreateDOM::BallAndSocketJoint* ballandsocketjoint) {
+  clear_subtype();
+  if (ballandsocketjoint) {
+    set_has_ballandsocketjoint();
+    subtype_.ballandsocketjoint_ = ballandsocketjoint;
+  }
+  // @@protoc_insertion_point(field_set_allocated:CreateDOM.Joint.ballAndSocketJoint)
+}
+
+// .CreateDOM.D6Joint d6Joint = 12;
+bool Joint::has_d6joint() const {
+  return subtype_case() == kD6Joint;
+}
+void Joint::set_has_d6joint() {
+  _oneof_case_[0] = kD6Joint;
+}
+void Joint::clear_d6joint() {
+  if (has_d6joint()) {
+    delete subtype_.d6joint_;
+    clear_has_subtype();
+  }
+}
+ const ::CreateDOM::D6Joint& Joint::d6joint() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.Joint.d6Joint)
+  return has_d6joint()
+      ? *subtype_.d6joint_
+      : ::CreateDOM::D6Joint::default_instance();
+}
+::CreateDOM::D6Joint* Joint::mutable_d6joint() {
+  if (!has_d6joint()) {
+    clear_subtype();
+    set_has_d6joint();
+    subtype_.d6joint_ = new ::CreateDOM::D6Joint;
+  }
+  // @@protoc_insertion_point(field_mutable:CreateDOM.Joint.d6Joint)
+  return subtype_.d6joint_;
+}
+::CreateDOM::D6Joint* Joint::release_d6joint() {
+  // @@protoc_insertion_point(field_release:CreateDOM.Joint.d6Joint)
+  if (has_d6joint()) {
+    clear_has_subtype();
+    ::CreateDOM::D6Joint* temp = subtype_.d6joint_;
+    subtype_.d6joint_ = NULL;
+    return temp;
+  } else {
+    return NULL;
+  }
+}
+void Joint::set_allocated_d6joint(::CreateDOM::D6Joint* d6joint) {
+  clear_subtype();
+  if (d6joint) {
+    set_has_d6joint();
+    subtype_.d6joint_ = d6joint;
+  }
+  // @@protoc_insertion_point(field_set_allocated:CreateDOM.Joint.d6Joint)
+}
+
+bool Joint::has_subtype() const {
+  return subtype_case() != SUBTYPE_NOT_SET;
+}
+void Joint::clear_has_subtype() {
+  _oneof_case_[0] = SUBTYPE_NOT_SET;
+}
+Joint::SubtypeCase Joint::subtype_case() const {
+  return Joint::SubtypeCase(_oneof_case_[0]);
+}
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+FixedJoint::FixedJoint()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_PhysicsDOM_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:CreateDOM.FixedJoint)
+}
+FixedJoint::FixedJoint(const FixedJoint& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:CreateDOM.FixedJoint)
+}
+
+void FixedJoint::SharedCtor() {
+  _cached_size_ = 0;
+}
+
+FixedJoint::~FixedJoint() {
+  // @@protoc_insertion_point(destructor:CreateDOM.FixedJoint)
+  SharedDtor();
+}
+
+void FixedJoint::SharedDtor() {
+}
+
+void FixedJoint::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* FixedJoint::descriptor() {
+  protobuf_PhysicsDOM_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_PhysicsDOM_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const FixedJoint& FixedJoint::default_instance() {
+  protobuf_PhysicsDOM_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+FixedJoint* FixedJoint::New(::google::protobuf::Arena* arena) const {
+  FixedJoint* n = new FixedJoint;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void FixedJoint::Clear() {
+// @@protoc_insertion_point(message_clear_start:CreateDOM.FixedJoint)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _internal_metadata_.Clear();
+}
+
+bool FixedJoint::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:CreateDOM.FixedJoint)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+  handle_unusual:
+    if (tag == 0) {
+      goto success;
+    }
+    DO_(::google::protobuf::internal::WireFormat::SkipField(
+          input, tag, _internal_metadata_.mutable_unknown_fields()));
+  }
+success:
+  // @@protoc_insertion_point(parse_success:CreateDOM.FixedJoint)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:CreateDOM.FixedJoint)
+  return false;
+#undef DO_
+}
+
+void FixedJoint::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:CreateDOM.FixedJoint)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:CreateDOM.FixedJoint)
+}
+
+::google::protobuf::uint8* FixedJoint::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:CreateDOM.FixedJoint)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:CreateDOM.FixedJoint)
+  return target;
+}
+
+size_t FixedJoint::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:CreateDOM.FixedJoint)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void FixedJoint::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:CreateDOM.FixedJoint)
+  GOOGLE_DCHECK_NE(&from, this);
+  const FixedJoint* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const FixedJoint>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:CreateDOM.FixedJoint)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:CreateDOM.FixedJoint)
+    MergeFrom(*source);
+  }
+}
+
+void FixedJoint::MergeFrom(const FixedJoint& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:CreateDOM.FixedJoint)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+}
+
+void FixedJoint::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:CreateDOM.FixedJoint)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void FixedJoint::CopyFrom(const FixedJoint& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:CreateDOM.FixedJoint)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool FixedJoint::IsInitialized() const {
+  return true;
+}
+
+void FixedJoint::Swap(FixedJoint* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void FixedJoint::InternalSwap(FixedJoint* other) {
+  using std::swap;
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata FixedJoint::GetMetadata() const {
+  protobuf_PhysicsDOM_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_PhysicsDOM_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// FixedJoint
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int SphericalJoint::kLimitYFieldNumber;
+const int SphericalJoint::kLimitZFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+SphericalJoint::SphericalJoint()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_PhysicsDOM_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:CreateDOM.SphericalJoint)
+}
+SphericalJoint::SphericalJoint(const SphericalJoint& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::memcpy(&limity_, &from.limity_,
+    static_cast<size_t>(reinterpret_cast<char*>(&limitz_) -
+    reinterpret_cast<char*>(&limity_)) + sizeof(limitz_));
+  // @@protoc_insertion_point(copy_constructor:CreateDOM.SphericalJoint)
+}
+
+void SphericalJoint::SharedCtor() {
+  ::memset(&limity_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&limitz_) -
+      reinterpret_cast<char*>(&limity_)) + sizeof(limitz_));
+  _cached_size_ = 0;
+}
+
+SphericalJoint::~SphericalJoint() {
+  // @@protoc_insertion_point(destructor:CreateDOM.SphericalJoint)
+  SharedDtor();
+}
+
+void SphericalJoint::SharedDtor() {
+}
+
+void SphericalJoint::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* SphericalJoint::descriptor() {
+  protobuf_PhysicsDOM_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_PhysicsDOM_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const SphericalJoint& SphericalJoint::default_instance() {
+  protobuf_PhysicsDOM_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+SphericalJoint* SphericalJoint::New(::google::protobuf::Arena* arena) const {
+  SphericalJoint* n = new SphericalJoint;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void SphericalJoint::Clear() {
+// @@protoc_insertion_point(message_clear_start:CreateDOM.SphericalJoint)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&limity_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&limitz_) -
+      reinterpret_cast<char*>(&limity_)) + sizeof(limitz_));
+  _internal_metadata_.Clear();
+}
+
+bool SphericalJoint::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:CreateDOM.SphericalJoint)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // float limitY = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(13u /* 13 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &limity_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // float limitZ = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(21u /* 21 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &limitz_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:CreateDOM.SphericalJoint)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:CreateDOM.SphericalJoint)
+  return false;
+#undef DO_
+}
+
+void SphericalJoint::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:CreateDOM.SphericalJoint)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // float limitY = 1;
+  if (this->limity() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(1, this->limity(), output);
+  }
+
+  // float limitZ = 2;
+  if (this->limitz() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(2, this->limitz(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:CreateDOM.SphericalJoint)
+}
+
+::google::protobuf::uint8* SphericalJoint::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:CreateDOM.SphericalJoint)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // float limitY = 1;
+  if (this->limity() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->limity(), target);
+  }
+
+  // float limitZ = 2;
+  if (this->limitz() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(2, this->limitz(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:CreateDOM.SphericalJoint)
+  return target;
+}
+
+size_t SphericalJoint::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:CreateDOM.SphericalJoint)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // float limitY = 1;
+  if (this->limity() != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float limitZ = 2;
+  if (this->limitz() != 0) {
+    total_size += 1 + 4;
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void SphericalJoint::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:CreateDOM.SphericalJoint)
+  GOOGLE_DCHECK_NE(&from, this);
+  const SphericalJoint* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const SphericalJoint>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:CreateDOM.SphericalJoint)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:CreateDOM.SphericalJoint)
+    MergeFrom(*source);
+  }
+}
+
+void SphericalJoint::MergeFrom(const SphericalJoint& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:CreateDOM.SphericalJoint)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.limity() != 0) {
+    set_limity(from.limity());
+  }
+  if (from.limitz() != 0) {
+    set_limitz(from.limitz());
+  }
+}
+
+void SphericalJoint::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:CreateDOM.SphericalJoint)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void SphericalJoint::CopyFrom(const SphericalJoint& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:CreateDOM.SphericalJoint)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool SphericalJoint::IsInitialized() const {
+  return true;
+}
+
+void SphericalJoint::Swap(SphericalJoint* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void SphericalJoint::InternalSwap(SphericalJoint* other) {
+  using std::swap;
+  swap(limity_, other->limity_);
+  swap(limitz_, other->limitz_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata SphericalJoint::GetMetadata() const {
+  protobuf_PhysicsDOM_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_PhysicsDOM_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// SphericalJoint
+
+// float limitY = 1;
+void SphericalJoint::clear_limity() {
+  limity_ = 0;
+}
+float SphericalJoint::limity() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.SphericalJoint.limitY)
+  return limity_;
+}
+void SphericalJoint::set_limity(float value) {
+  
+  limity_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.SphericalJoint.limitY)
+}
+
+// float limitZ = 2;
+void SphericalJoint::clear_limitz() {
+  limitz_ = 0;
+}
+float SphericalJoint::limitz() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.SphericalJoint.limitZ)
+  return limitz_;
+}
+void SphericalJoint::set_limitz(float value) {
+  
+  limitz_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.SphericalJoint.limitZ)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int HingeJoint::kLimtLowFieldNumber;
+const int HingeJoint::kLimitHighFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+HingeJoint::HingeJoint()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_PhysicsDOM_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:CreateDOM.HingeJoint)
+}
+HingeJoint::HingeJoint(const HingeJoint& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::memcpy(&limtlow_, &from.limtlow_,
+    static_cast<size_t>(reinterpret_cast<char*>(&limithigh_) -
+    reinterpret_cast<char*>(&limtlow_)) + sizeof(limithigh_));
+  // @@protoc_insertion_point(copy_constructor:CreateDOM.HingeJoint)
+}
+
+void HingeJoint::SharedCtor() {
+  ::memset(&limtlow_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&limithigh_) -
+      reinterpret_cast<char*>(&limtlow_)) + sizeof(limithigh_));
+  _cached_size_ = 0;
+}
+
+HingeJoint::~HingeJoint() {
+  // @@protoc_insertion_point(destructor:CreateDOM.HingeJoint)
+  SharedDtor();
+}
+
+void HingeJoint::SharedDtor() {
+}
+
+void HingeJoint::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* HingeJoint::descriptor() {
+  protobuf_PhysicsDOM_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_PhysicsDOM_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const HingeJoint& HingeJoint::default_instance() {
+  protobuf_PhysicsDOM_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+HingeJoint* HingeJoint::New(::google::protobuf::Arena* arena) const {
+  HingeJoint* n = new HingeJoint;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void HingeJoint::Clear() {
+// @@protoc_insertion_point(message_clear_start:CreateDOM.HingeJoint)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&limtlow_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&limithigh_) -
+      reinterpret_cast<char*>(&limtlow_)) + sizeof(limithigh_));
+  _internal_metadata_.Clear();
+}
+
+bool HingeJoint::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:CreateDOM.HingeJoint)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // float limtLow = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(13u /* 13 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &limtlow_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // float limitHigh = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(21u /* 21 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &limithigh_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:CreateDOM.HingeJoint)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:CreateDOM.HingeJoint)
+  return false;
+#undef DO_
+}
+
+void HingeJoint::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:CreateDOM.HingeJoint)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // float limtLow = 1;
+  if (this->limtlow() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(1, this->limtlow(), output);
+  }
+
+  // float limitHigh = 2;
+  if (this->limithigh() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(2, this->limithigh(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:CreateDOM.HingeJoint)
+}
+
+::google::protobuf::uint8* HingeJoint::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:CreateDOM.HingeJoint)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // float limtLow = 1;
+  if (this->limtlow() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->limtlow(), target);
+  }
+
+  // float limitHigh = 2;
+  if (this->limithigh() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(2, this->limithigh(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:CreateDOM.HingeJoint)
+  return target;
+}
+
+size_t HingeJoint::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:CreateDOM.HingeJoint)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // float limtLow = 1;
+  if (this->limtlow() != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float limitHigh = 2;
+  if (this->limithigh() != 0) {
+    total_size += 1 + 4;
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void HingeJoint::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:CreateDOM.HingeJoint)
+  GOOGLE_DCHECK_NE(&from, this);
+  const HingeJoint* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const HingeJoint>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:CreateDOM.HingeJoint)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:CreateDOM.HingeJoint)
+    MergeFrom(*source);
+  }
+}
+
+void HingeJoint::MergeFrom(const HingeJoint& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:CreateDOM.HingeJoint)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.limtlow() != 0) {
+    set_limtlow(from.limtlow());
+  }
+  if (from.limithigh() != 0) {
+    set_limithigh(from.limithigh());
+  }
+}
+
+void HingeJoint::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:CreateDOM.HingeJoint)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void HingeJoint::CopyFrom(const HingeJoint& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:CreateDOM.HingeJoint)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool HingeJoint::IsInitialized() const {
+  return true;
+}
+
+void HingeJoint::Swap(HingeJoint* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void HingeJoint::InternalSwap(HingeJoint* other) {
+  using std::swap;
+  swap(limtlow_, other->limtlow_);
+  swap(limithigh_, other->limithigh_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata HingeJoint::GetMetadata() const {
+  protobuf_PhysicsDOM_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_PhysicsDOM_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// HingeJoint
+
+// float limtLow = 1;
+void HingeJoint::clear_limtlow() {
+  limtlow_ = 0;
+}
+float HingeJoint::limtlow() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.HingeJoint.limtLow)
+  return limtlow_;
+}
+void HingeJoint::set_limtlow(float value) {
+  
+  limtlow_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.HingeJoint.limtLow)
+}
+
+// float limitHigh = 2;
+void HingeJoint::clear_limithigh() {
+  limithigh_ = 0;
+}
+float HingeJoint::limithigh() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.HingeJoint.limitHigh)
+  return limithigh_;
+}
+void HingeJoint::set_limithigh(float value) {
+  
+  limithigh_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.HingeJoint.limitHigh)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int PrismaticJoint::kLimitLowFieldNumber;
+const int PrismaticJoint::kLimitHighFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+PrismaticJoint::PrismaticJoint()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_PhysicsDOM_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:CreateDOM.PrismaticJoint)
+}
+PrismaticJoint::PrismaticJoint(const PrismaticJoint& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::memcpy(&limitlow_, &from.limitlow_,
+    static_cast<size_t>(reinterpret_cast<char*>(&limithigh_) -
+    reinterpret_cast<char*>(&limitlow_)) + sizeof(limithigh_));
+  // @@protoc_insertion_point(copy_constructor:CreateDOM.PrismaticJoint)
+}
+
+void PrismaticJoint::SharedCtor() {
+  ::memset(&limitlow_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&limithigh_) -
+      reinterpret_cast<char*>(&limitlow_)) + sizeof(limithigh_));
+  _cached_size_ = 0;
+}
+
+PrismaticJoint::~PrismaticJoint() {
+  // @@protoc_insertion_point(destructor:CreateDOM.PrismaticJoint)
+  SharedDtor();
+}
+
+void PrismaticJoint::SharedDtor() {
+}
+
+void PrismaticJoint::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* PrismaticJoint::descriptor() {
+  protobuf_PhysicsDOM_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_PhysicsDOM_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const PrismaticJoint& PrismaticJoint::default_instance() {
+  protobuf_PhysicsDOM_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+PrismaticJoint* PrismaticJoint::New(::google::protobuf::Arena* arena) const {
+  PrismaticJoint* n = new PrismaticJoint;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void PrismaticJoint::Clear() {
+// @@protoc_insertion_point(message_clear_start:CreateDOM.PrismaticJoint)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&limitlow_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&limithigh_) -
+      reinterpret_cast<char*>(&limitlow_)) + sizeof(limithigh_));
+  _internal_metadata_.Clear();
+}
+
+bool PrismaticJoint::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:CreateDOM.PrismaticJoint)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // float limitLow = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(13u /* 13 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &limitlow_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // float limitHigh = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(21u /* 21 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &limithigh_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:CreateDOM.PrismaticJoint)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:CreateDOM.PrismaticJoint)
+  return false;
+#undef DO_
+}
+
+void PrismaticJoint::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:CreateDOM.PrismaticJoint)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // float limitLow = 1;
+  if (this->limitlow() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(1, this->limitlow(), output);
+  }
+
+  // float limitHigh = 2;
+  if (this->limithigh() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(2, this->limithigh(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:CreateDOM.PrismaticJoint)
+}
+
+::google::protobuf::uint8* PrismaticJoint::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:CreateDOM.PrismaticJoint)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // float limitLow = 1;
+  if (this->limitlow() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->limitlow(), target);
+  }
+
+  // float limitHigh = 2;
+  if (this->limithigh() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(2, this->limithigh(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:CreateDOM.PrismaticJoint)
+  return target;
+}
+
+size_t PrismaticJoint::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:CreateDOM.PrismaticJoint)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // float limitLow = 1;
+  if (this->limitlow() != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float limitHigh = 2;
+  if (this->limithigh() != 0) {
+    total_size += 1 + 4;
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void PrismaticJoint::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:CreateDOM.PrismaticJoint)
+  GOOGLE_DCHECK_NE(&from, this);
+  const PrismaticJoint* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const PrismaticJoint>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:CreateDOM.PrismaticJoint)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:CreateDOM.PrismaticJoint)
+    MergeFrom(*source);
+  }
+}
+
+void PrismaticJoint::MergeFrom(const PrismaticJoint& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:CreateDOM.PrismaticJoint)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.limitlow() != 0) {
+    set_limitlow(from.limitlow());
+  }
+  if (from.limithigh() != 0) {
+    set_limithigh(from.limithigh());
+  }
+}
+
+void PrismaticJoint::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:CreateDOM.PrismaticJoint)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void PrismaticJoint::CopyFrom(const PrismaticJoint& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:CreateDOM.PrismaticJoint)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool PrismaticJoint::IsInitialized() const {
+  return true;
+}
+
+void PrismaticJoint::Swap(PrismaticJoint* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void PrismaticJoint::InternalSwap(PrismaticJoint* other) {
+  using std::swap;
+  swap(limitlow_, other->limitlow_);
+  swap(limithigh_, other->limithigh_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata PrismaticJoint::GetMetadata() const {
+  protobuf_PhysicsDOM_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_PhysicsDOM_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// PrismaticJoint
+
+// float limitLow = 1;
+void PrismaticJoint::clear_limitlow() {
+  limitlow_ = 0;
+}
+float PrismaticJoint::limitlow() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.PrismaticJoint.limitLow)
+  return limitlow_;
+}
+void PrismaticJoint::set_limitlow(float value) {
+  
+  limitlow_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.PrismaticJoint.limitLow)
+}
+
+// float limitHigh = 2;
+void PrismaticJoint::clear_limithigh() {
+  limithigh_ = 0;
+}
+float PrismaticJoint::limithigh() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.PrismaticJoint.limitHigh)
+  return limithigh_;
+}
+void PrismaticJoint::set_limithigh(float value) {
+  
+  limithigh_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.PrismaticJoint.limitHigh)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int DistanceJoint::kDistanceLowFieldNumber;
+const int DistanceJoint::kDistanceHighFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+DistanceJoint::DistanceJoint()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_PhysicsDOM_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:CreateDOM.DistanceJoint)
+}
+DistanceJoint::DistanceJoint(const DistanceJoint& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::memcpy(&distancelow_, &from.distancelow_,
+    static_cast<size_t>(reinterpret_cast<char*>(&distancehigh_) -
+    reinterpret_cast<char*>(&distancelow_)) + sizeof(distancehigh_));
+  // @@protoc_insertion_point(copy_constructor:CreateDOM.DistanceJoint)
+}
+
+void DistanceJoint::SharedCtor() {
+  ::memset(&distancelow_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&distancehigh_) -
+      reinterpret_cast<char*>(&distancelow_)) + sizeof(distancehigh_));
+  _cached_size_ = 0;
+}
+
+DistanceJoint::~DistanceJoint() {
+  // @@protoc_insertion_point(destructor:CreateDOM.DistanceJoint)
+  SharedDtor();
+}
+
+void DistanceJoint::SharedDtor() {
+}
+
+void DistanceJoint::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* DistanceJoint::descriptor() {
+  protobuf_PhysicsDOM_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_PhysicsDOM_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const DistanceJoint& DistanceJoint::default_instance() {
+  protobuf_PhysicsDOM_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+DistanceJoint* DistanceJoint::New(::google::protobuf::Arena* arena) const {
+  DistanceJoint* n = new DistanceJoint;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void DistanceJoint::Clear() {
+// @@protoc_insertion_point(message_clear_start:CreateDOM.DistanceJoint)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&distancelow_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&distancehigh_) -
+      reinterpret_cast<char*>(&distancelow_)) + sizeof(distancehigh_));
+  _internal_metadata_.Clear();
+}
+
+bool DistanceJoint::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:CreateDOM.DistanceJoint)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // float distanceLow = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(13u /* 13 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &distancelow_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // float distanceHigh = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(21u /* 21 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &distancehigh_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:CreateDOM.DistanceJoint)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:CreateDOM.DistanceJoint)
+  return false;
+#undef DO_
+}
+
+void DistanceJoint::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:CreateDOM.DistanceJoint)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // float distanceLow = 1;
+  if (this->distancelow() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(1, this->distancelow(), output);
+  }
+
+  // float distanceHigh = 2;
+  if (this->distancehigh() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(2, this->distancehigh(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:CreateDOM.DistanceJoint)
+}
+
+::google::protobuf::uint8* DistanceJoint::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:CreateDOM.DistanceJoint)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // float distanceLow = 1;
+  if (this->distancelow() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->distancelow(), target);
+  }
+
+  // float distanceHigh = 2;
+  if (this->distancehigh() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(2, this->distancehigh(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:CreateDOM.DistanceJoint)
+  return target;
+}
+
+size_t DistanceJoint::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:CreateDOM.DistanceJoint)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // float distanceLow = 1;
+  if (this->distancelow() != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float distanceHigh = 2;
+  if (this->distancehigh() != 0) {
+    total_size += 1 + 4;
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void DistanceJoint::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:CreateDOM.DistanceJoint)
+  GOOGLE_DCHECK_NE(&from, this);
+  const DistanceJoint* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const DistanceJoint>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:CreateDOM.DistanceJoint)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:CreateDOM.DistanceJoint)
+    MergeFrom(*source);
+  }
+}
+
+void DistanceJoint::MergeFrom(const DistanceJoint& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:CreateDOM.DistanceJoint)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.distancelow() != 0) {
+    set_distancelow(from.distancelow());
+  }
+  if (from.distancehigh() != 0) {
+    set_distancehigh(from.distancehigh());
+  }
+}
+
+void DistanceJoint::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:CreateDOM.DistanceJoint)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void DistanceJoint::CopyFrom(const DistanceJoint& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:CreateDOM.DistanceJoint)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool DistanceJoint::IsInitialized() const {
+  return true;
+}
+
+void DistanceJoint::Swap(DistanceJoint* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void DistanceJoint::InternalSwap(DistanceJoint* other) {
+  using std::swap;
+  swap(distancelow_, other->distancelow_);
+  swap(distancehigh_, other->distancehigh_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata DistanceJoint::GetMetadata() const {
+  protobuf_PhysicsDOM_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_PhysicsDOM_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// DistanceJoint
+
+// float distanceLow = 1;
+void DistanceJoint::clear_distancelow() {
+  distancelow_ = 0;
+}
+float DistanceJoint::distancelow() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.DistanceJoint.distanceLow)
+  return distancelow_;
+}
+void DistanceJoint::set_distancelow(float value) {
+  
+  distancelow_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.DistanceJoint.distanceLow)
+}
+
+// float distanceHigh = 2;
+void DistanceJoint::clear_distancehigh() {
+  distancehigh_ = 0;
+}
+float DistanceJoint::distancehigh() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.DistanceJoint.distanceHigh)
+  return distancehigh_;
+}
+void DistanceJoint::set_distancehigh(float value) {
+  
+  distancehigh_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.DistanceJoint.distanceHigh)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int BallAndSocketJoint::kLimitXLowFieldNumber;
+const int BallAndSocketJoint::kLimitXHighFieldNumber;
+const int BallAndSocketJoint::kLimitYFieldNumber;
+const int BallAndSocketJoint::kLimitZFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+BallAndSocketJoint::BallAndSocketJoint()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_PhysicsDOM_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:CreateDOM.BallAndSocketJoint)
+}
+BallAndSocketJoint::BallAndSocketJoint(const BallAndSocketJoint& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::memcpy(&limitxlow_, &from.limitxlow_,
+    static_cast<size_t>(reinterpret_cast<char*>(&limitz_) -
+    reinterpret_cast<char*>(&limitxlow_)) + sizeof(limitz_));
+  // @@protoc_insertion_point(copy_constructor:CreateDOM.BallAndSocketJoint)
+}
+
+void BallAndSocketJoint::SharedCtor() {
+  ::memset(&limitxlow_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&limitz_) -
+      reinterpret_cast<char*>(&limitxlow_)) + sizeof(limitz_));
+  _cached_size_ = 0;
+}
+
+BallAndSocketJoint::~BallAndSocketJoint() {
+  // @@protoc_insertion_point(destructor:CreateDOM.BallAndSocketJoint)
+  SharedDtor();
+}
+
+void BallAndSocketJoint::SharedDtor() {
+}
+
+void BallAndSocketJoint::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* BallAndSocketJoint::descriptor() {
+  protobuf_PhysicsDOM_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_PhysicsDOM_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const BallAndSocketJoint& BallAndSocketJoint::default_instance() {
+  protobuf_PhysicsDOM_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+BallAndSocketJoint* BallAndSocketJoint::New(::google::protobuf::Arena* arena) const {
+  BallAndSocketJoint* n = new BallAndSocketJoint;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void BallAndSocketJoint::Clear() {
+// @@protoc_insertion_point(message_clear_start:CreateDOM.BallAndSocketJoint)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&limitxlow_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&limitz_) -
+      reinterpret_cast<char*>(&limitxlow_)) + sizeof(limitz_));
+  _internal_metadata_.Clear();
+}
+
+bool BallAndSocketJoint::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:CreateDOM.BallAndSocketJoint)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // float limitXLow = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(13u /* 13 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &limitxlow_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // float limitXHigh = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(21u /* 21 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &limitxhigh_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // float limitY = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(29u /* 29 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &limity_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // float limitZ = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(37u /* 37 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &limitz_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:CreateDOM.BallAndSocketJoint)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:CreateDOM.BallAndSocketJoint)
+  return false;
+#undef DO_
+}
+
+void BallAndSocketJoint::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:CreateDOM.BallAndSocketJoint)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // float limitXLow = 1;
+  if (this->limitxlow() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(1, this->limitxlow(), output);
+  }
+
+  // float limitXHigh = 2;
+  if (this->limitxhigh() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(2, this->limitxhigh(), output);
+  }
+
+  // float limitY = 3;
+  if (this->limity() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(3, this->limity(), output);
+  }
+
+  // float limitZ = 4;
+  if (this->limitz() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(4, this->limitz(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:CreateDOM.BallAndSocketJoint)
+}
+
+::google::protobuf::uint8* BallAndSocketJoint::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:CreateDOM.BallAndSocketJoint)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // float limitXLow = 1;
+  if (this->limitxlow() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(1, this->limitxlow(), target);
+  }
+
+  // float limitXHigh = 2;
+  if (this->limitxhigh() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(2, this->limitxhigh(), target);
+  }
+
+  // float limitY = 3;
+  if (this->limity() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(3, this->limity(), target);
+  }
+
+  // float limitZ = 4;
+  if (this->limitz() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(4, this->limitz(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:CreateDOM.BallAndSocketJoint)
+  return target;
+}
+
+size_t BallAndSocketJoint::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:CreateDOM.BallAndSocketJoint)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // float limitXLow = 1;
+  if (this->limitxlow() != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float limitXHigh = 2;
+  if (this->limitxhigh() != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float limitY = 3;
+  if (this->limity() != 0) {
+    total_size += 1 + 4;
+  }
+
+  // float limitZ = 4;
+  if (this->limitz() != 0) {
+    total_size += 1 + 4;
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void BallAndSocketJoint::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:CreateDOM.BallAndSocketJoint)
+  GOOGLE_DCHECK_NE(&from, this);
+  const BallAndSocketJoint* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const BallAndSocketJoint>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:CreateDOM.BallAndSocketJoint)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:CreateDOM.BallAndSocketJoint)
+    MergeFrom(*source);
+  }
+}
+
+void BallAndSocketJoint::MergeFrom(const BallAndSocketJoint& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:CreateDOM.BallAndSocketJoint)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.limitxlow() != 0) {
+    set_limitxlow(from.limitxlow());
+  }
+  if (from.limitxhigh() != 0) {
+    set_limitxhigh(from.limitxhigh());
+  }
+  if (from.limity() != 0) {
+    set_limity(from.limity());
+  }
+  if (from.limitz() != 0) {
+    set_limitz(from.limitz());
+  }
+}
+
+void BallAndSocketJoint::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:CreateDOM.BallAndSocketJoint)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void BallAndSocketJoint::CopyFrom(const BallAndSocketJoint& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:CreateDOM.BallAndSocketJoint)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool BallAndSocketJoint::IsInitialized() const {
+  return true;
+}
+
+void BallAndSocketJoint::Swap(BallAndSocketJoint* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void BallAndSocketJoint::InternalSwap(BallAndSocketJoint* other) {
+  using std::swap;
+  swap(limitxlow_, other->limitxlow_);
+  swap(limitxhigh_, other->limitxhigh_);
+  swap(limity_, other->limity_);
+  swap(limitz_, other->limitz_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata BallAndSocketJoint::GetMetadata() const {
+  protobuf_PhysicsDOM_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_PhysicsDOM_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// BallAndSocketJoint
+
+// float limitXLow = 1;
+void BallAndSocketJoint::clear_limitxlow() {
+  limitxlow_ = 0;
+}
+float BallAndSocketJoint::limitxlow() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.BallAndSocketJoint.limitXLow)
+  return limitxlow_;
+}
+void BallAndSocketJoint::set_limitxlow(float value) {
+  
+  limitxlow_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.BallAndSocketJoint.limitXLow)
+}
+
+// float limitXHigh = 2;
+void BallAndSocketJoint::clear_limitxhigh() {
+  limitxhigh_ = 0;
+}
+float BallAndSocketJoint::limitxhigh() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.BallAndSocketJoint.limitXHigh)
+  return limitxhigh_;
+}
+void BallAndSocketJoint::set_limitxhigh(float value) {
+  
+  limitxhigh_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.BallAndSocketJoint.limitXHigh)
+}
+
+// float limitY = 3;
+void BallAndSocketJoint::clear_limity() {
+  limity_ = 0;
+}
+float BallAndSocketJoint::limity() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.BallAndSocketJoint.limitY)
+  return limity_;
+}
+void BallAndSocketJoint::set_limity(float value) {
+  
+  limity_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.BallAndSocketJoint.limitY)
+}
+
+// float limitZ = 4;
+void BallAndSocketJoint::clear_limitz() {
+  limitz_ = 0;
+}
+float BallAndSocketJoint::limitz() const {
+  // @@protoc_insertion_point(field_get:CreateDOM.BallAndSocketJoint.limitZ)
+  return limitz_;
+}
+void BallAndSocketJoint::set_limitz(float value) {
+  
+  limitz_ = value;
+  // @@protoc_insertion_point(field_set:CreateDOM.BallAndSocketJoint.limitZ)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+D6Joint::D6Joint()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    protobuf_PhysicsDOM_2eproto::InitDefaults();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:CreateDOM.D6Joint)
+}
+D6Joint::D6Joint(const D6Joint& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:CreateDOM.D6Joint)
+}
+
+void D6Joint::SharedCtor() {
+  _cached_size_ = 0;
+}
+
+D6Joint::~D6Joint() {
+  // @@protoc_insertion_point(destructor:CreateDOM.D6Joint)
+  SharedDtor();
+}
+
+void D6Joint::SharedDtor() {
+}
+
+void D6Joint::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* D6Joint::descriptor() {
+  protobuf_PhysicsDOM_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_PhysicsDOM_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const D6Joint& D6Joint::default_instance() {
+  protobuf_PhysicsDOM_2eproto::InitDefaults();
+  return *internal_default_instance();
+}
+
+D6Joint* D6Joint::New(::google::protobuf::Arena* arena) const {
+  D6Joint* n = new D6Joint;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void D6Joint::Clear() {
+// @@protoc_insertion_point(message_clear_start:CreateDOM.D6Joint)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _internal_metadata_.Clear();
+}
+
+bool D6Joint::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:CreateDOM.D6Joint)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+  handle_unusual:
+    if (tag == 0) {
+      goto success;
+    }
+    DO_(::google::protobuf::internal::WireFormat::SkipField(
+          input, tag, _internal_metadata_.mutable_unknown_fields()));
+  }
+success:
+  // @@protoc_insertion_point(parse_success:CreateDOM.D6Joint)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:CreateDOM.D6Joint)
+  return false;
+#undef DO_
+}
+
+void D6Joint::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:CreateDOM.D6Joint)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:CreateDOM.D6Joint)
+}
+
+::google::protobuf::uint8* D6Joint::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:CreateDOM.D6Joint)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:CreateDOM.D6Joint)
+  return target;
+}
+
+size_t D6Joint::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:CreateDOM.D6Joint)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void D6Joint::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:CreateDOM.D6Joint)
+  GOOGLE_DCHECK_NE(&from, this);
+  const D6Joint* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const D6Joint>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:CreateDOM.D6Joint)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:CreateDOM.D6Joint)
+    MergeFrom(*source);
+  }
+}
+
+void D6Joint::MergeFrom(const D6Joint& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:CreateDOM.D6Joint)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+}
+
+void D6Joint::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:CreateDOM.D6Joint)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void D6Joint::CopyFrom(const D6Joint& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:CreateDOM.D6Joint)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool D6Joint::IsInitialized() const {
+  return true;
+}
+
+void D6Joint::Swap(D6Joint* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void D6Joint::InternalSwap(D6Joint* other) {
+  using std::swap;
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata D6Joint::GetMetadata() const {
+  protobuf_PhysicsDOM_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_PhysicsDOM_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// D6Joint
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
 
@@ -14196,7 +18533,6 @@ void InstanceCollection::set_allocated_scale(::CreateDOM::Vec3* scale) {
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int Collection::kNodesFieldNumber;
-const int Collection::kSceneFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 Collection::Collection()
@@ -14213,21 +18549,10 @@ Collection::Collection(const Collection& from)
       nodes_(from.nodes_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  clear_has_subtype();
-  switch (from.subtype_case()) {
-    case kScene: {
-      mutable_scene()->::CreateDOM::Scene::MergeFrom(from.scene());
-      break;
-    }
-    case SUBTYPE_NOT_SET: {
-      break;
-    }
-  }
   // @@protoc_insertion_point(copy_constructor:CreateDOM.Collection)
 }
 
 void Collection::SharedCtor() {
-  clear_has_subtype();
   _cached_size_ = 0;
 }
 
@@ -14237,9 +18562,6 @@ Collection::~Collection() {
 }
 
 void Collection::SharedDtor() {
-  if (has_subtype()) {
-    clear_subtype();
-  }
 }
 
 void Collection::SetCachedSize(int size) const {
@@ -14265,21 +18587,6 @@ Collection* Collection::New(::google::protobuf::Arena* arena) const {
   return n;
 }
 
-void Collection::clear_subtype() {
-// @@protoc_insertion_point(one_of_clear_start:CreateDOM.Collection)
-  switch (subtype_case()) {
-    case kScene: {
-      delete subtype_.scene_;
-      break;
-    }
-    case SUBTYPE_NOT_SET: {
-      break;
-    }
-  }
-  _oneof_case_[0] = SUBTYPE_NOT_SET;
-}
-
-
 void Collection::Clear() {
 // @@protoc_insertion_point(message_clear_start:CreateDOM.Collection)
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -14287,7 +18594,6 @@ void Collection::Clear() {
   (void) cached_has_bits;
 
   nodes_.Clear();
-  clear_subtype();
   _internal_metadata_.Clear();
 }
 
@@ -14307,18 +18613,6 @@ bool Collection::MergePartialFromCodedStream(
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                 input, add_nodes()));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // .CreateDOM.Scene scene = 2;
-      case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_scene()));
         } else {
           goto handle_unusual;
         }
@@ -14358,12 +18652,6 @@ void Collection::SerializeWithCachedSizes(
       1, this->nodes(static_cast<int>(i)), output);
   }
 
-  // .CreateDOM.Scene scene = 2;
-  if (has_scene()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      2, *subtype_.scene_, output);
-  }
-
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -14384,13 +18672,6 @@ void Collection::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageNoVirtualToArray(
         1, this->nodes(static_cast<int>(i)), deterministic, target);
-  }
-
-  // .CreateDOM.Scene scene = 2;
-  if (has_scene()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      InternalWriteMessageNoVirtualToArray(
-        2, *subtype_.scene_, deterministic, target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -14421,18 +18702,6 @@ size_t Collection::ByteSizeLong() const {
     }
   }
 
-  switch (subtype_case()) {
-    // .CreateDOM.Scene scene = 2;
-    case kScene: {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          *subtype_.scene_);
-      break;
-    }
-    case SUBTYPE_NOT_SET: {
-      break;
-    }
-  }
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -14463,15 +18732,6 @@ void Collection::MergeFrom(const Collection& from) {
   (void) cached_has_bits;
 
   nodes_.MergeFrom(from.nodes_);
-  switch (from.subtype_case()) {
-    case kScene: {
-      mutable_scene()->::CreateDOM::Scene::MergeFrom(from.scene());
-      break;
-    }
-    case SUBTYPE_NOT_SET: {
-      break;
-    }
-  }
 }
 
 void Collection::CopyFrom(const ::google::protobuf::Message& from) {
@@ -14499,8 +18759,6 @@ void Collection::Swap(Collection* other) {
 void Collection::InternalSwap(Collection* other) {
   using std::swap;
   nodes_.InternalSwap(&other->nodes_);
-  swap(subtype_, other->subtype_);
-  swap(_oneof_case_[0], other->_oneof_case_[0]);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
@@ -14543,69 +18801,13 @@ Collection::nodes() const {
   return nodes_;
 }
 
-// .CreateDOM.Scene scene = 2;
-bool Collection::has_scene() const {
-  return subtype_case() == kScene;
-}
-void Collection::set_has_scene() {
-  _oneof_case_[0] = kScene;
-}
-void Collection::clear_scene() {
-  if (has_scene()) {
-    delete subtype_.scene_;
-    clear_has_subtype();
-  }
-}
- const ::CreateDOM::Scene& Collection::scene() const {
-  // @@protoc_insertion_point(field_get:CreateDOM.Collection.scene)
-  return has_scene()
-      ? *subtype_.scene_
-      : ::CreateDOM::Scene::default_instance();
-}
-::CreateDOM::Scene* Collection::mutable_scene() {
-  if (!has_scene()) {
-    clear_subtype();
-    set_has_scene();
-    subtype_.scene_ = new ::CreateDOM::Scene;
-  }
-  // @@protoc_insertion_point(field_mutable:CreateDOM.Collection.scene)
-  return subtype_.scene_;
-}
-::CreateDOM::Scene* Collection::release_scene() {
-  // @@protoc_insertion_point(field_release:CreateDOM.Collection.scene)
-  if (has_scene()) {
-    clear_has_subtype();
-    ::CreateDOM::Scene* temp = subtype_.scene_;
-    subtype_.scene_ = NULL;
-    return temp;
-  } else {
-    return NULL;
-  }
-}
-void Collection::set_allocated_scene(::CreateDOM::Scene* scene) {
-  clear_subtype();
-  if (scene) {
-    set_has_scene();
-    subtype_.scene_ = scene;
-  }
-  // @@protoc_insertion_point(field_set_allocated:CreateDOM.Collection.scene)
-}
-
-bool Collection::has_subtype() const {
-  return subtype_case() != SUBTYPE_NOT_SET;
-}
-void Collection::clear_has_subtype() {
-  _oneof_case_[0] = SUBTYPE_NOT_SET;
-}
-Collection::SubtypeCase Collection::subtype_case() const {
-  return Collection::SubtypeCase(_oneof_case_[0]);
-}
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
 
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int Scene::kGravityFieldNumber;
+const int Scene::kNodesFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 Scene::Scene()
@@ -14619,6 +18821,7 @@ Scene::Scene()
 Scene::Scene(const Scene& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
+      nodes_(from.nodes_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_gravity()) {
@@ -14672,6 +18875,7 @@ void Scene::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  nodes_.Clear();
   if (GetArenaNoVirtual() == NULL && gravity_ != NULL) {
     delete gravity_;
   }
@@ -14695,6 +18899,18 @@ bool Scene::MergePartialFromCodedStream(
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_gravity()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // repeated .CreateDOM.Node nodes = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+                input, add_nodes()));
         } else {
           goto handle_unusual;
         }
@@ -14733,6 +18949,13 @@ void Scene::SerializeWithCachedSizes(
       1, *this->gravity_, output);
   }
 
+  // repeated .CreateDOM.Node nodes = 2;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->nodes_size()); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      2, this->nodes(static_cast<int>(i)), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -14754,6 +18977,14 @@ void Scene::SerializeWithCachedSizes(
         1, *this->gravity_, deterministic, target);
   }
 
+  // repeated .CreateDOM.Node nodes = 2;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->nodes_size()); i < n; i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        2, this->nodes(static_cast<int>(i)), deterministic, target);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
@@ -14771,6 +19002,17 @@ size_t Scene::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
+  // repeated .CreateDOM.Node nodes = 2;
+  {
+    unsigned int count = static_cast<unsigned int>(this->nodes_size());
+    total_size += 1UL * count;
+    for (unsigned int i = 0; i < count; i++) {
+      total_size +=
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->nodes(static_cast<int>(i)));
+    }
+  }
+
   // .CreateDOM.Vec3 gravity = 1;
   if (this->has_gravity()) {
     total_size += 1 +
@@ -14807,6 +19049,7 @@ void Scene::MergeFrom(const Scene& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  nodes_.MergeFrom(from.nodes_);
   if (from.has_gravity()) {
     mutable_gravity()->::CreateDOM::Vec3::MergeFrom(from.gravity());
   }
@@ -14836,6 +19079,7 @@ void Scene::Swap(Scene* other) {
 }
 void Scene::InternalSwap(Scene* other) {
   using std::swap;
+  nodes_.InternalSwap(&other->nodes_);
   swap(gravity_, other->gravity_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
@@ -14887,6 +19131,36 @@ void Scene::set_allocated_gravity(::CreateDOM::Vec3* gravity) {
     
   }
   // @@protoc_insertion_point(field_set_allocated:CreateDOM.Scene.gravity)
+}
+
+// repeated .CreateDOM.Node nodes = 2;
+int Scene::nodes_size() const {
+  return nodes_.size();
+}
+void Scene::clear_nodes() {
+  nodes_.Clear();
+}
+const ::CreateDOM::Node& Scene::nodes(int index) const {
+  // @@protoc_insertion_point(field_get:CreateDOM.Scene.nodes)
+  return nodes_.Get(index);
+}
+::CreateDOM::Node* Scene::mutable_nodes(int index) {
+  // @@protoc_insertion_point(field_mutable:CreateDOM.Scene.nodes)
+  return nodes_.Mutable(index);
+}
+::CreateDOM::Node* Scene::add_nodes() {
+  // @@protoc_insertion_point(field_add:CreateDOM.Scene.nodes)
+  return nodes_.Add();
+}
+::google::protobuf::RepeatedPtrField< ::CreateDOM::Node >*
+Scene::mutable_nodes() {
+  // @@protoc_insertion_point(field_mutable_list:CreateDOM.Scene.nodes)
+  return &nodes_;
+}
+const ::google::protobuf::RepeatedPtrField< ::CreateDOM::Node >&
+Scene::nodes() const {
+  // @@protoc_insertion_point(field_list:CreateDOM.Scene.nodes)
+  return nodes_;
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
@@ -14972,7 +19246,7 @@ bool PhysicsDOM::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // repeated .CreateDOM.Collection collections = 1;
+      // repeated .CreateDOM.Node collections = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
@@ -14984,7 +19258,7 @@ bool PhysicsDOM::MergePartialFromCodedStream(
         break;
       }
 
-      // repeated .CreateDOM.Scene scenes = 2;
+      // repeated .CreateDOM.Node scenes = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
@@ -15022,14 +19296,14 @@ void PhysicsDOM::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // repeated .CreateDOM.Collection collections = 1;
+  // repeated .CreateDOM.Node collections = 1;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->collections_size()); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       1, this->collections(static_cast<int>(i)), output);
   }
 
-  // repeated .CreateDOM.Scene scenes = 2;
+  // repeated .CreateDOM.Node scenes = 2;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->scenes_size()); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
@@ -15050,7 +19324,7 @@ void PhysicsDOM::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // repeated .CreateDOM.Collection collections = 1;
+  // repeated .CreateDOM.Node collections = 1;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->collections_size()); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
@@ -15058,7 +19332,7 @@ void PhysicsDOM::SerializeWithCachedSizes(
         1, this->collections(static_cast<int>(i)), deterministic, target);
   }
 
-  // repeated .CreateDOM.Scene scenes = 2;
+  // repeated .CreateDOM.Node scenes = 2;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->scenes_size()); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
@@ -15083,7 +19357,7 @@ size_t PhysicsDOM::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // repeated .CreateDOM.Collection collections = 1;
+  // repeated .CreateDOM.Node collections = 1;
   {
     unsigned int count = static_cast<unsigned int>(this->collections_size());
     total_size += 1UL * count;
@@ -15094,7 +19368,7 @@ size_t PhysicsDOM::ByteSizeLong() const {
     }
   }
 
-  // repeated .CreateDOM.Scene scenes = 2;
+  // repeated .CreateDOM.Node scenes = 2;
   {
     unsigned int count = static_cast<unsigned int>(this->scenes_size());
     total_size += 1UL * count;
@@ -15176,61 +19450,61 @@ void PhysicsDOM::InternalSwap(PhysicsDOM* other) {
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
 // PhysicsDOM
 
-// repeated .CreateDOM.Collection collections = 1;
+// repeated .CreateDOM.Node collections = 1;
 int PhysicsDOM::collections_size() const {
   return collections_.size();
 }
 void PhysicsDOM::clear_collections() {
   collections_.Clear();
 }
-const ::CreateDOM::Collection& PhysicsDOM::collections(int index) const {
+const ::CreateDOM::Node& PhysicsDOM::collections(int index) const {
   // @@protoc_insertion_point(field_get:CreateDOM.PhysicsDOM.collections)
   return collections_.Get(index);
 }
-::CreateDOM::Collection* PhysicsDOM::mutable_collections(int index) {
+::CreateDOM::Node* PhysicsDOM::mutable_collections(int index) {
   // @@protoc_insertion_point(field_mutable:CreateDOM.PhysicsDOM.collections)
   return collections_.Mutable(index);
 }
-::CreateDOM::Collection* PhysicsDOM::add_collections() {
+::CreateDOM::Node* PhysicsDOM::add_collections() {
   // @@protoc_insertion_point(field_add:CreateDOM.PhysicsDOM.collections)
   return collections_.Add();
 }
-::google::protobuf::RepeatedPtrField< ::CreateDOM::Collection >*
+::google::protobuf::RepeatedPtrField< ::CreateDOM::Node >*
 PhysicsDOM::mutable_collections() {
   // @@protoc_insertion_point(field_mutable_list:CreateDOM.PhysicsDOM.collections)
   return &collections_;
 }
-const ::google::protobuf::RepeatedPtrField< ::CreateDOM::Collection >&
+const ::google::protobuf::RepeatedPtrField< ::CreateDOM::Node >&
 PhysicsDOM::collections() const {
   // @@protoc_insertion_point(field_list:CreateDOM.PhysicsDOM.collections)
   return collections_;
 }
 
-// repeated .CreateDOM.Scene scenes = 2;
+// repeated .CreateDOM.Node scenes = 2;
 int PhysicsDOM::scenes_size() const {
   return scenes_.size();
 }
 void PhysicsDOM::clear_scenes() {
   scenes_.Clear();
 }
-const ::CreateDOM::Scene& PhysicsDOM::scenes(int index) const {
+const ::CreateDOM::Node& PhysicsDOM::scenes(int index) const {
   // @@protoc_insertion_point(field_get:CreateDOM.PhysicsDOM.scenes)
   return scenes_.Get(index);
 }
-::CreateDOM::Scene* PhysicsDOM::mutable_scenes(int index) {
+::CreateDOM::Node* PhysicsDOM::mutable_scenes(int index) {
   // @@protoc_insertion_point(field_mutable:CreateDOM.PhysicsDOM.scenes)
   return scenes_.Mutable(index);
 }
-::CreateDOM::Scene* PhysicsDOM::add_scenes() {
+::CreateDOM::Node* PhysicsDOM::add_scenes() {
   // @@protoc_insertion_point(field_add:CreateDOM.PhysicsDOM.scenes)
   return scenes_.Add();
 }
-::google::protobuf::RepeatedPtrField< ::CreateDOM::Scene >*
+::google::protobuf::RepeatedPtrField< ::CreateDOM::Node >*
 PhysicsDOM::mutable_scenes() {
   // @@protoc_insertion_point(field_mutable_list:CreateDOM.PhysicsDOM.scenes)
   return &scenes_;
 }
-const ::google::protobuf::RepeatedPtrField< ::CreateDOM::Scene >&
+const ::google::protobuf::RepeatedPtrField< ::CreateDOM::Node >&
 PhysicsDOM::scenes() const {
   // @@protoc_insertion_point(field_list:CreateDOM.PhysicsDOM.scenes)
   return scenes_;

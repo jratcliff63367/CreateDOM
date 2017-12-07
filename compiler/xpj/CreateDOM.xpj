@@ -24,8 +24,8 @@
       	io/*.h
       	stubs/*.cc
       	stubs/*.h
-      	utils/*.cc
-      	utils/*.h
+      	util/*.cc
+      	util/*.h
       </Files>
 
       <Configuration name="default" type="console">

@@ -4,6 +4,7 @@
 
 #if ENABLED
 #include "PhysicsDOMDef.h"
+#include "PhysicsDOMExportProto.h"
 #endif
 
 namespace TEST_DOM
@@ -42,7 +43,19 @@ public:
 		PHYSICS_DOM::PhysicsDOM *pdom = dom.getPhysicsDOM();
 		if (pdom)
 		{
-			printf("Created DOM.\r\n");
+			PHYSICS_DOM::PhysicsDOMExportProto *pep = PHYSICS_DOM::PhysicsDOMExportProto::create();
+			size_t len;
+			const char *data = pep->exportProto(*pdom, len);
+			if (data)
+			{
+				FILE *fph = fopen("ExportProto.txt", "wb");
+				if (fph)
+				{
+					fwrite(data, len, 1, fph);
+					fclose(fph);
+				}
+			}
+			pep->release();
 		}
 #endif
 	}
