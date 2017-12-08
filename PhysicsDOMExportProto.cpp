@@ -241,7 +241,7 @@ public:
 
 		CreateDOM::PhysicsDOM cdom;
 		getProtoPhysicsDOM(dom, cdom);
-
+		mExport.clear();
 		google::protobuf::TextFormat::PrintToString(cdom, &mExport);
 
 		len = mExport.size();
@@ -253,7 +253,8 @@ public:
 	virtual const char *exportProtoJSON(const PHYSICS_DOM::PhysicsDOM &dom, size_t &len) final
 	{
 		const char *ret = nullptr;
-#if 0 // TODO
+
+		mExport.clear();
 		CreateDOM::PhysicsDOM cdom;
 		getProtoPhysicsDOM(dom, cdom);
 
@@ -261,8 +262,6 @@ public:
 		json_options.always_print_primitive_fields = true;
 		json_options.add_whitespace = true;
 		google::protobuf::util::MessageToJsonString(cdom, &mExport, json_options).ok();
-
-#endif
 		len = mExport.size();
 		ret = mExport.c_str();
 

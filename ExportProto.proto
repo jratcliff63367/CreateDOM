@@ -1,0 +1,86 @@
+collections {
+  id: "0"
+  type: NT_COLLECTION
+  visual {
+    localPose {
+      q {
+        w: 1
+      }
+      p {
+      }
+    }
+    localScale {
+    }
+  }
+  collection {
+    nodes {
+      id: "1"
+      type: NT_PHYSICS_MATERIAL
+      visual {
+        localPose {
+          q {
+            w: 1
+          }
+          p {
+          }
+        }
+        localScale {
+        }
+      }
+      physicsMaterial {
+        dynamicFriction: 0.5
+        staticFriction: 0.5
+        restitution: 0.5
+      }
+    }
+    nodes {
+      id: "2"
+      type: NT_RIGID_DYNAMIC
+      visual {
+        localPose {
+          q {
+            w: 1
+          }
+          p {
+          }
+        }
+        localScale {
+        }
+      }
+    }
+  }
+}
+scenes {
+  type: NT_SCENE
+  visual {
+    localPose {
+      q {
+        w: 1
+      }
+      p {
+      }
+    }
+    localScale {
+    }
+  }
+  scene {
+    gravity {
+      y: -9.8
+    }
+    nodes {
+      id: "3"
+      type: NT_INSTANCE_COLLECTION
+      visual {
+        localPose {
+          q {
+            w: 1
+          }
+          p {
+          }
+        }
+        localScale {
+        }
+      }
+    }
+  }
+}

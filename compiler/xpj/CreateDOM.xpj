@@ -45,6 +45,7 @@
         </SearchPaths>
 
         <SearchPaths type="library">
+         ../../protobuf/lib
         </SearchPaths>
         <Libraries>
         </Libraries>
@@ -53,11 +54,9 @@
       <Configuration name="debug" platform="win32">
         <OutDir>../../</OutDir>
         <OutFile>CreateDOMDEBUG.exe</OutFile>
-        <CFlags>/fp:fast /W4 /MTd /Zi</CFlags>
+        <CFlags>/fp:fast /W4 /MT /Zi</CFlags>
         <LFlags>/DEBUG</LFlags>
         <Preprocessor type="define">
-          _DEBUG
-          _ITERATOR_DEBUG_LEVEL=0
         </Preprocessor>
         <Libraries>
         </Libraries>
@@ -76,13 +75,12 @@
       <Configuration name="debug" platform="win64">
         <OutDir>../../</OutDir>
         <OutFile>CreateDOMDEBUG.exe</OutFile>
-        <CFlags>/fp:fast /W4 /MTd /Zi</CFlags>
+        <CFlags>/fp:fast /W4 /MT /Zi</CFlags>
         <LFlags>/DEBUG</LFlags>
         <Preprocessor type="define">
-          _DEBUG
-          _ITERATOR_DEBUG_LEVEL=0
         </Preprocessor>
         <Libraries>
+          libprotobuf.lib
         </Libraries>
       </Configuration>
 
@@ -93,6 +91,7 @@
         <LFlags>/DEBUG</LFlags>
         <Preprocessor type="define">NDEBUG</Preprocessor>
         <Libraries>
+          libprotobuf.lib
         </Libraries>
       </Configuration>
 

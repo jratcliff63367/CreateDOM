@@ -1,0 +1,161 @@
+{
+ "collections": [
+  {
+   "id": "0",
+   "name": "",
+   "type": "NT_COLLECTION",
+   "visual": {
+    "visualName": "",
+    "localPose": {
+     "q": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "w": 1
+     },
+     "p": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+     }
+    },
+    "localScale": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    }
+   },
+   "additionalProperties": [],
+   "collection": {
+    "nodes": [
+     {
+      "id": "1",
+      "name": "",
+      "type": "NT_PHYSICS_MATERIAL",
+      "visual": {
+       "visualName": "",
+       "localPose": {
+        "q": {
+         "x": 0,
+         "y": 0,
+         "z": 0,
+         "w": 1
+        },
+        "p": {
+         "x": 0,
+         "y": 0,
+         "z": 0
+        }
+       },
+       "localScale": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+       }
+      },
+      "additionalProperties": [],
+      "physicsMaterial": {
+       "disableFriction": false,
+       "disableStrongFriction": false,
+       "dynamicFriction": 0.5,
+       "staticFriction": 0.5,
+       "restitution": 0.5
+      }
+     },
+     {
+      "id": "2",
+      "name": "",
+      "type": "NT_RIGID_DYNAMIC",
+      "visual": {
+       "visualName": "",
+       "localPose": {
+        "q": {
+         "x": 0,
+         "y": 0,
+         "z": 0,
+         "w": 1
+        },
+        "p": {
+         "x": 0,
+         "y": 0,
+         "z": 0
+        }
+       },
+       "localScale": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+       }
+      },
+      "additionalProperties": []
+     }
+    ]
+   }
+  }
+ ],
+ "scenes": [
+  {
+   "id": "",
+   "name": "",
+   "type": "NT_SCENE",
+   "visual": {
+    "visualName": "",
+    "localPose": {
+     "q": {
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "w": 1
+     },
+     "p": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+     }
+    },
+    "localScale": {
+     "x": 0,
+     "y": 0,
+     "z": 0
+    }
+   },
+   "additionalProperties": [],
+   "scene": {
+    "gravity": {
+     "x": 0,
+     "y": -9.8,
+     "z": 0
+    },
+    "nodes": [
+     {
+      "id": "3",
+      "name": "",
+      "type": "NT_INSTANCE_COLLECTION",
+      "visual": {
+       "visualName": "",
+       "localPose": {
+        "q": {
+         "x": 0,
+         "y": 0,
+         "z": 0,
+         "w": 1
+        },
+        "p": {
+         "x": 0,
+         "y": 0,
+         "z": 0
+        }
+       },
+       "localScale": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+       }
+      },
+      "additionalProperties": []
+     }
+    ]
+   }
+  }
+ ]
+}

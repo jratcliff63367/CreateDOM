@@ -48,7 +48,17 @@ public:
 			const char *data = pep->exportProto(*pdom, len);
 			if (data)
 			{
-				FILE *fph = fopen("ExportProto.txt", "wb");
+				FILE *fph = fopen("ExportProto.proto", "wb");
+				if (fph)
+				{
+					fwrite(data, len, 1, fph);
+					fclose(fph);
+				}
+			}
+			data = pep->exportProtoJSON(*pdom, len);
+			if (data)
+			{
+				FILE *fph = fopen("ExportProto.json", "wb");
 				if (fph)
 				{
 					fwrite(data, len, 1, fph);
